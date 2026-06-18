@@ -1,0 +1,71 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "command": {
+    "ui-audit": {
+      "description": "Audit a UI/web screen for layout, hierarchy, density, and action placement.",
+      "agent": "ui-ux-auditor",
+      "subtask": true,
+      "template": "Audit this UI/web screen or area: $ARGUMENTS\n\nFocus on primary user job, element priority, layout density, wasted space, primary action placement, secondary/advanced controls, settings/form ergonomics, and relevant files/styles."
+    },
+    "ui-plan": {
+      "description": "Create a concrete UI/web redesign or theme plan.",
+      "agent": "ui-redesign-planner",
+      "subtask": true,
+      "template": "Create a concrete UI/web redesign plan for: $ARGUMENTS\n\nUse current project structure and components. Do not edit files. Include element priority, layout plan, component strategy, tokens if relevant, responsive behavior, accessibility notes, and implementation steps."
+    },
+    "ui-implement": {
+      "description": "Implement an already planned UI/web redesign.",
+      "agent": "frontend-ui-implementer",
+      "subtask": true,
+      "template": "Implement the planned UI/web redesign for: $ARGUMENTS\n\nBefore editing, read project rules and inspect existing components/styles. Reuse current architecture. Keep the diff focused. Do not introduce new dependencies or a new design system unless explicitly requested."
+    },
+    "ui-check": {
+      "description": "Check UI/web changes for accessibility and interaction issues.",
+      "agent": "accessibility-reviewer",
+      "subtask": true,
+      "template": "Check the UI/web changes for: $ARGUMENTS\n\nReview current diff and relevant components. Do not edit files. Report actionable accessibility and interaction findings."
+    },
+    "bugfix": {
+      "description": "Run a full bugfix workflow in one request.",
+      "agent": "code-workflow-orchestrator",
+      "subtask": false,
+      "template": "Run the bugfix workflow for: $ARGUMENTS\n\nOrchestrate needed subagents, continue through safe stages automatically, and return one consolidated markdown report with green/yellow/red stage status. Do not commit, push, or open PRs unless explicitly requested."
+    },
+    "pr-followup": {
+      "description": "Handle follow-up work for an existing PR.",
+      "agent": "code-workflow-orchestrator",
+      "subtask": false,
+      "template": "Run the existing-PR follow-up workflow for: $ARGUMENTS\n\nUse the same PR branch by default. Do not open a separate PR unless explicitly requested. Commit or push only if explicitly requested. Return one consolidated markdown report."
+    },
+    "issue-from-bug": {
+      "description": "Verify a described bug and draft or open a factual issue.",
+      "agent": "code-workflow-orchestrator",
+      "subtask": false,
+      "template": "Run the issue-from-bug workflow for: $ARGUMENTS\n\nVerify facts, search existing issues when possible, do not invent root cause, and draft/open the issue only according to the user's request."
+    },
+    "release-prep": {
+      "description": "Prepare or verify release notes from actual repository history.",
+      "agent": "code-workflow-orchestrator",
+      "subtask": false,
+      "template": "Run the release-prep workflow for: $ARGUMENTS\n\nUse only actual commits, PRs, linked issues, and final diffs. Do not create tags or releases unless explicitly requested."
+    },
+    "verify": {
+      "description": "Run relevant tests/checks without editing files.",
+      "agent": "tester",
+      "subtask": true,
+      "template": "Verify the current state for: $ARGUMENTS\n\nDiscover relevant checks from project docs/configs, run the smallest useful checks first, and report exact commands/results."
+    },
+    "pr-review": {
+      "description": "Review diff/PR for bugs, regressions, missing tests, security, and wrong fix level.",
+      "agent": "reviewer",
+      "subtask": true,
+      "template": "Review this PR/diff/change: $ARGUMENTS\n\nIf no target is specified, review the current git diff. Do not edit files. Include right-level review findings."
+    },
+    "fix-level": {
+      "description": "Check whether a fix is at the correct abstraction level.",
+      "agent": "fix-level-reviewer",
+      "subtask": true,
+      "template": "Review only the fix level for: $ARGUMENTS\n\nCheck duplicated local patches, missed shared abstractions, unsafe primitive coverage, and similar call sites. Do not edit files."
+    }
+  }
+}
