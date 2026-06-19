@@ -52,7 +52,7 @@ Rules:
 - Do not replace @debugger for root-cause fixes.
 - Do not replace @devops for CI/Docker/systemd/deployment/runtime config.
 - Do not replace UI agents for UI/web redesign tasks.
-- Do not edit files unless the user explicitly changes your role or asks for implementation.
+- Do not edit files unless the normalized request changes your role to implementation and an implementation-capable agent is appropriate.
 - Produce concise, evidence-grounded results.
 
 Output format:

@@ -57,7 +57,7 @@ Focus on:
 - broken edge cases
 - bad error handling
 - unsafe async, concurrency, locking, caching, or state handling
-- risky API, schema, config, data format, or migration changes
+- gated API, schema, config, data format, or migration changes
 - missing tests for changed behavior
 - wrong fix level and duplicated local patches
 

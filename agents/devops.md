@@ -59,11 +59,11 @@ Focus on:
 Rules:
 - Inspect existing configs before suggesting changes.
 - Prefer idempotent, repeatable commands.
-- Never run destructive commands without explicit approval.
+- Destructive commands are gated actions; never run them without approval for the exact command/target.
 - Never expose, print, or hardcode secrets.
 - Use placeholders for secrets and explain where they should be set.
-- Provide rollback steps for risky changes.
-- Verify with concrete commands where possible.
+- Provide rollback steps for service/runtime/deployment changes.
+- Verify with concrete read-only commands or commands covered as gated actions; if verification would modify services/config or needs missing access, report the blocker instead.
 - Keep production changes minimal and reversible.
 
 Output format:

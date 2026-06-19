@@ -12,6 +12,7 @@ Core:
 - `debugger` -> `opencode-go/deepseek-v4-pro`
 - `devops` -> `opencode-go/mimo-v2.5-pro`
 - `code-workflow-orchestrator` -> `opencode-go/glm-5.2`
+- `project-auditor` -> `opencode-go/glm-5.2`
 
 UI/web:
 

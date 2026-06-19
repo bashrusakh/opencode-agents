@@ -50,7 +50,7 @@ When called, respect the requested thoroughness:
 Rules:
 - Report only what is supported by code or docs.
 - Do not guess implementation details.
-- Do not propose broad rewrites.
+- Do not propose broad scope rewrites unless the normalized request is a broad architecture/audit request and the report labels the scope clearly.
 - Return exact file paths and symbols.
 - Note uncertainty explicitly.
 - If this is a UI question, identify relevant components, routes, styles, and state/data flow.

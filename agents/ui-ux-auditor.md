@@ -19,7 +19,7 @@ permission:
   grep: allow
   codesearch: allow
   lsp: allow
-  skill: ask
+  skill: allow
   bash:
     "*": ask
     "pwd": allow
@@ -32,6 +32,8 @@ permission:
   websearch: ask
   edit: deny
   apply_patch: deny
+  shadcn_*: ask
+  shadcn_public_*: ask
   task: deny
   todoread: allow
   todowrite: deny
@@ -72,3 +74,16 @@ Output format:
 6. Specific screen-level changes
 7. What not to change
 8. Suggested next agent: ui-redesign-planner
+
+## Component/source audit
+
+Before UI/MCP/component-source audit work, read the detailed UI policy file defined in AGENTS.md when it exists. If it is missing, follow AGENTS.md section 6.2.
+
+Audit rules:
+- Identify existing components, layout primitives, theme tokens, and repeated UI patterns that should be reused.
+- Treat MCP/component sources as usable only when visible tools/config confirm them.
+- If no MCP is visible, continue with existing project components and manual recommendations.
+- Do not recommend a new component library when an existing project pattern is good enough.
+- Treat UUPM as optional advisory design intelligence. Use it only after the availability check from the detailed UI policy file defined in AGENTS.md confirms it is available. If unavailable or not checked, continue without it and report that status.
+
+Output must mention whether the redesign should reuse existing components, standard shadcn registry items, GitHub/public registry items, Jpisnice MCP output, manual implementation, and whether UUPM was used/skipped.

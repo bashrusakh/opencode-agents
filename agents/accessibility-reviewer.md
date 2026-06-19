@@ -19,7 +19,7 @@ permission:
   grep: allow
   codesearch: allow
   lsp: allow
-  skill: ask
+  skill: allow
   bash:
     "*": ask
     "pwd": allow
@@ -37,6 +37,8 @@ permission:
   websearch: ask
   edit: deny
   apply_patch: deny
+  shadcn_*: ask
+  shadcn_public_*: ask
   task: deny
   todoread: allow
   todowrite: deny
@@ -73,3 +75,19 @@ Output format:
 4. Responsive/layout findings
 5. Suggested fixes
 6. Verification commands run or skipped
+
+## Registry-aware accessibility review
+
+When UI changes used shadcn registry items, GitHub/public registry items, Jpisnice MCP output, or generated design guidance:
+- Verify the installed/implemented result, not the claimed component quality.
+- Check focus, labels, keyboard flow, contrast, responsive behavior, and interaction states in the final project context.
+- Flag any imported component that added inaccessible defaults, hidden focus, poor semantics, color-only meaning, or excessive visual noise.
+
+
+## UUPM accessibility usage
+
+For UI/MCP/component-source or UUPM-guided accessibility review, read the detailed UI policy file defined in AGENTS.md when it exists. If it is missing, follow AGENTS.md section 6.2.
+
+Use UI UX Pro Max / UUPM only as an additional advisory accessibility/pre-delivery checklist after the detailed policy availability check confirms it is available. If unavailable or not checked, continue without it and report `UUPM: not used / not available / not checked`.
+
+Project accessibility requirements, actual implemented code, browser behavior, and test results win over UUPM guidance.

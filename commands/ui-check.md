@@ -7,3 +7,5 @@ subtask: true
 Check the UI/web changes for: $ARGUMENTS
 
 Review current diff and relevant components. Do not edit files. Report actionable accessibility and interaction findings.
+
+Read the detailed UI policy file defined in AGENTS.md when it exists.

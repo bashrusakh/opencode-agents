@@ -1,22 +1,27 @@
 ---
-description: Run the full UI/web redesign workflow in one request. The orchestrator calls audit, planning, implementation, accessibility review, and verification subagents automatically unless an approval gate is hit.
+description: Run the full UI/web redesign workflow in one request. The orchestrator calls audit, planning, implementation, accessibility review, and verification subagents automatically unless a gated action is hit.
 agent: ui-web-orchestrator
-subtask: false
+subtask: true
 ---
 
 Run the full UI/web redesign workflow for: $ARGUMENTS
 
 Do not make the user manually run each stage.
 
-Call subagents in sequence and continue automatically when safe:
+Call subagents in sequence and continue automatically when the next stage does not hit a gated action:
 1. @explore if relevant files/routes/components/styles are not already known.
 2. @ui-ux-auditor for current UX/layout audit and element priority.
-3. @ui-redesign-planner for concrete redesign/layout/theme plan.
-4. @frontend-ui-implementer if no approval gate is hit.
+3. @ui-redesign-planner for concrete redesign/layout/theme plan. It must read the detailed UI policy file defined in AGENTS.md when it exists and perform the UUPM availability check before using UUPM/UI UX Pro Max.
+4. @frontend-ui-implementer if no gated action is hit.
 5. @accessibility-reviewer for UI/a11y check.
 6. @tester for the narrowest relevant frontend validation.
 
-Ask the user only if an approval gate is hit: ambiguous visual direction, new dependency/design system, broad rewrite, product/API/data/deployment behavior change, destructive action, secrets/external account action, blocked verification, or explicit user approval requirement.
+Ask the user only if a gated action is hit: ambiguous visual direction, new dependency/design system, broad scope rewrite, product/API/data/deployment behavior change, destructive action, secrets/external account action, or blocked verification.
 
 Keep all work on the current PR branch if this is follow-up work for an existing PR.
-Return one consolidated final report.
+Read the detailed UI policy file defined in AGENTS.md when it exists.
+
+Return one consolidated final report. Include whether UUPM was used, unavailable, not checked, or skipped, and which guidance was applied/rejected.
+
+
+If the request is only asking for options, variants, ideas, critique, or a plan, do not implement. Return 2-3 options and stop. For pure options, prefer /ui-options.

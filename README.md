@@ -1,131 +1,116 @@
-# OpenCode agents final config v6
+# OpenCode final config v27
 
-This pack is focused on code work plus UI/web design/redesign for web apps.
+Agents, commands, root `AGENTS.md`, snippets, and UI MCP/UUPM setup notes for OpenCode. This package no longer ships a duplicate `global/AGENTS.md`; the root `AGENTS.md` is the single source for these reusable rules.
 
-## What is included
+## Model routing
 
-Agents:
+```text
+build                      -> opencode-go/mimo-v2.5-pro
+plan                       -> opencode-go/glm-5.2
+explore                    -> opencode-go/mimo-v2.5
+general                    -> opencode-go/qwen3.7-plus
+reviewer                   -> opencode-go/qwen3.7-plus
+fix-level-reviewer         -> opencode-go/qwen3.7-plus
+tester                     -> opencode-go/deepseek-v4-flash
+debugger                  -> opencode-go/deepseek-v4-pro
+devops                    -> opencode-go/mimo-v2.5-pro
+code-workflow-orchestrator -> opencode-go/glm-5.2
+project-auditor           -> opencode-go/glm-5.2
 
-- `build` — primary implementation agent
-- `plan` — read-only planning primary agent
-- `explore` — read-only codebase discovery
-- `general` — bounded fallback subagent
-- `reviewer` — strict code/PR review
-- `fix-level-reviewer` — checks wrong abstraction level and copy-patched fixes
-- `tester` — verification only, no edits
-- `debugger` — root-cause fixes
-- `devops` — Docker/systemd/CI/deployment/runtime config
-- `ui-ux-auditor` — read-only UI/web UX audit
-- `ui-redesign-planner` — read-only UI/web redesign/theme plan
-- `frontend-ui-implementer` — implements approved UI/web redesign
-- `accessibility-reviewer` — read-only accessibility and interaction check
-- `ui-web-orchestrator` — one-shot UI/web workflow coordinator
-- `code-workflow-orchestrator` — one-shot coding workflow coordinator for bugfixes, PR follow-ups, issue triage, and release-prep checks
+ui-web-orchestrator        -> opencode-go/glm-5.2
+ui-ux-auditor              -> opencode-go/mimo-v2.5
+ui-redesign-planner        -> opencode-go/glm-5.2
+frontend-ui-implementer    -> opencode-go/mimo-v2.5-pro
+accessibility-reviewer     -> opencode-go/deepseek-v4-flash
+```
 
-Commands:
+## Rule model
 
-- `/ui-audit`
-- `/ui-plan`
-- `/ui-implement`
-- `/ui-check`
-- `/ui-redesign`
-- `/verify`
-- `/debug`
-- `/pr-review`
-- `/fix-level`
-- `/explore-code`
-- `/devops-check`
-- `/bugfix`
-- `/pr-followup`
-- `/issue-from-bug`
-- `/release-prep`
+`AGENTS.md` is structured as:
+
+```text
+0. Philosophy and interpretation principles
+1. Source of truth
+2. Core behavior
+3. Request normalization
+4. Approval gates
+5. Delegation and orchestration
+6. Workflow routing
+7. Implementation rules
+8. Git, commit, PR, issue, and release discipline
+9. Final reports
+```
+
+Core logic:
+
+```text
+normalization selects the route
+confidence decides how far the agent may proceed
+gated actions require explicit user intent or explicit approval
+right-level correctness wins over minimal diff size when they conflict
+```
+
+## UI MCP stack
+
+```text
+1. Existing project components/tokens/styles
+2. Official shadcn MCP + standard shadcn registry
+3. Official shadcn MCP + GitHub/public shadcn-compatible registries
+4. Jpisnice shadcn-ui-mcp-server + GitHub token as secondary/reference source
+5. Manual implementation
+```
+
+Notes:
+
+- Do not assume MCP availability from instructions alone; check visible tools/config.
+- If a source level is unavailable, skip to the next level.
+- Secret-backed sources are gated actions. Do not hardcode tokens.
+- Local/private/authenticated non-GitHub registry setup is a gated action.
+- UUPM/UI UX Pro Max is design intelligence only, not a component MCP source.
 
 ## Install globally
 
 ```bash
-cd opencode_final_config_v6
+cd opencode_final_config_v27
 ./install/install-global.sh
 ```
 
-## Install into one project
+This installs the root `AGENTS.md` into `~/.config/opencode/AGENTS.md` and copies agents, commands, and docs into OpenCode config.
+
+## Install into a project
 
 ```bash
 cd your-project
-/path/to/opencode_final_config_v6/install/install-project.sh
+/path/to/opencode_final_config_v27/install/install-project.sh
 ```
 
-## Model check
-
-After install, run `/models` in OpenCode and verify these model IDs exist:
-
-- `opencode-go/mimo-v2.5`
-- `opencode-go/mimo-v2.5-pro`
-- `opencode-go/glm-5.2`
-- `opencode-go/qwen3.7-plus`
-- `opencode-go/deepseek-v4-flash`
-- `opencode-go/deepseek-v4-pro`
-
-If an ID changed, edit the `model:` line in the relevant agent file.
-
-## Recommended UI/web workflow
-
-For UI/web redesign, settings screens, dashboards, themes, forms, or layout-density problems, use one command by default:
+This installs:
 
 ```text
-/ui-redesign <screen/problem>
+AGENTS.md
+.opencode/agents/*.md
+.opencode/commands/*.md
+.opencode/docs/*.md
 ```
 
-The `ui-web-orchestrator` agent calls the UI audit, redesign planning, frontend implementation, accessibility review, and tester agents itself. It should not ask the user between stages unless an approval gate is hit.
-
-Manual step commands are still included for cases where you want to run one stage directly:
+## Important commands
 
 ```text
-/ui-audit <screen/problem>
-/ui-plan <screen/problem + audit summary>
-/ui-implement <approved plan>
-/ui-check <changed screen>
-/verify <frontend build/test/lint>
+/ui-redesign      one-shot UI redesign workflow
+/ui-options       UI options without implementation
+/ui-mcp-setup     configure UI MCP stack
+/uupm-setup       install/configure UUPM guidance
+/bugfix           investigate, fix, verify, report
+/pr-followup      work on existing PR branch, not a new PR
+/issue-from-bug   verify bug and draft/open issue
+/release-prep     release notes/checks from real history only
+/project-audit    full read-only project audit
 ```
 
+## v27 changes
 
-## Recommended coding workflows
-
-For multi-step coding work, use one command and let the orchestrator run the safe stages itself:
-
-```text
-/bugfix <bug, traceback, failing test, or broken behavior>
-/pr-followup <PR number/branch/comment/check failure/requested correction>
-/issue-from-bug <bug description or reproduction>
-/release-prep <release target or tag range>
-```
-
-The `code-workflow-orchestrator` agent calls the needed discovery, debugging, testing, review, and fix-level agents itself. It should not ask the user between normal safe stages.
-
-It must stop for approval gates such as commit/push/PR/tag/release actions not explicitly requested, destructive commands, secrets, new dependencies, broad rewrites, API/data/auth/deploy changes, or blocked verification.
-
-For existing PR follow-up work, the default is: same PR branch, same PR. Do not open a separate PR unless explicitly requested.
-
-## Model routing
-
-Core:
-
-- `build` → `opencode-go/mimo-v2.5-pro`
-- `plan` → `opencode-go/glm-5.2`
-- `explore` → `opencode-go/mimo-v2.5`
-- `general` → `opencode-go/qwen3.7-plus`
-- `reviewer` → `opencode-go/qwen3.7-plus`
-- `fix-level-reviewer` → `opencode-go/qwen3.7-plus`
-- `tester` → `opencode-go/deepseek-v4-flash`
-- `debugger` → `opencode-go/deepseek-v4-pro`
-- `devops` → `opencode-go/mimo-v2.5-pro`
-- `code-workflow-orchestrator` → `opencode-go/glm-5.2`
-
-UI/web:
-
-- `ui-ux-auditor` → `opencode-go/mimo-v2.5`
-- `ui-redesign-planner` → `opencode-go/glm-5.2`
-- `frontend-ui-implementer` → `opencode-go/mimo-v2.5-pro`
-- `accessibility-reviewer` → `opencode-go/deepseek-v4-flash`
-- `ui-web-orchestrator` → `opencode-go/glm-5.2`
-
-
+- Root `AGENTS.md` is the single shipped rules file; no duplicate `global/AGENTS.md`.
+- Section 6.2 is now compact and delegates detailed UI/MCP/UUPM policy to `docs/UI_COMPONENT_POLICY.md`.
+- Install scripts copy `docs/*.md` into the matching OpenCode docs directory.
+- UI agents and UI commands are aligned to read the detailed UI policy file for UI/MCP/component-source and UUPM-guided work.
+- Microfixes: unified gated-action wording for separate PRs/releases/registry setup, clarified final-report notes, and normalized ellipses.

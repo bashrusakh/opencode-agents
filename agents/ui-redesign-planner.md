@@ -19,7 +19,7 @@ permission:
   grep: allow
   codesearch: allow
   lsp: allow
-  skill: ask
+  skill: allow
   bash:
     "*": ask
     "pwd": allow
@@ -32,6 +32,8 @@ permission:
   websearch: ask
   edit: deny
   apply_patch: deny
+  shadcn_*: allow
+  shadcn_public_*: ask
   task: deny
   todoread: allow
   todowrite: allow
@@ -53,7 +55,7 @@ For each redesign:
 - Reduce wasted space and visual noise.
 - Move advanced/secondary controls out of the primary path.
 - Preserve functional behavior unless the user requested behavior changes.
-- Avoid introducing new frameworks, icon libraries, font dependencies, or design systems unless explicitly requested.
+- New frameworks, icon libraries, font dependencies, and design systems are gated actions.
 
 For theme work:
 - Define a compact token system: colors, typography roles, spacing, elevation/borders, focus states.
@@ -71,3 +73,17 @@ Output format:
 8. Accessibility notes
 9. Implementation steps for frontend-ui-implementer
 10. Verification checklist
+
+## Component registry and design intelligence
+
+Before UI/MCP/component-source planning, read the detailed UI policy file defined in AGENTS.md when it exists. If it is missing, follow AGENTS.md section 6.2.
+
+Planning rules:
+- Prefer existing project components, tokens, styles, and layout primitives first.
+- Treat MCP/component sources as usable only when visible tools/config confirm them.
+- Skip unavailable component source levels without asking.
+- Secret-backed sources, private/authenticated registries, local registry setup, dependencies, fonts, icon sets, generated assets, persistent design-system files, config rewrites, and broad design-system changes are gated actions.
+- Before using UUPM, perform the availability check from the detailed UI policy file defined in AGENTS.md. If unavailable or not checked, continue without it and report `UUPM: not used / not available / not checked`.
+- UUPM is advisory design intelligence only. Project constraints, existing components, accessibility, and implementation constraints win.
+
+In the plan, include a "Component source" section with existing components to reuse, registry/MCP sources used or skipped, manual implementation needed, UUPM status, and gated actions triggered or avoided.

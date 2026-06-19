@@ -15,4 +15,6 @@ Focus on:
 - settings/form ergonomics
 - existing components/routes/styles to inspect
 
+Read the detailed UI policy file defined in AGENTS.md when it exists.
+
 Return a concrete audit and recommend the next UI agent.

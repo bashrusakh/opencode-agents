@@ -6,4 +6,4 @@ subtask: true
 
 Verify the current state for: $ARGUMENTS
 
-Discover the relevant checks from project docs/configs, run the smallest useful checks first, and report exact commands/results.
+Discover the relevant checks from project docs/configs, run the smallest checks that directly verify the requested scope first, and report exact commands/results.

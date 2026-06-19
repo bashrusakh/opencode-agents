@@ -1,0 +1,21 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "shadcn": {
+      "type": "local",
+      "command": ["npx", "-y", "shadcn@latest", "mcp"],
+      "enabled": true,
+      "timeout": 10000
+    },
+    "shadcn_public": {
+      "type": "local",
+      "command": [
+        "sh",
+        "-lc",
+        "test -n \"$GITHUB_PERSONAL_ACCESS_TOKEN\" || { echo \"GITHUB_PERSONAL_ACCESS_TOKEN is required for shadcn_public MCP\" >&2; exit 1; }; npx -y @jpisnice/shadcn-ui-mcp-server --github-api-key \"$GITHUB_PERSONAL_ACCESS_TOKEN\""
+      ],
+      "enabled": true,
+      "timeout": 15000
+    }
+  }
+}
