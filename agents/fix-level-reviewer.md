@@ -1,7 +1,6 @@
 ---
 mode: subagent
 description: Use after bugfixes, audit fixes, PR review fixes, or security fixes to check whether the fix is at the correct abstraction level instead of copy-patched locally.
-model: opencode-go/qwen3.7-plus
 permission:
   "*": deny
   doom_loop: ask

@@ -1,7 +1,6 @@
 ---
 mode: subagent
 description: Use after UI audit to design a concrete web UI redesign/theme/layout plan. Produces tokens, layout, component strategy, and implementation instructions. Does not edit files.
-model: opencode-go/glm-5.2
 permission:
   "*": deny
   doom_loop: ask

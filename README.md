@@ -1,28 +1,23 @@
-# OpenCode final config v27
+# OpenCode final config v27 — model-agnostic variant
 
-Agents, commands, root `AGENTS.md`, snippets, and UI MCP/UUPM setup notes for OpenCode. This package no longer ships a duplicate `global/AGENTS.md`; the root `AGENTS.md` is the single source for these reusable rules.
+Agents, commands, root `AGENTS.md`, `snippet/`, docs, and UI MCP/UUPM setup notes for OpenCode. This package does not ship a duplicate `global/AGENTS.md`; the root `AGENTS.md` is the single shipped rules file.
 
-## Model routing
+## Important
+
+OpenCode uses `AGENTS.md` as the rules file. `agent.md` is not the primary OpenCode rules file and may be ignored by OpenCode/OpenChamber tooling.
+
+## Model policy
+
+This variant is provider-neutral:
 
 ```text
-build                      -> opencode-go/mimo-v2.5-pro
-plan                       -> opencode-go/glm-5.2
-explore                    -> opencode-go/mimo-v2.5
-general                    -> opencode-go/qwen3.7-plus
-reviewer                   -> opencode-go/qwen3.7-plus
-fix-level-reviewer         -> opencode-go/qwen3.7-plus
-tester                     -> opencode-go/deepseek-v4-flash
-debugger                  -> opencode-go/deepseek-v4-pro
-devops                    -> opencode-go/mimo-v2.5-pro
-code-workflow-orchestrator -> opencode-go/glm-5.2
-project-auditor           -> opencode-go/glm-5.2
-
-ui-web-orchestrator        -> opencode-go/glm-5.2
-ui-ux-auditor              -> opencode-go/mimo-v2.5
-ui-redesign-planner        -> opencode-go/glm-5.2
-frontend-ui-implementer    -> opencode-go/mimo-v2.5-pro
-accessibility-reviewer     -> opencode-go/deepseek-v4-flash
+agents/*.md contain no model: frontmatter
+there is no fixed provider-specific role-to-model table
+agents use the active OpenCode model/provider from the current session/config/UI
+workflow routing still selects the right role/agent, but it does not select a model provider
 ```
+
+Use this while testing different providers. Change the active model/provider in OpenCode/OpenChamber config or UI; do not edit every agent file.
 
 ## Rule model
 
@@ -44,7 +39,8 @@ accessibility-reviewer     -> opencode-go/deepseek-v4-flash
 Core logic:
 
 ```text
-normalization selects the route
+normalization selects the workflow route
+workflow routing selects the role/subagent/command, not the model provider
 confidence decides how far the agent may proceed
 gated actions require explicit user intent or explicit approval
 right-level correctness wins over minimal diff size when they conflict
@@ -71,17 +67,17 @@ Notes:
 ## Install globally
 
 ```bash
-cd opencode_final_config_v27
+cd opencode_final_config_v27_model_agnostic
 ./install/install-global.sh
 ```
 
-This installs the root `AGENTS.md` into `~/.config/opencode/AGENTS.md` and copies agents, commands, and docs into OpenCode config.
+This installs the root `AGENTS.md` into `~/.config/opencode/AGENTS.md` and copies agents, commands, docs, and snippet files into OpenCode config.
 
 ## Install into a project
 
 ```bash
 cd your-project
-/path/to/opencode_final_config_v27/install/install-project.sh
+/path/to/opencode_final_config_v27_model_agnostic/install/install-project.sh
 ```
 
 This installs:
@@ -91,6 +87,7 @@ AGENTS.md
 .opencode/agents/*.md
 .opencode/commands/*.md
 .opencode/docs/*.md
+.opencode/snippet/*
 ```
 
 ## Important commands
@@ -107,10 +104,11 @@ AGENTS.md
 /project-audit    full read-only project audit
 ```
 
-## v27 changes
+## Changes from v27 baseline
 
-- Root `AGENTS.md` is the single shipped rules file; no duplicate `global/AGENTS.md`.
-- Section 6.2 is now compact and delegates detailed UI/MCP/UUPM policy to `docs/UI_COMPONENT_POLICY.md`.
-- Install scripts copy `docs/*.md` into the matching OpenCode docs directory.
-- UI agents and UI commands are aligned to read the detailed UI policy file for UI/MCP/component-source and UUPM-guided work.
-- Microfixes: unified gated-action wording for separate PRs/releases/registry setup, clarified final-report notes, and normalized ellipses.
+- Removed all provider-specific `model:` frontmatter from `agents/*.md`.
+- Removed the fixed provider-specific role-to-model table and the old routing snippet.
+- Added compact model policy to `AGENTS.md` and README.
+- Renamed `snippet/` to `snippet/` for OpenChamber/opencode-snippet compatibility.
+- Install scripts now copy `snippet/` into `~/.config/opencode/snippet/` or `.opencode/snippet/`.
+- Removed install message that asked to verify fixed model IDs.

@@ -1,7 +1,6 @@
 ---
 mode: primary
 description: Read-only planning agent. Use before architecture, multi-file sequencing, data/API/deployment planning, PR, release, or UI redesign work. Produces implementation plans without editing source files.
-model: opencode-go/glm-5.2
 permission:
   "*": allow
   doom_loop: ask

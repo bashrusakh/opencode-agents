@@ -1,7 +1,6 @@
 ---
 mode: subagent
 description: Use for PR review, code review, audit findings, security fixes, and “is this patch correct?” questions. Reviews only; does not edit files.
-model: opencode-go/qwen3.7-plus
 permission:
   "*": deny
   doom_loop: ask

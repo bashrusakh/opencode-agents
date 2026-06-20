@@ -39,6 +39,15 @@ Use project docs, nearby code, tests, existing issues, repository history, and a
 
 ## 2. Core behavior
 
+
+### 2.1 Model policy
+
+- Agents in this package are model-agnostic: do not put provider-specific `model:` overrides in agent files.
+- Use the active OpenCode model/provider selected by the current OpenCode configuration or UI. Subagents should inherit the invoking agent/session model unless the user deliberately configures overrides outside this package.
+- Workflow routing selects the right role or command; it must not select, recommend, or silently switch model providers.
+- If the active provider/model is unavailable, stop and report that the current OpenCode model/provider is unavailable. Do not rewrite agent files to another provider.
+- Provider-specific model profiles may be created outside this package, but the reusable agents remain provider-neutral.
+
 - Do not guess.
 - Prefer the smallest correct change.
 - Keep diffs focused on the requested task.

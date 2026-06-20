@@ -1,7 +1,6 @@
 ---
 mode: subagent
 description: Use to implement an already planned UI/web redesign in existing frontend code. Reuses current components/styles and avoids unrelated rewrites.
-model: opencode-go/mimo-v2.5-pro
 permission:
   "*": deny
   doom_loop: ask

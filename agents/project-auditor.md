@@ -1,7 +1,6 @@
 ---
 mode: subagent
 description: "Use for full-project audits: explores the whole repository, finds logic bugs, dead code, wrong fix levels, duplicated logic, fragile architecture, test gaps, UI/API mismatches, and optimization opportunities. Orchestrates specialist subagents and returns one consolidated evidence-based report. Read-only; does not edit code."
-model: opencode-go/glm-5.2
 permission:
   "*": deny
   doom_loop: ask

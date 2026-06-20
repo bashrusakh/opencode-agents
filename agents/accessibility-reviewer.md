@@ -1,7 +1,6 @@
 ---
 mode: subagent
 description: Use after UI/web changes to check accessibility, keyboard flow, focus states, form labels, contrast risks, responsive behavior, and interaction states. Read-only.
-model: opencode-go/deepseek-v4-flash
 permission:
   "*": deny
   doom_loop: ask

@@ -2,7 +2,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 STAMP="$(date +%Y%m%d-%H%M%S)"
-mkdir -p .opencode/agents .opencode/commands .opencode/docs
+mkdir -p .opencode/agents .opencode/commands .opencode/docs .opencode/snippet
 
 if [ -f ./AGENTS.md ]; then
   cp ./AGENTS.md "./AGENTS.md.bak.$STAMP"
@@ -20,11 +20,17 @@ if [ -d .opencode/docs ]; then
   cp -a .opencode/docs/. ".opencode/docs.bak.$STAMP/" 2>/dev/null || true
 fi
 
+if [ -d .opencode/snippet ]; then
+  mkdir -p ".opencode/snippet.bak.$STAMP"
+  cp -a .opencode/snippet/. ".opencode/snippet.bak.$STAMP/" 2>/dev/null || true
+fi
+
 cp "$ROOT/AGENTS.md" ./AGENTS.md
 cp "$ROOT/agents/"*.md .opencode/agents/
 cp "$ROOT/commands/"*.md .opencode/commands/
 cp "$ROOT/docs/"*.md .opencode/docs/
+if [ -d "$ROOT/snippet" ]; then cp "$ROOT/snippet/"* .opencode/snippet/ 2>/dev/null || true; fi
 
-printf 'Installed project-local OpenCode agents/commands/docs and AGENTS.md into %s\n' "$(pwd)"
+printf 'Installed project-local OpenCode agents/commands/docs/snippet and AGENTS.md into %s\n' "$(pwd)"
 echo "Backups were created when existing files/directories were present."
 echo "UUPM setup instructions are in .opencode/docs/UUPM_INSTALL_FOR_AGENT.md"

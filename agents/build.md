@@ -1,7 +1,6 @@
 ---
 mode: primary
 description: Primary implementation agent. Use for focused code changes after reading project rules; delegates discovery, UI planning, review, verification, and DevOps work when the normalized workflow requires a specialist.
-model: opencode-go/mimo-v2.5-pro
 permission:
   "*": allow
   doom_loop: ask

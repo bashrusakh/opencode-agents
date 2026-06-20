@@ -1,7 +1,6 @@
 ---
 mode: subagent
 description: Use before any UI/web redesign, theme work, settings-screen optimization, form layout change, dashboard redesign, or visual hierarchy change. Audits current UI and ranks elements by user importance. Read-only.
-model: opencode-go/mimo-v2.5
 permission:
   "*": deny
   doom_loop: ask

@@ -1,7 +1,6 @@
 ---
 description: Use after implementation or before completion to run tests, linters, builds, and smoke checks. Reports exact failures and does not edit files.
 mode: subagent
-model: opencode-go/deepseek-v4-flash
 permission:
   "*": deny
   read: allow

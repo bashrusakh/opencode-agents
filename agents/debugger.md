@@ -1,7 +1,6 @@
 ---
 description: Use for failing tests, tracebacks, broken builds, runtime errors, and reproducible bugs. Finds root cause and applies minimal right-level fixes.
 mode: subagent
-model: opencode-go/deepseek-v4-pro
 permission:
   "*": deny
   doom_loop: ask

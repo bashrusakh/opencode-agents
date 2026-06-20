@@ -1,7 +1,6 @@
 ---
 mode: subagent
 description: Use for one-shot coding workflows such as bugfixes, PR follow-up work, reviewing an existing PR and making requested fixes, issue triage, and release-prep checks. Orchestrates specialized agents and returns one consolidated report.
-model: opencode-go/glm-5.2
 permission:
   "*": deny
   doom_loop: ask

@@ -1,7 +1,6 @@
 ---
 mode: subagent
 description: General fallback subagent for bounded research or multi-step analysis when no more specific subagent fits. Must not replace explore, tester, reviewer, debugger, devops, or UI agents when those clearly apply.
-model: opencode-go/qwen3.7-plus
 permission:
   "*": deny
   doom_loop: ask

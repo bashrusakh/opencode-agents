@@ -1,7 +1,6 @@
 ---
 mode: subagent
 description: Use this first for codebase discovery, file search, architecture tracing, and questions like “where is this implemented?” or “how does this work?”. Read-only; returns facts and paths.
-model: opencode-go/mimo-v2.5
 permission:
   "*": deny
   doom_loop: ask

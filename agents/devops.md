@@ -1,7 +1,6 @@
 ---
 description: Use for Docker, systemd, CI, deployment scripts, env setup, logs, services, permissions, and runtime troubleshooting.
 mode: subagent
-model: opencode-go/mimo-v2.5-pro
 permission:
   "*": deny
   read: allow

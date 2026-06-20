@@ -1,7 +1,6 @@
 ---
 mode: subagent
 description: Use for any UI/web options, design audit, redesign planning, layout optimization, theme work, settings-screen redesign, forms, dashboards, visual hierarchy, or implementation workflow. For options/variants/current-design review, produces options and stops without editing. For implementation requests, orchestrates audit, plan, implementation, accessibility review, and verification automatically.
-model: opencode-go/glm-5.2
 permission:
   "*": deny
   doom_loop: ask
