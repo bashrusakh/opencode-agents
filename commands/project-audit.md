@@ -16,6 +16,10 @@ For any user-facing UI/config/API/workflow behavior change, do not implement onl
 
 Do not derive behavior directly from schema/storage/API type. Preserve the existing affordance class unless the normalized request explicitly asks for a raw/manual/editor workflow.
 
+## Persistent Planning Mode
+
+For long-running, multi-session, or multi-agent work, use `plans/<plan>/` as durable state. Read existing plan artifacts before continuing. Do not create arbitrary markdown reports. Use compact digests and update canonical plan/docs artifacts when the command is responsible for planning state.
+
 Run a full project audit for: $ARGUMENTS
 
 Do not edit files, apply patches, commit, push, open PRs, or open issues. Orchestrate specialist subagents for audit areas that need an independent pass, continue automatically through safe read-only/review/verification stages, and return one consolidated markdown report with green/yellow/red stage status.
@@ -29,3 +33,5 @@ Focus on:
 - auth/permission/data-safety risks
 - test gaps and verification results
 - practical optimization opportunities
+
+For audits whose normalized scope is broad, multi-agent, multi-session, or likely to exceed one reliable session, use Persistent Planning Mode. Create or resume `plans/<plan>/` before deep inspection. Do not route by the words alone; route by scope, coordination need, and resumability risk.

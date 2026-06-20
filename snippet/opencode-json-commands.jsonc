@@ -1,3 +1,4 @@
+// OpenCode command snippet generated from v28.3 plus v28.4 persistent planning commands.
 {
   "$schema": "https://opencode.ai/config.json",
   "command": {
@@ -30,6 +31,60 @@
       "agent": "project-auditor",
       "subtask": true,
       "template": "Run a full project audit for: $ARGUMENTS\n\nDo not edit files, apply patches, commit, push, open PRs, or open issues. Orchestrate specialist subagents for audit areas that need an independent pass and return one consolidated markdown report with green/yellow/red stage status."
+    },
+    "create-plan": {
+      "description": "Create persistent plan artifacts in plans/<plan>/.",
+      "agent": "plan",
+      "subtask": true,
+      "template": "Create a persistent plan for: $ARGUMENTS\n\nUse docs/PERSISTENT_PLANNING_POLICY.md. Create plans/<plan>/plan.md, phase docs, and todo.md. Do not edit source code. Return a compact digest."
+    },
+    "resume-plan": {
+      "description": "Resume an existing persistent plan from canonical artifacts.",
+      "agent": "plan",
+      "subtask": true,
+      "template": "Resume this persistent plan: $ARGUMENTS\n\nRead plan.md, todo.md, active phase, implementation plan, reviews, latest handover, and project rules. Report current state and next safe action."
+    },
+    "update-plan": {
+      "description": "Update plan status, todo, changelog, and next action.",
+      "agent": "plan",
+      "subtask": true,
+      "template": "Update the persistent plan for: $ARGUMENTS\n\nUpdate todo/status/changelog/phase state in canonical plans/<plan>/ artifacts. Do not create arbitrary reports."
+    },
+    "generate-handover": {
+      "description": "Generate a session handover for plan continuity.",
+      "agent": "plan",
+      "subtask": true,
+      "template": "Generate a handover for: $ARGUMENTS\n\nWrite the handover into plans/<plan>/handovers/ or docs/handovers/ as appropriate. Return compact digest and path."
+    },
+    "author-and-verify-implementation-plan": {
+      "description": "Author and verify grounded implementation plans for plan phases.",
+      "agent": "plan",
+      "subtask": true,
+      "template": "Author and verify implementation plan(s) for: $ARGUMENTS\n\nRead plan/phase/todo and actual code. Write plans/<plan>/implementation/phase-N-impl.md. Verify referenced paths/symbols."
+    },
+    "review-plan": {
+      "description": "Review persistent plan scope, DoD, risks, and phase boundaries.",
+      "agent": "reviewer",
+      "subtask": true,
+      "template": "Review this persistent plan: $ARGUMENTS\n\nCheck scope, requirements, DoD, phases, risks, testing strategy. Do not edit source code."
+    },
+    "review-implementation-plan": {
+      "description": "Review a phase implementation plan for feasibility and grounding.",
+      "agent": "reviewer",
+      "subtask": true,
+      "template": "Review this implementation plan: $ARGUMENTS\n\nCheck grounding, feasibility, scope, tests, risks, behavioral contract, right-level fix, and gated actions."
+    },
+    "execute-work-package": {
+      "description": "Execute an approved work package using Blueprint -> Gate -> Execute -> Digest.",
+      "agent": "code-workflow-orchestrator",
+      "subtask": true,
+      "template": "Execute this persistent-plan work package: $ARGUMENTS\n\nUse Blueprint -> Gate -> Execute -> Digest. Do not perform git/publication actions unless the root gated-action rule allows the exact action."
+    },
+    "review-implementation": {
+      "description": "Review completed implementation against plan acceptance criteria.",
+      "agent": "reviewer",
+      "subtask": true,
+      "template": "Review the completed implementation for: $ARGUMENTS\n\nRead plan, phase, implementation plan, todo, and current diff. Review correctness, tests, security, behavioral contract, and acceptance criteria."
     },
     "verify": {
       "description": "Run relevant tests/checks without editing files.",

@@ -63,6 +63,31 @@ Check:
 Do not map schema/storage/API types directly to UI or workflow behavior. Preserve the existing affordance class unless the normalized request explicitly asks for a raw/manual/editor workflow.
 
 
+### 2.3 Persistent Planning Mode
+
+Use Persistent Planning Mode when semantic normalization shows the task is long-running, broad-scope, multi-session, multi-agent, or likely to exceed one reliable agent/session. Do not activate it by matching magic phrases alone. User wording such as full-project inspection, broad bug hunt, project-wide audit, large refactor, or large redesign is only an example signal; the route is decided by scope, duration, coordination needs, durable-state needs, and risk of context loss.
+
+In this mode, canonical files are the memory. Chat history, private reasoning, and arbitrary agent markdown reports are not durable state. Use the target-project file-based interface:
+
+```text
+plans/<plan>/
+  plan.md
+  phases/phase-N.md
+  implementation/phase-N-impl.md
+  reviews/*.md
+  todo.md
+  handovers/session-YYYY-MM-DD.md
+```
+
+Optional project documentation lives in `docs/`. Do not invent parallel workflow directories or random report filenames. Use the canonical `plans/<plan>/` artifacts so another agent can resume without starting from zero.
+
+Before resuming, read `plan.md`, `todo.md`, the active phase, relevant implementation plan, relevant reviews, latest handover, and project-local rules. Then state current phase, current todo item, blockers, and next safe action.
+
+For broad implementation work, use `Blueprint -> Gate -> Execute -> Digest`. The blueprint names the steps, files, checks, risks, and stop points. The gate happens before broad/gated source edits. Execution performs only the approved work package. Digest is compact; durable state must be reflected in canonical plan artifacts.
+
+Subagents should return compact digests and avoid dumping large raw exploration into chat. The primary/orchestrator owns user interaction, plan state, and git/publication gates.
+
+
 - Do not guess.
 - Prefer the smallest correct change.
 - Keep diffs focused on the requested task.
@@ -118,7 +143,7 @@ Workflow selection:
 - Broken, incorrect, failing, strange, or wrong behavior -> investigation by default unless the normalized deliverable is changed code/config/UI; then use bugfix workflow.
 - Existing PR, review comment, requested correction, failed PR check, CI failure, or follow-up work -> PR follow-up workflow on the same PR branch by default.
 - Issue/ticket/report outcome -> verify facts first, search existing issues when issue access is available, draft/open issue only when the normalized action level includes issue creation, and do not fix code unless the normalized deliverable is changed code/config/UI.
-- Whole-project review, architecture health, dead-code sweep, logic audit, duplicated-fix search, or broad bug hunt -> project audit workflow.
+- Whole-project review, architecture health, dead-code sweep, logic audit, duplicated-fix search, or broad bug hunt -> project audit workflow; use Persistent Planning Mode when the work is long-running, multi-agent, or likely to exceed one session.
 - Docker, systemd, CI, deployment, runtime services, environment, logs, permissions, or production config -> DevOps/runtime workflow.
 - Release notes, tags, changelog, release body, or release verification -> release-prep workflow.
 - Tests-only or documentation-only implementation -> focused implementation workflow: inspect existing patterns, make the smallest scoped test/doc change with an implementation-capable agent, verify, and report.
@@ -267,7 +292,7 @@ Review comments, failed PR checks, requested corrections, CI failures, and follo
 
 ### 6.7 Project audit workflow
 
-For broad project reviews, logic audits, dead-code sweeps, architecture-health checks, duplicated-fix searches, optimization reviews, or whole-project bug hunts, use `@project-auditor`.
+For broad project reviews, logic audits, dead-code sweeps, architecture-health checks, duplicated-fix searches, optimization reviews, or whole-project bug hunts, use `@project-auditor`. If the audit is long-running, multi-agent, or full-project scope, first create or resume a `plans/<plan>/` workflow and use it as durable state.
 
 The project auditor is read-only by default. It should orchestrate `@explore`, `@tester`, `@reviewer`, `@fix-level-reviewer`, `@ui-ux-auditor`, `@accessibility-reviewer`, and `@devops` for audit areas that need an independent specialist pass. It should return confirmed findings, hypotheses, dead/stale code, wrong-level fixes, test gaps, practical optimizations, uncovered areas, and prioritized next actions.
 
@@ -357,6 +382,7 @@ For any orchestrated workflow, return one concise markdown report with green/yel
 | Code path found | ✅/⚠️/❌/skipped | ... |
 | Fix level checked | ✅/⚠️/❌/skipped | ... |
 | Behavioral contract | ✅/⚠️/❌/skipped | user-facing contract preserved / pattern reused / raw internal values avoided |
+| Persistent planning | ✅/⚠️/❌/skipped | plan path / current phase / todo / handover for long-running work |
 | Implementation | ✅/⚠️/❌/skipped | ... |
 | Verification | ✅/⚠️/❌/blocked | exact commands/results |
 | Review | ✅/⚠️/❌/skipped | reviewer/fix-level/a11y summary |

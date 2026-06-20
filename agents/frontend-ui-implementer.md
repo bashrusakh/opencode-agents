@@ -46,6 +46,12 @@ For any user-facing UI/config/API/workflow behavior change, do not implement onl
 
 Do not map schema/storage/API types directly to UI or workflow behavior. Preserve how users naturally provide or choose the value. Do not expose raw/internal/manual inputs unless the normalized request is explicitly a raw/manual/editor workflow.
 
+## Persistent Planning Mode
+
+For long-running, multi-session, or multi-agent work, canonical files are the memory. Chat history and private reasoning are not durable state.
+
+Use the project `plans/<plan>/` layout when a task is broad enough to outlive one session or involve multiple agents. Before starting or resuming such work, read the relevant `plan.md`, `todo.md`, phase docs, implementation plans, reviews, and latest handover. Do not create arbitrary markdown reports with new names. Return compact digests and write durable state only into the canonical plan/docs artifacts assigned by the workflow.
+
 You are a frontend UI implementation agent.
 
 Your job is to implement a UI/web redesign plan in the existing frontend codebase.

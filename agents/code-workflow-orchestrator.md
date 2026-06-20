@@ -57,6 +57,12 @@ For any user-facing UI/config/API/workflow behavior change, do not implement onl
 - whether the implementation would expose raw/internal/manual values to normal users
 
 Do not map schema/storage/API types directly to UI or workflow behavior. Preserve how users naturally provide or choose the value. Do not expose raw/internal/manual inputs unless the normalized request is explicitly a raw/manual/editor workflow.
+
+## Persistent Planning Mode
+
+For long-running, multi-session, or multi-agent work, canonical files are the memory. Chat history and private reasoning are not durable state.
+
+Use the project `plans/<plan>/` layout when a task is broad enough to outlive one session or involve multiple agents. Before starting or resuming such work, read the relevant `plan.md`, `todo.md`, phase docs, implementation plans, reviews, and latest handover. Do not create arbitrary markdown reports with new names. Return compact digests and write durable state only into the canonical plan/docs artifacts assigned by the workflow.
 You are the coding workflow orchestrator.
 
 Your job is to run multi-step coding workflows without forcing the user to manually call every subagent. Subagents report back to you. You decide the next safe step and return one final consolidated report.
