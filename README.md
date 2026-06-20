@@ -1,114 +1,84 @@
-# OpenCode final config v27 — model-agnostic variant
+# OpenCode final config v28.3 — model-agnostic + behavioral contract
 
-Agents, commands, root `AGENTS.md`, `snippet/`, docs, and UI MCP/UUPM setup notes for OpenCode. This package does not ship a duplicate `global/AGENTS.md`; the root `AGENTS.md` is the single shipped rules file.
+This package is based on `opencode_final_config_v27_model_agnostic` and keeps the v27 file layout intact.
 
-## Important
+Important: OpenCode uses `AGENTS.md` as the rules file. `agent.md` is not the primary OpenCode rules file and may be ignored.
 
-OpenCode uses `AGENTS.md` as the rules file. `agent.md` is not the primary OpenCode rules file and may be ignored by OpenCode/OpenChamber tooling.
+## What changed from v27 model-agnostic
 
-## Model policy
+- Agents remain model-agnostic: no `model:` overrides in `agents/*.md`.
+- Model routing remains removed. Workflow routing stays because it chooses roles/agents, not providers/models.
+- `Behavioral Contract Check` was added to `AGENTS.md`, `agents/*.md`, `commands/*.md`, and `docs/UI_COMPONENT_POLICY.md`.
+- `snippet/` remains singular for OpenChamber / opencode-snippets compatibility.
+- No v27 files were intentionally removed.
 
-This variant is provider-neutral:
+## Behavioral Contract Check
 
-```text
-agents/*.md contain no model: frontmatter
-there is no fixed provider-specific role-to-model table
-agents use the active OpenCode model/provider from the current session/config/UI
-workflow routing still selects the right role/agent, but it does not select a model provider
-```
+Before implementing a user-facing UI, config, API, or workflow change, the agent must summarize the behavioral contract:
 
-Use this while testing different providers. Change the active model/provider in OpenCode/OpenChamber config or UI; do not edit every agent file.
+- what action the user naturally performs
+- who or what provides the value
+- whether the value is user-authored, system-derived, provider/model-derived, file-derived, state-derived, or selected from known capabilities
+- what existing project pattern handles the same kind of action
+- whether raw/internal/manual values would be exposed to normal users
 
-## Rule model
+Do not map schema/storage/API types directly to UI or workflow behavior. Preserve how users naturally provide or choose the value. Do not expose raw/internal/manual inputs unless the normalized request explicitly asks for a raw/manual/editor workflow.
 
-`AGENTS.md` is structured as:
-
-```text
-0. Philosophy and interpretation principles
-1. Source of truth
-2. Core behavior
-3. Request normalization
-4. Approval gates
-5. Delegation and orchestration
-6. Workflow routing
-7. Implementation rules
-8. Git, commit, PR, issue, and release discipline
-9. Final reports
-```
-
-Core logic:
+## Directory layout
 
 ```text
-normalization selects the workflow route
-workflow routing selects the role/subagent/command, not the model provider
-confidence decides how far the agent may proceed
-gated actions require explicit user intent or explicit approval
-right-level correctness wins over minimal diff size when they conflict
+AGENTS.md
+agents/
+commands/
+docs/
+install/
+snippet/
 ```
-
-## UI MCP stack
-
-```text
-1. Existing project components/tokens/styles
-2. Official shadcn MCP + standard shadcn registry
-3. Official shadcn MCP + GitHub/public shadcn-compatible registries
-4. Jpisnice shadcn-ui-mcp-server + GitHub token as secondary/reference source
-5. Manual implementation
-```
-
-Notes:
-
-- Do not assume MCP availability from instructions alone; check visible tools/config.
-- If a source level is unavailable, skip to the next level.
-- Secret-backed sources are gated actions. Do not hardcode tokens.
-- Local/private/authenticated non-GitHub registry setup is a gated action.
-- UUPM/UI UX Pro Max is design intelligence only, not a component MCP source.
 
 ## Install globally
 
 ```bash
-cd opencode_final_config_v27_model_agnostic
 ./install/install-global.sh
 ```
 
-This installs the root `AGENTS.md` into `~/.config/opencode/AGENTS.md` and copies agents, commands, docs, and snippet files into OpenCode config.
+Installs to:
+
+```text
+~/.config/opencode/AGENTS.md
+~/.config/opencode/agents/
+~/.config/opencode/commands/
+~/.config/opencode/docs/
+~/.config/opencode/snippet/
+```
 
 ## Install into a project
 
+Run from the repository root:
+
 ```bash
-cd your-project
-/path/to/opencode_final_config_v27_model_agnostic/install/install-project.sh
+/path/to/opencode_model_agnostic_contract_v28_3/install/install-project.sh
 ```
 
-This installs:
+Installs to:
 
 ```text
-AGENTS.md
-.opencode/agents/*.md
-.opencode/commands/*.md
-.opencode/docs/*.md
-.opencode/snippet/*
+./AGENTS.md
+./.opencode/agents/
+./.opencode/commands/
+./.opencode/docs/
+./.opencode/snippet/
 ```
 
-## Important commands
+## Validation checklist used for this archive
 
-```text
-/ui-redesign      one-shot UI redesign workflow
-/ui-options       UI options without implementation
-/ui-mcp-setup     configure UI MCP stack
-/uupm-setup       install/configure UUPM guidance
-/bugfix           investigate, fix, verify, report
-/pr-followup      work on existing PR branch, not a new PR
-/issue-from-bug   verify bug and draft/open issue
-/release-prep     release notes/checks from real history only
-/project-audit    full read-only project audit
-```
-
-## Changes from v27 baseline
-
-- Removed all provider-specific `model:` frontmatter from `agents/*.md`.
-- Removed the fixed provider-specific role-to-model table and the old routing snippet.
-- Added compact model policy to `AGENTS.md` and README.
-- Renamed `snippet/` to `snippet/` for OpenChamber/opencode-snippet compatibility.
-- Install scripts now copy `snippet/` into `~/.config/opencode/snippet/` or `.opencode/snippet/`.
-- Removed install message that asked to verify fixed model IDs.
+- file manifest compared against v27 model-agnostic base
+- no missing files
+- no unexpected added files
+- YAML frontmatter for agents and commands parsed
+- snippet JSONC parsed
+- install scripts passed `bash -n`
+- no `model:` in `agents/*.md`
+- no provider-specific OpenCode Go model IDs
+- no provider-specific routing material
+- no plural snippet directory
+- zip integrity passed

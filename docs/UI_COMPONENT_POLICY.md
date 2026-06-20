@@ -10,6 +10,19 @@ Agents should read the first existing detailed UI policy file from:
 
 The install scripts copy this file to the matching OpenCode docs directory for global or project-local installs.
 
+
+## 0. Behavioral contract check
+
+For UI/web work, first preserve the user-facing contract, not the raw schema shape. Before choosing a component, control, MCP source, or implementation path, identify:
+
+- what the user is trying to do
+- how the user naturally provides or chooses the value
+- where valid values come from: user input, app state, provider/model capabilities, files, existing config, or another source
+- which existing project pattern already handles this kind of interaction
+- whether the proposed UI would expose raw/internal/manual values that normal users should not need to know
+
+Do not turn guided, capability-derived, state-derived, or project-patterned interactions into raw/manual/editor workflows unless the normalized request explicitly asks for that.
+
 ## 1. Source order
 
 For UI/web work, use this source order:

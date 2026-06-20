@@ -48,6 +48,21 @@ Use project docs, nearby code, tests, existing issues, repository history, and a
 - If the active provider/model is unavailable, stop and report that the current OpenCode model/provider is unavailable. Do not rewrite agent files to another provider.
 - Provider-specific model profiles may be created outside this package, but the reusable agents remain provider-neutral.
 
+### 2.2 Behavioral contract check
+
+Before implementing any user-facing UI, config, API, or workflow change, summarize the behavioral contract. A technically valid schema/storage write is not sufficient if it changes the normal user action into raw/manual/internal input.
+
+Check:
+
+- what action the user naturally performs: type, choose, confirm, drag, upload, generate, import, approve, configure, or another project-specific action
+- who or what provides the value: user-authored, system-derived, provider/model-derived, file-derived, state-derived, or selected from known capabilities
+- what values are valid and where the valid-value domain comes from
+- what existing project pattern represents the same kind of action
+- whether the proposed implementation exposes raw/internal/manual values to normal users
+
+Do not map schema/storage/API types directly to UI or workflow behavior. Preserve the existing affordance class unless the normalized request explicitly asks for a raw/manual/editor workflow.
+
+
 - Do not guess.
 - Prefer the smallest correct change.
 - Keep diffs focused on the requested task.
@@ -341,6 +356,7 @@ For any orchestrated workflow, return one concise markdown report with green/yel
 | Scope understood | ✅/⚠️/❌ | include normalized outcome/target/action/confidence for orchestrated workflows |
 | Code path found | ✅/⚠️/❌/skipped | ... |
 | Fix level checked | ✅/⚠️/❌/skipped | ... |
+| Behavioral contract | ✅/⚠️/❌/skipped | user-facing contract preserved / pattern reused / raw internal values avoided |
 | Implementation | ✅/⚠️/❌/skipped | ... |
 | Verification | ✅/⚠️/❌/blocked | exact commands/results |
 | Review | ✅/⚠️/❌/skipped | reviewer/fix-level/a11y summary |
