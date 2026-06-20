@@ -1,31 +1,32 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.5
+# OpenCode Agent Pack v28.6
 
-### Model-agnostic agents · Behavioral-contract fixes · Persistent planning for long AI workflows
+### Model-agnostic agents · Behavioral contracts · Persistent planning · Readable public output
 
 [![OpenCode](https://img.shields.io/badge/OpenCode-Agents-111827?style=for-the-badge)](#)
 [![Model Agnostic](https://img.shields.io/badge/Model--Agnostic-Yes-2563eb?style=for-the-badge)](#)
-[![Persistent Planning](https://img.shields.io/badge/Persistent--Planning-v28.5-16a34a?style=for-the-badge)](#)
+[![Persistent Planning](https://img.shields.io/badge/Persistent--Planning-On-16a34a?style=for-the-badge)](#)
+[![Readable Output](https://img.shields.io/badge/Readable--Markdown-On-7c3aed?style=for-the-badge)](#)
 [![Workflow Safety](https://img.shields.io/badge/Gated--Actions-On-f97316?style=for-the-badge)](#)
 
 </div>
 
 ---
 
-## What is this?
+## ✨ What is this?
 
-This is an opinionated **OpenCode / OpenChamber agent configuration pack** for real project work: bugfixing, UI work, PR follow-up, release prep, full-project audits, long-running investigations, and multi-agent workflows.
+This is an opinionated **OpenCode / OpenChamber agent configuration pack** for real project work: bugfixing, UI work, PR follow-up, release prep, project audits, long investigations, and multi-agent workflows.
 
-It is built around one rule:
+It is built around four rules:
 
-> **The agent should understand the requested outcome and preserve project/user contracts — not blindly match phrases, schema fields, or provider-specific models.**
+> **Understand the request by meaning, preserve user/project contracts, keep long work in files, and write human-readable output.**
 
-Version **v28.5** is based on `opencode_model_agnostic_persistent_v28_4.zip` and adds the final wording pass for semantic routing philosophy plus a GitHub-ready README.
+Version **v28.6** is based on `opencode_model_agnostic_persistent_v28_5.zip` and adds the final output-formatting layer for user replies, GitHub/GitLab comments, issues, PRs, releases, handovers, docs, OpenCode CLI, Telegram, Hermes, and similar relays.
 
 ---
 
-## Highlights
+## 🚀 Highlights
 
 | Area | What this pack enforces |
 |---|---|
@@ -35,56 +36,32 @@ Version **v28.5** is based on `opencode_model_agnostic_persistent_v28_4.zip` and
 | ✅ Right-level fixes | Do not patch only the first call site when the bug belongs in a shared helper/service/composable/API wrapper. |
 | ✅ Gated actions | Commits, PRs, releases, deps, secrets, destructive commands, runtime config, and broad product/architecture choices require explicit approval. |
 | ✅ Persistent planning | Long-running/multi-agent work uses durable `plans/<plan>/` artifacts so another agent can resume without starting over. |
-| ✅ UI/MCP/UUPM policy | External UI sources and component registries are constrained by project patterns and gates. |
-| ✅ GitHub/release discipline | No placeholder releases, no invented release notes, no hidden failing checks. |
+| ✅ Readable public output | User replies, PR comments, issues, releases, changelogs, reviews, and handovers must be clean, skimmable, target-aware Markdown/plain text. |
+| ✅ UI/MCP/UUPM policy | External UI sources and component registries are constrained by project patterns and approval gates. |
 
 ---
 
-## Why v28.5 exists
-
-Earlier agent packs handled short tasks well, but long workflows had predictable failure modes:
-
-- 🔌 connection drops and the agent forgets what it did;
-- 🧠 a new model starts from zero;
-- 🗂️ multiple agents create random Markdown reports with different names;
-- 🧩 agents duplicate the same bugfix because they cannot see each other's state;
-- 🧱 a technically valid fix changes the user-facing behavior.
-
-v28.5 fixes this by combining:
-
-1. **semantic request normalization**;
-2. **behavioral contract preservation**;
-3. **file-based persistent planning**;
-4. **compact subagent digests instead of chat-only memory**.
-
----
-
-## Core philosophy
+## 🧠 Core philosophy
 
 ### Route by meaning, not words
 
-Persistent Planning Mode is activated when the normalized task is:
+Persistent Planning Mode is activated when the **normalized task** is long-running, broad-scope, multi-agent, multi-session, likely to lose useful context, or likely to require phased execution, reviews, handoffs, or resumable state.
 
-- long-running;
-- broad-scope;
-- multi-agent;
-- multi-session;
-- likely to lose useful context if kept only in chat;
-- likely to require phased execution, reviews, handoffs, or resumable state.
-
-Phrases like `full-project inspection`, `broad bug hunt`, `large refactor`, or `project-wide audit` are **examples**, not trigger phrases.
+Phrases like `full-project inspection`, `broad bug hunt`, `large refactor`, or `project-wide audit` are **examples/signals**, not trigger phrases.
 
 ### Preserve behavioral contracts
 
 A schema type does not define the user experience.
 
-For example, a config value may be a string internally, but the user action might be choosing from provider/model capabilities, not typing raw internal strings. The agent must first identify:
+A value can be stored as a string while the user action is actually choosing from provider/model capabilities, selecting from project state, importing a file, approving a generated result, or confirming a system-derived value.
+
+Before changing user-facing behavior, agents must identify:
 
 - what action the user naturally performs;
 - who or what provides the value;
-- what values are valid;
+- what values are valid and where that domain comes from;
 - which existing project pattern handles the same kind of action;
-- whether a naive implementation exposes raw/internal/manual values.
+- whether the naive fix exposes raw/internal/manual values.
 
 ### Files are memory for long work
 
@@ -92,11 +69,28 @@ For long-running tasks:
 
 > **Chat history is not memory. Private reasoning is not memory. Canonical files are memory.**
 
-Use `plans/<plan>/` so any model can resume work from durable artifacts.
+Use `plans/<plan>/` so another model/provider/session can resume from durable artifacts.
+
+### Public output should be readable
+
+A correct answer can still be bad if it is a dense paragraph dumped into a PR comment, issue, release, Telegram message, or OpenCode CLI output.
+
+Default to **target-aware portable Markdown**:
+
+- short summary first;
+- headings when there is context/reason/validation/conclusion;
+- bullets for multiple reasons, risks, files, or checks;
+- fenced code blocks for commands, logs, paths, config, or exact proposed text;
+- compact tables only when the target renders them well;
+- clear conclusion/next action when closing, deferring, superseding, or approving work.
+
+For **OpenCode CLI, Telegram, Hermes, terminals, and chat relays**, prefer compact Markdown/plain text and avoid raw HTML, oversized tables, deeply nested lists, and GitHub-only formatting.
+
+For **GitHub/GitLab**, use clean Markdown with sections and bullets.
 
 ---
 
-## Directory layout
+## 📁 Directory layout
 
 ```text
 AGENTS.md
@@ -134,11 +128,9 @@ docs/
 
 ---
 
-## Workflow modes
+## 🧭 Workflow modes
 
 ### Small / focused work
-
-Use the normal fast path:
 
 ```text
 normalize -> inspect -> implement if allowed -> verify -> report
@@ -146,15 +138,11 @@ normalize -> inspect -> implement if allowed -> verify -> report
 
 ### User-facing work
 
-Add the behavioral layer:
-
 ```text
 normalize -> inspect -> Behavioral Contract Check -> implement -> verify -> review/report
 ```
 
 ### Long-running work
-
-Use persistent planning:
 
 ```text
 Discuss
@@ -176,7 +164,7 @@ Blueprint -> Gate -> Execute -> Digest
 
 ---
 
-## Commands included
+## 🧩 Commands included
 
 | Command | Purpose |
 |---|---|
@@ -197,7 +185,36 @@ Blueprint -> Gate -> Execute -> Digest
 
 ---
 
-## Install
+## 📝 Output formatting rules
+
+Use readable Markdown/plain text for anything a human will see.
+
+| Target | Preferred format | Avoid |
+|---|---|---|
+| GitHub/GitLab PRs/issues/releases | Headings, bullets, code fences, compact tables when useful | Wall-of-text comments, vague conclusions |
+| OpenCode CLI / terminals | Compact Markdown/plain text, short sections, code fences | Raw HTML, wide tables, deeply nested lists |
+| Telegram / Hermes / chat relays | Short summary, bullets, simple Markdown/plain text | GitHub-only formatting, oversized tables |
+| Markdown docs/handovers | Clear headings, stable sections, action-oriented bullets | Random ad-hoc report names and unstructured notes |
+
+Minimum shape for public comments:
+
+```md
+Short summary.
+
+### Why / Context
+- ...
+- ...
+
+### Validation / Evidence
+- ...
+
+### Conclusion / Next action
+...
+```
+
+---
+
+## ⚙️ Install
 
 ### Global install
 
@@ -220,7 +237,7 @@ Installs to:
 Run from the repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_5/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_6/install/install-project.sh
 ```
 
 Installs to:
@@ -235,23 +252,23 @@ Installs to:
 
 ---
 
-## Safety checklist
+## 🛡️ Validation checklist
 
 This pack is expected to validate with:
 
-- ✅ no missing files from the v28.4 base;
-- ✅ only intentional README/philosophy wording changes;
+- ✅ no missing files from the v28.5 base;
 - ✅ YAML frontmatter parses for all agents and commands;
 - ✅ JSONC snippets parse;
 - ✅ install scripts pass `bash -n`;
 - ✅ no provider-specific `model:` overrides in agents;
 - ✅ no stale provider-specific model IDs;
 - ✅ no stale model route references;
-- ✅ no plural snippet-directory path references.
+- ✅ no plural snippet-directory path references;
+- ✅ root rules include semantic routing, behavioral contracts, persistent planning, and readable public output.
 
 ---
 
-## Recommended use
+## ✅ Recommended use
 
 Use this pack when you want agents that can:
 
@@ -259,13 +276,14 @@ Use this pack when you want agents that can:
 - hand off work between models/providers;
 - avoid duplicate fixes across multiple agents;
 - preserve UI/product behavior instead of only satisfying schema plumbing;
+- format GitHub/Telegram/Hermes/OpenCode CLI output cleanly;
 - keep GitHub/PR/release work safe and evidence-based.
 
 ---
 
 <div align="center">
 
-**OpenCode Agent Pack v28.5**  
-Semantic routing · Durable plans · Contract-preserving fixes
+**OpenCode Agent Pack v28.6**  
+Semantic routing · Durable plans · Contract-preserving fixes · Readable output
 
 </div>

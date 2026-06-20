@@ -368,11 +368,33 @@ Before pushing: confirm remote and branch. Never force-push unless the gated-act
 
 Before any PR: ensure branch base is correct, diff is reviewable, title follows `CONTRIBUTING.md`, PR body includes summary/context/validation and UI screenshots or manual verification for UI changes. Do not mark ready if checks are unknown or failing. Ask before using open-code-review skill or calling `@reviewer` unless the normalized deliverable includes review.
 
+Before publishing PR comments, review comments, issue bodies, release notes, changelog entries, or other public Markdown, apply the user-facing output formatting rule: short summary, readable sections, bullets for multiple points, code fences for exact text/commands/logs, and a clear conclusion or next action.
+
 Before opening an issue: verify facts, search existing issues if issue access exists, keep it actionable and specific, and separate confirmed facts from hypotheses.
 
 Before marking a release done: open/read the created GitHub release, verify title/tag/body/assets, compare with previous release quality, and fix missing/thin release body before reporting completion.
 
-## 9. Final reports
+## 9. User-facing output and public writing quality
+
+For any text shown to the user or published outside the agent runtime, optimize for readability, not just correctness. This applies to final answers, PR comments, PR bodies, issue bodies, release notes, changelog entries, review comments, handovers, plan artifacts, and Markdown docs.
+
+Default to target-aware portable Markdown unless the destination requires another format. Use the richest safe subset the target reliably supports:
+
+- GitHub/GitLab PRs, issues, releases, and reviews: structured Markdown with short headings, bullets, code fences, links, and tables only when they improve comparison/status.
+- OpenCode CLI, Hermes, Telegram, terminals, and chat relays: compact Markdown/plain text with short headings, bullets, and fenced code blocks; avoid raw HTML, oversized tables, deeply nested lists, and GitHub-only formatting when the target may not render it.
+- Plain-text channels: keep the same structure using short labels, bullets, and code blocks when possible.
+
+Do not send dense wall-of-text paragraphs when the content contains multiple reasons, decisions, risks, steps, validation results, or evidence. Prefer:
+
+- one short summary first
+- clear sections for context/reason/validation/conclusion/next action when useful
+- bullets for multiple points
+- fenced code blocks for commands, logs, file paths, config snippets, and exact proposed text
+- explicit conclusion when closing, rejecting, deferring, superseding, or approving work
+
+Public comments should be concise, factual, skimmable, and easy to understand without rereading the whole thread.
+
+## 10. Final reports
 
 For any orchestrated workflow, return one concise markdown report with green/yellow/red status markers instead of separate stage chatter.
 
