@@ -1,8 +1,8 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.6
+# OpenCode Agent Pack v28.7
 
-### Model-agnostic agents · Behavioral contracts · Persistent planning · Readable public output
+### Model-agnostic agents · Startup checkpoints · Behavioral contracts · Persistent planning · Readable public output
 
 [![OpenCode](https://img.shields.io/badge/OpenCode-Agents-111827?style=for-the-badge)](#)
 [![Model Agnostic](https://img.shields.io/badge/Model--Agnostic-Yes-2563eb?style=for-the-badge)](#)
@@ -22,7 +22,7 @@ It is built around four rules:
 
 > **Understand the request by meaning, preserve user/project contracts, keep long work in files, and write human-readable output.**
 
-Version **v28.6** is based on `opencode_model_agnostic_persistent_v28_5.zip` and adds the final output-formatting layer for user replies, GitHub/GitLab comments, issues, PRs, releases, handovers, docs, OpenCode CLI, Telegram, Hermes, and similar relays.
+Version **v28.7** is based on `opencode_model_agnostic_persistent_v28_6.zip` and adds a mandatory **startup checkpoint before the first tool call** for multi-step, repository, issue/PR/release, external-URL, codebase, mutation-capable, publication-capable, or scope-expanding workflows.
 
 ---
 
@@ -32,6 +32,7 @@ Version **v28.6** is based on `opencode_model_agnostic_persistent_v28_5.zip` and
 |---|---|
 | ✅ Model agnostic | Agents do not contain provider-specific `model:` overrides. Use the active OpenCode/OpenChamber model. |
 | ✅ Semantic routing | Route by normalized intent, scope, target, action level, confidence, and evidence — not magic trigger phrases. |
+| ✅ Startup checkpoint | Before tools, summarize route/mode, outcome, target, action level, confidence, gated yes/no, and scope boundary. |
 | ✅ Behavioral Contract Check | Before user-facing changes, preserve the natural user action/value source instead of exposing raw internals. |
 | ✅ Right-level fixes | Do not patch only the first call site when the bug belongs in a shared helper/service/composable/API wrapper. |
 | ✅ Gated actions | Commits, PRs, releases, deps, secrets, destructive commands, runtime config, and broad product/architecture choices require explicit approval. |
@@ -40,6 +41,24 @@ Version **v28.6** is based on `opencode_model_agnostic_persistent_v28_5.zip` and
 | ✅ UI/MCP/UUPM policy | External UI sources and component registries are constrained by project patterns and approval gates. |
 
 ---
+
+## 🧭 Startup checkpoint before tools
+
+Every multi-step, repository, issue/PR/release, external-URL, codebase, mutation-capable, publication-capable, or scope-expanding workflow must start with a compact visible checkpoint **before the first tool call**:
+
+```text
+Startup completed. Route: <route>. Mode: <read-only/options/edit-capable/gated>.
+
+Normalization:
+- outcome: ...
+- target: ...
+- action level: ...
+- confidence: ...
+- gated: yes/no — why
+- scope boundary: ...
+```
+
+This is required even for read-only work. If the work is read-only, the agent says `gated: no — read-only`. The checkpoint prevents silent scope drift, broad discovery, and accidental mutation before the agent has summarized the user's request.
 
 ## 🧠 Core philosophy
 
@@ -185,7 +204,7 @@ Blueprint -> Gate -> Execute -> Digest
 
 ---
 
-## 📝 Output formatting rules
+## 📝 Startup checkpoints + output formatting rules
 
 Use readable Markdown/plain text for anything a human will see.
 
@@ -283,7 +302,7 @@ Use this pack when you want agents that can:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.6**  
+**OpenCode Agent Pack v28.7**  
 Semantic routing · Durable plans · Contract-preserving fixes · Readable output
 
 </div>

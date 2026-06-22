@@ -88,6 +88,30 @@ For broad implementation work, use `Blueprint -> Gate -> Execute -> Digest`. The
 Subagents should return compact digests and avoid dumping large raw exploration into chat. The primary/orchestrator owns user interaction, plan state, and git/publication gates.
 
 
+### 2.4 Startup checkpoint before tools
+
+Before the first tool call in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write a compact startup checkpoint:
+
+```text
+Startup completed. Route: <route>. Mode: <read-only/options/edit-capable/gated>.
+```
+
+Include:
+
+- outcome
+- target
+- action level
+- confidence
+- gated: yes/no, and why
+- scope boundary before discovery when the next step could expand beyond the user's requested target
+
+If the next action is read-only, say `gated: no — read-only`. If the next action could expand scope, state the boundary before using tools.
+
+Do not start `Fetch URL`, `Find Files`, `Search Files`, `Read File`, `Bash`, `Edit`, `apply_patch`, `task` delegation, or external/web tools before this checkpoint unless the user request is a trivial single-step answer that needs no tools.
+
+The checkpoint is required even when no gated action is needed. Its job is to prevent silent route changes, broad discovery, or mutation drift.
+
+
 - Do not guess.
 - Prefer the smallest correct change.
 - Keep diffs focused on the requested task.
@@ -101,7 +125,7 @@ Subagents should return compact digests and avoid dumping large raw exploration 
 
 Do not route work by exact wording, keyword matching, or the language used by the user alone. Words such as “fix”, “check”, “review”, “issue”, “release”, or “redesign” are signals; they are not sufficient by themselves. Normalize by the requested deliverable and the safest action that satisfies it.
 
-Before any multi-step, mutation-capable, or publication-capable task, classify:
+Before any multi-step, repository, codebase, issue/PR/release, external-URL, mutation-capable, publication-capable, or scope-expanding task, classify:
 
 - outcome: investigate/explain, fix/implement, review/audit, propose options, create issue, PR follow-up, release/tag work, DevOps/runtime work
 - target: code, UI/web, tests, CI/build, documentation, issue/PR/release, deployment/runtime
@@ -129,13 +153,15 @@ Normalization fallback:
 - If a UI request could mean either options or implementation, treat it as options-only and stop after concrete options.
 - If a request suggests a gated action but the action is not explicit user intent, stop and ask for explicit approval after stating the action, target, scope, and risk.
 
-For multi-step or mutation-capable workflows, include a brief normalization summary in the working note or final report:
+For multi-step, repository, codebase, issue/PR/release, external-URL, mutation-capable, publication-capable, or scope-expanding workflows, include the normalization summary in the startup checkpoint before the first tool call:
 
 - outcome
 - target
 - action level
 - confidence
 - selected route
+- gated: yes/no, and why
+- scope boundary before discovery when relevant
 
 Workflow selection:
 

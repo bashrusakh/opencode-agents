@@ -4,6 +4,16 @@ agent: code-workflow-orchestrator
 subtask: true
 ---
 
+## Startup Checkpoint Before Tools
+
+Before the first tool call in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write:
+
+```text
+Startup completed. Route: <route>. Mode: <read-only/options/edit-capable/gated>.
+```
+
+Include outcome, target, action level, confidence, and `gated: yes/no`. If the next step is read-only, say `gated: no — read-only`. If discovery could expand scope, state the scope boundary before using tools. Do not use tools first and postpone normalization to the final report.
+
 ## User-Facing Output Formatting
 
 For any user-visible answer or published text — final reply, PR/issue/release body, PR review/comment, changelog, handover, plan artifact, or Markdown doc — use readable target-aware Markdown by default.

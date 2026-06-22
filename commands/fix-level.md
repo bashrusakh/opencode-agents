@@ -4,6 +4,16 @@ agent: fix-level-reviewer
 subtask: true
 ---
 
+## Startup Checkpoint Before Tools
+
+Before the first tool call in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write:
+
+```text
+Startup completed. Route: <route>. Mode: <read-only/options/edit-capable/gated>.
+```
+
+Include outcome, target, action level, confidence, and `gated: yes/no`. If the next step is read-only, say `gated: no — read-only`. If discovery could expand scope, state the scope boundary before using tools. Do not use tools first and postpone normalization to the final report.
+
 ## Behavioral Contract Check
 
 For any user-facing UI/config/API/workflow behavior change, do not implement only the data plumbing. Before planning or editing, summarize:
