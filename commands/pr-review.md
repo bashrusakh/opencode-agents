@@ -14,6 +14,11 @@ Startup completed. Route: <route>. Mode: <read-only/options/edit-capable/gated>.
 
 Include outcome, target, action level, confidence, and `gated: yes/no`. If the next step is read-only, say `gated: no — read-only`. If discovery could expand scope, state the scope boundary before using tools. Do not use tools first and postpone normalization to the final report.
 
+
+## OCR Review Backend
+
+For code/diff/PR review, prefer OCR/open-code-review when installed and allowed. OCR is locally read-only but may send code/diffs/context to the configured OCR LLM provider; ask first if external code sharing is not already approved. If OCR is unavailable or not approved, fall back to native read-only review and say why. Do not apply OCR suggestions automatically for review-only requests.
+
 ## Behavioral Contract Check
 
 For any user-facing UI/config/API/workflow behavior change, do not implement only the data plumbing. Before planning or editing, summarize:

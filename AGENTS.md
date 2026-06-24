@@ -221,6 +221,14 @@ Default routing:
 - verification -> `@tester`
 - root-cause bug fixing -> `@debugger`
 - code/PR/security review -> `@reviewer`
+
+### 6.1 Open Code Review backend
+
+For code, diff, commit, branch, workspace, or PR review, prefer OCR/open-code-review as the primary review backend when it is installed and allowed. The `@reviewer` agent remains the policy and judgment layer around OCR: it normalizes scope, checks gated/privacy status, runs OCR when appropriate, filters false positives, adds right-level/behavioral-contract/test-risk judgment, and formats the final review.
+
+OCR is locally read-only for the repository, but it may send code, diffs, and context to the configured OCR LLM provider. If external code sharing is not already approved by user/project policy, ask before running OCR. If OCR is unavailable, not configured, or not approved, fall back to native read-only review and state why.
+
+Do not apply OCR suggestions automatically for a review-only request. Automatic fixes require a separately normalized fix request and the normal gated-action checks.
 - abstraction-level / duplicated-fix review -> `@fix-level-reviewer`
 - Docker/systemd/CI/deploy/runtime config -> `@devops`
 - fallback bounded research only when no specific agent fits -> `@general`
@@ -392,7 +400,7 @@ Before any commit:
 
 Before pushing: confirm remote and branch. Never force-push unless the gated-action rule allows force-push and the risk is explained.
 
-Before any PR: ensure branch base is correct, diff is reviewable, title follows `CONTRIBUTING.md`, PR body includes summary/context/validation and UI screenshots or manual verification for UI changes. Do not mark ready if checks are unknown or failing. Ask before using open-code-review skill or calling `@reviewer` unless the normalized deliverable includes review.
+Before any PR: ensure branch base is correct, diff is reviewable, title follows `CONTRIBUTING.md`, PR body includes summary/context/validation and UI screenshots or manual verification for UI changes. Do not mark ready if checks are unknown or failing. For code/diff/PR review, route to `@reviewer`. Prefer OCR/open-code-review when installed and allowed. Ask before running OCR if external code sharing is not already approved by user/project policy.
 
 Before publishing PR comments, review comments, issue bodies, release notes, changelog entries, or other public Markdown, apply the user-facing output formatting rule: short summary, readable sections, bullets for multiple points, code fences for exact text/commands/logs, and a clear conclusion or next action.
 

@@ -102,7 +102,7 @@
       "description": "Review current diff/PR for bugs, regressions, security, missing tests, and wrong fix level.",
       "agent": "reviewer",
       "subtask": true,
-      "template": "Review this PR/diff/change: $ARGUMENTS\n\nIf no target is specified, review the current git diff. Do not edit files. Include right-level review findings."
+      "template": "Review this PR/diff/change: $ARGUMENTS\n\nStart with the startup checkpoint and gated/privacy check. Prefer OCR/open-code-review when installed and approved. If no target is specified, review the current git diff/workspace according to OCR/default reviewer behavior. Do not edit files or apply fixes. Include right-level, behavioral-contract, and test/verification findings."
     },
     "fix-level": {
       "description": "Check whether a fix is at the correct abstraction level.",
@@ -169,6 +169,12 @@
       "agent": "devops",
       "subtask": false,
       "template": "Install or configure UI UX Pro Max / UUPM for OpenCode: $ARGUMENTS\n\nUse docs/UUPM_INSTALL_FOR_AGENT.md as the source of truth. Do not overwrite existing config without backups. UUPM is design intelligence only, not a component MCP server."
+    },
+    "review": {
+      "description": "Review code/diff/PR/commit/branch/workspace; prefer OCR/open-code-review when available and approved.",
+      "agent": "reviewer",
+      "subtask": true,
+      "template": "Review this code/diff/PR/commit/branch/workspace: $ARGUMENTS\n\nStart with the startup checkpoint and gated/privacy check. Prefer OCR/open-code-review when installed and approved; OCR is read-only locally but may send code/diffs/context to the configured OCR LLM provider. If OCR is unavailable or not approved, fall back to native read-only review and say why. Do not edit files or apply fixes unless a separate fix request is normalized and allowed."
     }
   }
 }

@@ -27,6 +27,11 @@ For any user-visible answer or published text — final reply, PR/issue/release 
 - For GitHub/GitLab PRs, issues, releases, and review comments, use clean Markdown with a clear conclusion/next action.
 
 
+
+## OCR Review Backend
+
+When reviewing code/diff produced by the implementation, prefer OCR/open-code-review if installed and allowed. Use OCR as the review engine, then add reviewer judgment for plan acceptance criteria, behavioral contract, right-level fix, and test coverage. Do not apply fixes during review.
+
 ## Purpose
 
 Provide an independent quality gate after a work package implementation from `plans/<plan>/`.

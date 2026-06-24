@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.7
+# OpenCode Agent Pack v28.8
 
 ### Model-agnostic agents · Startup checkpoints · Behavioral contracts · Persistent planning · Readable public output
 
@@ -22,7 +22,7 @@ It is built around four rules:
 
 > **Understand the request by meaning, preserve user/project contracts, keep long work in files, and write human-readable output.**
 
-Version **v28.7** is based on `opencode_model_agnostic_persistent_v28_6.zip` and adds a mandatory **startup checkpoint before the first tool call** for multi-step, repository, issue/PR/release, external-URL, codebase, mutation-capable, publication-capable, or scope-expanding workflows.
+Version **v28.8** is based on `opencode_model_agnostic_persistent_v28_6.zip` and adds a mandatory **startup checkpoint before the first tool call** for multi-step, repository, issue/PR/release, external-URL, codebase, mutation-capable, publication-capable, or scope-expanding workflows.
 
 ---
 
@@ -302,7 +302,34 @@ Use this pack when you want agents that can:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.7**  
+**OpenCode Agent Pack v28.8**  
 Semantic routing · Durable plans · Contract-preserving fixes · Readable output
 
 </div>
+
+
+## 🛡️ OCR / Open Code Review integration
+
+This build integrates Alibaba `open-code-review` as the **preferred backend for code/diff/PR review** when it is installed and allowed.
+
+**Policy:** OCR is the review engine; `@reviewer` is the policy and judgment layer.
+
+The reviewer must:
+
+- emit the startup checkpoint before tools;
+- normalize review target/scope;
+- check privacy/gated status before OCR, because OCR may send code/diffs/context to the configured LLM provider;
+- run OCR with `--audience agent` and useful `--background` context when allowed;
+- filter false positives and low-value nits;
+- add right-level, behavioral-contract, tests, and risky API/schema/config judgment;
+- never auto-apply fixes for review-only requests.
+
+Useful files:
+
+```text
+docs/OCR_REVIEW_POLICY.md
+commands/review.md
+commands/pr-review.md
+agents/reviewer.md
+snippet/open-code-review-usage.md
+```
