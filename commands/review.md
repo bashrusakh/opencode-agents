@@ -14,6 +14,21 @@ Startup completed. Route: <route>. Mode: <read-only/options/edit-capable/gated>.
 
 Include outcome, target, action level, confidence, and `gated: yes/no`. If the next step is read-only, say `gated: no — read-only`. If discovery could expand scope, state the scope boundary before using tools. Do not use tools first and postpone normalization to the final report.
 
+## Git Sync and PR Branch Provenance
+
+For repository mutation, PR follow-up, commit, push, or PR work, do not trust the current branch by default. Before edits or publication:
+
+```bash
+git status --short
+git branch --show-current
+git fetch origin <base>
+git log --oneline --decorate --left-right --cherry-pick origin/<base>...HEAD
+git diff --name-status origin/<base>...HEAD
+git diff --stat origin/<base>...HEAD
+```
+
+Use the project/PR base, defaulting to `origin/main` only when no other base is known. Rebase/update before editing when safe and clean. If the branch contains unrelated commits/files, or rebase/update would rewrite public history or conflict, stop and ask. Do not open/push/update a PR with unrelated work.
+
 ## OCR Review Backend
 
 For code, diff, commit, branch, workspace, or PR review, prefer OCR/open-code-review when installed and allowed. OCR is read-only locally but may send code/diffs/context to the configured OCR LLM provider, so privacy approval is required when not already covered by user/project policy.

@@ -1,0 +1,3 @@
+graymatter daemon ready: dir=/home/bash/projects/opencode-agents/.graymatter addr=unix:///home/bash/projects/opencode-agents/.graymatter/graymatter.sock pid=1557099 idle-exit=2m0s
+daemon: idle for 2m0s with no clients, exiting
+daemon: stopped

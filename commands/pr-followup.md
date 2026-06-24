@@ -14,6 +14,21 @@ Startup completed. Route: <route>. Mode: <read-only/options/edit-capable/gated>.
 
 Include outcome, target, action level, confidence, and `gated: yes/no`. If the next step is read-only, say `gated: no — read-only`. If discovery could expand scope, state the scope boundary before using tools. Do not use tools first and postpone normalization to the final report.
 
+## Git Sync and PR Branch Provenance
+
+For repository mutation, PR follow-up, commit, push, or PR work, do not trust the current branch by default. Before edits or publication:
+
+```bash
+git status --short
+git branch --show-current
+git fetch origin <base>
+git log --oneline --decorate --left-right --cherry-pick origin/<base>...HEAD
+git diff --name-status origin/<base>...HEAD
+git diff --stat origin/<base>...HEAD
+```
+
+Use the project/PR base, defaulting to `origin/main` only when no other base is known. Rebase/update before editing when safe and clean. If the branch contains unrelated commits/files, or rebase/update would rewrite public history or conflict, stop and ask. Do not open/push/update a PR with unrelated work.
+
 ## Behavioral Contract Check
 
 For any user-facing UI/config/API/workflow behavior change, do not implement only the data plumbing. Before planning or editing, summarize:
@@ -49,3 +64,7 @@ Treat this as follow-up work for the existing PR by default. Work on the same PR
 Inspect current branch/status/diff and PR context. If PR metadata is unavailable, report the missing source instead of guessing. Orchestrate the needed subagents. Continue automatically through safe stages. Return one consolidated markdown report with green/yellow/red stage status.
 
 Commit or push only when the gated-action rule allows that exact commit/push/update action.
+
+## Existing PR branch rule
+
+Before changing code on an existing PR branch, fetch the PR base, run the provenance gate, and confirm the branch contains only work for that PR. If the branch includes unrelated commits/files from another PR or issue, stop and report the polluted branch state. Do not add follow-up fixes on top of a polluted branch.

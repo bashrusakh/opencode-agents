@@ -98,6 +98,12 @@
       "subtask": true,
       "template": "Debug this failure: $ARGUMENTS\n\nStart from evidence, reproduce when the provided evidence or project commands allow a non-destructive reproduction, find root cause, apply the smallest right-level fix if fixing is requested, and verify with the focused failing check."
     },
+    "pr-provenance-check": {
+      "description": "Verify branch provenance before commit, push, PR creation, or PR update.",
+      "agent": "code-workflow-orchestrator",
+      "subtask": true,
+      "template": "Verify branch provenance for: $ARGUMENTS\n\nRun the read-only branch provenance gate from AGENTS.md. Fetch the base, list the full base-to-head commit range and changed files, and report whether commit/push/PR is safe. Do not edit, commit, push, rebase, reset, or force-push unless separately approved."
+    },
     "pr-review": {
       "description": "Review current diff/PR for bugs, regressions, security, missing tests, and wrong fix level.",
       "agent": "reviewer",

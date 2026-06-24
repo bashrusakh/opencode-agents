@@ -14,6 +14,21 @@ Startup completed. Route: <route>. Mode: <read-only/options/edit-capable/gated>.
 
 Include outcome, target, action level, confidence, and `gated: yes/no`. If the next step is read-only, say `gated: no — read-only`. If discovery could expand scope, state the scope boundary before using tools. Do not use tools first and postpone normalization to the final report.
 
+## Git Sync and PR Branch Provenance
+
+For repository mutation, PR follow-up, commit, push, or PR work, do not trust the current branch by default. Before edits or publication:
+
+```bash
+git status --short
+git branch --show-current
+git fetch origin <base>
+git log --oneline --decorate --left-right --cherry-pick origin/<base>...HEAD
+git diff --name-status origin/<base>...HEAD
+git diff --stat origin/<base>...HEAD
+```
+
+Use the project/PR base, defaulting to `origin/main` only when no other base is known. Rebase/update before editing when safe and clean. If the branch contains unrelated commits/files, or rebase/update would rewrite public history or conflict, stop and ask. Do not open/push/update a PR with unrelated work.
+
 ## Behavioral Contract Check
 
 For any user-facing UI/config/API/workflow behavior change, do not implement only the data plumbing. Before planning or editing, summarize:
@@ -49,3 +64,7 @@ Do not make the user manually run every agent. Orchestrate the needed subagents,
 Use @explore when the code path is not identified. Use @tester when reproduction or verification is needed. Use @debugger for root cause and the smallest right-level fix. Use @fix-level-reviewer or @reviewer for diffs touching shared behavior, security, data handling, API contracts, concurrency, or logic with edge cases/state transitions not obvious from one local function.
 
 Do not commit, push, open PRs, or publish anything unless the gated-action rule allows that exact action.
+
+## Bugfix branch hygiene
+
+Before any bugfix edit, perform the pre-edit Git sync check from `AGENTS.md`. A bugfix must not be implemented on a stale or polluted branch. If the current branch contains unrelated work, stop and create/request a clean task branch before editing.

@@ -349,6 +349,22 @@ For release notes, tags, changelog, release body, assets, or release verificatio
 
 ### 7.1 Before editing
 
+Before editing code/config/docs in a repository, run a pre-edit Git sync check. A stale or polluted branch is a scope bug, not an implementation detail.
+
+Required pre-edit checks for mutation-capable repository work:
+
+```bash
+git status --short
+git branch --show-current
+git fetch origin <base>
+git log --oneline --decorate --left-right --cherry-pick origin/<base>...HEAD
+git diff --name-status origin/<base>...HEAD
+```
+
+Use the project-local base branch or the active PR base when known; default to `origin/main` only when no other base is known. If the branch is behind the base, rebase/update before editing when the working tree is clean and the operation is safe for the current branch. If rebase/update would rewrite a published branch, hit conflicts, include unrelated commits, or violate project rules, stop and ask with the exact branch state and risk.
+
+Then:
+
 - Understand the relevant area first.
 - Inspect nearby implementation and tests.
 - Reuse existing style and architecture.
@@ -383,24 +399,40 @@ Run the narrowest relevant tests/checks from project docs/configs that are non-d
 
 Only create, update, push, or publish branches/commits/PRs/tags/releases when the gated-action rule allows that exact publication action.
 
-Before branch/PR work, check git status, current branch, upstream tracking branch, and whether the current branch already has an open PR.
+Before branch/PR work, check git status, current branch, upstream tracking branch, current base branch, and whether the current branch already has an open PR. Fetch the base branch before trusting branch state.
 
-New independent work normally gets a new branch and PR. Follow-up fixes, review responses, CI fixes, requested corrections, and requested additions for an existing PR must go to the same PR branch, not a new PR, unless separate-PR creation is the clear normalized deliverable and the gated-action rule allows that exact publication action.
+New independent work normally gets a new clean branch from the current base and a new PR. Follow-up fixes, review responses, CI fixes, requested corrections, and requested additions for an existing PR must go to the same PR branch, not a new PR, unless separate-PR creation is the clear normalized deliverable and the gated-action rule allows that exact publication action.
+
+### 8.1 PR branch provenance gate
+
+Before committing, pushing, opening a PR, or updating an existing PR, prove that the branch contains only commits and files intended for the normalized task. A PR is the entire base-to-head comparison, not the last commit.
+
+Run and report the relevant base, normally the project/PR base or `origin/main` when no other base is known:
+
+```bash
+git status --short
+git branch --show-current
+git fetch origin <base>
+git log --oneline --decorate --left-right --cherry-pick origin/<base>...HEAD
+git diff --name-status origin/<base>...HEAD
+git diff --stat origin/<base>...HEAD
+```
+
+Stop before commit/push/PR if the range contains unrelated commits, unrelated files, work from another issue/PR, generated artifacts not requested, or stale branch history. Do not hide the problem by editing around it. Allowed recovery is to create a clean branch from the current base and cherry-pick/re-apply only the intended work, then re-run this gate. Force-push, reset, rebase of published history, or branch replacement remains gated and requires explicit approval with the risk stated.
 
 Before any commit:
 
+- run the pre-edit sync/provenance checks if they have not been run after the latest branch changes
 - check git status
 - review the full diff
 - include only intended files
-- fetch remote metadata only if branch/PR state must be verified
-- do not rebase, merge, reset, or update the branch unless the gated-action rule allows that branch-history action after branch state is reported
 - run relevant tests/checks
 - use commit/title format from `CONTRIBUTING.md`
 - do not commit secrets, logs, local config, benchmark outputs, cache files, or unrelated generated artifacts
 
-Before pushing: confirm remote and branch. Never force-push unless the gated-action rule allows force-push and the risk is explained.
+Before pushing: confirm remote, branch, base, commit range, and changed files. Never force-push unless the gated-action rule allows force-push and the risk is explained.
 
-Before any PR: ensure branch base is correct, diff is reviewable, title follows `CONTRIBUTING.md`, PR body includes summary/context/validation and UI screenshots or manual verification for UI changes. Do not mark ready if checks are unknown or failing. For code/diff/PR review, route to `@reviewer`. Prefer OCR/open-code-review when installed and allowed. Ask before running OCR if external code sharing is not already approved by user/project policy.
+Before any PR: prove branch provenance, ensure branch base is correct, diff is reviewable, title follows `CONTRIBUTING.md`, PR body includes summary/context/validation and UI screenshots or manual verification for UI changes. Do not mark ready if checks are unknown or failing. For code/diff/PR review, route to `@reviewer`. Prefer OCR/open-code-review when installed and allowed. Ask before running OCR if external code sharing is not already approved by user/project policy.
 
 Before publishing PR comments, review comments, issue bodies, release notes, changelog entries, or other public Markdown, apply the user-facing output formatting rule: short summary, readable sections, bullets for multiple points, code fences for exact text/commands/logs, and a clear conclusion or next action.
 

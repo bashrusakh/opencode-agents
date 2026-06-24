@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.8
+# OpenCode Agent Pack v28.9
 
 ### Model-agnostic agents · Startup checkpoints · Behavioral contracts · Persistent planning · Readable public output
 
@@ -9,6 +9,7 @@
 [![Persistent Planning](https://img.shields.io/badge/Persistent--Planning-On-16a34a?style=for-the-badge)](#)
 [![Readable Output](https://img.shields.io/badge/Readable--Markdown-On-7c3aed?style=for-the-badge)](#)
 [![Workflow Safety](https://img.shields.io/badge/Gated--Actions-On-f97316?style=for-the-badge)](#)
+[![Clean PR Branches](https://img.shields.io/badge/Clean--PR--Branches-On-0f766e?style=for-the-badge)](#)
 
 </div>
 
@@ -22,7 +23,7 @@ It is built around four rules:
 
 > **Understand the request by meaning, preserve user/project contracts, keep long work in files, and write human-readable output.**
 
-Version **v28.8** is based on `opencode_model_agnostic_persistent_v28_6.zip` and adds a mandatory **startup checkpoint before the first tool call** for multi-step, repository, issue/PR/release, external-URL, codebase, mutation-capable, publication-capable, or scope-expanding workflows.
+Version **v28.9** is based on `opencode_model_agnostic_persistent_v28_8.zip` and adds mandatory **Git sync + PR branch provenance** checks so agents do not edit stale branches or publish PRs that contain unrelated commits/files.
 
 ---
 
@@ -36,6 +37,7 @@ Version **v28.8** is based on `opencode_model_agnostic_persistent_v28_6.zip` and
 | ✅ Behavioral Contract Check | Before user-facing changes, preserve the natural user action/value source instead of exposing raw internals. |
 | ✅ Right-level fixes | Do not patch only the first call site when the bug belongs in a shared helper/service/composable/API wrapper. |
 | ✅ Gated actions | Commits, PRs, releases, deps, secrets, destructive commands, runtime config, and broad product/architecture choices require explicit approval. |
+| ✅ Branch provenance | Before editing, committing, pushing, or opening/updating PRs, agents fetch the base and prove the branch contains only intended commits/files. |
 | ✅ Persistent planning | Long-running/multi-agent work uses durable `plans/<plan>/` artifacts so another agent can resume without starting over. |
 | ✅ Readable public output | User replies, PR comments, issues, releases, changelogs, reviews, and handovers must be clean, skimmable, target-aware Markdown/plain text. |
 | ✅ UI/MCP/UUPM policy | External UI sources and component registries are constrained by project patterns and approval gates. |
@@ -275,7 +277,7 @@ Installs to:
 
 This pack is expected to validate with:
 
-- ✅ no missing files from the v28.5 base;
+- ✅ no missing files from the v28.8 base;
 - ✅ YAML frontmatter parses for all agents and commands;
 - ✅ JSONC snippets parse;
 - ✅ install scripts pass `bash -n`;
@@ -302,7 +304,7 @@ Use this pack when you want agents that can:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.8**  
+**OpenCode Agent Pack v28.9**  
 Semantic routing · Durable plans · Contract-preserving fixes · Readable output
 
 </div>
@@ -333,3 +335,7 @@ commands/pr-review.md
 agents/reviewer.md
 snippet/open-code-review-usage.md
 ```
+
+## 🧰 Command added in v28.9
+
+- `/pr-provenance-check` — read-only proof that the current branch/PR contains only intended commits/files.
