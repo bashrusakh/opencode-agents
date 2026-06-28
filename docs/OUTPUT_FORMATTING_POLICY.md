@@ -6,6 +6,8 @@ Use this policy whenever an agent writes text for a human or for a public/projec
 
 Correct content is not enough. The output must also be easy to skim, quote, and act on.
 
+No AI wall of text: write briefly, clearly, accessibly, and with enough structure to skim. Avoid excessive chatter, filler, self-justification, and long dense paragraphs.
+
 Avoid dense wall-of-text paragraphs when the content contains multiple reasons, decisions, risks, steps, validation results, or evidence.
 
 ## Default format

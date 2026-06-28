@@ -5,7 +5,7 @@ This pack assumes Alibaba `open-code-review` may already be installed as a skill
 Recommended flow:
 
 ```text
-Startup checkpoint
+Startup block
 → normalize review target/scope
 → privacy/gated check
 → OCR when installed and approved

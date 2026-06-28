@@ -1,8 +1,10 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.9
+> v28.11 keeps all package instruction text in English.
 
-### Model-agnostic agents · Startup checkpoints · Behavioral contracts · Persistent planning · Readable public output
+# OpenCode Agent Pack v28.11
+
+### Model-agnostic agents · Startup blocks · Behavioral contracts · Persistent planning · Readable public output
 
 [![OpenCode](https://img.shields.io/badge/OpenCode-Agents-111827?style=for-the-badge)](#)
 [![Model Agnostic](https://img.shields.io/badge/Model--Agnostic-Yes-2563eb?style=for-the-badge)](#)
@@ -15,6 +17,12 @@
 
 ---
 
+
+## ✨ What's new in v28.11
+
+- 🚫 Added a hard banner in `AGENTS.md`: **rules cannot be ignored**.
+- 🧱 Strengthened output formatting: **no AI wall of text**.
+- ✍️ User/public output must be brief, clear, accessible, skimmable, and free of filler.
 ## ✨ What is this?
 
 This is an opinionated **OpenCode / OpenChamber agent configuration pack** for real project work: bugfixing, UI work, PR follow-up, release prep, project audits, long investigations, and multi-agent workflows.
@@ -23,7 +31,7 @@ It is built around four rules:
 
 > **Understand the request by meaning, preserve user/project contracts, keep long work in files, and write human-readable output.**
 
-Version **v28.9** is based on `opencode_model_agnostic_persistent_v28_8.zip` and adds mandatory **Git sync + PR branch provenance** checks so agents do not edit stale branches or publish PRs that contain unrelated commits/files.
+Version **v28.11** is based on `opencode_model_agnostic_persistent_v28_8.zip` and adds mandatory **Git sync + PR branch provenance** checks so agents do not edit stale branches or publish PRs that contain unrelated commits/files.
 
 ---
 
@@ -33,7 +41,7 @@ Version **v28.9** is based on `opencode_model_agnostic_persistent_v28_8.zip` and
 |---|---|
 | ✅ Model agnostic | Agents do not contain provider-specific `model:` overrides. Use the active OpenCode/OpenChamber model. |
 | ✅ Semantic routing | Route by normalized intent, scope, target, action level, confidence, and evidence — not magic trigger phrases. |
-| ✅ Startup checkpoint | Before tools, summarize route/mode, outcome, target, action level, confidence, gated yes/no, and scope boundary. |
+| ✅ Startup block | Before tools, summarize route/mode, outcome, target, action level, confidence, gated yes/no, and scope boundary. |
 | ✅ Behavioral Contract Check | Before user-facing changes, preserve the natural user action/value source instead of exposing raw internals. |
 | ✅ Right-level fixes | Do not patch only the first call site when the bug belongs in a shared helper/service/composable/API wrapper. |
 | ✅ Gated actions | Commits, PRs, releases, deps, secrets, destructive commands, runtime config, and broad product/architecture choices require explicit approval. |
@@ -44,23 +52,28 @@ Version **v28.9** is based on `opencode_model_agnostic_persistent_v28_8.zip` and
 
 ---
 
-## 🧭 Startup checkpoint before tools
+## 🧭 Startup block before tools
 
-Every multi-step, repository, issue/PR/release, external-URL, codebase, mutation-capable, publication-capable, or scope-expanding workflow must start with a compact visible checkpoint **before the first tool call**:
+Every multi-step, repository, issue/PR/release, external-URL, codebase, mutation-capable, publication-capable, or scope-expanding workflow must start with a compact visible Markdown block **before the first tool call**.
 
-```text
-Startup completed. Route: <route>. Mode: <read-only/options/edit-capable/gated>.
-
-Normalization:
-- outcome: ...
-- target: ...
-- action level: ...
-- confidence: ...
-- gated: yes/no — why
-- scope boundary: ...
+```md
+### Startup
+- Route: `<route>`
+- Mode: `<read-only | options | edit-capable | gated>`
+- Summary: <one sentence>
+- Scope: <target + boundary>
+- Gated: `<no | yes>` — <reason>
+- Next: <next action/tool>
 ```
 
-This is required even for read-only work. If the work is read-only, the agent says `gated: no — read-only`. The checkpoint prevents silent scope drift, broad discovery, and accidental mutation before the agent has summarized the user's request.
+Rules:
+- Keep it short: heading + six bullets.
+- Use Markdown, not a dense prose paragraph.
+- Keep field names in English.
+- For read-only work: `Gated: no — read-only`.
+- Put the scope boundary in `Scope` before broad discovery.
+
+This forces semantic normalization first, then tools. It prevents silent scope drift, broad discovery, and accidental mutation before the agent has summarized the user's request.
 
 ## 🧠 Core philosophy
 
@@ -206,7 +219,7 @@ Blueprint -> Gate -> Execute -> Digest
 
 ---
 
-## 📝 Startup checkpoints + output formatting rules
+## 📝 Startup blocks + output formatting rules
 
 Use readable Markdown/plain text for anything a human will see.
 
@@ -283,7 +296,7 @@ This pack is expected to validate with:
 - ✅ install scripts pass `bash -n`;
 - ✅ no provider-specific `model:` overrides in agents;
 - ✅ no stale provider-specific model IDs;
-- ✅ no stale model route references;
+- ✅ no stale provider-specific model IDs;
 - ✅ no plural snippet-directory path references;
 - ✅ root rules include semantic routing, behavioral contracts, persistent planning, and readable public output.
 
@@ -304,7 +317,7 @@ Use this pack when you want agents that can:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.9**  
+**OpenCode Agent Pack v28.11**  
 Semantic routing · Durable plans · Contract-preserving fixes · Readable output
 
 </div>
@@ -318,7 +331,7 @@ This build integrates Alibaba `open-code-review` as the **preferred backend for 
 
 The reviewer must:
 
-- emit the startup checkpoint before tools;
+- emit the startup block before tools;
 - normalize review target/scope;
 - check privacy/gated status before OCR, because OCR may send code/diffs/context to the configured LLM provider;
 - run OCR with `--audience agent` and useful `--background` context when allowed;
@@ -336,6 +349,6 @@ agents/reviewer.md
 snippet/open-code-review-usage.md
 ```
 
-## 🧰 Command added in v28.9
+## 🧰 Command added in v28.11
 
 - `/pr-provenance-check` — read-only proof that the current branch/PR contains only intended commits/files.

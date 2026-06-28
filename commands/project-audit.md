@@ -4,15 +4,22 @@ agent: project-auditor
 subtask: true
 ---
 
-## Startup Checkpoint Before Tools
+## Startup Block Before Tools
 
-Before the first tool call in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write:
+Before the first tool call in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write Markdown only:
 
-```text
-Startup completed. Route: <route>. Mode: <read-only/options/edit-capable/gated>.
+```md
+### Startup
+- Route: `<route>`
+- Mode: `<read-only | options | edit-capable | gated>`
+- Summary: <one sentence>
+- Scope: <target + boundary>
+- Gated: `<no | yes>` — <reason>
+- Next: <next action/tool>
 ```
 
-Include outcome, target, action level, confidence, and `gated: yes/no`. If the next step is read-only, say `gated: no — read-only`. If discovery could expand scope, state the scope boundary before using tools. Do not use tools first and postpone normalization to the final report.
+Keep it to this shape. Do not write a prose paragraph. Keep field names in English. Do not use tools first and postpone normalization to the final report.
+
 
 ## Git Sync and PR Branch Provenance
 

@@ -1,5 +1,7 @@
 # OpenCode Agent Rules
 
+**YOU MUST NOT IGNORE THESE RULES.**
+
 These are reusable OpenCode working rules. They can be installed globally or copied into a project root as `AGENTS.md`. Project-local `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` remain the source of truth for project structure, allowed commands, commit format, PR format, tests, branch rules, and project constraints. These rules add workflow discipline for OpenCode; they do not replace project-local rules.
 
 ## 0. Philosophy and interpretation principles
@@ -88,28 +90,32 @@ For broad implementation work, use `Blueprint -> Gate -> Execute -> Digest`. The
 Subagents should return compact digests and avoid dumping large raw exploration into chat. The primary/orchestrator owns user interaction, plan state, and git/publication gates.
 
 
-### 2.4 Startup checkpoint before tools
+### 2.4 Startup block before tools
 
-Before the first tool call in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write a compact startup checkpoint:
+Before the first tool call in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write a compact Markdown startup block. Do not use a prose paragraph.
 
-```text
-Startup completed. Route: <route>. Mode: <read-only/options/edit-capable/gated>.
+Use exactly this shape:
+
+```md
+### Startup
+- Route: `<route>`
+- Mode: `<read-only | options | edit-capable | gated>`
+- Summary: <one sentence>
+- Scope: <target + boundary>
+- Gated: `<no | yes>` — <reason>
+- Next: <next action/tool>
 ```
 
-Include:
+Rules:
+- Keep it to the heading plus six bullets.
+- Keep field names in English.
+- No extra explanation unless `Gated: yes` or the scope is unclear.
+- If the next action is read-only, write `Gated: no — read-only`.
+- If discovery could expand scope, put the boundary in `Scope` before using tools.
 
-- outcome
-- target
-- action level
-- confidence
-- gated: yes/no, and why
-- scope boundary before discovery when the next step could expand beyond the user's requested target
+Do not start `Fetch URL`, `Find Files`, `Search Files`, `Read File`, `Bash`, `Edit`, `apply_patch`, `task` delegation, or external/web tools before this block unless the user request is a trivial single-step answer that needs no tools.
 
-If the next action is read-only, say `gated: no — read-only`. If the next action could expand scope, state the boundary before using tools.
-
-Do not start `Fetch URL`, `Find Files`, `Search Files`, `Read File`, `Bash`, `Edit`, `apply_patch`, `task` delegation, or external/web tools before this checkpoint unless the user request is a trivial single-step answer that needs no tools.
-
-The checkpoint is required even when no gated action is needed. Its job is to prevent silent route changes, broad discovery, or mutation drift.
+The startup block is required even when no gated action is needed. Its job is to prevent silent route changes, broad discovery, or mutation drift.
 
 
 - Do not guess.
@@ -444,13 +450,15 @@ Before marking a release done: open/read the created GitHub release, verify titl
 
 For any text shown to the user or published outside the agent runtime, optimize for readability, not just correctness. This applies to final answers, PR comments, PR bodies, issue bodies, release notes, changelog entries, review comments, handovers, plan artifacts, and Markdown docs.
 
+No AI wall of text: write briefly, clearly, accessibly, and with enough structure to skim. Avoid excessive chatter, filler, self-justification, and long dense paragraphs.
+
 Default to target-aware portable Markdown unless the destination requires another format. Use the richest safe subset the target reliably supports:
 
 - GitHub/GitLab PRs, issues, releases, and reviews: structured Markdown with short headings, bullets, code fences, links, and tables only when they improve comparison/status.
 - OpenCode CLI, Hermes, Telegram, terminals, and chat relays: compact Markdown/plain text with short headings, bullets, and fenced code blocks; avoid raw HTML, oversized tables, deeply nested lists, and GitHub-only formatting when the target may not render it.
 - Plain-text channels: keep the same structure using short labels, bullets, and code blocks when possible.
 
-Do not send dense wall-of-text paragraphs when the content contains multiple reasons, decisions, risks, steps, validation results, or evidence. Prefer:
+Do not send dense wall-of-text paragraphs when the content contains multiple reasons, decisions, risks, steps, validation results, or evidence. If the answer can be short, keep it short. Prefer:
 
 - one short summary first
 - clear sections for context/reason/validation/conclusion/next action when useful
@@ -477,3 +485,14 @@ For any orchestrated workflow, return one concise markdown report with green/yel
 | Commit/PR | ✅/⚠️/❌/skipped | only when the gated-action rule allows the exact publication action |
 
 Keep final reports short: what changed or was found, exact checks run, blockers/failures, and one concrete next action when there is a clear next action.
+
+## 11. Memory (GrayMatter)
+
+This project has persistent agent memory via the `graymatter` MCP tools:
+
+- `memory_search` (`agent_id`, `query`) — call at the **start of a task** when prior context might matter.
+- `memory_add` (`agent_id`, `text`) — call whenever you learn something **durable**: user preferences, decisions, conventions, gotchas.
+- `memory_reflect` (`action`, `agent`, `text`/`target`) — update or forget stale facts. ⚠ takes `agent`, not `agent_id`.
+- `checkpoint_save` / `checkpoint_resume` (`agent_id`) — snapshot/restore session state before major refactors or across restarts.
+
+Use a stable `agent_id` of the form `<project>-<role>` (e.g. `myapp-backend`). Store conclusions, not conversation logs. Err on the side of remembering.
