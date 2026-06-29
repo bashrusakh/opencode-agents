@@ -1,8 +1,8 @@
 <div align="center">
 
-> v28.11 keeps all package instruction text in English.
+> v28.12 enforces compact Markdown Startup blocks before tools.
 
-# OpenCode Agent Pack v28.11
+# OpenCode Agent Pack v28.12
 
 ### Model-agnostic agents · Startup blocks · Behavioral contracts · Persistent planning · Readable public output
 
@@ -18,11 +18,12 @@
 ---
 
 
-## ✨ What's new in v28.11
+## ✨ What's new in v28.12
 
-- 🚫 Added a hard banner in `AGENTS.md`: **rules cannot be ignored**.
-- 🧱 Strengthened output formatting: **no AI wall of text**.
-- ✍️ User/public output must be brief, clear, accessible, skimmable, and free of filler.
+- 🧭 Startup checkpoint is now a compact Markdown block.
+- 🚫 Prose-paragraph startup messages are forbidden.
+- 🔤 Startup field names stay English-only.
+- 🧩 The compact startup format is applied across root rules, agents, and commands.
 ## ✨ What is this?
 
 This is an opinionated **OpenCode / OpenChamber agent configuration pack** for real project work: bugfixing, UI work, PR follow-up, release prep, project audits, long investigations, and multi-agent workflows.
@@ -31,7 +32,7 @@ It is built around four rules:
 
 > **Understand the request by meaning, preserve user/project contracts, keep long work in files, and write human-readable output.**
 
-Version **v28.11** is based on `opencode_model_agnostic_persistent_v28_8.zip` and adds mandatory **Git sync + PR branch provenance** checks so agents do not edit stale branches or publish PRs that contain unrelated commits/files.
+Version **v28.12** is based on `opencode_model_agnostic_persistent_v28_11.zip` and adds a mandatory compact **Markdown Startup block** before tools so agents summarize route, mode, scope, gated status, and next action without producing dense prose.
 
 ---
 
@@ -271,7 +272,7 @@ Installs to:
 Run from the repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_6/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_12/install/install-project.sh
 ```
 
 Installs to:
@@ -290,7 +291,7 @@ Installs to:
 
 This pack is expected to validate with:
 
-- ✅ no missing files from the v28.8 base;
+- ✅ no missing files from the v28.11 base;
 - ✅ YAML frontmatter parses for all agents and commands;
 - ✅ JSONC snippets parse;
 - ✅ install scripts pass `bash -n`;
@@ -317,7 +318,7 @@ Use this pack when you want agents that can:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.11**  
+**OpenCode Agent Pack v28.12**  
 Semantic routing · Durable plans · Contract-preserving fixes · Readable output
 
 </div>
@@ -349,6 +350,6 @@ agents/reviewer.md
 snippet/open-code-review-usage.md
 ```
 
-## 🧰 Command added in v28.11
+## 🧰 Additional command
 
 - `/pr-provenance-check` — read-only proof that the current branch/PR contains only intended commits/files.

@@ -1,0 +1,6 @@
+# GrayMatter runtime files
+.graymatter/graymatter.addr
+.graymatter/graymatter.pid
+.graymatter/vectors/
+.graymatter/daemon.log
+.graymatter/gray.db
