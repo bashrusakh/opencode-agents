@@ -1,7 +1,7 @@
 ---
-description: Review code/diff/PR/commit/branch/workspace using @reviewer; prefer OCR/open-code-review when available and approved.
+description: "Review code, diff, PR, branch, plan, implementation plan, completed implementation, or fix level using @reviewer; prefer OCR/open-code-review when available and approved."
 agent: reviewer
-subtask: true
+subtask: false
 ---
 
 ## Startup Block Before Tools

@@ -1,6 +1,6 @@
 # Open Code Review usage
 
-This pack assumes Alibaba `open-code-review` may already be installed as a skill/plugin. Do not overwrite the user's installed skill or plugin command. The pack integrates with it through `@reviewer`, `/review`, and `/pr-review`.
+This pack assumes Alibaba `open-code-review` may already be installed as a skill/plugin. Do not overwrite the user's installed skill or plugin command. The pack integrates with it through `@reviewer` and `/review`.
 
 Recommended flow:
 

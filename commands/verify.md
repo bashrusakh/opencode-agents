@@ -1,7 +1,7 @@
 ---
-description: Run relevant tests, linters, builds, and smoke checks without editing files.
+description: "Run relevant tests, linters, builds, and smoke checks without editing files."
 agent: tester
-subtask: true
+subtask: false
 ---
 
 ## Startup Block Before Tools

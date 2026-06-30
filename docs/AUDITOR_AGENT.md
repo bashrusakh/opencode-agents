@@ -1,6 +1,6 @@
-# project-auditor
+# auditor
 
-`project-auditor` is a read-only full-project review orchestrator.
+`auditor` is a read-only full-project review orchestrator.
 
 Use it for:
 
@@ -16,15 +16,15 @@ Use it for:
 Primary command:
 
 ```text
-/project-audit <scope>
+/audit <scope>
 ```
 
 Examples:
 
 ```text
-/project-audit whole repo, focus on logic bugs and dead code
-/project-audit admin UI + backend API, focus on wrong-level fixes and duplicated behavior
-/project-audit current PR branch, check project-wide side effects and stale code
+/audit whole repo, focus on logic bugs and dead code
+/audit admin UI + backend API, focus on wrong-level fixes and duplicated behavior
+/audit current PR branch, check project-wide side effects and stale code
 ```
 
 The agent must not edit files or create commits. It should return one consolidated report with confirmed findings, hypotheses, dead/stale code, wrong-level fixes, test gaps, and prioritized next actions.

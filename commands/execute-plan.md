@@ -1,7 +1,7 @@
 ---
-description: Run a broad read-only project audit for logic bugs, dead code, wrong fix levels, duplicate logic, test gaps, UI/API mismatches, and optimization opportunities.
-agent: project-auditor
-subtask: true
+description: "Execute an approved persistent-plan work package using Blueprint -> Gate -> Execute -> Digest."
+agent: code-orchestrator
+subtask: false
 ---
 
 ## Startup Block Before Tools
@@ -36,18 +36,6 @@ git diff --stat origin/<base>...HEAD
 
 Use the project/PR base, defaulting to `origin/main` only when no other base is known. Rebase/update before editing when safe and clean. If the branch contains unrelated commits/files, or rebase/update would rewrite public history or conflict, stop and ask. Do not open/push/update a PR with unrelated work.
 
-## Behavioral Contract Check
-
-For any user-facing UI/config/API/workflow behavior change, do not implement only the data plumbing. Before planning or editing, summarize:
-
-- user-facing action
-- value source
-- valid-value domain
-- existing project pattern to inspect
-- whether raw/internal/manual values would be exposed to normal users
-
-Do not derive behavior directly from schema/storage/API type. Preserve the existing affordance class unless the normalized request explicitly asks for a raw/manual/editor workflow.
-
 ## User-Facing Output Formatting
 
 For any user-visible answer or published text — final reply, PR/issue/release body, PR review/comment, changelog, handover, plan artifact, or Markdown doc — use readable target-aware Markdown by default.
@@ -60,22 +48,16 @@ For any user-visible answer or published text — final reply, PR/issue/release 
 - For OpenCode CLI, Hermes, Telegram, terminals, or chat relays, prefer compact portable Markdown/plain text; avoid raw HTML, oversized tables, deeply nested lists, and GitHub-only formatting.
 - For GitHub/GitLab PRs, issues, releases, and review comments, use clean Markdown with a clear conclusion/next action.
 
-## Persistent Planning Mode
 
-For long-running, multi-session, or multi-agent work, use `plans/<plan>/` as durable state. Read existing plan artifacts before continuing. Do not create arbitrary markdown reports. Use compact digests and update canonical plan/docs artifacts when the command is responsible for planning state.
+## Purpose
 
-Run a full project audit for: $ARGUMENTS
+Execute a scoped work package from `plans/<plan>/` without losing state.
 
-Do not edit files, apply patches, commit, push, open PRs, or open issues. Orchestrate specialist subagents for audit areas that need an independent pass, continue automatically through safe read-only/review/verification stages, and return one consolidated markdown report with green/yellow/red stage status.
+## Protocol
 
-Focus on:
-- project structure and core flows
-- logic bugs and incorrect assumptions
-- dead/stale/unreachable code
-- wrong-level fixes and duplicated local patches
-- UI/API drift and frontend/backend mismatch
-- auth/permission/data-safety risks
-- test gaps and verification results
-- practical optimization opportunities
+1. Blueprint: propose steps, files, checks, risks, and stop points.
+2. Gate: wait for approval when the action is broad or gated.
+3. Execute: delegate implementation to the right implementation agent.
+4. Digest: return compact result and update or prepare plan status for `/plan`.
 
-For audits whose normalized scope is broad, multi-agent, multi-session, or likely to exceed one reliable session, use Persistent Planning Mode. Create or resume `plans/<plan>/` before deep inspection. Do not route by the words alone; route by scope, coordination need, and resumability risk.
+Do not commit, push, open PRs, publish releases, or perform branch-history operations unless the root gated-action rule allows that exact action.

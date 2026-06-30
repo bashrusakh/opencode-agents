@@ -1,7 +1,7 @@
 ---
-description: Resume an existing persistent plan from canonical plans/<plan>/ artifacts.
-agent: plan
-subtask: true
+description: "Install or configure UI UX Pro Max / UUPM design-intelligence support for OpenCode."
+agent: devops
+subtask: false
 ---
 
 ## Startup Block Before Tools
@@ -36,6 +36,18 @@ git diff --stat origin/<base>...HEAD
 
 Use the project/PR base, defaulting to `origin/main` only when no other base is known. Rebase/update before editing when safe and clean. If the branch contains unrelated commits/files, or rebase/update would rewrite public history or conflict, stop and ask. Do not open/push/update a PR with unrelated work.
 
+## Behavioral Contract Check
+
+For any user-facing UI/config/API/workflow behavior change, do not implement only the data plumbing. Before planning or editing, summarize:
+
+- user-facing action
+- value source
+- valid-value domain
+- existing project pattern to inspect
+- whether raw/internal/manual values would be exposed to normal users
+
+Do not derive behavior directly from schema/storage/API type. Preserve the existing affordance class unless the normalized request explicitly asks for a raw/manual/editor workflow.
+
 ## User-Facing Output Formatting
 
 For any user-visible answer or published text — final reply, PR/issue/release body, PR review/comment, changelog, handover, plan artifact, or Markdown doc — use readable target-aware Markdown by default.
@@ -48,21 +60,14 @@ For any user-visible answer or published text — final reply, PR/issue/release 
 - For OpenCode CLI, Hermes, Telegram, terminals, or chat relays, prefer compact portable Markdown/plain text; avoid raw HTML, oversized tables, deeply nested lists, and GitHub-only formatting.
 - For GitHub/GitLab PRs, issues, releases, and review comments, use clean Markdown with a clear conclusion/next action.
 
+## Persistent Planning Mode
 
-## Purpose
+For long-running, multi-session, or multi-agent work, use `plans/<plan>/` as durable state. Read existing plan artifacts before continuing. Do not create arbitrary markdown reports. Use compact digests and update canonical plan/docs artifacts when the command is responsible for planning state.
 
-Bootstrap a new session or agent from durable plan state.
+Install or configure UI UX Pro Max / UUPM for OpenCode: $ARGUMENTS
 
-## Required behavior
+Use `docs/UUPM_INSTALL_FOR_AGENT.md` as the source of truth.
 
-Read, in order:
+Do not overwrite existing OpenCode/project config without backups. Prefer project-local installation unless the normalized deliverable targets it for global install. UUPM is design intelligence only, not a component MCP server. Persisting generated design-system files, fonts, assets, or new dependencies is a gated action unless persistence is the normalized deliverable.
 
-1. `plans/<plan>/plan.md`
-2. `plans/<plan>/todo.md`
-3. active `phases/phase-N.md`
-4. active `implementation/phase-N-impl.md` when present
-5. relevant `reviews/*.md`
-6. latest `handovers/session-*.md`
-7. project-local `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` when present
-
-Then report current phase, current todo item, blockers, known decisions, and next safe action. Do not restart from zero unless canonical files are missing or stale.
+Return one consolidated markdown report with green/yellow/red stage status and exact commands/results.

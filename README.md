@@ -1,8 +1,8 @@
 <div align="center">
 
-> v28.13 cleans and updates the README. Package rules are unchanged from v28.12.
+> v28.15 cleans permissions, command names, duplicate review/plan commands, and stale snippets.
 
-# OpenCode Agent Pack v28.13
+# OpenCode Agent Pack v28.15
 
 ### Model-agnostic agents · Startup blocks · OCR review · Clean PR branches · Persistent planning · Readable output
 
@@ -16,13 +16,14 @@
 
 ---
 
-## What's new in v28.13
+## What's new in v28.15
 
-- README cleaned and reordered.
-- Stale Startup wording removed.
-- Duplicate validation checklist item removed.
-- OCR and PR provenance sections moved before the footer.
-- No agent/command policy changes from v28.12.
+- Permissions now follow default-allow style with only role-incompatible tools disabled.
+- Commands stay minimal: `description`, `agent`, and `subtask: false`; no command-level permission sandbox.
+- Built-in/base agents `build`, `explore`, `general`, and `plan` are preserved unchanged by name.
+- Duplicate plan/review commands were folded into `/plan` and `/review`.
+- Custom agent/command names were shortened and made consistent.
+- The stale command JSONC snippet was removed; `commands/*.md` is the single command source of truth.
 
 ---
 
@@ -46,7 +47,7 @@ Core rule:
 | Behavioral contracts | Before user-facing changes, preserve the natural user action/value source instead of exposing raw internals. |
 | Right-level fixes | Fix the shared helper/service/composable/API wrapper when the bug belongs there, not only the first call site. |
 | Gated actions | Commits, pushes, PRs, releases, deps, secrets, destructive commands, runtime config, and broad product/architecture choices require approval. |
-| Git sync before edits | Before editing, agents fetch the base branch and avoid working on stale branch state. |
+| Git sync before mutation | The active primary/orchestrator handles base-branch sync before mutation/publication work; leaf subagents are not forced to fetch before inspection. |
 | PR branch provenance | Before commit/push/PR/update, agents prove the branch contains only intended commits/files. |
 | OCR review | Alibaba `open-code-review` is the preferred backend for code/diff/PR review when installed and allowed. |
 | Persistent planning | Long-running/multi-agent work uses durable `plans/<plan>/` artifacts. |
@@ -83,7 +84,7 @@ Rules:
 
 ### Pre-edit sync gate
 
-Before changing code/config/docs in a repository, agents must check the branch and fetch the base branch.
+Before changing code/config/docs in a repository, the active primary/orchestrator must check the branch and fetch the base branch.
 
 Required intent:
 
@@ -121,7 +122,7 @@ docs/GIT_BRANCH_PROVENANCE_POLICY.md
 Command:
 
 ```text
-/pr-provenance-check
+/pr-provenance
 ```
 
 ---
@@ -151,7 +152,6 @@ Useful files:
 ```text
 docs/OCR_REVIEW_POLICY.md
 commands/review.md
-commands/pr-review.md
 agents/reviewer.md
 snippet/open-code-review-usage.md
 ```
@@ -247,7 +247,7 @@ docs/
 |---|---|
 | Small/focused work | `normalize -> inspect -> implement if allowed -> verify -> report` |
 | User-facing work | `normalize -> inspect -> Behavioral Contract Check -> implement -> verify -> review/report` |
-| Long-running work | `Discuss -> Create Plan -> Review Plan -> Author Implementation Plan -> Review Implementation Plan -> Execute -> Review -> Update Plan -> Handover` |
+| Long-running work | `Discuss -> /plan -> /review when needed -> /execute-plan -> /review when needed -> /plan update/handover` |
 
 Broad implementation uses:
 
@@ -261,24 +261,28 @@ Blueprint -> Gate -> Execute -> Digest
 
 | Command | Purpose |
 |---|---|
-| `/create-plan` | Create canonical `plans/<plan>/` artifacts for long-running work. |
-| `/resume-plan` | Resume from existing plan/todo/review/handover files. |
-| `/update-plan` | Update todo, phase status, decisions, and next action. |
-| `/generate-handover` | Produce a durable handoff for the next agent/session. |
-| `/author-and-verify-implementation-plan` | Write implementation plan grounded in actual files/symbols. |
-| `/review-plan` | Review plan quality before execution. |
-| `/review-implementation-plan` | Review feasibility and safety of implementation plan. |
-| `/execute-work-package` | Execute approved package using Blueprint → Gate → Execute → Digest. |
-| `/review-implementation` | Review result against acceptance criteria. |
-| `/project-audit` | Broad project audit with persistent planning when scope requires it. |
-| `/bugfix` | Bugfix workflow with right-level and contract checks. |
-| `/review` | Code/diff review; prefers OCR when installed and allowed. |
-| `/pr-review` | PR review; prefers OCR when installed and allowed. |
+| `/bugfix` | Full bugfix workflow with investigation, fix, verification, and review. |
+| `/bug-issue` | Verify a bug report and draft/open a factual issue when requested. |
+| `/code-explore` | Explore code and return facts, paths, call paths, and patterns. |
+| `/debug` | Reproduce/root-cause/fix a concrete failure or runtime error. |
+| `/devops-check` | Inspect Docker/systemd/CI/runtime/deployment state. |
+| `/verify` | Run tests, linters, builds, and smoke checks without editing. |
+| `/review` | Unified review command for code, PRs, plans, implementation plans, results, and fix-level checks; prefers OCR when installed and allowed. |
 | `/pr-followup` | Follow-up work on an existing PR with branch provenance checks. |
-| `/pr-provenance-check` | Read-only proof that the current branch/PR contains only intended commits/files. |
-| `/ui-*` | UI audit/options/plan/implementation/MCP/UUPM workflows. |
-| `/verify` | Test/lint/build/smoke verification. |
+| `/pr-provenance` | Read-only proof that the current branch/PR contains only intended commits/files. |
+| `/audit` | Broad repository/project audit with persistent planning when scope requires it. |
 | `/release-prep` | Release notes and release checks from verified facts only. |
+| `/plan` | Create/resume/update/handover persistent plan state and author implementation plans. |
+| `/execute-plan` | Execute an approved plan/work package using Blueprint → Gate → Execute → Digest. |
+| `/ui-audit` | UI/layout/UX audit. |
+| `/ui-options` | UI redesign options without editing. |
+| `/ui-plan` | Concrete UI redesign/theme plan. |
+| `/ui-redesign` | Full UI redesign workflow. |
+| `/ui-implement` | Implement an approved UI plan. |
+| `/ui-a11y-check` | Accessibility/keyboard/focus/contrast/responsive check. |
+| `/ui-mcp-setup` | UI MCP setup. |
+| `/ui-uupm-setup` | UI UX Pro Max / UUPM setup. |
+
 
 ---
 
@@ -305,7 +309,7 @@ Installs to:
 Run from the repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_13/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_15/install/install-project.sh
 ```
 
 Installs to:
@@ -324,9 +328,11 @@ Installs to:
 
 This pack is expected to validate with:
 
-- no missing files from the v28.12 base;
+- expected v28.15 renames/deletions only;
 - YAML frontmatter parses for all agents and commands;
-- JSONC snippets parse;
+- no command has `subtask: true`;
+- no command has a `permission:` block;
+- no stale deleted command or renamed agent references remain;
 - install scripts pass `bash -n`;
 - no provider-specific `model:` overrides in agents;
 - no stale provider-specific model IDs;
@@ -351,7 +357,7 @@ Use this pack when you want agents that can:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.13**  
-Semantic routing · Startup blocks · OCR review · Clean PR branches · Durable plans · Readable output
+**OpenCode Agent Pack v28.15**  
+Semantic routing · Top-level commands · Primary orchestrators · OCR review · Clean PR branches · Durable plans
 
 </div>

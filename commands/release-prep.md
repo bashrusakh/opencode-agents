@@ -1,7 +1,7 @@
 ---
-description: Prepare or verify release notes from actual repository history; treat tags/releases/publication as gated actions.
-agent: code-workflow-orchestrator
-subtask: true
+description: "Prepare or verify release notes from actual repository history; treat tags/releases/publication as gated actions."
+agent: code-orchestrator
+subtask: false
 ---
 
 ## Startup Block Before Tools

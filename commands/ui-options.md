@@ -1,7 +1,7 @@
 ---
-description: Propose UI/web redesign options without editing code. Use this for variants, ideas, layout alternatives, and choosing between quick/balanced/full redesign directions.
-agent: ui-web-orchestrator
-subtask: true
+description: "Propose UI/web redesign options without editing code."
+agent: ui-orchestrator
+subtask: false
 ---
 
 ## Startup Block Before Tools
@@ -66,10 +66,10 @@ For long-running, multi-session, or multi-agent work, use `plans/<plan>/` as dur
 
 Propose UI/web redesign options for: $ARGUMENTS
 
-This is options-only. Do not edit code and do not call @frontend-ui-implementer.
+This is options-only. Do not edit code and do not call @ui-implementer.
 
-Use @explore and @ui-ux-auditor if the current UI needs to be understood.
-Use @ui-redesign-planner to produce 2-3 concrete options:
+Use @explore and @ui-auditor if the current UI needs to be understood.
+Use @ui-planner to produce 2-3 concrete options:
 
 1. Conservative / quick
 2. Balanced / recommended

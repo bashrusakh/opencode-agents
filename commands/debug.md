@@ -1,7 +1,7 @@
 ---
-description: Reproduce and fix a failing test, traceback, build failure, runtime error, or reproducible bug.
+description: "Reproduce and fix a failing test, traceback, build failure, runtime error, or reproducible bug."
 agent: debugger
-subtask: true
+subtask: false
 ---
 
 ## Startup Block Before Tools

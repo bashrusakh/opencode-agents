@@ -1,7 +1,7 @@
 ---
-description: Create a concrete UI/web redesign or theme plan from an audit, screenshot, issue, or requested screen.
-agent: ui-redesign-planner
-subtask: true
+description: "Create a concrete UI/web redesign or theme plan from an audit, screenshot, issue, or requested screen."
+agent: ui-planner
+subtask: false
 ---
 
 ## Startup Block Before Tools

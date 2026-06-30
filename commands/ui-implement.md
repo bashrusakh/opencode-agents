@@ -1,7 +1,7 @@
 ---
-description: Implement an already planned UI/web redesign using the existing frontend architecture.
-agent: frontend-ui-implementer
-subtask: true
+description: "Implement an already planned UI/web redesign using the existing frontend architecture."
+agent: ui-implementer
+subtask: false
 ---
 
 ## Startup Block Before Tools

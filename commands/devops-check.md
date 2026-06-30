@@ -1,7 +1,7 @@
 ---
-description: Inspect Docker, systemd, CI, deployment, env, service logs, permissions, or runtime configuration.
+description: "Inspect Docker, systemd, CI, deployment, env, service logs, permissions, or runtime configuration."
 agent: devops
-subtask: true
+subtask: false
 ---
 
 ## Startup Block Before Tools

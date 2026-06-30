@@ -117,6 +117,8 @@ Do not start `Fetch URL`, `Find Files`, `Search Files`, `Read File`, `Bash`, `Ed
 
 The startup block is required even when no gated action is needed. Its job is to prevent silent route changes, broad discovery, or mutation drift.
 
+Startup block is not Git sync. The Startup block is only the visible Markdown normalization step before tools. Pre-edit Git sync and PR branch provenance are responsibilities of the active primary/orchestrator before mutation or publication work. Leaf subagents must not be forced to run `git fetch` before they can inspect files. They may use local context and tools normally. If fresh base/remote context is required, they should ask or report the missing context to the caller.
+
 
 - Do not guess.
 - Prefer the smallest correct change.
@@ -221,9 +223,9 @@ Default routing:
 
 - discovery, architecture tracing, file search, “where/how is this implemented?” -> `@explore`
 - architecture/multi-file sequencing/data model/API/deployment planning or multiple valid implementation approaches -> `@plan`
-- UI/web design/redesign/layout/theme/settings/forms/dashboards/tables -> `@ui-web-orchestrator`
-- multi-step bugfix, PR follow-up, issue-from-bug, release-prep -> `@code-workflow-orchestrator`
-- full project audit, logic review, dead-code sweep, wrong-fix-level sweep -> `@project-auditor`
+- UI/web design/redesign/layout/theme/settings/forms/dashboards/tables -> `@ui-orchestrator`
+- multi-step bugfix, PR follow-up, bug-issue, release-prep -> `@code-orchestrator`
+- full project audit, logic review, dead-code sweep, wrong-fix-level sweep -> `@auditor`
 - verification -> `@tester`
 - root-cause bug fixing -> `@debugger`
 - code/PR/security review -> `@reviewer`
@@ -235,7 +237,7 @@ For code, diff, commit, branch, workspace, or PR review, prefer OCR/open-code-re
 OCR is locally read-only for the repository, but it may send code, diffs, and context to the configured OCR LLM provider. If external code sharing is not already approved by user/project policy, ask before running OCR. If OCR is unavailable, not configured, or not approved, fall back to native read-only review and state why.
 
 Do not apply OCR suggestions automatically for a review-only request. Automatic fixes require a separately normalized fix request and the normal gated-action checks.
-- abstraction-level / duplicated-fix review -> `@fix-level-reviewer`
+- abstraction-level / duplicated-fix review -> `@reviewer`
 - Docker/systemd/CI/deploy/runtime config -> `@devops`
 - fallback bounded research only when no specific agent fits -> `@general`
 
@@ -247,22 +249,22 @@ Do not over-delegate for tiny mechanical edits when the correct change is obviou
 
 Classify UI intent before running the full workflow:
 
-- options/plan/audit-only: do not edit code. Use `@ui-web-orchestrator` or `@ui-redesign-planner`; use `@ui-ux-auditor` first when understanding the current UI is required. Return 2-3 options and stop.
+- options/plan/audit-only: do not edit code. Use `@ui-orchestrator` or `@ui-planner`; use `@ui-auditor` first when understanding the current UI is required. Return 2-3 options and stop.
 - quick redesign: focused layout/density/action-placement/section-reordering cleanup. Keep scope narrow, reuse existing components/tokens/styles, continue automatically unless a gated action is hit.
 - full redesign: new theme, broad visual direction, dashboard/settings restructure, or many-screen UI work. Use full UI workflow and ask before implementation when direction/scope is ambiguous or broad.
 - implementation requested: proceed through the UI workflow automatically; ask only when a gated action is hit.
-- audit/review only: use `@ui-ux-auditor`, do not edit code, return findings with severity and concrete fixes.
+- audit/review only: use `@ui-auditor`, do not edit code, return findings with severity and concrete fixes.
 
-For UI options, current-design review, or visual critique requests, the active primary implementation agent must not deeply analyze UI/CSS files itself. It should delegate to `@ui-web-orchestrator` with options/audit intent or use `/ui-options` semantics. UI subagents may inspect UI/CSS as part of their job.
+For UI options, current-design review, or visual critique requests, the active primary implementation agent must not deeply analyze UI/CSS files itself. It should delegate to `@ui-orchestrator` with options/audit intent or use `/ui-options` semantics. UI subagents may inspect UI/CSS as part of their job.
 
 Default UI implementation workflow:
 
 1. `@explore` when files/routes/components/styles/state flow are not yet identified
-2. `@ui-ux-auditor` for current UX/layout audit and element priority
-3. `@ui-redesign-planner` for concrete redesign/layout/theme plan
+2. `@ui-auditor` for current UX/layout audit and element priority
+3. `@ui-planner` for concrete redesign/layout/theme plan
 4. gated-action check before any gated action
-5. `@frontend-ui-implementer` for code changes
-6. `@accessibility-reviewer` for accessibility/interaction review
+5. `@ui-implementer` for code changes
+6. `@a11y-reviewer` for accessibility/interaction review
 7. `@tester` for the narrowest relevant frontend validation
 8. one consolidated final report
 
@@ -290,7 +292,7 @@ UUPM / UI UX Pro Max is design intelligence only, not a component source or MCP 
 
 ### 6.3 Coding / bugfix workflow
 
-Use `@code-workflow-orchestrator` for multi-step coding workflows.
+Use `@code-orchestrator` for multi-step coding workflows.
 
 Bugfix default:
 
@@ -298,7 +300,7 @@ Bugfix default:
 2. `@tester` when reproduction/failing checks are needed
 3. `@debugger` to find root cause and apply the smallest right-level fix when the normalized deliverable is changed code/config/UI
 4. `@tester` again for focused verification
-5. `@fix-level-reviewer` when shared behavior or multiple call sites are touched
+5. `@reviewer` when shared behavior or multiple call sites are touched
 6. `@reviewer` for review when the diff touches shared behavior, security, data handling, API contracts, concurrency, or non-obvious logic
 7. final report
 
@@ -332,9 +334,9 @@ Review comments, failed PR checks, requested corrections, CI failures, and follo
 
 ### 6.7 Project audit workflow
 
-For broad project reviews, logic audits, dead-code sweeps, architecture-health checks, duplicated-fix searches, optimization reviews, or whole-project bug hunts, use `@project-auditor`. If the audit is long-running, multi-agent, or full-project scope, first create or resume a `plans/<plan>/` workflow and use it as durable state.
+For broad project reviews, logic audits, dead-code sweeps, architecture-health checks, duplicated-fix searches, optimization reviews, or whole-project bug hunts, use `@auditor`. If the audit is long-running, multi-agent, or full-project scope, first create or resume a `plans/<plan>/` workflow and use it as durable state.
 
-The project auditor is read-only by default. It should orchestrate `@explore`, `@tester`, `@reviewer`, `@fix-level-reviewer`, `@ui-ux-auditor`, `@accessibility-reviewer`, and `@devops` for audit areas that need an independent specialist pass. It should return confirmed findings, hypotheses, dead/stale code, wrong-level fixes, test gaps, practical optimizations, uncovered areas, and prioritized next actions.
+The project auditor is read-only by default. It should orchestrate `@explore`, `@tester`, `@reviewer`, `@ui-auditor`, `@a11y-reviewer`, and `@devops` for audit areas that need an independent specialist pass. It should return confirmed findings, hypotheses, dead/stale code, wrong-level fixes, test gaps, practical optimizations, uncovered areas, and prioritized next actions.
 
 ### 6.8 DevOps/runtime workflow
 
@@ -355,7 +357,7 @@ For release notes, tags, changelog, release body, assets, or release verificatio
 
 ### 7.1 Before editing
 
-Before editing code/config/docs in a repository, run a pre-edit Git sync check. A stale or polluted branch is a scope bug, not an implementation detail.
+Before editing code/config/docs in a repository, the active primary/orchestrator must run a pre-edit Git sync check for mutation work. A stale or polluted branch is a scope bug, not an implementation detail. This gate is not a required startup step for leaf subagents; leaf agents may inspect local context normally and ask/report if fresh remote/base context is needed.
 
 Required pre-edit checks for mutation-capable repository work:
 
@@ -481,7 +483,18 @@ For any orchestrated workflow, return one concise markdown report with green/yel
 | Persistent planning | ✅/⚠️/❌/skipped | plan path / current phase / todo / handover for long-running work |
 | Implementation | ✅/⚠️/❌/skipped | ... |
 | Verification | ✅/⚠️/❌/blocked | exact commands/results |
-| Review | ✅/⚠️/❌/skipped | reviewer/fix-level/a11y summary |
+| Review | ✅/⚠️/❌/skipped | reviewer/review/a11y summary |
 | Commit/PR | ✅/⚠️/❌/skipped | only when the gated-action rule allows the exact publication action |
 
 Keep final reports short: what changed or was found, exact checks run, blockers/failures, and one concrete next action when there is a clear next action.
+
+## 11. Memory (GrayMatter)
+
+This project has persistent agent memory via the `graymatter` MCP tools:
+
+- `memory_search` (`agent_id`, `query`) — call at the **start of a task** when prior context might matter.
+- `memory_add` (`agent_id`, `text`) — call whenever you learn something **durable**: user preferences, decisions, conventions, gotchas.
+- `memory_reflect` (`action`, `agent`, `text`/`target`) — update or forget stale facts. ⚠ takes `agent`, not `agent_id`.
+- `checkpoint_save` / `checkpoint_resume` (`agent_id`) — snapshot/restore session state before major refactors or across restarts.
+
+Use a stable `agent_id` of the form `<project>-<role>` (e.g. `myapp-backend`). Store conclusions, not conversation logs. Err on the side of remembering.

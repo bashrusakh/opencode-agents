@@ -87,7 +87,7 @@ Treat UUPM as available only when at least one of these is confirmed:
 - project docs state that UUPM is installed and should be used
 - the `uipro` CLI is available and checking it is allowed by permissions
 
-Do not assume UUPM is installed. Do not install UUPM during normal UI work. Use `/uupm-setup` only when setup is the normalized deliverable.
+Do not assume UUPM is installed. Do not install UUPM during normal UI work. Use `/ui-uupm-setup` only when setup is the normalized deliverable.
 
 If UUPM is unavailable or cannot be checked, continue without it and report `UUPM: not used / not available / not checked`.
 

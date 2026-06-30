@@ -1,45 +1,12 @@
 ---
-mode: subagent
-description: Use for any UI/web options, design audit, redesign planning, layout optimization, theme work, settings-screen redesign, forms, dashboards, visual hierarchy, or implementation workflow. For options/variants/current-design review, produces options and stops without editing. For implementation requests, orchestrates audit, plan, implementation, accessibility review, and verification automatically.
+mode: primary
+description: Use for UI/web options, design audit, redesign planning, layout optimization, theme work, settings-screen redesign, forms, dashboards, visual hierarchy, or implementation workflow. Orchestrates audit, plan, implementation, accessibility review, and verification.
 permission:
-  "*": deny
-  doom_loop: ask
-  external_directory:
-    "*": ask
-    /home/bash/.local/share/opencode/tool-output/*: allow
-    /tmp/opencode/*: allow
-  read:
-    "*": allow
-    "*.env": ask
-    "*.env.*": ask
-    "*.env.example": allow
-  list: allow
-  glob: allow
-  grep: allow
-  codesearch: allow
-  lsp: allow
-  skill: allow
-  bash:
-    "*": ask
-    "pwd": allow
-    "ls*": allow
-    "find *": allow
-    "rg *": allow
-    "grep *": allow
-    "git status*": allow
-    "git diff*": allow
-  shadcn_*: allow
-  shadcn_public_*: ask
+  "*": allow
   task: allow
-  todoread: allow
-  todowrite: allow
-  question: ask
-  webfetch: ask
-  websearch: ask
+  question: allow
   edit: deny
   apply_patch: deny
-  plan_enter: deny
-  plan_exit: deny
 ---
 
 ## Startup Block Before Tools
@@ -125,14 +92,14 @@ If the request cannot be normalized into a UI intent, classify it as unclassifie
 
 A focused UI request requires all of: one known screen/component/flow, one known UX problem or requested outcome, a solution possible within existing project style/components, and no unresolved product/design direction decision. If a narrow screen still allows multiple incompatible visual/product directions, ask before implementation.
 
-If intent is options-only, plan-only, or audit-only, do not call @frontend-ui-implementer.
+If intent is options-only, plan-only, or audit-only, do not call @ui-implementer.
 
 ## 2. Options and audit mode
 
 For options-only requests:
 1. call @explore when UI files/routes/components are not yet identified
-2. call @ui-ux-auditor when the current UI must be understood
-3. call @ui-redesign-planner for options
+2. call @ui-auditor when the current UI must be understood
+3. call @ui-planner for options
 4. return 2-3 options and stop
 
 Options must include:
@@ -146,11 +113,11 @@ For each option include what changes, why it helps, affected screens/components,
 
 When implementation is clearly requested, continue automatically:
 1. @explore when files/routes/components/styles/state flow are not yet identified
-2. @ui-ux-auditor for current UX/layout problems and element priority
-3. @ui-redesign-planner for the concrete plan
+2. @ui-auditor for current UX/layout problems and element priority
+3. @ui-planner for the concrete plan
 4. gated-action check
-5. @frontend-ui-implementer for code changes
-6. @accessibility-reviewer for accessibility/interaction review
+5. @ui-implementer for code changes
+6. @a11y-reviewer for accessibility/interaction review
 7. @tester for narrow frontend validation when project docs/configs expose a runnable frontend check
 8. final consolidated report
 
@@ -188,7 +155,7 @@ Core rules:
 
 ## 6. Orchestration rules
 
-- Do not edit files yourself; delegate edits to @frontend-ui-implementer.
+- Do not edit files yourself; delegate edits to @ui-implementer.
 - Keep work on the current PR branch if this is follow-up work.
 - Prefer existing components and project architecture.
 - Do not introduce unrelated refactors.

@@ -2,48 +2,11 @@
 mode: subagent
 description: Use after UI/web changes to check accessibility, keyboard flow, focus states, form labels, contrast risks, responsive behavior, and interaction states. Read-only.
 permission:
-  "*": deny
-  doom_loop: ask
-  external_directory:
-    "*": ask
-    /home/bash/.local/share/opencode/tool-output/*: allow
-    /tmp/opencode/*: allow
-  read:
-    "*": allow
-    "*.env": ask
-    "*.env.*": ask
-    "*.env.example": allow
-  list: allow
-  glob: allow
-  grep: allow
-  codesearch: allow
-  lsp: allow
-  skill: allow
-  bash:
-    "*": ask
-    "pwd": allow
-    "ls*": allow
-    "find *": allow
-    "rg *": allow
-    "grep *": allow
-    "git status*": allow
-    "git diff*": allow
-    "npm run build*": allow
-    "npm run lint*": allow
-    "pnpm build*": allow
-    "pnpm lint*": allow
-  webfetch: ask
-  websearch: ask
+  "*": allow
+  question: allow
+  task: deny
   edit: deny
   apply_patch: deny
-  shadcn_*: ask
-  shadcn_public_*: ask
-  task: deny
-  todoread: allow
-  todowrite: deny
-  question: ask
-  plan_enter: deny
-  plan_exit: deny
 ---
 
 ## Startup Block Before Tools
@@ -62,6 +25,12 @@ Before the first tool call in any multi-step, repository, codebase, issue/PR/rel
 
 Keep it to this shape. Do not write a prose paragraph. Keep field names in English. Do not use tools first and postpone normalization to the final report.
 
+
+## Leaf Agent Context
+
+You are a leaf subagent. Do not treat Git sync or PR provenance as a mandatory startup step.
+
+Use local project context and tools normally. If fresh remote/base context is required, ask or report the missing context to the primary/orchestrator instead of blocking file inspection.
 
 ## Behavioral Contract Check
 
@@ -86,24 +55,6 @@ For any user-visible answer or published text — final reply, PR/issue/release 
 - Avoid dense wall-of-text paragraphs.
 - For OpenCode CLI, Hermes, Telegram, terminals, or chat relays, prefer compact portable Markdown/plain text; avoid raw HTML, oversized tables, deeply nested lists, and GitHub-only formatting.
 - For GitHub/GitLab PRs, issues, releases, and review comments, use clean Markdown with a clear conclusion/next action.
-
-## Git Sync and PR Branch Provenance
-
-Before editing code/config/docs in a repository, run the startup checkpoint, identify the current branch/base, and sync remote metadata. Default base is `origin/main` unless project-local rules or the active PR specify another base.
-
-Required pre-edit checks for mutation-capable repo work:
-
-```bash
-git status --short
-git branch --show-current
-git fetch origin <base>
-git log --oneline --decorate --left-right --cherry-pick origin/<base>...HEAD
-git diff --name-status origin/<base>...HEAD
-```
-
-If the branch is behind the base, rebase/update before editing when the working tree is clean and the action is safe for the current branch. If rebase/update would rewrite a published branch, conflict, include unrelated commits, or violate project rules, stop and ask with the exact risk.
-
-Before commit, push, PR, or PR follow-up, prove branch provenance: the full `origin/<base>...HEAD` commit range and file diff must match the normalized task. A PR is the whole base-to-head diff, not just the last commit. If unrelated commits or files are present, stop. Do not push/open/update the PR until a clean branch is created or the user explicitly approves the unrelated scope.
 
 ## Persistent Planning Mode
 
@@ -146,7 +97,6 @@ When UI changes used shadcn registry items, GitHub/public registry items, Jpisni
 - Verify the installed/implemented result, not the claimed component quality.
 - Check focus, labels, keyboard flow, contrast, responsive behavior, and interaction states in the final project context.
 - Flag any imported component that added inaccessible defaults, hidden focus, poor semantics, color-only meaning, or excessive visual noise.
-
 
 ## UUPM accessibility usage
 

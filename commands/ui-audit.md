@@ -1,7 +1,7 @@
 ---
-description: Audit a UI/web screen for layout, hierarchy, density, settings/form UX, and primary action placement.
-agent: ui-ux-auditor
-subtask: true
+description: "Audit a UI/web screen for layout, hierarchy, density, settings/form UX, and primary action placement."
+agent: ui-auditor
+subtask: false
 ---
 
 ## Startup Block Before Tools

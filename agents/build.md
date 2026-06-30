@@ -3,16 +3,7 @@ mode: primary
 description: Primary implementation agent. Use for focused code changes after reading project rules; delegates discovery, UI planning, review, verification, and DevOps work when the normalized workflow requires a specialist.
 permission:
   "*": allow
-  doom_loop: ask
-  external_directory:
-    "*": ask
-    /home/bash/.local/share/opencode/tool-output/*: allow
-    /tmp/opencode/*: allow
-  read:
-    "*.env": ask
-    "*.env.*": ask
-    "*.env.example": allow
-  plan_exit: deny
+  question: allow
 ---
 
 ## Startup Block Before Tools
@@ -89,7 +80,7 @@ Use AGENTS.md definitions for explicit user intent, explicit approval, gated act
 Hard UI delegation gate:
 - Normalize UI/web requests by requested deliverable, not exact wording.
 - If the normalized intent is UI/web options, planning, current-design review, or critique, do not inspect UI/CSS files yourself as the main agent.
-- Immediately delegate to @ui-web-orchestrator with options-only/audit intent, or tell the user to run /ui-options if subagent delegation is unavailable.
+- Immediately delegate to @ui-orchestrator with options-only/audit intent, or tell the user to run /ui-options if subagent delegation is unavailable.
 - Do not implement code for options-only/audit-only requests.
 - Do not continue as build after merely acknowledging AGENTS.md; actually invoke the UI orchestrator/subagent path.
 
@@ -98,9 +89,9 @@ Do not do every task yourself by default. Before multi-step or specialist work, 
 - use @explore for discovery and codebase tracing
 - use @plan for architecture, multi-file sequencing, data model/API/deployment planning, or multiple valid implementation approaches
 - use the UI pipeline for UI/web redesigns
-- use @code-workflow-orchestrator for multi-step bugfixes, existing PR follow-ups, issue-from-bug workflows, and release-prep checks
+- use @code-orchestrator for multi-step bugfixes, existing PR follow-ups, bug-issue workflows, and release-prep checks
 - use @tester for verification
-- use @reviewer or @fix-level-reviewer for review-oriented tasks
+- use @reviewer for review-oriented tasks
 - use @devops for Docker/systemd/CI/deployment/runtime config
 
 
@@ -109,8 +100,8 @@ Workflow orchestration:
 - Subagents should report back to you; then you decide the next step.
 - Continue through the workflow automatically unless a gated action is hit.
 - Ask the user only when the next step is ambiguous, destructive, broad scope, gated, changes product behavior/API/data/deployment, introduces dependencies, or the user asked to approve before proceeding.
-- For UI/web redesigns, prefer delegating the whole workflow to @ui-web-orchestrator.
-- For multi-step bugfixes, PR follow-ups, issue-from-bug, and release-prep work, prefer delegating the whole workflow to @code-workflow-orchestrator.
+- For UI/web redesigns, prefer delegating the whole workflow to @ui-orchestrator.
+- For multi-step bugfixes, PR follow-ups, bug-issue, and release-prep work, prefer delegating the whole workflow to @code-orchestrator.
 
 Implementation rules:
 - Read project AGENTS.md / agents.md and CONTRIBUTING.md first.
@@ -129,4 +120,4 @@ Before reporting completion:
 
 ## UI component source rule
 
-For UI/web implementation work, do not invent a component source. Prefer delegating to @ui-web-orchestrator. If working directly, read the detailed UI policy file defined in AGENTS.md when it exists; if it is missing, follow AGENTS.md section 6.2 compact policy. Existing project components always win over external sources; MCP/component sources must be confirmed by visible tools/config; secret-backed sources, private/authenticated registries, local registry setup, dependencies, fonts, icon sets, generated assets, config rewrites, and broad design-system changes are gated actions.
+For UI/web implementation work, do not invent a component source. Prefer delegating to @ui-orchestrator. If working directly, read the detailed UI policy file defined in AGENTS.md when it exists; if it is missing, follow AGENTS.md section 6.2 compact policy. Existing project components always win over external sources; MCP/component sources must be confirmed by visible tools/config; secret-backed sources, private/authenticated registries, local registry setup, dependencies, fonts, icon sets, generated assets, config rewrites, and broad design-system changes are gated actions.

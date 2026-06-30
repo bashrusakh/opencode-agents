@@ -9,11 +9,11 @@ UUPM is not a component MCP server. It is used for design-system reasoning, layo
 ```text
 UI workflow:
   /ui-redesign
-    -> ui-web-orchestrator
-      -> ui-ux-auditor
-      -> ui-redesign-planner + UUPM only after availability check
-      -> frontend-ui-implementer + UUPM-derived plan when it was clearly adopted by the planner
-      -> accessibility-reviewer
+    -> ui-orchestrator
+      -> ui-auditor
+      -> ui-planner + UUPM only after availability check
+      -> ui-implementer + UUPM-derived plan when it was clearly adopted by the planner
+      -> a11y-reviewer
       -> tester
 
 Component sources:
@@ -81,18 +81,18 @@ Back up any existing skill with the same name before replacing it.
 Allowed to use UUPM directly:
 
 ```text
-ui-web-orchestrator
-ui-ux-auditor
-ui-redesign-planner
-frontend-ui-implementer
-accessibility-reviewer
+ui-orchestrator
+ui-auditor
+ui-planner
+ui-implementer
+a11y-reviewer
 ```
 
 Do not use UUPM directly for ordinary bugfix/review/test/devops work unless the normalized deliverable targets it for UI/design guidance.
 
 ## Availability check for agents
 
-Agents must not assume UUPM is installed. Treat it as available only if a runtime skill is exposed, a project or installed OpenCode `ui-ux-pro-max/SKILL.md` exists, project docs say it is installed, or an allowed `uipro` CLI check succeeds. If unavailable or not checked, continue without UUPM and report that status. Do not install UUPM during normal UI work; use `/uupm-setup` only when setup is requested.
+Agents must not assume UUPM is installed. Treat it as available only if a runtime skill is exposed, a project or installed OpenCode `ui-ux-pro-max/SKILL.md` exists, project docs say it is installed, or an allowed `uipro` CLI check succeeds. If unavailable or not checked, continue without UUPM and report that status. Do not install UUPM during normal UI work; use `/ui-uupm-setup` only when setup is requested.
 
 ## Gated actions
 

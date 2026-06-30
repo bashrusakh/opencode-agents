@@ -1,7 +1,7 @@
 ---
-description: Run the full UI/web redesign workflow in one request. The orchestrator calls audit, planning, implementation, accessibility review, and verification subagents automatically unless a gated action is hit.
-agent: ui-web-orchestrator
-subtask: true
+description: "Run the full UI/web redesign workflow in one request."
+agent: ui-orchestrator
+subtask: false
 ---
 
 ## Startup Block Before Tools
@@ -70,10 +70,10 @@ Do not make the user manually run each stage.
 
 Call subagents in sequence and continue automatically when the next stage does not hit a gated action:
 1. @explore if relevant files/routes/components/styles are not already known.
-2. @ui-ux-auditor for current UX/layout audit and element priority.
-3. @ui-redesign-planner for concrete redesign/layout/theme plan. It must read the detailed UI policy file defined in AGENTS.md when it exists and perform the UUPM availability check before using UUPM/UI UX Pro Max.
-4. @frontend-ui-implementer if no gated action is hit.
-5. @accessibility-reviewer for UI/a11y check.
+2. @ui-auditor for current UX/layout audit and element priority.
+3. @ui-planner for concrete redesign/layout/theme plan. It must read the detailed UI policy file defined in AGENTS.md when it exists and perform the UUPM availability check before using UUPM/UI UX Pro Max.
+4. @ui-implementer if no gated action is hit.
+5. @a11y-reviewer for UI/a11y check.
 6. @tester for the narrowest relevant frontend validation.
 
 Ask the user only if a gated action is hit: ambiguous visual direction, new dependency/design system, broad scope rewrite, product/API/data/deployment behavior change, destructive action, secrets/external account action, or blocked verification.

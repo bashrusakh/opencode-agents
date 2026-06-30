@@ -1,7 +1,7 @@
 ---
-description: Verify branch provenance before commit, push, PR creation, or PR update.
-agent: code-workflow-orchestrator
-subtask: true
+description: "Verify branch provenance before commit, push, PR creation, or PR update."
+agent: code-orchestrator
+subtask: false
 ---
 
 ## Startup Block Before Tools

@@ -1,7 +1,7 @@
 ---
-description: "Handle follow-up work for an existing PR: review comments, failed checks, requested fixes, implementation, verification, and optional commit/push when the gated-action rule allows that exact action."
-agent: code-workflow-orchestrator
-subtask: true
+description: "Handle follow-up work for an existing PR: review comments, failed checks, requested fixes, implementation, verification, and optional publication when gated rules allow."
+agent: code-orchestrator
+subtask: false
 ---
 
 ## Startup Block Before Tools

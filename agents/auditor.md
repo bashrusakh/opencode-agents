@@ -1,59 +1,12 @@
 ---
-mode: subagent
-description: "Use for full-project audits: explores the whole repository, finds logic bugs, dead code, wrong fix levels, duplicated logic, fragile architecture, test gaps, UI/API mismatches, and optimization opportunities. Orchestrates specialist subagents and returns one consolidated evidence-based report. Read-only; does not edit code."
+mode: primary
+description: "Use for broad repository audits: logic bugs, dead code, wrong fix levels, duplicated logic, fragile architecture, test gaps, UI/API mismatches, and optimization opportunities. Orchestrates specialist subagents and returns one consolidated evidence-based report. Read-only; does not edit code."
 permission:
-  "*": deny
-  doom_loop: ask
-  external_directory:
-    "*": ask
-    /home/bash/.local/share/opencode/tool-output/*: allow
-    /tmp/opencode/*: allow
-  read:
-    "*": allow
-    "*.env": ask
-    "*.env.*": ask
-    "*.env.example": allow
-  list: allow
-  glob: allow
-  grep: allow
-  codesearch: allow
-  lsp: allow
-  bash:
-    "*": ask
-    "pwd": allow
-    "ls*": allow
-    "find *": allow
-    "rg *": allow
-    "grep *": allow
-    "git status*": allow
-    "git branch*": allow
-    "git diff*": allow
-    "git log*": allow
-    "git show*": allow
-    "git grep*": allow
-    "git ls-files*": allow
-    "git remote*": allow
-    "npm run*": ask
-    "pnpm run*": ask
-    "yarn run*": ask
-    "bun run*": ask
-    "pytest*": ask
-    "python -m pytest*": ask
-    "go test*": ask
-    "cargo test*": ask
-    "cargo clippy*": ask
-    "make test*": ask
-    "make lint*": ask
+  "*": allow
   task: allow
-  todoread: allow
-  todowrite: allow
-  question: ask
-  webfetch: ask
-  websearch: ask
+  question: allow
   edit: deny
   apply_patch: deny
-  plan_enter: deny
-  plan_exit: deny
 ---
 
 ## Startup Block Before Tools
@@ -134,9 +87,9 @@ Call specialist subagents for audit areas that need an independent specialist pa
 - Use @explore to map the repository, important modules, entry points, and suspicious areas.
 - Use @tester to discover and run existing tests/checks when the audit scope includes behavior verification and the commands are documented/non-destructive or the gated-action rule allows them.
 - Use @reviewer for correctness, security, regression, maintainability, and test-impact review.
-- Use @fix-level-reviewer for wrong-abstraction-level fixes, duplicated local patches, and missed shared helpers.
-- Use @ui-ux-auditor for UI-heavy projects or screens with layout, hierarchy, forms, dashboard, table, settings, or interaction risk.
-- Use @accessibility-reviewer when the audited project has frontend UI changes, forms, dashboards, settings screens, or interaction/accessibility risk.
+- Use @reviewer for wrong-abstraction-level fixes, duplicated local patches, and missed shared helpers.
+- Use @ui-auditor for UI-heavy projects or screens with layout, hierarchy, forms, dashboard, table, settings, or interaction risk.
+- Use @a11y-reviewer when the audited project has frontend UI changes, forms, dashboards, settings screens, or interaction/accessibility risk.
 - For UI/MCP/component-source findings, ensure UI subagents read the detailed UI policy file defined in AGENTS.md when it exists. If it is missing, apply AGENTS.md section 6.2.
 - Use @devops for Docker, CI, deployment, environment, service, permissions, or runtime configuration risk.
 - Use @general only when no more specific agent fits a needed research subtask.

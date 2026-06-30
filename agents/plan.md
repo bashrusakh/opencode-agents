@@ -1,26 +1,17 @@
 ---
 mode: primary
-description: Read-only planning agent. Use before architecture, multi-file sequencing, data/API/deployment planning, PR, release, or UI redesign work. Produces implementation plans without editing source files.
+description: Planning agent. Use before architecture, multi-file sequencing, data/API/deployment planning, PR, release, or UI redesign work. Creates, resumes, updates, and hands off durable plan artifacts without editing source files.
 permission:
   "*": allow
-  doom_loop: ask
-  external_directory:
-    "*": ask
-    /home/bash/.local/share/opencode/tool-output/*: allow
-    /tmp/opencode/*: allow
-    /home/bash/.local/share/opencode/plans/*: allow
-  read:
-    "*.env": ask
-    "*.env.*": ask
-    "*.env.example": allow
+  question: allow
+  task: deny
   edit:
     "*": deny
-    .opencode/plans/*.md: allow
-    plans/**/*.md: allow
-    docs/**/*.md: allow
-    /home/bash/.local/share/opencode/plans/*.md: allow
+    ".opencode/plans/**/*.md": allow
+    "plans/**/*.md": allow
+    "docs/**/*.md": allow
+    "/home/bash/.local/share/opencode/plans/**/*.md": allow
   apply_patch: deny
-  plan_enter: deny
 ---
 
 ## Startup Block Before Tools
@@ -112,3 +103,18 @@ Output format:
 7. Validation plan
 8. Risks / unknowns
 9. Recommended next agent
+
+
+## Consolidated Plan Command Behavior
+
+`/plan` is the single user-facing planning command. It handles plan lifecycle intent by meaning, not by separate slash-command names.
+
+Supported planning intents:
+
+- create a new `plans/<plan>/` workflow when the task is long-running, broad, multi-agent, or needs durable state;
+- resume an existing plan by reading `plan.md`, `todo.md`, active phase docs, implementation plans, reviews, and latest handover;
+- update canonical plan state after exploration, implementation, review, verification, blockers, decisions, or phase transitions;
+- generate a durable handover in the canonical handover location when the user asks for a handoff;
+- author and verify implementation plans under `plans/<plan>/implementation/` when the user asks for concrete phase execution planning.
+
+Do not expose separate command names for these internal states. Normalize the user's request and update only canonical plan/docs artifacts. Do not edit source code.
