@@ -49,7 +49,7 @@ Core rule:
 | Gated actions | Commits, pushes, PRs, releases, deps, secrets, destructive commands, runtime config, and broad product/architecture choices require approval. |
 | Git sync before mutation | The active primary/orchestrator handles base-branch sync before mutation/publication work; leaf subagents are not forced to fetch before inspection. |
 | PR branch provenance | Before commit/push/PR/update, agents prove the branch contains only intended commits/files. |
-| OCR review | Alibaba `open-code-review` is the preferred backend for code/diff/PR review when installed and allowed. |
+| OCR review | Alibaba [`open-code-review`](https://github.com/alibaba/open-code-review) is the preferred backend for code/diff/PR review when installed and allowed. |
 | Persistent planning | Long-running/multi-agent work uses durable `plans/<plan>/` artifacts. |
 | Readable output | User replies, PR comments, issues, releases, changelogs, reviews, and handovers must be concise, skimmable Markdown/plain text. |
 
@@ -129,7 +129,7 @@ Command:
 
 ## OCR / Open Code Review integration
 
-Alibaba `open-code-review` is the **preferred backend for code/diff/PR review** when installed and allowed.
+Alibaba [`open-code-review`](https://github.com/alibaba/open-code-review) is the **preferred backend for code/diff/PR review** when installed and allowed.
 
 Policy:
 
