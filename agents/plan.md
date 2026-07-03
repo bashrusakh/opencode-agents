@@ -57,21 +57,23 @@ For any user-visible answer or published text — final reply, PR/issue/release 
 
 ## Git Sync and PR Branch Provenance
 
-Before editing code/config/docs in a repository, run the startup checkpoint, identify the current branch/base, and sync remote metadata. Default base is `origin/main` unless project-local rules or the active PR specify another base.
+For repository mutation, PR follow-up mutation, commit, push, PR creation, or PR update, do not trust the current branch by default. This does not apply to read-only review/audit unless it is preparing mutation or publication.
 
-Required pre-edit checks for mutation-capable repo work:
+Before edits or publication:
 
 ```bash
-git status --short
-git branch --show-current
-git fetch origin <base>
-git log --oneline --decorate --left-right --cherry-pick origin/<base>...HEAD
-git diff --name-status origin/<base>...HEAD
+git status -sb
+git branch -vv
+git remote -v
+git fetch --prune <head_remote>
+git fetch --prune <base_remote>
+git status -sb
+git log --oneline --decorate <base_ref>..HEAD
+git diff --name-status <base_ref>...HEAD
+git diff --stat <base_ref>...HEAD
 ```
 
-If the branch is behind the base, rebase/update before editing when the working tree is clean and the action is safe for the current branch. If rebase/update would rewrite a published branch, conflict, include unrelated commits, or violate project rules, stop and ask with the exact risk.
-
-Before commit, push, PR, or PR follow-up, prove branch provenance: the full `origin/<base>...HEAD` commit range and file diff must match the normalized task. A PR is the whole base-to-head diff, not just the last commit. If unrelated commits or files are present, stop. Do not push/open/update the PR until a clean branch is created or the user explicitly approves the unrelated scope.
+Use explicit refs such as `<base_remote>=origin`, `<base_branch>=main`, `<base_ref>=origin/main`. If the branch tracks upstream and is behind, fast-forward/update before editing only when clean and safe. If it diverged, contains unrelated work, or update/rebase would rewrite published history or conflict, stop and ask.
 
 ## Persistent Planning Mode
 

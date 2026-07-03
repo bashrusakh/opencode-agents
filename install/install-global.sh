@@ -18,4 +18,4 @@ echo "Installed root AGENTS.md to ~/.config/opencode/AGENTS.md"
 echo "A backup was created if ~/.config/opencode/AGENTS.md already existed."
 echo "Agents are model-agnostic: use the active OpenCode/OpenChamber model/provider from your current config/UI."
 
-echo "UUPM setup instructions are in ~/.config/opencode/docs/UUPM_INSTALL_FOR_AGENT.md"
+echo "UUPM setup instructions are in ~/.config/opencode/docs/uupm_install_for_agent.md"

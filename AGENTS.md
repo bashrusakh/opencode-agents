@@ -50,6 +50,12 @@ Use project docs, nearby code, tests, existing issues, repository history, and a
 - If the active provider/model is unavailable, stop and report that the current OpenCode model/provider is unavailable. Do not rewrite agent files to another provider.
 - Provider-specific model profiles may be created outside this package, but the reusable agents remain provider-neutral.
 
+### 2.1.1 Skills
+
+After Startup/normalization, use matching installed skills as advisory guidance when the normalized target clearly matches. See `docs/language_spec.md`.
+
+Skills do not override project rules, gated checks, existing tooling, minimal diff, OCR/review policy, or PR provenance. Do not add or tighten linters, formatters, strict modes, coverage gates, sanitizers, dependencies, or build config only because a skill recommends it.
+
 ### 2.2 Behavioral contract check
 
 Before implementing any user-facing UI, config, API, or workflow change, summarize the behavioral contract. A technically valid schema/storage write is not sufficient if it changes the normal user action into raw/manual/internal input.
@@ -282,9 +288,9 @@ Existing project components always win over external sources. Do not assume any 
 
 For detailed UI component/MCP/UUPM policy, read the first existing policy file from the list below. Use the first path that exists:
 
-1. `.opencode/docs/UI_COMPONENT_POLICY.md`
-2. `~/.config/opencode/docs/UI_COMPONENT_POLICY.md`
-3. `docs/UI_COMPONENT_POLICY.md`
+1. `.opencode/docs/ui_component_policy.md`
+2. `~/.config/opencode/docs/ui_component_policy.md`
+3. `docs/ui_component_policy.md`
 
 If no detailed policy file exists, apply this compact policy and continue. UI agents and UI commands must read the detailed policy for UI/MCP/component-source or UUPM-guided work when the file exists.
 
@@ -357,19 +363,22 @@ For release notes, tags, changelog, release body, assets, or release verificatio
 
 ### 7.1 Before editing
 
-Before editing code/config/docs in a repository, the active primary/orchestrator must run a pre-edit Git sync check for mutation work. A stale or polluted branch is a scope bug, not an implementation detail. This gate is not a required startup step for leaf subagents; leaf agents may inspect local context normally and ask/report if fresh remote/base context is needed.
+Before editing code/config/docs in a repository, the active primary/orchestrator must run a pre-edit Git sync check for mutation work. A stale local PR branch, diverged upstream, or polluted branch is a scope bug, not an implementation detail. This gate is not a required startup step for leaf subagents; leaf agents may inspect local context normally and ask/report if fresh remote/base context is needed.
 
 Required pre-edit checks for mutation-capable repository work:
 
 ```bash
-git status --short
-git branch --show-current
-git fetch origin <base>
-git log --oneline --decorate --left-right --cherry-pick origin/<base>...HEAD
-git diff --name-status origin/<base>...HEAD
+git status -sb
+git branch -vv
+git remote -v
+git fetch --prune <head_remote>
+git fetch --prune <base_remote>
+git status -sb
+git log --oneline --decorate <base_ref>..HEAD
+git diff --name-status <base_ref>...HEAD
 ```
 
-Use the project-local base branch or the active PR base when known; default to `origin/main` only when no other base is known. If the branch is behind the base, rebase/update before editing when the working tree is clean and the operation is safe for the current branch. If rebase/update would rewrite a published branch, hit conflicts, include unrelated commits, or violate project rules, stop and ask with the exact branch state and risk.
+Use explicit refs: `<base_remote>=origin`, `<base_branch>=main`, `<base_ref>=origin/main`. Do not build ambiguous refs such as `origin/origin/main`. If the current branch tracks an upstream branch and is behind it, fast-forward/update before editing only when the working tree is clean and the operation is safe. If the local branch diverged from upstream, or update/rebase would rewrite published history, hit conflicts, include unrelated commits, or violate project rules, stop and ask with the exact branch state and risk.
 
 Then:
 
@@ -407,7 +416,7 @@ Run the narrowest relevant tests/checks from project docs/configs that are non-d
 
 Only create, update, push, or publish branches/commits/PRs/tags/releases when the gated-action rule allows that exact publication action.
 
-Before branch/PR work, check git status, current branch, upstream tracking branch, current base branch, and whether the current branch already has an open PR. Fetch the base branch before trusting branch state.
+Before branch/PR mutation or publication, check git status, current branch, upstream tracking branch, current base branch, and whether the current branch already has an open PR. Fetch both the current head/upstream remote and the base remote before trusting branch state. Read-only review/audit must not rebase/update branches just because it mentions a PR.
 
 New independent work normally gets a new clean branch from the current base and a new PR. Follow-up fixes, review responses, CI fixes, requested corrections, and requested additions for an existing PR must go to the same PR branch, not a new PR, unless separate-PR creation is the clear normalized deliverable and the gated-action rule allows that exact publication action.
 
@@ -415,18 +424,20 @@ New independent work normally gets a new clean branch from the current base and 
 
 Before committing, pushing, opening a PR, or updating an existing PR, prove that the branch contains only commits and files intended for the normalized task. A PR is the entire base-to-head comparison, not the last commit.
 
-Run and report the relevant base, normally the project/PR base or `origin/main` when no other base is known:
+Run and report explicit refs, normally the project/PR base or `origin/main` when no other base is known:
 
 ```bash
-git status --short
-git branch --show-current
-git fetch origin <base>
-git log --oneline --decorate --left-right --cherry-pick origin/<base>...HEAD
-git diff --name-status origin/<base>...HEAD
-git diff --stat origin/<base>...HEAD
+git status -sb
+git branch -vv
+git fetch --prune <head_remote>
+git fetch --prune <base_remote>
+git log --oneline --decorate <base_ref>..HEAD
+git log --oneline --decorate --left-right --cherry-pick <base_ref>...HEAD
+git diff --name-status <base_ref>...HEAD
+git diff --stat <base_ref>...HEAD
 ```
 
-Stop before commit/push/PR if the range contains unrelated commits, unrelated files, work from another issue/PR, generated artifacts not requested, or stale branch history. Do not hide the problem by editing around it. Allowed recovery is to create a clean branch from the current base and cherry-pick/re-apply only the intended work, then re-run this gate. Force-push, reset, rebase of published history, or branch replacement remains gated and requires explicit approval with the risk stated.
+Use normal `<base_ref>..HEAD` as the primary commit list. The `--cherry-pick` comparison is secondary and must not hide unexpected branch history. Stop before commit/push/PR if the range contains unrelated commits, unrelated files, work from another issue/PR, generated artifacts not requested, stale local branch state, or branch divergence from upstream. Do not hide the problem by editing around it. Allowed recovery is to create a clean branch from the current base and cherry-pick/re-apply only the intended work, then re-run this gate. Force-push, reset, rebase of published history, or branch replacement remains gated and requires explicit approval with the risk stated.
 
 Before any commit:
 
@@ -487,14 +498,3 @@ For any orchestrated workflow, return one concise markdown report with green/yel
 | Commit/PR | ✅/⚠️/❌/skipped | only when the gated-action rule allows the exact publication action |
 
 Keep final reports short: what changed or was found, exact checks run, blockers/failures, and one concrete next action when there is a clear next action.
-
-## 11. Memory (GrayMatter)
-
-This project has persistent agent memory via the `graymatter` MCP tools:
-
-- `memory_search` (`agent_id`, `query`) — call at the **start of a task** when prior context might matter.
-- `memory_add` (`agent_id`, `text`) — call whenever you learn something **durable**: user preferences, decisions, conventions, gotchas.
-- `memory_reflect` (`action`, `agent`, `text`/`target`) — update or forget stale facts. ⚠ takes `agent`, not `agent_id`.
-- `checkpoint_save` / `checkpoint_resume` (`agent_id`) — snapshot/restore session state before major refactors or across restarts.
-
-Use a stable `agent_id` of the form `<project>-<role>` (e.g. `myapp-backend`). Store conclusions, not conversation logs. Err on the side of remembering.

@@ -33,4 +33,4 @@ if [ -d "$ROOT/snippet" ]; then cp "$ROOT/snippet/"* .opencode/snippet/ 2>/dev/n
 
 printf 'Installed project-local OpenCode agents/commands/docs/snippet and AGENTS.md into %s\n' "$(pwd)"
 echo "Backups were created when existing files/directories were present."
-echo "UUPM setup instructions are in .opencode/docs/UUPM_INSTALL_FOR_AGENT.md"
+echo "UUPM setup instructions are in .opencode/docs/uupm_install_for_agent.md"

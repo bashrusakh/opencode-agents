@@ -45,7 +45,7 @@ Use `/plan` for:
 ## Required behavior
 
 - Read project `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` when present.
-- Use `docs/PERSISTENT_PLANNING_POLICY.md` as the durable planning source of truth.
+- Use `docs/persistent_planning_policy.md` as the durable planning source of truth.
 - Keep plan state in canonical `plans/<plan>/` artifacts.
 - Do not edit source code.
 - Do not create random reports with new names.

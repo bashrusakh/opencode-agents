@@ -4,9 +4,9 @@ This file is the detailed UI component-source and design-intelligence policy for
 
 Agents should read the first existing detailed UI policy file from:
 
-1. `.opencode/docs/UI_COMPONENT_POLICY.md`
-2. `~/.config/opencode/docs/UI_COMPONENT_POLICY.md`
-3. `docs/UI_COMPONENT_POLICY.md`
+1. `.opencode/docs/ui_component_policy.md`
+2. `~/.config/opencode/docs/ui_component_policy.md`
+3. `docs/ui_component_policy.md`
 
 The install scripts copy this file to the matching OpenCode docs directory for global or project-local installs.
 

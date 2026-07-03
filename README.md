@@ -1,8 +1,8 @@
 <div align="center">
 
-> v28.15 cleans permissions, command names, duplicate review/plan commands, and stale snippets.
+> v28.19 adds language skill guidance and tightens PR branch provenance without changing command count.
 
-# OpenCode Agent Pack v28.15
+# OpenCode Agent Pack v28.19
 
 ### Model-agnostic agents · Startup blocks · OCR review · Clean PR branches · Persistent planning · Readable output
 
@@ -16,7 +16,13 @@
 
 ---
 
-## What's new in v28.15
+## What's new in v28.19
+
+- Added compact language skill guidance through `docs/language_spec.md`.
+- Tightened PR branch provenance: sync head/upstream branch and base refs before mutation/publication.
+- Kept the compact baseline: same command count, no vendored upstream skills.
+
+## v28.15 cleanup retained
 
 - Permissions now follow default-allow style with only role-incompatible tools disabled.
 - Commands stay minimal: `description`, `agent`, and `subtask: false`; no command-level permission sandbox.
@@ -50,6 +56,7 @@ Core rule:
 | Git sync before mutation | The active primary/orchestrator handles base-branch sync before mutation/publication work; leaf subagents are not forced to fetch before inspection. |
 | PR branch provenance | Before commit/push/PR/update, agents prove the branch contains only intended commits/files. |
 | OCR review | Alibaba [`open-code-review`](https://github.com/alibaba/open-code-review) is the preferred backend for code/diff/PR review when installed and allowed. |
+| Skills | Installed language/security/API/E2E skills may be used as advisory guidance after Startup/normalization. |
 | Persistent planning | Long-running/multi-agent work uses durable `plans/<plan>/` artifacts. |
 | Readable output | User replies, PR comments, issues, releases, changelogs, reviews, and handovers must be concise, skimmable Markdown/plain text. |
 
@@ -103,20 +110,21 @@ Before commit, push, PR creation, or PR update, agents must prove that the branc
 Typical checks:
 
 ```bash
-git status --short
-git branch --show-current
-git fetch origin <base>
-git log --oneline --decorate --left-right --cherry-pick origin/<base>...HEAD
-git diff --name-status origin/<base>...HEAD
-git diff --stat origin/<base>...HEAD
+git status -sb
+git branch -vv
+git fetch --prune <head_remote>
+git fetch --prune <base_remote>
+git log --oneline --decorate <base_ref>..HEAD
+git diff --name-status <base_ref>...HEAD
+git diff --stat <base_ref>...HEAD
 ```
 
-If unrelated commits or files appear, agents must stop. Recovery is a clean branch from `origin/<base>` plus cherry-pick/re-apply only intended work.
+Use explicit refs such as `<base_ref>=origin/main`. If unrelated commits/files or branch divergence appear, agents must stop. Recovery is a clean branch from the current base plus cherry-pick/re-apply only intended work.
 
 Useful file:
 
 ```text
-docs/GIT_BRANCH_PROVENANCE_POLICY.md
+docs/git_branch_provenance_policy.md
 ```
 
 Command:
@@ -124,6 +132,20 @@ Command:
 ```text
 /pr-provenance
 ```
+
+---
+
+## Installed skills
+
+Installed skills are advisory guidance after Startup/normalization. They do not override project rules, gates, existing tooling, minimal diff, OCR policy, or PR provenance.
+
+Useful file:
+
+```text
+docs/language_spec.md
+```
+
+Current mapping includes Python, TypeScript, Go, C++, Rust, React, Vue, security-sensitive code, Playwright/E2E, and API/OpenAPI work.
 
 ---
 
@@ -150,7 +172,7 @@ The reviewer must:
 Useful files:
 
 ```text
-docs/OCR_REVIEW_POLICY.md
+docs/ocr_review_policy.md
 commands/review.md
 agents/reviewer.md
 snippet/open-code-review-usage.md
@@ -309,7 +331,7 @@ Installs to:
 Run from the repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_15/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_19/install/install-project.sh
 ```
 
 Installs to:
@@ -328,7 +350,7 @@ Installs to:
 
 This pack is expected to validate with:
 
-- expected v28.15 renames/deletions only;
+- expected v28.15 compact baseline plus v28.19 skill/provenance updates;
 - YAML frontmatter parses for all agents and commands;
 - no command has `subtask: true`;
 - no command has a `permission:` block;
@@ -337,7 +359,7 @@ This pack is expected to validate with:
 - no provider-specific `model:` overrides in agents;
 - no stale provider-specific model IDs;
 - no plural snippet-directory path references;
-- root rules include semantic routing, startup blocks, behavioral contracts, OCR review, branch provenance, persistent planning, and readable public output.
+- root rules include semantic routing, startup blocks, behavioral contracts, skills, OCR review, branch provenance, persistent planning, and readable public output.
 
 ---
 
@@ -355,9 +377,18 @@ Use this pack when you want agents that can:
 
 ---
 
+## Upstream references
+
+This pack references upstream tools/skills but does not vendor or overwrite them.
+
+- Alibaba `open-code-review`: https://github.com/alibaba/open-code-review
+- Jeffallan `claude-skills`: https://github.com/Jeffallan/claude-skills
+
+---
+
 <div align="center">
 
-**OpenCode Agent Pack v28.15**  
-Semantic routing · Top-level commands · Primary orchestrators · OCR review · Clean PR branches · Durable plans
+**OpenCode Agent Pack v28.19**  
+Semantic routing · Skills · OCR review · Clean PR branches · Durable plans
 
 </div>

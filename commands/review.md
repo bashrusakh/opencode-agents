@@ -23,18 +23,23 @@ Keep it to this shape. Do not write a prose paragraph. Keep field names in Engli
 
 ## Git Sync and PR Branch Provenance
 
-For repository mutation, PR follow-up, commit, push, or PR work, do not trust the current branch by default. Before edits or publication:
+For repository mutation, PR follow-up mutation, commit, push, PR creation, or PR update, do not trust the current branch by default. This does not apply to read-only review/audit unless it is preparing mutation or publication.
+
+Before edits or publication:
 
 ```bash
-git status --short
-git branch --show-current
-git fetch origin <base>
-git log --oneline --decorate --left-right --cherry-pick origin/<base>...HEAD
-git diff --name-status origin/<base>...HEAD
-git diff --stat origin/<base>...HEAD
+git status -sb
+git branch -vv
+git remote -v
+git fetch --prune <head_remote>
+git fetch --prune <base_remote>
+git status -sb
+git log --oneline --decorate <base_ref>..HEAD
+git diff --name-status <base_ref>...HEAD
+git diff --stat <base_ref>...HEAD
 ```
 
-Use the project/PR base, defaulting to `origin/main` only when no other base is known. Rebase/update before editing when safe and clean. If the branch contains unrelated commits/files, or rebase/update would rewrite public history or conflict, stop and ask. Do not open/push/update a PR with unrelated work.
+Use explicit refs such as `<base_remote>=origin`, `<base_branch>=main`, `<base_ref>=origin/main`. If the branch tracks upstream and is behind, fast-forward/update before editing only when clean and safe. If it diverged, contains unrelated work, or update/rebase would rewrite published history or conflict, stop and ask.
 
 ## OCR Review Backend
 
