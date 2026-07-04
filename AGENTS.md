@@ -98,7 +98,7 @@ Subagents should return compact digests and avoid dumping large raw exploration 
 
 ### 2.4 Startup block before tools
 
-Before the first tool call in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write a compact Markdown startup block. Do not use a prose paragraph.
+Before the first tool call of a user-request workflow or agent invocation in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write one compact Markdown startup block. Do not use a prose paragraph.
 
 Use exactly this shape:
 
@@ -113,15 +113,24 @@ Use exactly this shape:
 ```
 
 Rules:
+- Emit it once per user-request workflow or agent invocation, before the first tool call only.
+- Do not repeat it before every tool call, command, or substep.
 - Keep it to the heading plus six bullets.
 - Keep field names in English.
 - No extra explanation unless `Gated: yes` or the scope is unclear.
 - If the next action is read-only, write `Gated: no — read-only`.
 - If discovery could expand scope, put the boundary in `Scope` before using tools.
+- If route, mode, or scope materially changes later, write a compact update instead of another startup block:
 
-Do not start `Fetch URL`, `Find Files`, `Search Files`, `Read File`, `Bash`, `Edit`, `apply_patch`, `task` delegation, or external/web tools before this block unless the user request is a trivial single-step answer that needs no tools.
+```md
+### Update
+- Change: <what changed>
+- Next: <next action/tool>
+```
 
-The startup block is required even when no gated action is needed. Its job is to prevent silent route changes, broad discovery, or mutation drift.
+Do not start `Fetch URL`, `Find Files`, `Search Files`, `Read File`, `Bash`, `Edit`, `apply_patch`, `task` delegation, or external/web tools before the startup block unless the user request is a trivial single-step answer that needs no tools.
+
+The startup block is required even when no gated action is needed. Its job is to prevent silent route changes, broad discovery, or mutation drift. It is not a per-tool progress marker.
 
 Startup block is not Git sync. The Startup block is only the visible Markdown normalization step before tools. Pre-edit Git sync and PR branch provenance are responsibilities of the active primary/orchestrator before mutation or publication work. Leaf subagents must not be forced to run `git fetch` before they can inspect files. They may use local context and tools normally. If fresh base/remote context is required, they should ask or report the missing context to the caller.
 

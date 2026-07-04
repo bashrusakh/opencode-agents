@@ -1,8 +1,8 @@
 <div align="center">
 
-> v28.19 adds language skill guidance and tightens PR branch provenance without changing command count.
+> v28.21 adds language skill guidance and tightens PR branch provenance without changing command count.
 
-# OpenCode Agent Pack v28.19
+# OpenCode Agent Pack v28.21
 
 ### Model-agnostic agents · Startup blocks · OCR review · Clean PR branches · Persistent planning · Readable output
 
@@ -16,7 +16,7 @@
 
 ---
 
-## What's new in v28.19
+## What's new in v28.21
 
 - Added compact language skill guidance through `docs/language_spec.md`.
 - Tightened PR branch provenance: sync head/upstream branch and base refs before mutation/publication.
@@ -64,7 +64,7 @@ Core rule:
 
 ## Startup block before tools
 
-Every multi-step, repository, issue/PR/release, external-URL, codebase, mutation-capable, publication-capable, or scope-expanding workflow must start with this visible Markdown block **before the first tool call**:
+Every multi-step, repository, issue/PR/release, external-URL, codebase, mutation-capable, publication-capable, or scope-expanding workflow must emit this visible Markdown block **once, before the first tool call only**:
 
 ```md
 ### Startup
@@ -81,9 +81,12 @@ Rules:
 - Use Markdown, not a prose paragraph.
 - Keep field names in English.
 - Keep it short: heading + six bullets.
+- Emit it once per user-request workflow or agent invocation.
+- Do not repeat it before every tool call or substep.
 - For read-only work: `Gated: no — read-only`.
 - Put the scope boundary in `Scope` before broad discovery.
 - Do not use tools before this block except for a trivial single-step answer that needs no tools.
+- If route, mode, or scope materially changes later, write a short `### Update` block instead.
 
 ---
 
@@ -331,7 +334,7 @@ Installs to:
 Run from the repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_19/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_21/install/install-project.sh
 ```
 
 Installs to:
@@ -350,7 +353,7 @@ Installs to:
 
 This pack is expected to validate with:
 
-- expected v28.15 compact baseline plus v28.19 skill/provenance updates;
+- expected v28.15 compact baseline plus v28.21 skill/provenance updates;
 - YAML frontmatter parses for all agents and commands;
 - no command has `subtask: true`;
 - no command has a `permission:` block;
@@ -388,7 +391,7 @@ This pack references upstream tools/skills but does not vendor or overwrite them
 
 <div align="center">
 
-**OpenCode Agent Pack v28.19**  
+**OpenCode Agent Pack v28.21**  
 Semantic routing · Skills · OCR review · Clean PR branches · Durable plans
 
 </div>

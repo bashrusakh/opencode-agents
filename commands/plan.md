@@ -6,7 +6,7 @@ subtask: false
 
 ## Startup Block Before Tools
 
-Before the first tool call in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write Markdown only:
+Before the first tool call of this agent invocation or user-request workflow in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write this Markdown block once:
 
 ```md
 ### Startup
@@ -18,7 +18,7 @@ Before the first tool call in any multi-step, repository, codebase, issue/PR/rel
 - Next: <next action/tool>
 ```
 
-Keep it to this shape. Do not write a prose paragraph. Keep field names in English. Do not use tools first and postpone normalization to the final report.
+Keep it to this shape. Do not write a prose paragraph. Keep field names in English. Do not use tools first and postpone normalization to the final report. Do not repeat Startup before every tool call or substep. If route, mode, or scope materially changes later, write a short `### Update` block instead.
 
 ## User-Facing Output Formatting
 
