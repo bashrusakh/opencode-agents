@@ -1,8 +1,8 @@
 <div align="center">
 
-> v28.21 adds language skill guidance and tightens PR branch provenance without changing command count.
+> v28.22 tightens pre-edit branch sync and clean-task branch gates without changing command count.
 
-# OpenCode Agent Pack v28.21
+# OpenCode Agent Pack v28.22
 
 ### Model-agnostic agents · Startup blocks · OCR review · Clean PR branches · Persistent planning · Readable output
 
@@ -16,11 +16,12 @@
 
 ---
 
-## What's new in v28.21
+## What's new in v28.22
 
-- Added compact language skill guidance through `docs/language_spec.md`.
-- Tightened PR branch provenance: sync head/upstream branch and base refs before mutation/publication.
-- Kept the compact baseline: same command count, no vendored upstream skills.
+- Added explicit pre-edit branch sync: stale tracked branches update only by safe `git pull --ff-only` before edits.
+- Added clean-task branch gate: new independent work must not start on a branch already ahead of base.
+- Tightened pre-publication provenance: fetch again, re-check remote head/base, and stop on divergence or unrelated work.
+- Kept the compact baseline: same command count, no new files.
 
 ## v28.15 cleanup retained
 
@@ -92,29 +93,16 @@ Rules:
 
 ## Git and PR safety
 
-### Pre-edit sync gate
+### Pre-edit branch sync and clean-task gate
 
-Before changing code/config/docs in a repository, the active primary/orchestrator must check the branch and fetch the base branch.
+Before changing code/config/docs in a repository, the active primary/orchestrator must prove the branch is safe to edit.
 
-Required intent:
-
-```text
-Know the current branch, base branch, working tree state, and whether the branch is stale before editing.
-```
-
-If the branch is stale, agents must update/rebase before edits when safe. If the update would rewrite a published branch, pull unrelated commits, create conflicts, or violate project rules, they must stop and ask.
-
-### PR branch provenance gate
-
-A PR is the entire base-to-head comparison, not the last commit.
-
-Before commit, push, PR creation, or PR update, agents must prove that the branch contains only intended commits/files.
-
-Typical checks:
+Typical pre-edit checks:
 
 ```bash
 git status -sb
 git branch -vv
+git remote -v
 git fetch --prune <head_remote>
 git fetch --prune <base_remote>
 git log --oneline --decorate <base_ref>..HEAD
@@ -122,7 +110,17 @@ git diff --name-status <base_ref>...HEAD
 git diff --stat <base_ref>...HEAD
 ```
 
-Use explicit refs such as `<base_ref>=origin/main`. If unrelated commits/files or branch divergence appear, agents must stop. Recovery is a clean branch from the current base plus cherry-pick/re-apply only intended work.
+If the current branch tracks upstream and is behind, update before editing only with safe `git pull --ff-only`.
+
+For a new independent task, the branch must be clean relative to `<base_ref>` before edits. Do not fix on a branch already carrying unrelated commits/files. Use a clean branch from `<base_ref>` and re-apply only intended work.
+
+### PR branch provenance gate
+
+A PR is the entire base-to-head comparison, not the last commit.
+
+Before commit, push, PR creation, or PR update, fetch again and prove that the branch contains only intended commits/files. Stop if remote head changed unexpectedly, the branch diverged, or unrelated work appears.
+
+Use explicit refs such as `<base_remote>=origin`, `<base_branch>=main`, `<base_ref>=origin/main`.
 
 Useful file:
 
@@ -334,7 +332,7 @@ Installs to:
 Run from the repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_21/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_22/install/install-project.sh
 ```
 
 Installs to:
@@ -353,7 +351,7 @@ Installs to:
 
 This pack is expected to validate with:
 
-- expected v28.15 compact baseline plus v28.21 skill/provenance updates;
+- expected v28.15 compact baseline plus v28.22 skill/provenance updates;
 - YAML frontmatter parses for all agents and commands;
 - no command has `subtask: true`;
 - no command has a `permission:` block;
@@ -391,7 +389,7 @@ This pack references upstream tools/skills but does not vendor or overwrite them
 
 <div align="center">
 
-**OpenCode Agent Pack v28.21**  
+**OpenCode Agent Pack v28.22**  
 Semantic routing · Skills · OCR review · Clean PR branches · Durable plans
 
 </div>

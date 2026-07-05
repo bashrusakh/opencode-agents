@@ -37,16 +37,19 @@ git diff --name-status <base_ref>...HEAD
 git diff --stat <base_ref>...HEAD
 ```
 
+For a new independent task, `<base_ref>..HEAD` and `<base_ref>...HEAD` must be empty before edits. For an existing PR follow-up, ahead commits/files are allowed only when they belong to the same PR/task.
+
+If the branch tracks upstream and is behind, report whether a safe `git pull --ff-only` is possible. If it diverged, remote head changed unexpectedly, or unrelated work appears, report unsafe and stop. Do not edit, commit, push, rebase, reset, or force-push in this command unless the user separately approves that gated action.
+
 Report:
 
 - base ref and current branch
 - upstream tracking branch and branch state
+- task branch status: new clean / existing PR / user-approved / unsafe
 - commits ahead of base
 - changed files
 - unrelated commits/files: yes/no
 - whether edit/commit/push/PR is safe
 - required cleanup if unsafe
-
-Do not edit, commit, push, rebase, reset, or force-push in this command unless the user separately approves that gated action.
 
 Check this branch/PR provenance: $ARGUMENTS

@@ -372,7 +372,7 @@ For release notes, tags, changelog, release body, assets, or release verificatio
 
 ### 7.1 Before editing
 
-Before editing code/config/docs in a repository, the active primary/orchestrator must run a pre-edit Git sync check for mutation work. A stale local PR branch, diverged upstream, or polluted branch is a scope bug, not an implementation detail. This gate is not a required startup step for leaf subagents; leaf agents may inspect local context normally and ask/report if fresh remote/base context is needed.
+Before editing code/config/docs in a repository, the active primary/orchestrator must run pre-edit branch sync and the clean-task branch gate for mutation work. A stale local PR branch, diverged upstream, or polluted branch is a scope bug, not an implementation detail. This gate is not a required startup step for leaf subagents; leaf agents may inspect local context normally and ask/report if fresh remote/base context is needed.
 
 Required pre-edit checks for mutation-capable repository work:
 
@@ -385,9 +385,16 @@ git fetch --prune <base_remote>
 git status -sb
 git log --oneline --decorate <base_ref>..HEAD
 git diff --name-status <base_ref>...HEAD
+git diff --stat <base_ref>...HEAD
 ```
 
-Use explicit refs: `<base_remote>=origin`, `<base_branch>=main`, `<base_ref>=origin/main`. Do not build ambiguous refs such as `origin/origin/main`. If the current branch tracks an upstream branch and is behind it, fast-forward/update before editing only when the working tree is clean and the operation is safe. If the local branch diverged from upstream, or update/rebase would rewrite published history, hit conflicts, include unrelated commits, or violate project rules, stop and ask with the exact branch state and risk.
+Use explicit refs: `<base_remote>=origin`, `<base_branch>=main`, `<base_ref>=origin/main`. Do not build ambiguous refs such as `origin/origin/main`.
+
+If the current branch tracks an upstream branch and is behind it, update before editing only with safe `git pull --ff-only`, only when the working tree is clean and the upstream branch is the intended current PR/task branch.
+
+For a new independent task, `<base_ref>..HEAD` and `<base_ref>...HEAD` must be empty before edits unless the user explicitly approved continuing this exact branch. If the branch already contains commits/files from another issue/PR/task, stop. Do not add fixes on top of unrelated work. Create a clean branch from `<base_ref>` and re-apply only the intended task changes.
+
+If the local branch diverged from upstream, the working tree is dirty with unrelated work, or update/rebase would rewrite published history, hit conflicts, include unrelated commits, or violate project rules, stop and ask with the exact branch state and risk.
 
 Then:
 
@@ -431,7 +438,7 @@ New independent work normally gets a new clean branch from the current base and 
 
 ### 8.1 PR branch provenance gate
 
-Before committing, pushing, opening a PR, or updating an existing PR, prove that the branch contains only commits and files intended for the normalized task. A PR is the entire base-to-head comparison, not the last commit.
+Before committing, pushing, opening a PR, or updating an existing PR, fetch again and prove that the branch contains only commits and files intended for the normalized task. A PR is the entire base-to-head comparison, not the last commit.
 
 Run and report explicit refs, normally the project/PR base or `origin/main` when no other base is known:
 
@@ -440,13 +447,18 @@ git status -sb
 git branch -vv
 git fetch --prune <head_remote>
 git fetch --prune <base_remote>
+git status -sb
 git log --oneline --decorate <base_ref>..HEAD
 git log --oneline --decorate --left-right --cherry-pick <base_ref>...HEAD
 git diff --name-status <base_ref>...HEAD
 git diff --stat <base_ref>...HEAD
 ```
 
-Use normal `<base_ref>..HEAD` as the primary commit list. The `--cherry-pick` comparison is secondary and must not hide unexpected branch history. Stop before commit/push/PR if the range contains unrelated commits, unrelated files, work from another issue/PR, generated artifacts not requested, stale local branch state, or branch divergence from upstream. Do not hide the problem by editing around it. Allowed recovery is to create a clean branch from the current base and cherry-pick/re-apply only the intended work, then re-run this gate. Force-push, reset, rebase of published history, or branch replacement remains gated and requires explicit approval with the risk stated.
+Use normal `<base_ref>..HEAD` as the primary commit list. The `--cherry-pick` comparison is secondary and must not hide unexpected branch history.
+
+If the local branch is behind its upstream, update only with safe `git pull --ff-only`, then re-run relevant validation and provenance before publishing. If the branch diverged, remote head changed unexpectedly, or unrelated commits/files appear, stop before commit/push/PR.
+
+For a new independent task, do not publish from a branch that was already ahead of `<base_ref>` before the task started. Do not hide the problem by editing around it. Allowed recovery is to create a clean branch from the current base and cherry-pick/re-apply only the intended work, then re-run this gate. Force-push, reset, rebase of published history, or branch replacement remains gated and requires explicit approval with the risk stated.
 
 Before any commit:
 

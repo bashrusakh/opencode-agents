@@ -51,21 +51,11 @@ For any user-visible answer or published text — final reply, PR/issue/release 
 
 For repository mutation, PR follow-up mutation, commit, push, PR creation, or PR update, do not trust the current branch by default. This does not apply to read-only review/audit unless it is preparing mutation or publication.
 
-Before edits or publication:
+Before editing: run pre-edit branch sync and the clean-task gate from `docs/git_branch_provenance_policy.md`. If the current branch tracks upstream and is behind, update only with safe `git pull --ff-only` before editing. If it diverged, is dirty with unrelated work, or contains commits/files from another task, stop and ask.
 
-```bash
-git status -sb
-git branch -vv
-git remote -v
-git fetch --prune <head_remote>
-git fetch --prune <base_remote>
-git status -sb
-git log --oneline --decorate <base_ref>..HEAD
-git diff --name-status <base_ref>...HEAD
-git diff --stat <base_ref>...HEAD
-```
+For a new independent task, the current branch must be clean relative to `<base_ref>` before edits. Do not add fixes on top of unrelated commits. Use a clean branch from `<base_ref>` and re-apply only the intended task changes.
 
-Use explicit refs such as `<base_remote>=origin`, `<base_branch>=main`, `<base_ref>=origin/main`. If the branch tracks upstream and is behind, fast-forward/update before editing only when clean and safe. If it diverged, contains unrelated work, or update/rebase would rewrite published history or conflict, stop and ask.
+Before commit, push, PR creation, or PR update: fetch again and re-run provenance. The primary commit list is `git log --oneline --decorate <base_ref>..HEAD`; the `--cherry-pick` comparison is secondary. Stop if remote head changed unexpectedly, the branch diverged, or unrelated commits/files appear. Published PR branches must not be rebased, reset, replaced, or force-pushed without explicit approval.
 
 ## Persistent Planning Mode
 
