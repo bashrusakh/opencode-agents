@@ -1,8 +1,8 @@
 <div align="center">
 
-> v28.22 tightens pre-edit branch sync and clean-task branch gates without changing command count.
+> v28.24 adds a semantic PR-readiness boundary so the final local diff is validated and reviewed before publication, while keeping existing gated-action semantics.
 
-# OpenCode Agent Pack v28.22
+# OpenCode Agent Pack v28.24
 
 ### Model-agnostic agents · Startup blocks · OCR review · Clean PR branches · Persistent planning · Readable output
 
@@ -16,12 +16,13 @@
 
 ---
 
-## What's new in v28.22
+## What's new in v28.24
 
-- Added explicit pre-edit branch sync: stale tracked branches update only by safe `git pull --ff-only` before edits.
-- Added clean-task branch gate: new independent work must not start on a branch already ahead of base.
-- Tightened pre-publication provenance: fetch again, re-check remote head/base, and stop on divergence or unrelated work.
-- Kept the compact baseline: same command count, no new files.
+- Added a semantic PR Readiness Gate before the first/next publication of task changes; it does not add a new approval gate or run before every local commit.
+- Pre-publication review now has freshness semantics: when reviewer criteria apply, `@reviewer` must cover the current final local diff, and later code/history changes invalidate affected review evidence.
+- Matching skills must be actually loaded/read via `SKILL.md`; merely naming a skill no longer counts as use. Installers now copy complete skill directories into OpenCode skill discovery roots so their references/support files remain available.
+- Non-trivial multi-state/path bugfixes now require a compact case-to-verification check before editing, without forcing a matrix for simple local fixes.
+- Existing v28.23 PR-body sync and 10-minute OCR timeout rules are retained.
 
 ## v28.15 cleanup retained
 
@@ -56,8 +57,10 @@ Core rule:
 | Gated actions | Commits, pushes, PRs, releases, deps, secrets, destructive commands, runtime config, and broad product/architecture choices require approval. |
 | Git sync before mutation | The active primary/orchestrator handles base-branch sync before mutation/publication work; leaf subagents are not forced to fetch before inspection. |
 | PR branch provenance | Before commit/push/PR/update, agents prove the branch contains only intended commits/files. |
+| PR body sync | Before marking PR work done, agents verify the PR title/body still match final commits, diff, scope, and validation. |
+| PR readiness | Before publishing task changes, the primary/orchestrator proves the current final diff has fresh contract, validation, review, provenance, and PR metadata evidence. |
 | OCR review | Alibaba [`open-code-review`](https://github.com/alibaba/open-code-review) is the preferred backend for code/diff/PR review when installed and allowed. |
-| Skills | Installed language/security/API/E2E skills may be used as advisory guidance after Startup/normalization. |
+| Skills | Matching installed/project-listed skills are actually read from `SKILL.md` before implementation/review; referenced material is loaded only when relevant. |
 | Persistent planning | Long-running/multi-agent work uses durable `plans/<plan>/` artifacts. |
 | Readable output | User replies, PR comments, issues, releases, changelogs, reviews, and handovers must be concise, skimmable Markdown/plain text. |
 
@@ -134,11 +137,25 @@ Command:
 /pr-provenance
 ```
 
+### PR readiness gate
+
+Before the first push/PR publication of task changes, and before later pushes that change an existing PR diff, establish readiness for the **current final local diff**. This is separate from approval: the normal gated-action rule still controls whether publication is allowed.
+
+Applicable readiness evidence covers repository/scoped guidance, selected skills, right-level/edge-path reasoning, actual validation results, reviewer freshness when reviewer criteria apply, branch provenance, and current PR metadata. External CI/bot review is additional post-publication evidence, not a substitute for required pre-publication review.
+
+If code or history changes after validation/review, re-run only the affected evidence. Do not repeat the gate before every local edit or commit.
+
+Useful file:
+
+```text
+docs/pr_readiness.md
+```
+
 ---
 
 ## Installed skills
 
-Installed skills are advisory guidance after Startup/normalization. They do not override project rules, gates, existing tooling, minimal diff, OCR policy, or PR provenance.
+Installed skills are advisory guidance after Startup/normalization. When a matching skill is selected or required, read its `SKILL.md` before implementation/review; naming it is not enough. Load referenced skill material only when relevant. Skills do not override project rules, gates, existing tooling, minimal diff, OCR policy, PR readiness, or PR provenance.
 
 Useful file:
 
@@ -165,7 +182,8 @@ The reviewer must:
 - emit the Startup block before tools;
 - normalize review target and scope;
 - check privacy/gated status because OCR may send code/diffs/context to the configured LLM provider;
-- run OCR with `--audience agent` and useful `--background` context when allowed;
+- run OCR with `--audience agent`, `--timeout 10`, and useful `--background` context when allowed;
+- do not run OCR through a 120-second shell/tool timeout; use at least 10 minutes when supported;
 - filter false positives and low-value nits;
 - add right-level, behavioral-contract, tests, and risky API/schema/config judgment;
 - never auto-apply fixes for review-only requests.
@@ -324,6 +342,7 @@ Installs to:
 ~/.config/opencode/agents/
 ~/.config/opencode/commands/
 ~/.config/opencode/docs/
+~/.config/opencode/skills/
 ~/.config/opencode/snippet/
 ```
 
@@ -332,7 +351,7 @@ Installs to:
 Run from the repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_22/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_24/install/install-project.sh
 ```
 
 Installs to:
@@ -342,6 +361,7 @@ Installs to:
 ./.opencode/agents/
 ./.opencode/commands/
 ./.opencode/docs/
+./.opencode/skills/
 ./.opencode/snippet/
 ```
 
@@ -351,12 +371,12 @@ Installs to:
 
 This pack is expected to validate with:
 
-- expected v28.15 compact baseline plus v28.22 skill/provenance updates;
+- expected v28.15 compact baseline plus v28.24 PR-readiness/skill-freshness updates and retained v28.23 PR-body/OCR rules;
 - YAML frontmatter parses for all agents and commands;
 - no command has `subtask: true`;
 - no command has a `permission:` block;
 - no stale deleted command or renamed agent references remain;
-- install scripts pass `bash -n`;
+- install scripts pass `bash -n` and copy complete skill directories to project/global OpenCode skill roots;
 - no provider-specific `model:` overrides in agents;
 - no stale provider-specific model IDs;
 - no plural snippet-directory path references;
@@ -389,7 +409,7 @@ This pack references upstream tools/skills but does not vendor or overwrite them
 
 <div align="center">
 
-**OpenCode Agent Pack v28.22**  
+**OpenCode Agent Pack v28.24**  
 Semantic routing · Skills · OCR review · Clean PR branches · Durable plans
 
 </div>

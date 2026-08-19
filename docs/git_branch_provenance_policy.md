@@ -94,6 +94,23 @@ The primary commit list is `<base_ref>..HEAD`. The `--cherry-pick` comparison is
 
 A published PR branch must not be rebased, reset, force-pushed, or replaced without explicit approval after the risk is stated.
 
+## PR body sync
+
+For PR mutation, follow-up commits/pushes, PR creation/update, or PR-ready publication, verify after the final intended diff and validation that the PR title/body still match:
+
+- actual commits and changed files;
+- normalized scope and behavior;
+- validation/tests/manual checks;
+- screenshots or manual verification for UI changes when relevant.
+
+If the PR body is stale, incomplete, or contradicts the final diff, update it when PR publication/update is already allowed by the normalized request. Otherwise draft the corrected PR body and ask before publishing.
+
+Final report line:
+
+```text
+PR body: updated | unchanged | drafted | skipped — <reason>
+```
+
 ## Clean recovery
 
 Allowed recovery:

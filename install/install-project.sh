@@ -2,7 +2,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 STAMP="$(date +%Y%m%d-%H%M%S)"
-mkdir -p .opencode/agents .opencode/commands .opencode/docs .opencode/snippet
+mkdir -p .opencode/agents .opencode/commands .opencode/docs .opencode/snippet .opencode/skills
 
 if [ -f ./AGENTS.md ]; then
   cp ./AGENTS.md "./AGENTS.md.bak.$STAMP"
@@ -19,6 +19,10 @@ if [ -d .opencode/docs ]; then
   mkdir -p ".opencode/docs.bak.$STAMP"
   cp -a .opencode/docs/. ".opencode/docs.bak.$STAMP/" 2>/dev/null || true
 fi
+if [ -d .opencode/skills ]; then
+  mkdir -p ".opencode/skills.bak.$STAMP"
+  cp -a .opencode/skills/. ".opencode/skills.bak.$STAMP/" 2>/dev/null || true
+fi
 
 if [ -d .opencode/snippet ]; then
   mkdir -p ".opencode/snippet.bak.$STAMP"
@@ -29,8 +33,9 @@ cp "$ROOT/AGENTS.md" ./AGENTS.md
 cp "$ROOT/agents/"*.md .opencode/agents/
 cp "$ROOT/commands/"*.md .opencode/commands/
 cp "$ROOT/docs/"*.md .opencode/docs/
+if [ -d "$ROOT/skills" ]; then cp -a "$ROOT/skills/." .opencode/skills/; fi
 if [ -d "$ROOT/snippet" ]; then cp "$ROOT/snippet/"* .opencode/snippet/ 2>/dev/null || true; fi
 
-printf 'Installed project-local OpenCode agents/commands/docs/snippet and AGENTS.md into %s\n' "$(pwd)"
+printf 'Installed project-local OpenCode agents/commands/docs/skills/snippet and AGENTS.md into %s\n' "$(pwd)"
 echo "Backups were created when existing files/directories were present."
 echo "UUPM setup instructions are in .opencode/docs/uupm_install_for_agent.md"

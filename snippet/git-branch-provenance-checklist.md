@@ -56,4 +56,14 @@ Expected report:
 - Unrelated commits/files: yes/no
 - Safe to edit/commit/push/PR: yes/no
 
+## PR body sync
+
+After the final intended diff and validation, verify that the PR title/body still match actual commits, changed files, scope, behavior, and validation. If stale, update it when PR update is already allowed; otherwise draft the corrected body and ask.
+
+Final report line:
+
+```text
+PR body: updated | unchanged | drafted | skipped — <reason>
+```
+
 Remember: a PR is the whole base-to-head diff, not just the last commit.

@@ -35,7 +35,9 @@ Definitions:
 
 ## 1. Source of truth
 
-Before changing code, read the project root `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` if those files exist.
+Before changing code, read the project root `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` if those files exist. After the target is known, read the nearest scoped/module guidance that applies when project structure or root guidance points to it.
+
+If PR creation/update is in normalized scope, discover the repository's current PR template/publication guidance before drafting or publishing PR metadata. Do not assume no template exists only because the current worktree does not contain one; use available repository-host metadata when needed.
 
 Use project docs, nearby code, tests, existing issues, repository history, and actual tool output as evidence. Do not treat assumptions or model memory as evidence. Do not invent project facts. If missing information could lead to unwanted code changes, broad scope, secrets, PRs, releases, destructive actions, dependency changes, or production changes, ask the user.
 
@@ -52,9 +54,13 @@ Use project docs, nearby code, tests, existing issues, repository history, and a
 
 ### 2.1.1 Skills
 
-After Startup/normalization, use matching installed skills as advisory guidance when the normalized target clearly matches. See `docs/language_spec.md`.
+After Startup/normalization, check project-visible skill guidance and the skills OpenCode makes available. Relevant guidance can come from project `AGENTS.md`, `docs/language_spec.md`, `.opencode/docs/language_spec.md`, or installed skill metadata.
 
-Skills do not override project rules, gated checks, existing tooling, minimal diff, OCR/review policy, or PR provenance. Do not add or tighten linters, formatters, strict modes, coverage gates, sanitizers, dependencies, or build config only because a skill recommends it.
+When a matching skill is selected or required by project guidance, actually load it through OpenCode's native skill mechanism when available, or read its `SKILL.md` before implementation or review; naming the skill does not count as using it. Load referenced skill files only when they are relevant to the normalized task. If a listed skill cannot be found, report `Skill: <name> unavailable` and continue only when project rules do not require that skill.
+
+Skills are advisory only. They do not override project rules, gated checks, existing tooling, minimal diff, OCR/review policy, PR body sync, PR readiness, or PR provenance. Do not add or tighten linters, formatters, strict modes, coverage gates, sanitizers, dependencies, or build config only because a skill recommends it.
+
+Mention skill usage once when useful: `Skill: <name|none>`.
 
 ### 2.2 Behavioral contract check
 
@@ -251,6 +257,8 @@ For code, diff, commit, branch, workspace, or PR review, prefer OCR/open-code-re
 
 OCR is locally read-only for the repository, but it may send code, diffs, and context to the configured OCR LLM provider. If external code sharing is not already approved by user/project policy, ask before running OCR. If OCR is unavailable, not configured, or not approved, fall back to native read-only review and state why.
 
+When running OCR from a shell/tool, do not rely on short default command timeouts such as 120 seconds. Run OCR with a 10-minute budget: pass `--timeout 10` to `ocr review` and set the surrounding shell/tool timeout to at least 10 minutes when the runtime supports it.
+
 Do not apply OCR suggestions automatically for a review-only request. Automatic fixes require a separately normalized fix request and the normal gated-action checks.
 - abstraction-level / duplicated-fix review -> `@reviewer`
 - Docker/systemd/CI/deploy/runtime config -> `@devops`
@@ -414,6 +422,7 @@ Before editing:
 - identify the primitive/root operation that causes the problem
 - search for existing patterns that solve similar problems
 - search similar call sites before deciding where the fix belongs
+- when the normalized bug behavior spans multiple meaningful states, transitions, consumers, boundaries, or input shapes, enumerate the relevant cases and map them to verification before editing; keep this compact and do not invent a matrix for a truly local single-path fix
 - prefer shared/root-level fixes over copy-patching individual call sites when the criteria below apply
 
 Shared abstractions include helpers/functions, services, composables/hooks, middleware, validators, repositories/models, transaction helpers, API wrappers, request/response mappers, and ownership/auth/permission helpers.
@@ -474,6 +483,27 @@ Before pushing: confirm remote, branch, base, commit range, and changed files. N
 
 Before any PR: prove branch provenance, ensure branch base is correct, diff is reviewable, title follows `CONTRIBUTING.md`, PR body includes summary/context/validation and UI screenshots or manual verification for UI changes. Do not mark ready if checks are unknown or failing. For code/diff/PR review, route to `@reviewer`. Prefer OCR/open-code-review when installed and allowed. Ask before running OCR if external code sharing is not already approved by user/project policy.
 
+For PR mutation, follow-up commits/pushes, PR creation/update, or PR-ready publication, verify after the final intended diff and validation that the PR title/body still match actual commits, changed files, scope, behavior, and validation. If stale or incomplete, update it when PR publication/update is already allowed by the normalized request; otherwise draft the corrected PR body and ask before publishing. Final report must include: `PR body: updated | unchanged | drafted | skipped — <reason>`.
+
+### 8.2 PR readiness gate
+
+Before the first push that would publish the current task changes, PR creation/update, or any later push that changes an existing PR diff, the active primary/orchestrator must establish a current PR-ready state. This is not a new approval gate: publication still follows the existing gated-action rule. Do not run this gate before every local edit or local commit.
+
+PR-ready means all applicable conditions are true for the current effective diff:
+
+- repository contract: relevant root/scoped guidance and selected skills were actually read; PR template/publication guidance was discovered when PR metadata is in scope
+- fix contract: right-level/root cause was checked, and non-trivial multi-path/state behavior has a compact case-to-verification map when applicable
+- validation: project-required and task-relevant checks are complete for the current diff; validation claims and counts come from actual tool output, not assumptions
+- review: when the existing reviewer applicability criteria match, `@reviewer` has reviewed the current final local diff before publication; external CI/bot review is additional evidence, not a substitute
+- provenance: branch sync/provenance is current after the latest branch/history changes
+- PR metadata: when a PR exists or will be created/updated, title/body match the final diff and actual validation
+
+A reviewer verdict of `changes required` blocks readiness until the finding is resolved or the user explicitly approves publishing with the known risk. `pass` or non-blocking notes do not require unnecessary refactors.
+
+Readiness is tied to the effective diff, not to an earlier checkpoint. Code/config/test changes, reviewer-requested fixes, rebase/merge/cherry-pick/reset, or remote/head changes that alter the effective diff invalidate the affected readiness evidence. Re-run only the affected checks. If reviewer criteria still apply after code changes, review the new final local diff again. A fetch that does not change the effective diff does not by itself invalidate readiness.
+
+See `docs/pr_readiness.md` for the compact workflow.
+
 Before publishing PR comments, review comments, issue bodies, release notes, changelog entries, or other public Markdown, apply the user-facing output formatting rule: short summary, readable sections, bullets for multiple points, code fences for exact text/commands/logs, and a clear conclusion or next action.
 
 Before opening an issue: verify facts, search existing issues if issue access exists, keep it actionable and specific, and separate confirmed facts from hypotheses.
@@ -516,6 +546,7 @@ For any orchestrated workflow, return one concise markdown report with green/yel
 | Implementation | ✅/⚠️/❌/skipped | ... |
 | Verification | ✅/⚠️/❌/blocked | exact commands/results |
 | Review | ✅/⚠️/❌/skipped | reviewer/review/a11y summary |
+| PR readiness | ✅/⚠️/❌/skipped | current final diff / validation / reviewer freshness / metadata / provenance |
 | Commit/PR | ✅/⚠️/❌/skipped | only when the gated-action rule allows the exact publication action |
 
 Keep final reports short: what changed or was found, exact checks run, blockers/failures, and one concrete next action when there is a clear next action.

@@ -31,6 +31,11 @@ Before the first tool call of this agent invocation or user-request workflow in 
 Keep it to this shape. Do not write a prose paragraph. Keep field names in English. Do not use tools first and postpone normalization to the final report. Do not repeat Startup before every tool call or substep. If route, mode, or scope materially changes later, write a short `### Update` block instead.
 
 
+## Skill Use
+
+After Startup, check project-visible skill guidance and the skills OpenCode makes available. When the normalized target matches a listed/advertised skill, actually load that skill via the native skill mechanism when available, or read its `SKILL.md`; naming it does not count. Load referenced skill files only when relevant. If unavailable, report `Skill: <name> unavailable`. Skills are advisory only and do not override project rules, gates, existing tooling, minimal diff, OCR/review policy, PR readiness/body sync, or PR provenance. Mention the selected skill once when useful: `Skill: <name|none>`.
+
+
 ## Behavioral Contract Check
 
 For any user-facing UI/config/API/workflow behavior change, do not implement only the data plumbing. Before choosing an implementation, summarize the behavioral contract:
@@ -64,6 +69,11 @@ Before editing: run pre-edit branch sync and the clean-task gate from `docs/git_
 For a new independent task, the current branch must be clean relative to `<base_ref>` before edits. Do not add fixes on top of unrelated commits. Use a clean branch from `<base_ref>` and re-apply only the intended task changes.
 
 Before commit, push, PR creation, or PR update: fetch again and re-run provenance. The primary commit list is `git log --oneline --decorate <base_ref>..HEAD`; the `--cherry-pick` comparison is secondary. Stop if remote head changed unexpectedly, the branch diverged, or unrelated commits/files appear. Published PR branches must not be rebased, reset, replaced, or force-pushed without explicit approval.
+
+
+## PR Body Sync
+
+For PR mutation, follow-up commits/pushes, PR creation/update, or PR-ready publication, verify after the final intended diff and validation that the PR title/body still match actual commits, changed files, scope, behavior, and validation. If stale or incomplete, update it when PR publication/update is already allowed by the normalized request; otherwise draft the corrected body and ask. Final report must include: `PR body: updated | unchanged | drafted | skipped — <reason>`.
 
 ## Persistent Planning Mode
 
