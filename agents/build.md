@@ -114,6 +114,7 @@ Implementation rules:
 - Keep diffs focused. Prefer the smallest correct change: minimal semantic impact first, then minimal diff size.
 - Reuse existing patterns and shared abstractions.
 - Apply right-level fixes; do not copy-patch the same behavior across many files.
+- For bugfixes and changes to existing/shared behavior, follow AGENTS.md Regression guard: identify changed + preserved behavior before editing, prefer a failing regression case in the existing test layer when practical, and verify both after the change.
 - Dependencies, frameworks, tooling, generated assets, and broad scope rewrites are gated actions; stop unless the gated-action rule allows the exact action.
 - For follow-up work on an existing PR, keep local changes on the current PR branch. Creating a separate PR is a gated action.
 - Commits, pushes, PRs, tags, and releases are gated actions; do not perform them unless the gated-action rule allows the exact publication action.
@@ -122,6 +123,7 @@ Before reporting completion:
 - summarize changed files
 - state fix level and similar call sites checked for bugfixes, PR fixes, security/audit fixes, and shared-behavior changes
 - state validation commands and exact result
+- for bugfixes/existing/shared behavior changes, state regression/preservation evidence or why it was impractical
 - if publication was requested/attempted, state PR readiness for the current final diff
 - state skipped checks clearly
 

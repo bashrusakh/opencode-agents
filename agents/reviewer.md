@@ -131,6 +131,8 @@ Focus on:
 - unsafe async, concurrency, locking, caching, or state handling
 - gated API, schema, config, data format, or migration changes
 - missing tests for changed behavior
+- regressions in behavior that should remain unchanged, especially after shared/root-level changes
+- regression tests that only assert implementation details instead of the broken behavioral contract
 - wrong fix level and duplicated local patches
 
 Ignore:
@@ -150,11 +152,13 @@ Right-level review:
 
 Classify wrong-fix-level findings as real findings, not style nits.
 
-Before passing a PR, explicitly answer:
+Before returning `pass` or `pass with notes` for a code/diff/commit/branch/workspace/PR review, explicitly answer:
 1. Did I search for existing shared abstractions?
 2. Are there duplicated fixes in 3+ places?
 3. Does the fix protect the unsafe primitive or only one current caller?
 4. Are all similar call sites covered?
+5. What existing behavior can this diff affect besides the reported case?
+6. What test or verification evidence shows that applicable preserved behavior still works?
 
 Output format:
 1. Verdict: pass / pass with notes / changes required

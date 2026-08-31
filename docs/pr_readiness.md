@@ -8,7 +8,7 @@ The active primary/orchestrator may publish only when the current effective diff
 
 - **Repository contract** — relevant root/scoped guidance was read; selected/required `SKILL.md` was actually read; current PR template/publication guidance was discovered when PR metadata is in scope.
 - **Fix contract** — root/right-level placement was checked. When behavior spans multiple meaningful states, transitions, consumers, boundaries, or input shapes, the relevant cases were identified and mapped to verification.
-- **Validation** — project-required and task-relevant checks are complete for the current diff. Report only real command/tool results; never guess test counts, lint status, or validation claims.
+- **Validation** — project-required and task-relevant checks are complete for the current diff. For bugfixes or changes to existing/shared behavior, evidence covers both the intended changed behavior and applicable preserved behavior; shared-primitive changes include the relevant existing suite or representative consumers when practical. A newly added focused test alone is not sufficient regression evidence. Report only real command/tool results; never guess test counts, lint status, or validation claims.
 - **Review** — when `AGENTS.md` reviewer applicability criteria match, `@reviewer` reviewed the current final local diff. External CI/bot review is post-publication/additional evidence, not a replacement for local pre-publication review.
 - **Provenance** — the existing `docs/git_branch_provenance_policy.md` gate is current after the latest branch/history changes.
 - **PR metadata** — when a PR exists or will be created/updated, title/body describe the final scope, changed behavior/files, and actual validation.

@@ -1,8 +1,8 @@
 <div align="center">
 
-> v28.24 adds a semantic PR-readiness boundary so the final local diff is validated and reviewed before publication, while keeping existing gated-action semantics.
+> v28.25 adds a proportional regression guard so fixes prove both the intended change and the relevant behavior that must remain unchanged.
 
-# OpenCode Agent Pack v28.24
+# OpenCode Agent Pack v28.25
 
 ### Model-agnostic agents · Startup blocks · OCR review · Clean PR branches · Persistent planning · Readable output
 
@@ -16,13 +16,13 @@
 
 ---
 
-## What's new in v28.24
+## What's new in v28.25
 
-- Added a semantic PR Readiness Gate before the first/next publication of task changes; it does not add a new approval gate or run before every local commit.
-- Pre-publication review now has freshness semantics: when reviewer criteria apply, `@reviewer` must cover the current final local diff, and later code/history changes invalidate affected review evidence.
-- Matching skills must be actually loaded/read via `SKILL.md`; merely naming a skill no longer counts as use. Installers now copy complete skill directories into OpenCode skill discovery roots so their references/support files remain available.
-- Non-trivial multi-state/path bugfixes now require a compact case-to-verification check before editing, without forcing a matrix for simple local fixes.
-- Existing v28.23 PR-body sync and 10-minute OCR timeout rules are retained.
+- Added a proportional Regression Guard for bugfixes and changes to existing/shared behavior: identify changed + preserved behavior, verify both, and avoid treating the reported case alone as sufficient evidence.
+- When practical in the existing test layer, establish a failing regression case before the fix and keep the test focused on the behavioral contract rather than implementation details.
+- Shared primitive/helper/service/parser/stateful-path/API-wrapper/composable changes now require the relevant existing suite or representative-consumer verification; a newly added focused test alone is not sufficient regression evidence.
+- `@debugger`, `@tester`, `@reviewer`, `@build`, `@code-orchestrator`, and PR readiness now enforce the same regression/preservation semantics without requiring full-suite testing for every local fix.
+- Existing v28.24 PR-readiness/skill-loading rules and v28.23 PR-body/OCR rules are retained.
 
 ## v28.15 cleanup retained
 
@@ -54,6 +54,7 @@ Core rule:
 | Startup block | Before tools, emit a compact Markdown block with route, mode, summary, scope, gated status, and next action. |
 | Behavioral contracts | Before user-facing changes, preserve the natural user action/value source instead of exposing raw internals. |
 | Right-level fixes | Fix the shared helper/service/composable/API wrapper when the bug belongs there, not only the first call site. |
+| Regression guard | For bugfixes and existing/shared behavior changes, prove both changed behavior and applicable preserved behavior; broaden verification proportionally for shared primitives. |
 | Gated actions | Commits, pushes, PRs, releases, deps, secrets, destructive commands, runtime config, and broad product/architecture choices require approval. |
 | Git sync before mutation | The active primary/orchestrator handles base-branch sync before mutation/publication work; leaf subagents are not forced to fetch before inspection. |
 | PR branch provenance | Before commit/push/PR/update, agents prove the branch contains only intended commits/files. |
@@ -150,6 +151,10 @@ Useful file:
 ```text
 docs/pr_readiness.md
 ```
+
+### Regression guard
+
+For bugfixes and changes to existing/shared behavior, validation must cover both the intended changed behavior and the closest applicable behavior/invariant that should remain unchanged. When practical, establish a failing regression case in the project's existing test layer before the fix. Shared-primitive changes need the relevant existing suite or representative-consumer verification; a newly added focused test alone is not enough. Keep this proportional — do not force a full suite or a large matrix for a truly local single-path fix.
 
 ---
 
@@ -351,7 +356,7 @@ Installs to:
 Run from the repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_24/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_25/install/install-project.sh
 ```
 
 Installs to:
@@ -371,7 +376,7 @@ Installs to:
 
 This pack is expected to validate with:
 
-- expected v28.15 compact baseline plus v28.24 PR-readiness/skill-freshness updates and retained v28.23 PR-body/OCR rules;
+- expected v28.15 compact baseline plus v28.25 regression-guard updates, retained v28.24 PR-readiness/skill-freshness rules, and retained v28.23 PR-body/OCR rules;
 - YAML frontmatter parses for all agents and commands;
 - no command has `subtask: true`;
 - no command has a `permission:` block;
@@ -409,7 +414,7 @@ This pack references upstream tools/skills but does not vendor or overwrite them
 
 <div align="center">
 
-**OpenCode Agent Pack v28.24**  
+**OpenCode Agent Pack v28.25**  
 Semantic routing · Skills · OCR review · Clean PR branches · Durable plans
 
 </div>

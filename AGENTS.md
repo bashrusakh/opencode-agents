@@ -321,8 +321,8 @@ Bugfix default:
 
 1. `@explore` when the relevant code path is not yet identified
 2. `@tester` when reproduction/failing checks are needed
-3. `@debugger` to find root cause and apply the smallest right-level fix when the normalized deliverable is changed code/config/UI
-4. `@tester` again for focused verification
+3. `@debugger` to find root cause, identify changed + preserved behavior, and apply the smallest right-level fix when the normalized deliverable is changed code/config/UI
+4. `@tester` again to verify both the fixed behavior and applicable preserved behavior; broaden to the relevant existing suite or representative consumers when a shared primitive changed
 5. `@reviewer` when shared behavior or multiple call sites are touched
 6. `@reviewer` for review when the diff touches shared behavior, security, data handling, API contracts, concurrency, or non-obvious logic
 7. final report
@@ -433,7 +433,24 @@ Do not over-abstract blindly. If the bug is truly local, keep the fix local. If 
 
 Before marking done, report fix level, similar call sites checked, why the level is correct, and whether duplicate logic was removed/reused/intentionally left.
 
-### 7.3 Verification
+### 7.3 Regression guard
+
+For bugfixes and implementation changes that modify existing or shared behavior, verify both the intended change and the relevant behavior that must remain unchanged. Do not treat “the reported case passes” as sufficient evidence when the changed code can affect other callers, states, inputs, or consumers.
+
+Before editing, identify the changed behavioral contract and the closest applicable preserved behavior/invariant. Keep this proportional to risk; do not invent a large matrix for a truly local single-path change.
+
+When the bug is practical to express in the project's existing automated test layer, prefer establishing a failing regression case before the fix. The regression test must exercise the broken behavioral contract, not merely a new implementation detail. Do not introduce a new test framework only to satisfy this rule.
+
+After editing:
+
+- verify the originally failing/intended changed behavior;
+- verify the closest applicable preserved behavior or representative unaffected path;
+- when a shared primitive/helper/service/parser/stateful path/API wrapper/composable changes, run the relevant existing suite or verify representative affected consumers in addition to the new/focused case;
+- do not treat a newly added test passing by itself as sufficient regression evidence.
+
+If automated regression coverage is impractical, state why and perform the smallest meaningful non-destructive manual or command-based preservation check.
+
+### 7.4 Verification
 
 Run the narrowest relevant tests/checks from project docs/configs that are non-destructive and do not require unapproved secrets or production services. Prefer focused checks before broad suites. If checks cannot run, report the exact command and exact error/blocker. Never claim success when checks are unknown, skipped without explanation, or failing.
 
@@ -544,6 +561,7 @@ For any orchestrated workflow, return one concise markdown report with green/yel
 | Behavioral contract | ✅/⚠️/❌/skipped | user-facing contract preserved / pattern reused / raw internal values avoided |
 | Persistent planning | ✅/⚠️/❌/skipped | plan path / current phase / todo / handover for long-running work |
 | Implementation | ✅/⚠️/❌/skipped | ... |
+| Regression guard | ✅/⚠️/❌/skipped | changed behavior / preserved behavior / regression evidence |
 | Verification | ✅/⚠️/❌/blocked | exact commands/results |
 | Review | ✅/⚠️/❌/skipped | reviewer/review/a11y summary |
 | PR readiness | ✅/⚠️/❌/skipped | current final diff / validation / reviewer freshness / metadata / provenance |

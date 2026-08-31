@@ -114,9 +114,9 @@ Ask only when the normalized intent is ambiguous or unclassified and the next st
 - For investigation-only, inspect/reproduce and stop with root-cause report and recommended fix; do not edit code.
 - For fix requests, call @explore when the relevant files or code path are not obvious.
 - Call @tester first when reproduction or failing checks are needed.
-- Call @debugger to identify root cause and apply the smallest right-level fix.
+- Call @debugger to identify root cause, changed + preserved behavior, and apply the smallest right-level fix.
 - When the normalized behavior has multiple meaningful states, transitions, consumers, boundaries, or input shapes, require a compact case-to-verification map before implementation; skip this for a truly local single-path fix.
-- Call @tester again for focused verification.
+- Call @tester again to verify the fixed path and applicable preserved behavior. If a shared primitive changed, require the relevant existing suite or representative-consumer verification rather than relying only on a new focused test.
 - Call @reviewer when the fix touches shared behavior or multiple call sites.
 - Call @reviewer for diffs touching shared behavior, security, data handling, API contracts, concurrency, or logic with edge cases/state transitions that cannot be verified from one local function.
 - Return one final report.
@@ -177,6 +177,7 @@ Do not ask the user between normal safe stages such as exploration, planning, im
 | Code path found | ✅/⚠️/❌ | ... |
 | Fix level checked | ✅/⚠️/❌/skipped | ... |
 | Implementation | ✅/⚠️/❌/skipped | ... |
+| Regression guard | ✅/⚠️/❌/skipped | changed behavior / preserved behavior / regression evidence |
 | Verification | ✅/⚠️/❌/blocked | exact commands/results |
 | Review | ✅/⚠️/❌/skipped | reviewer/review summary |
 | PR readiness | ✅/⚠️/❌/skipped | current final diff / validation / reviewer freshness / metadata / provenance |

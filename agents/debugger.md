@@ -81,13 +81,17 @@ Workflow:
 - Identify the primitive/root operation that causes the bug.
 - Search similar call sites and existing shared helpers/composables/services.
 - Decide whether the fix belongs locally or centrally.
+- Before editing existing/shared behavior, identify what must change and the closest behavior/invariant that must remain unchanged.
+- When practical in the existing test layer, establish a failing regression case that exercises the broken contract before applying the fix. Do not add a new test framework just for this.
 - Apply the minimal fix needed to solve the root cause.
-- Run the focused failing check again when the command is known and non-destructive; otherwise report the exact blocker.
+- Re-run the focused failing check and verify the closest applicable preserved behavior. If a shared primitive changed, also run the relevant existing suite or verify representative consumers when practical. Otherwise report the exact blocker.
 
 Rules:
 - Do not perform speculative rewrites.
 - Do not weaken tests, disable validation, remove error handling, or hide failures just to make checks pass.
 - Do not change unrelated behavior.
+- A newly added test passing by itself is not sufficient regression evidence when existing/shared behavior changed.
+- Regression tests should protect the behavioral contract, not implementation details.
 - Architecture rewrites are gated actions unless architecture redesign is the normalized deliverable.
 - Never delete user data or generated assets unless that destructive action is allowed by the gated-action rule.
 - If the fix hits a gated action, stop and explain the action, target, scope, and risk before applying it.
@@ -99,4 +103,5 @@ Output format:
 4. Fix applied
 5. Files changed
 6. Verification result
-7. Remaining risks
+7. Regression/preservation evidence
+8. Remaining risks
