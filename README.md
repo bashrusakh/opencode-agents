@@ -1,8 +1,8 @@
 <div align="center">
 
-> v28.25 adds a proportional regression guard so fixes prove both the intended change and the relevant behavior that must remain unchanged.
+> v28.26 adds a verified GrayMatter memory protocol and refreshes vendored upstream skills while retaining the proportional regression guard.
 
-# OpenCode Agent Pack v28.25
+# OpenCode Agent Pack v28.26
 
 ### Model-agnostic agents · Startup blocks · OCR review · Clean PR branches · Persistent planning · Readable output
 
@@ -16,13 +16,13 @@
 
 ---
 
-## What's new in v28.25
+## What's new in v28.26
 
-- Added a proportional Regression Guard for bugfixes and changes to existing/shared behavior: identify changed + preserved behavior, verify both, and avoid treating the reported case alone as sufficient evidence.
-- When practical in the existing test layer, establish a failing regression case before the fix and keep the test focused on the behavioral contract rather than implementation details.
-- Shared primitive/helper/service/parser/stateful-path/API-wrapper/composable changes now require the relevant existing suite or representative-consumer verification; a newly added focused test alone is not sufficient regression evidence.
-- `@debugger`, `@tester`, `@reviewer`, `@build`, `@code-orchestrator`, and PR readiness now enforce the same regression/preservation semantics without requiring full-suite testing for every local fix.
-- Existing v28.24 PR-readiness/skill-loading rules and v28.23 PR-body/OCR rules are retained.
+- Added a compact GrayMatter session protocol in root `AGENTS.md`: stable `agent_id`, project + `__shared__` recall before Startup, checkpoint continuity, durable-memory triggers, quality filtering, and repository source-of-truth precedence.
+- Updated GrayMatter tool usage to the current contract: `memory_reflect` uses canonical `agent_id`; `update` replaces the exact old fact; `pin`/`unpin` cover standing rules; transient state stays in checkpoints.
+- Refreshed vendored upstream skill content without changing package-local policy: Alibaba `open-code-review/SKILL.md` is current upstream, and the changed React migration reference is synced from Jeffallan `claude-skills`. UI UX Pro Max is intentionally unchanged.
+- Startup ordering explicitly permits only the required GrayMatter bootstrap calls before the visible Startup block.
+- The v28.25 proportional Regression Guard and earlier PR-readiness, PR-body, OCR, provenance, and skill-loading rules are retained.
 
 ## v28.15 cleanup retained
 
@@ -52,6 +52,7 @@ Core rule:
 | Model agnostic | Agents do not contain provider-specific `model:` overrides. They use the active OpenCode/OpenChamber model. |
 | Semantic routing | Route by normalized intent, scope, target, action level, confidence, and evidence — not magic trigger phrases. |
 | Startup block | Before tools, emit a compact Markdown block with route, mode, summary, scope, gated status, and next action. |
+| GrayMatter memory | When the MCP tools are present, recall project + shared context before Startup, store durable conclusions, and checkpoint unfinished transient state. |
 | Behavioral contracts | Before user-facing changes, preserve the natural user action/value source instead of exposing raw internals. |
 | Right-level fixes | Fix the shared helper/service/composable/API wrapper when the bug belongs there, not only the first call site. |
 | Regression guard | For bugfixes and existing/shared behavior changes, prove both changed behavior and applicable preserved behavior; broaden verification proportionally for shared primitives. |
@@ -69,7 +70,7 @@ Core rule:
 
 ## Startup block before tools
 
-Every multi-step, repository, issue/PR/release, external-URL, codebase, mutation-capable, publication-capable, or scope-expanding workflow must emit this visible Markdown block **once, before the first tool call only**:
+Every multi-step, repository, issue/PR/release, external-URL, codebase, mutation-capable, publication-capable, or scope-expanding workflow must emit this visible Markdown block **once, after any required GrayMatter bootstrap and before the first non-memory tool call**:
 
 ```md
 ### Startup
@@ -90,7 +91,7 @@ Rules:
 - Do not repeat it before every tool call or substep.
 - For read-only work: `Gated: no — read-only`.
 - Put the scope boundary in `Scope` before broad discovery.
-- Do not use tools before this block except for a trivial single-step answer that needs no tools.
+- Required GrayMatter bootstrap calls are the only tool calls allowed before this block when the Memory section applies; otherwise do not use tools before it except for a trivial single-step answer that needs no tools.
 - If route, mode, or scope materially changes later, write a short `### Update` block instead.
 
 ---
@@ -187,8 +188,8 @@ The reviewer must:
 - emit the Startup block before tools;
 - normalize review target and scope;
 - check privacy/gated status because OCR may send code/diffs/context to the configured LLM provider;
-- run OCR with `--audience agent`, `--timeout 10`, and useful `--background` context when allowed;
-- do not run OCR through a 120-second shell/tool timeout; use at least 10 minutes when supported;
+- run OCR with `--audience agent` and useful `--background` context when allowed; use the loaded OCR skill/current CLI timeout and effort semantics rather than a stale package constant;
+- make the surrounding shell/tool timeout at least the effective OCR review-group budget with reasonable headroom; never cap it at 120 seconds;
 - filter false positives and low-value nits;
 - add right-level, behavioral-contract, tests, and risky API/schema/config judgment;
 - never auto-apply fixes for review-only requests.
@@ -356,7 +357,7 @@ Installs to:
 Run from the repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_25/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_26/install/install-project.sh
 ```
 
 Installs to:
@@ -376,7 +377,7 @@ Installs to:
 
 This pack is expected to validate with:
 
-- expected v28.15 compact baseline plus v28.25 regression-guard updates, retained v28.24 PR-readiness/skill-freshness rules, and retained v28.23 PR-body/OCR rules;
+- expected v28.15 compact baseline plus v28.26 GrayMatter/upstream-skill refresh, retained v28.25 regression guard, v28.24 PR-readiness/skill-freshness rules, and v28.23 PR-body/OCR rules;
 - YAML frontmatter parses for all agents and commands;
 - no command has `subtask: true`;
 - no command has a `permission:` block;
@@ -385,7 +386,7 @@ This pack is expected to validate with:
 - no provider-specific `model:` overrides in agents;
 - no stale provider-specific model IDs;
 - no plural snippet-directory path references;
-- root rules include semantic routing, startup blocks, behavioral contracts, skills, OCR review, branch provenance, persistent planning, and readable public output.
+- root rules include GrayMatter memory bootstrap/curation, semantic routing, startup blocks, behavioral contracts, skills, OCR review, branch provenance, persistent planning, and readable public output.
 
 ---
 
@@ -405,7 +406,7 @@ Use this pack when you want agents that can:
 
 ## Upstream references
 
-This pack references upstream tools/skills but does not vendor or overwrite them.
+This pack vendors selected upstream skill files for predictable OpenCode discovery. Upstream skill content is kept separate from package-local policy in `AGENTS.md`/`docs/` and is refreshed from the sources below.
 
 - Alibaba `open-code-review`: https://github.com/alibaba/open-code-review
 - Jeffallan `claude-skills`: https://github.com/Jeffallan/claude-skills
@@ -414,7 +415,7 @@ This pack references upstream tools/skills but does not vendor or overwrite them
 
 <div align="center">
 
-**OpenCode Agent Pack v28.25**  
+**OpenCode Agent Pack v28.26**  
 Semantic routing · Skills · OCR review · Clean PR branches · Durable plans
 
 </div>

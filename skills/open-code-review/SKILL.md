@@ -21,11 +21,6 @@ metadata:
 
 # Open Code Review
 
-This Codex plugin skill intentionally mirrors the canonical skill at
-`skills/open-code-review/SKILL.md`. Keep both files synchronized when updating
-OCR agent instructions; a symlink is avoided because plugin installs may only
-materialize the plugin subtree.
-
 A skill for invoking [open-code-review](https://github.com/alibaba/open-code-review) (`ocr`) — an open-source AI code review CLI that reads Git diffs and generates structured, line-level review comments.
 
 ## Workflow

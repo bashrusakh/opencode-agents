@@ -1,6 +1,6 @@
 # Open Code Review usage
 
-This pack assumes Alibaba `open-code-review` may already be installed as a skill/plugin. Do not overwrite the user's installed skill or plugin command. The pack integrates with it through `@reviewer` and `/review`.
+This pack vendors the upstream Alibaba `open-code-review` skill for predictable OpenCode discovery. Keep package-local review policy outside the upstream `SKILL.md`; refresh that skill from upstream rather than editing it locally. The pack integrates with OCR through `@reviewer` and `/review`.
 
 Recommended flow:
 
@@ -16,17 +16,17 @@ Startup block
 Preferred command:
 
 ```bash
-ocr review --audience agent --timeout 10 --background "<project/request context>"
+ocr review --audience agent --background "<project/request context>"
 ```
 
 Scoped examples:
 
 ```bash
-ocr review --audience agent --timeout 10 --background "<context>" --commit <sha>
-ocr review --audience agent --timeout 10 --background "<context>" --from <base> --to <head>
+ocr review --audience agent --background "<context>" --commit <sha>
+ocr review --audience agent --background "<context>" --from <base> --to <head>
 ocr review --preview
 ```
 
-Do not run OCR through a 120-second shell/tool timeout. Use at least 10 minutes when the runtime supports command/tool timeouts.
+Do not hardcode a stale OCR timeout. Follow the loaded skill/current CLI timeout and effort semantics, and give the surrounding shell/tool call enough time to cover the effective OCR review-group budget with headroom. Never cap it at 120 seconds.
 
 Review-only requests must not auto-apply fixes.

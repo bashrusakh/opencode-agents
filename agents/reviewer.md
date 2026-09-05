@@ -97,18 +97,18 @@ Before running OCR:
 Preferred invocation:
 
 ```bash
-ocr review --audience agent --timeout 10 --background "<project/request context>"
+ocr review --audience agent --background "<project/request context>"
 ```
 
 Scoped examples:
 
 ```bash
-ocr review --audience agent --timeout 10 --background "<context>" --commit <sha>
-ocr review --audience agent --timeout 10 --background "<context>" --from <base> --to <head>
+ocr review --audience agent --background "<context>" --commit <sha>
+ocr review --audience agent --background "<context>" --from <base> --to <head>
 ocr review --preview
 ```
 
-Do not run OCR with a 120-second shell/tool timeout. Set the surrounding shell/tool timeout to at least 10 minutes when supported.
+Do not hardcode a stale OCR timeout. Follow the loaded `open-code-review` skill/current CLI timeout and effort semantics, and make the surrounding shell/tool timeout at least the effective OCR review-group budget with reasonable headroom. Never use a shorter outer timeout such as 120 seconds.
 
 If OCR is unavailable, not configured, or not approved, perform native read-only review and say why.
 

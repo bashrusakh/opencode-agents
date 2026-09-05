@@ -48,10 +48,10 @@ For code, diff, commit, branch, workspace, or PR review, prefer OCR/open-code-re
 If OCR is available and approved, use agent-friendly output:
 
 ```bash
-ocr review --audience agent --timeout 10 --background "<project/request context>"
+ocr review --audience agent --background "<project/request context>"
 ```
 
-Use scoped OCR flags when the target is known: `--commit`, `--from`, `--to`, or `--preview`. Do not run OCR with a 120-second shell/tool timeout; set the surrounding shell/tool timeout to at least 10 minutes when supported. If OCR is unavailable, not configured, or not approved, fall back to native read-only review and say why.
+Use scoped OCR flags when the target is known: `--commit`, `--from`, `--to`, or `--preview`. Follow the loaded OCR skill/current CLI timeout and effort semantics instead of hardcoding a stale package timeout. The surrounding shell/tool timeout must cover the effective OCR review-group budget with reasonable headroom; never use a shorter cap such as 120 seconds. If OCR is unavailable, not configured, or not approved, fall back to native read-only review and say why.
 
 Do not edit files, apply patches, run formatters, stage, commit, push, publish, or apply OCR suggestions unless the user separately asks for fixes and the gated-action rule allows the exact action.
 

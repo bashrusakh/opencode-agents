@@ -41,6 +41,98 @@ If PR creation/update is in normalized scope, discover the repository's current 
 
 Use project docs, nearby code, tests, existing issues, repository history, and actual tool output as evidence. Do not treat assumptions or model memory as evidence. Do not invent project facts. If missing information could lead to unwanted code changes, broad scope, secrets, PRs, releases, destructive actions, dependency changes, or production changes, ask the user.
 
+## Memory (GrayMatter)
+
+You have persistent memory through the `graymatter` MCP tools. Wiring the MCP
+server only makes the tools available; it does not call them for you.
+
+This block may be installed globally. If `memory_search` is not in the current
+toolbelt, skip the rest of this section. If it is available, the rules below
+apply for the session; do not decide to skip recall merely because memory seems
+unlikely to matter.
+
+### Identity
+
+Use a stable `agent_id`: the name of this repository's root directory, verbatim,
+every session. Add a stable `-<role>` suffix only when multiple agents share the
+repository and need separate role memory (`myapp-backend`, `myapp-frontend`). Do
+not invent a new id per session.
+
+Facts that every agent in the project should see belong to the reserved
+`__shared__` agent id.
+
+### Session protocol
+
+1. **Resuming unfinished or long-running work:** call `checkpoint_resume` for
+   your `agent_id` first.
+2. **Before Startup or the first substantive reply:** call `memory_search` with
+   your `agent_id` and the user's current request as the query, then search
+   `__shared__` with the same query. Fold both results into working context
+   before acting.
+3. During the task, use focused `memory_search` calls when a prior preference,
+   decision, workaround, or convention could affect the next step. Phrase the
+   query as the task or question you are trying to answer, not as a bag of
+   keywords.
+4. **Before you stop:** store durable conclusions learned during the task. If
+   work is unfinished, call `checkpoint_save` with concise transient task state.
+
+### What triggers a call
+
+| When this happens | Call |
+|---|---|
+| You start any task | `memory_search` for your `agent_id` and `__shared__` |
+| The user states a durable preference | `memory_add` |
+| You discover an undocumented project-wide convention, team rule, or security policy | `memory_add` with `agent_id: "__shared__"` |
+| You make a non-obvious decision that will matter again | `memory_add`, including the conclusion and reasoning |
+| You fix a non-trivial bug, discover an environment quirk, or find a reusable workaround | `memory_add` |
+| The user corrects a stored fact or preference | `memory_reflect` with `action="update"` |
+| A stored fact became wrong or should no longer be recalled | `memory_reflect` with `action="forget"` |
+| An existing stored fact becomes an explicit standing/permanent rule | `memory_reflect` with `action="pin"` |
+| A pinned rule stops being permanent | `memory_reflect` with `action="unpin"`, then update or forget it if needed |
+| The state is temporary progress rather than durable knowledge | `checkpoint_save`, not `memory_add` |
+
+### Tool contract
+
+| Tool | Required | Optional |
+|---|---|---|
+| `memory_search` | `agent_id`, `query` | `top_k` (default 8) |
+| `memory_add` | `agent_id`, `text` | |
+| `memory_reflect` | `action`, `agent_id` | `text`, `target` |
+| `checkpoint_save` | `agent_id` | `state` (JSON object encoded as a string at the MCP layer) |
+| `checkpoint_resume` | `agent_id` | |
+
+For `memory_reflect`, `agent_id` is the canonical parameter. Some GrayMatter
+versions still accept `agent` as a deprecated alias; do not use the deprecated
+spelling in new calls. For `update`, use the exact old fact text as `target` and
+the corrected fact as `text`; search first if the old wording is not known. Do
+not leave both stale and corrected versions live.
+
+If `checkpoint_resume` reports that no checkpoint exists, continue normally;
+that result only means there is no unfinished state to restore.
+
+### Store conclusions, not transcripts
+
+Before storing a fact, make sure it is:
+
+- **atomic** — one idea per fact;
+- **durable** — likely to matter across sessions;
+- **specific and self-contained** — understandable without the old chat;
+- **actionable** — useful to a future agent or future task;
+- **not already authoritative elsewhere** — skip facts already captured in
+  current code, `AGENTS.md`, README, or other project documentation.
+
+Never store secrets or credentials. Do not store raw conversation logs,
+speculation, large outputs, or transient progress; use checkpoints for transient
+state.
+
+Prefer storing durable conclusions that are likely to matter again, but do not
+turn memory into a dumping ground. A missed durable fact can repeat a mistake;
+noisy memory can hide the facts that matter.
+
+GrayMatter is recall context, not repository authority. If recalled memory
+conflicts with current code, project docs, repository history, or actual tool
+output, verify against those sources and update or forget the stale memory.
+
 ## 2. Core behavior
 
 
@@ -81,7 +173,7 @@ Do not map schema/storage/API types directly to UI or workflow behavior. Preserv
 
 Use Persistent Planning Mode when semantic normalization shows the task is long-running, broad-scope, multi-session, multi-agent, or likely to exceed one reliable agent/session. Do not activate it by matching magic phrases alone. User wording such as full-project inspection, broad bug hunt, project-wide audit, large refactor, or large redesign is only an example signal; the route is decided by scope, duration, coordination needs, durable-state needs, and risk of context loss.
 
-In this mode, canonical files are the memory. Chat history, private reasoning, and arbitrary agent markdown reports are not durable state. Use the target-project file-based interface:
+In this mode, canonical plan files are the durable task-state and coordination interface. GrayMatter memory and checkpoints can restore recall or transient continuation state, but they do not replace canonical plan artifacts. Chat history, private reasoning, and arbitrary agent markdown reports are not durable project state. Use the target-project file-based interface:
 
 ```text
 plans/<plan>/
@@ -104,7 +196,7 @@ Subagents should return compact digests and avoid dumping large raw exploration 
 
 ### 2.4 Startup block before tools
 
-Before the first tool call of a user-request workflow or agent invocation in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write one compact Markdown startup block. Do not use a prose paragraph.
+After any required GrayMatter bootstrap calls, and before the first non-memory tool call of a user-request workflow or agent invocation in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write one compact Markdown startup block. Do not use a prose paragraph.
 
 Use exactly this shape:
 
@@ -119,8 +211,9 @@ Use exactly this shape:
 ```
 
 Rules:
-- Emit it once per user-request workflow or agent invocation, before the first tool call only.
+- Emit it once per user-request workflow or agent invocation, after GrayMatter bootstrap and before the first non-memory tool call only.
 - Do not repeat it before every tool call, command, or substep.
+- Required GrayMatter bootstrap calls (`checkpoint_resume` first when resuming unfinished work, then project and `__shared__` `memory_search`) are the only tool calls allowed before this Startup block when the Memory section applies.
 - Keep it to the heading plus six bullets.
 - Keep field names in English.
 - No extra explanation unless `Gated: yes` or the scope is unclear.
@@ -134,7 +227,7 @@ Rules:
 - Next: <next action/tool>
 ```
 
-Do not start `Fetch URL`, `Find Files`, `Search Files`, `Read File`, `Bash`, `Edit`, `apply_patch`, `task` delegation, or external/web tools before the startup block unless the user request is a trivial single-step answer that needs no tools.
+Do not start `Fetch URL`, `Find Files`, `Search Files`, `Read File`, `Bash`, `Edit`, `apply_patch`, `task` delegation, or external/web tools before the startup block unless the user request is a trivial single-step answer that needs no tools. GrayMatter bootstrap calls are governed by the Memory section and are exempt from this ordering rule.
 
 The startup block is required even when no gated action is needed. Its job is to prevent silent route changes, broad discovery, or mutation drift. It is not a per-tool progress marker.
 
@@ -257,7 +350,7 @@ For code, diff, commit, branch, workspace, or PR review, prefer OCR/open-code-re
 
 OCR is locally read-only for the repository, but it may send code, diffs, and context to the configured OCR LLM provider. If external code sharing is not already approved by user/project policy, ask before running OCR. If OCR is unavailable, not configured, or not approved, fall back to native read-only review and state why.
 
-When running OCR from a shell/tool, do not rely on short default command timeouts such as 120 seconds. Run OCR with a 10-minute budget: pass `--timeout 10` to `ocr review` and set the surrounding shell/tool timeout to at least 10 minutes when the runtime supports it.
+When running OCR from a shell/tool, do not force a stale fixed timeout. Follow the loaded OCR skill and current CLI semantics for the base `--timeout` and effort/review-round scaling, then set the surrounding shell/tool timeout to at least the effective OCR review-group budget, with reasonable headroom when the runtime supports it.
 
 Do not apply OCR suggestions automatically for a review-only request. Automatic fixes require a separately normalized fix request and the normal gated-action checks.
 - abstraction-level / duplicated-fix review -> `@reviewer`

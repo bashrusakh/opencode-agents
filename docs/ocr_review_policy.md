@@ -38,21 +38,21 @@ If OCR is unavailable, not configured, or not approved, fall back to native read
 
 ## Invocation
 
-Use agent-friendly output and a 10-minute OCR budget:
+Use agent-friendly output. Follow the loaded `open-code-review` skill and current CLI semantics for timeout/effort rather than hardcoding a stale package timeout:
 
 ```bash
-ocr review --audience agent --timeout 10 --background "<project/request context>"
+ocr review --audience agent --background "<project/request context>"
 ```
 
 Use scoped review when the target is known:
 
 ```bash
-ocr review --audience agent --timeout 10 --background "<context>" --commit <sha>
-ocr review --audience agent --timeout 10 --background "<context>" --from <base> --to <head>
+ocr review --audience agent --background "<context>" --commit <sha>
+ocr review --audience agent --background "<context>" --from <base> --to <head>
 ocr review --preview
 ```
 
-Do not run OCR through a shell/tool with a 120-second timeout. Set the surrounding shell/tool timeout to at least 10 minutes when the runtime supports it.
+Do not run OCR through a short fixed shell/tool timeout such as 120 seconds. Set the surrounding shell/tool timeout to at least the effective OCR review-group budget from the loaded skill/current CLI semantics, with reasonable headroom when the runtime supports it. Do not make the outer timeout shorter than OCR itself.
 
 Prefer `--background` with concise business/request context. Avoid `--audience human` in agent workflows because progress UI can pollute output.
 
