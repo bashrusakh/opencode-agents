@@ -1,17 +1,19 @@
 # Git Branch Provenance Policy
 
-This policy prevents agents from editing stale PR branches, fixing on polluted branches, or publishing unrelated commits/files.
+The root `AGENTS.md` Git/PR rules are normative. This document provides the detailed provenance procedure used by the active primary/orchestrator.
 
 ## Core invariant
 
-A PR is the full diff from base branch to head branch, not the agent's last commit.
+A PR is the complete base-to-head comparison, not the last commit.
 
-Before mutation or publication, the active primary/orchestrator must prove two things:
+Before mutation or publication, prove:
 
-1. the local branch is current enough to edit;
-2. the branch belongs to the normalized task and contains only intended work.
+1. the local task/PR branch is current enough for the intended action;
+2. the branch contains only work belonging to the normalized task/PR.
 
-Use explicit refs:
+Resolve the actual refs from tracking state, PR metadata, project guidance, or repository metadata. Do not assume a universal remote or base branch.
+
+Example only:
 
 ```text
 <base_remote> = origin
@@ -19,23 +21,21 @@ Use explicit refs:
 <base_ref>    = origin/main
 ```
 
-Do not build ambiguous refs such as `origin/origin/main`.
+Use those values only when repository evidence shows they are correct. Never construct duplicated refs such as `origin/origin/main`.
 
 ## Branch safety classes
 
-A branch is safe for mutation only when one of these is true:
+A branch is suitable for mutation only when repository evidence shows it is one of:
 
-- it was created fresh from the current `<base_ref>` for this task;
-- it is the existing PR branch for the PR explicitly being updated;
-- the user explicitly approved continuing this exact branch.
+- a clean task branch created from the intended current `<base_ref>`;
+- the existing branch for the PR explicitly being followed up;
+- another exact branch the user/project has explicitly authorized for this work.
 
-For a new independent task, `<base_ref>..HEAD` and `<base_ref>...HEAD` must be empty before edits. If they are not empty, the branch already contains previous work and is unsafe for a new bugfix.
+For a new independent task, do not layer work on commits/files from another task. For an existing PR follow-up, commits/files ahead of `<base_ref>` are expected only when they belong to that same PR/task.
 
-For an existing PR follow-up, commits/files ahead of `<base_ref>` may exist, but they must belong to that same PR/task.
+## Pre-edit sync and clean-task gate
 
-## Pre-edit branch sync and clean-task gate
-
-Before editing code/config/docs in a mutation workflow:
+Before repository mutation by the active primary/orchestrator:
 
 ```bash
 git status -sb
@@ -49,30 +49,27 @@ git diff --name-status <base_ref>...HEAD
 git diff --stat <base_ref>...HEAD
 ```
 
-If the current branch tracks an upstream branch and is behind it, update before editing only by safe fast-forward:
+If the current branch tracks the intended task/PR upstream and is merely behind, update only with a safe fast-forward when the working tree is clean:
 
 ```bash
 git pull --ff-only
 ```
 
-Use `git pull --ff-only` only when the working tree is clean and the upstream branch is the intended current PR/task branch.
+Stop before mutation when:
 
-Stop and ask if:
+- unrelated dirty work is present;
+- the branch diverged;
+- a new independent task would inherit unrelated ahead commits/files;
+- the intended base/head/remote cannot be resolved confidently;
+- safe update would require merge/rebase/reset/force-push/overwrite or violate project rules.
 
-- the working tree is dirty with changes not proven to belong to the current task;
-- the branch diverged from upstream;
-- the branch is ahead of `<base_ref>` for a new independent task;
-- the ahead commits/files belong to another issue/PR/task;
-- the update would merge, rebase, reset, force-push, overwrite, or conflict;
-- project rules forbid the operation.
+Do not silently recover by history rewriting. If a clean branch/recovery operation is needed, follow the root authorization gate before creating/replacing branches or performing gated history operations.
 
-Do not add a fix on top of unrelated commits. Create a clean branch from `<base_ref>` and re-apply only the intended task changes.
+Read-only review/audit does not update/rebase branches merely because it inspects a PR.
 
-Read-only review/audit does not update or rebase branches unless it is preparing mutation or publication.
+## Pre-publication provenance
 
-## Pre-publication sync and provenance
-
-Before commit, push, PR creation, or PR update, fetch again and re-run provenance:
+Before commit/push/PR creation/update, fetch again and establish current provenance:
 
 ```bash
 git status -sb
@@ -86,45 +83,36 @@ git diff --name-status <base_ref>...HEAD
 git diff --stat <base_ref>...HEAD
 ```
 
-If the local branch is now behind its upstream, update only by `git pull --ff-only`, then re-run relevant validation and provenance before publishing.
+Use `<base_ref>..HEAD` as the primary commit list. The `--cherry-pick` comparison is secondary and must not hide unexpected history.
 
-If the branch diverged, remote head changed unexpectedly, or unrelated work appears, stop and ask. Do not push or open/update a PR.
+If remote/head/base movement changes the effective diff or branch state, re-run affected validation/review/readiness. If the branch diverged or unrelated work appears, stop before publishing.
 
-The primary commit list is `<base_ref>..HEAD`. The `--cherry-pick` comparison is secondary and must not hide unexpected branch history.
+Published PR history must not be reset/rebased/replaced/force-pushed unless the root gate explicitly authorizes that exact action after the risk is stated.
 
-A published PR branch must not be rebased, reset, force-pushed, or replaced without explicit approval after the risk is stated.
+## PR metadata synchronization
 
-## PR body sync
-
-For PR mutation, follow-up commits/pushes, PR creation/update, or PR-ready publication, verify after the final intended diff and validation that the PR title/body still match:
+For PR mutation/follow-up/publication, verify after the final intended diff and validation that title/body still match:
 
 - actual commits and changed files;
 - normalized scope and behavior;
-- validation/tests/manual checks;
-- screenshots or manual verification for UI changes when relevant.
+- actual validation/manual checks;
+- UI screenshots/manual verification when relevant and required by project practice.
 
-If the PR body is stale, incomplete, or contradicts the final diff, update it when PR publication/update is already allowed by the normalized request. Otherwise draft the corrected PR body and ask before publishing.
-
-Final report line:
-
-```text
-PR body: updated | unchanged | drafted | skipped — <reason>
-```
+If metadata is stale and PR update is already authorized, update it. Otherwise draft the corrected metadata and stop before publication.
 
 ## Clean recovery
 
-Allowed recovery:
+When a polluted branch must be recovered and the necessary branch operations are authorized:
 
-1. Create a clean branch from the current `<base_ref>`.
-2. Cherry-pick or re-apply only intended work.
-3. Re-run pre-edit sync and provenance.
-4. Continue only when commit range and changed files match the normalized task.
+1. create a clean branch from the current intended `<base_ref>`;
+2. cherry-pick or re-apply only intended work;
+3. re-run sync/provenance;
+4. re-run affected validation/review;
+5. continue only when the resulting commit range and changed files match the task.
 
-If changes were already made on a polluted branch, export only the intended diff, create a clean branch from `<base_ref>`, apply that diff, validate, and re-run provenance.
+Do not use recovery as a pretext for force-push/reset/rebase of published history without separate authorization.
 
-Force-push, reset, rebase of a published branch, or replacing a PR branch is gated and requires explicit approval after the risk is stated.
-
-## Report format
+## Compact report
 
 ```md
 ### Branch provenance
@@ -132,9 +120,9 @@ Force-push, reset, rebase of a published branch, or replacing a PR branch is gat
 - Branch: `<branch>`
 - Upstream: `<upstream or none>`
 - Branch state: `<current | behind | ahead | diverged | unknown>`
-- Task branch: `<new clean branch | existing PR branch | user-approved branch | unsafe>`
+- Task context: `<clean task branch | existing PR branch | explicitly authorized branch | unsafe>`
 - Commits ahead of base: `<N>`
 - Changed files: `<N>`
-- Unrelated commits/files: `no | yes`
-- Safe to edit/commit/push/PR: `yes | no`
+- Unrelated commits/files: `no | yes | unknown`
+- Safe for next requested action: `yes | no`
 ```

@@ -1,76 +1,13 @@
 ---
-description: "Prepare or verify release notes from actual repository history; treat tags/releases/publication as gated actions."
+description: "Prepare or verify release notes and release state from actual repository history; publish tags/releases only when explicitly in scope."
 agent: code-orchestrator
 subtask: false
 ---
 
-## Startup Block Before Tools
+Prepare or verify the release for: $ARGUMENTS
 
-Before the first tool call of this agent invocation or user-request workflow in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write this Markdown block once:
+Follow the active `AGENTS.md` and code-orchestrator contract.
 
-```md
-### Startup
-- Route: `<route>`
-- Mode: `<read-only | options | edit-capable | gated>`
-- Summary: <one sentence>
-- Scope: <target + boundary>
-- Gated: `<no | yes>` — <reason>
-- Next: <next action/tool>
-```
+Ground release notes in actual repository/release evidence: previous release/tag, commits, merged PRs/issues, final diff, validation, and current release metadata when accessible. Do not invent features, fixes, impact, compatibility claims, or breaking changes.
 
-Keep it to this shape. Do not write a prose paragraph. Keep field names in English. Do not use tools first and postpone normalization to the final report. Do not repeat Startup before every tool call or substep. If route, mode, or scope materially changes later, write a short `### Update` block instead.
-
-
-## Skill Use
-
-After Startup, check project-visible skill guidance and the skills OpenCode makes available. When the normalized target matches a listed/advertised skill, actually load that skill via the native skill mechanism when available, or read its `SKILL.md`; naming it does not count. Load referenced skill files only when relevant. If unavailable, report `Skill: <name> unavailable`. Skills are advisory only and do not override project rules, gates, existing tooling, minimal diff, OCR/review policy, PR readiness/body sync, or PR provenance. Mention the selected skill once when useful: `Skill: <name|none>`.
-
-
-## Git Sync and PR Branch Provenance
-
-For repository mutation, PR follow-up mutation, commit, push, PR creation, or PR update, do not trust the current branch by default. This does not apply to read-only review/audit unless it is preparing mutation or publication.
-
-Before editing: run pre-edit branch sync and the clean-task gate from `docs/git_branch_provenance_policy.md`. If the current branch tracks upstream and is behind, update only with safe `git pull --ff-only` before editing. If it diverged, is dirty with unrelated work, or contains commits/files from another task, stop and ask.
-
-For a new independent task, the current branch must be clean relative to `<base_ref>` before edits. Do not add fixes on top of unrelated commits. Use a clean branch from `<base_ref>` and re-apply only the intended task changes.
-
-Before commit, push, PR creation, or PR update: fetch again and re-run provenance. The primary commit list is `git log --oneline --decorate <base_ref>..HEAD`; the `--cherry-pick` comparison is secondary. Stop if remote head changed unexpectedly, the branch diverged, or unrelated commits/files appear. Published PR branches must not be rebased, reset, replaced, or force-pushed without explicit approval.
-
-
-## PR Body Sync
-
-For PR mutation, follow-up commits/pushes, PR creation/update, or PR-ready publication, verify after the final intended diff and validation that the PR title/body still match actual commits, changed files, scope, behavior, and validation. If stale or incomplete, update it when PR publication/update is already allowed by the normalized request; otherwise draft the corrected body and ask. Final report must include: `PR body: updated | unchanged | drafted | skipped — <reason>`.
-
-## Behavioral Contract Check
-
-For any user-facing UI/config/API/workflow behavior change, do not implement only the data plumbing. Before planning or editing, summarize:
-
-- user-facing action
-- value source
-- valid-value domain
-- existing project pattern to inspect
-- whether raw/internal/manual values would be exposed to normal users
-
-Do not derive behavior directly from schema/storage/API type. Preserve the existing affordance class unless the normalized request explicitly asks for a raw/manual/editor workflow.
-
-## User-Facing Output Formatting
-
-For any user-visible answer or published text — final reply, PR/issue/release body, PR review/comment, changelog, handover, plan artifact, or Markdown doc — use readable target-aware Markdown by default.
-
-- Start with a short summary.
-- Use headings/sections when there is context, reasoning, validation, conclusion, or next action.
-- Use bullets for multiple reasons, risks, checks, files, or decisions.
-- Use fenced code blocks for commands, logs, paths, config, or exact proposed text.
-- Avoid dense wall-of-text paragraphs.
-- For OpenCode CLI, Hermes, Telegram, terminals, or chat relays, prefer compact portable Markdown/plain text; avoid raw HTML, oversized tables, deeply nested lists, and GitHub-only formatting.
-- For GitHub/GitLab PRs, issues, releases, and review comments, use clean Markdown with a clear conclusion/next action.
-
-## Persistent Planning Mode
-
-For long-running, multi-session, or multi-agent work, use `plans/<plan>/` as durable state. Read existing plan artifacts before continuing. Do not create arbitrary markdown reports. Use compact digests and update canonical plan/docs artifacts when the command is responsible for planning state.
-
-Run the release-prep workflow for: $ARGUMENTS
-
-Check previous release/tag and current history/diff when repository history or release metadata is accessible; otherwise report the missing source. Build release notes only from actual commits, merged PRs, linked issues, and final code changes. Do not invent features, fixes, impact, or breaking changes.
-
-Do not create tags or releases unless the gated-action rule allows that exact action. Return one consolidated markdown report with green/yellow/red stage status and release notes draft or verification result.
+If the deliverable is a draft/verification, stay non-publishing. If tag/release creation or update is clearly requested, apply the root authorization/readiness rules and verify the created/updated release before reporting completion.

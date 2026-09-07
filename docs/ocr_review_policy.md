@@ -1,96 +1,78 @@
 # OCR / Open Code Review Policy
 
-This package treats Alibaba `open-code-review` (`ocr`) as the preferred backend for code, diff, commit, branch, workspace, and PR review when it is installed and allowed.
+The root `AGENTS.md` and the bundled `open-code-review` skill are normative. This page describes how `@reviewer` uses Alibaba `ocr` as the preferred backend for code/diff review when it is installed and external sharing is allowed.
 
-OCR is a review engine. `@reviewer` is still the policy and judgment layer.
+OCR is the review engine; `@reviewer` remains the scope, privacy, judgment, false-positive filtering, and final-verdict layer.
 
-## When to use OCR
+## Applicability
 
-Use OCR when semantic normalization selects code-review route and one of these is true:
+For code, diff, commit, branch, workspace, or PR review, prefer OCR when available and permitted. Do not force OCR onto plan/text/UI-copy critique or other non-code review.
 
-- the user explicitly requested OCR/Open Code Review;
-- the user invoked `@reviewer` for code/diff/PR/branch/commit/workspace review;
-- project/user policy says OCR is the default review backend.
+OCR is locally read-only, but it may send code/diffs/context to its configured LLM provider. The root external-sharing gate controls that action.
 
-Do not use OCR for plan review, issue text review, release-note review, UX copy review, or non-code critique unless the user clearly wants code/diff review.
+Do not emit a second Startup merely because OCR is about to run. Use the one Startup for the current reviewer/workflow invocation.
 
-## Startup and privacy gate
+## Environment and fallback
 
-Before running OCR, emit the normal startup checkpoint and state:
-
-- review target/scope;
-- mode: read-only unless a separate fix request exists;
-- gated: yes/no;
-- whether external code sharing is approved.
-
-OCR is read-only for the local repo, but it may send code, diffs, and context to the configured OCR LLM provider. If external code sharing is not already approved by user/project policy, ask first.
-
-## Environment checks
-
-When needed, check:
+When needed, check availability/configuration with the current CLI, for example:
 
 ```bash
 which ocr
 ocr llm test
 ```
 
-If OCR is unavailable, not configured, or not approved, fall back to native read-only review and say why. Do not install OCR, configure providers, or set credentials unless the user explicitly asks; installs and secrets are gated actions.
+If OCR is unavailable, not configured, fails for a non-transient reason, or external sharing is not authorized, fall back to native read-only review and state why. Do not install OCR, configure providers, or request/store credentials as part of ordinary review.
 
 ## Invocation
 
-Use agent-friendly output. Follow the loaded `open-code-review` skill and current CLI semantics for timeout/effort rather than hardcoding a stale package timeout:
+Load and follow the current `open-code-review` skill. Use agent-friendly output and concise request/business context:
 
 ```bash
 ocr review --audience agent --background "<project/request context>"
 ```
 
-Use scoped review when the target is known:
+Use scoped flags such as `--commit`, `--from`, `--to`, or `--preview` when they match the target.
 
-```bash
-ocr review --audience agent --background "<context>" --commit <sha>
-ocr review --audience agent --background "<context>" --from <base> --to <head>
-ocr review --preview
-```
+Do not hardcode a package-level OCR timeout. Follow the loaded skill/current CLI `--timeout` and effort/review-round semantics, and set the surrounding tool/shell timeout to at least the effective review-group budget with reasonable headroom. Do not kill a healthy review with a short outer timeout such as 120 seconds.
 
-Do not run OCR through a short fixed shell/tool timeout such as 120 seconds. Set the surrounding shell/tool timeout to at least the effective OCR review-group budget from the loaded skill/current CLI semantics, with reasonable headroom when the runtime supports it. Do not make the outer timeout shorter than OCR itself.
-
-Prefer `--background` with concise business/request context. Avoid `--audience human` in agent workflows because progress UI can pollute output.
+For large output, follow the skill guidance to preserve the complete review rather than truncating with `head`/`tail`.
 
 ## Fix policy
 
-For review-only requests, do not apply fixes automatically.
-
-If the installed OCR plugin command suggests autonomous fixes, this package's gated-action policy still wins: fixes require a separately normalized fix request, scope confirmation, and normal gated checks.
+Review-only work never applies OCR suggestions automatically. A fix requires a separately normalized implementation deliverable and an implementation-capable role. Existing authorization for that implementation scope is respected; do not invent an extra approval ritual.
 
 ## Reviewer post-processing
 
-After OCR, reviewer must:
+After OCR, the reviewer should:
 
+- verify material findings against surrounding code/tests where practical;
 - filter obvious false positives and low-value nits;
-- preserve precise file and line references;
-- classify findings as High / Medium / Low;
-- add policy judgment for right-level fixes, behavioral contract, tests, risky API/schema/config/data/migration changes, and project rules;
-- format the result as readable Markdown.
+- preserve precise file/line references;
+- classify material findings by severity (`critical`, `high`, `medium`, with low notes only when useful);
+- add judgment for right-level placement, regression risk, behavioral contracts, project rules, security/data/API concerns, and missing verification;
+- issue a verdict tied to the reviewed effective diff/state.
 
-## Output shape
+A later change that affects reviewed behavior makes the affected review evidence stale.
+
+## Suggested output
 
 ```md
 ## Code Review Results
 
 **Scope:** ...
-**Backend:** OCR / native fallback
-**Verdict:** pass / pass with notes / changes required
+**Backend:** OCR | native fallback
+**Verdict:** pass | pass with notes | changes required
 
-### High
+### Critical / High / Medium
 - **`path/file.ts:42`** — finding
   - Why it matters: ...
-  - Suggested fix: ...
+  - Suggested direction: ...
 
-### Medium
-- ...
-
-### Review policy checks
-- Right-level fix: pass/issues
-- Behavioral contract: pass/issues/N/A
-- Tests/verification: pass/missing/blocked
+### Evidence / policy checks
+- Right-level fix: ...
+- Regression/preserved behavior: ...
+- Behavioral contract: ...
+- Verification gaps: ...
 ```
+
+Omit empty severity sections.

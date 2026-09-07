@@ -1,29 +1,17 @@
 # UUPM / UI UX Pro Max usage notes
 
-Use UUPM for design intelligence only.
+Use UUPM as optional UI/UX design intelligence, not as a component MCP, dependency installer, permission to create a new design system, or authority over project rules/existing components.
 
-Good uses:
-- UI/web redesign plans
-- theme direction and tokens
-- layout density and visual hierarchy
-- forms/settings/admin screens
-- dashboard/table guidance
-- responsive and accessibility checklists
+Good uses when relevant:
 
-Do not use UUPM as:
-- component MCP
-- dependency installer
-- permission to create a new design system
-- replacement for existing project components
-- authority over AGENTS.md / CONTRIBUTING.md
+- UI/web redesign planning;
+- hierarchy and density;
+- typography/palette guidance within the chosen direction;
+- forms/settings/admin/dashboard/table guidance;
+- responsive/accessibility/anti-pattern checks.
 
-Preferred agent routing:
-- ui-orchestrator coordinates the flow
-- ui-planner uses UUPM for planning only after availability check
-- ui-implementer applies only approved/relevant guidance
-- a11y-reviewer uses UUPM as an extra checklist
+Availability must be confirmed from current runtime/project/user-level evidence. Do not assume installation from package instructions alone, and do not install/update UUPM during ordinary UI work.
 
+UI roles may use UUPM guidance when it improves their assigned task, but the project/user contract wins. Persisted design-system assets/fonts/dependencies/project-wide theme changes remain subject to the root gate.
 
-## Availability check for agents
-
-Agents must not assume UUPM is installed. Treat it as available only if a runtime skill is exposed, a project or installed OpenCode `ui-ux-pro-max/SKILL.md` exists, project docs say it is installed, or an allowed `uipro` CLI check succeeds. If unavailable or not checked, continue without UUPM and report that status. Do not install UUPM during normal UI work; use `/ui-uupm-setup` only when setup is requested.
+If UUPM is unavailable, continue with the normal UI workflow and mention the absence only when it materially affects the result.

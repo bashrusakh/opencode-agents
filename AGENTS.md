@@ -1,37 +1,26 @@
 # OpenCode Agent Rules
 
-**YOU MUST NOT IGNORE THESE RULES.**
+**These rules are normative. Safety/runtime/tool permissions and hard agent-role capability boundaries are hard ceilings; project-local authoritative rules may further restrict work but must not be used to expand a denied role capability.**
 
 These are reusable OpenCode working rules. They can be installed globally or copied into a project root as `AGENTS.md`. Project-local `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` remain the source of truth for project structure, allowed commands, commit format, PR format, tests, branch rules, and project constraints. These rules add workflow discipline for OpenCode; they do not replace project-local rules.
 
 ## 0. Philosophy and interpretation principles
 
-- Do not route by literal wording alone. Use user wording, logs, screenshots, file paths, repository state, project docs, and actual tool output as signals for semantic normalization.
-- Normalization determines the intended deliverable, target, mutation level, confidence, and route.
-- Gated-action rules override normalization. A normalized intent may allow local non-gated implementation, but it never bypasses gated actions.
-- Explicit user intent means the normalized request clearly identifies the requested action or mutation level, target, and expected deliverable with `confidence = clear`.
-- Explicit approval means the user confirms a previously reported gated action after the agent states the action, target, scope, and relevant risk.
-- A gated action is any action listed in Approval gates (section 4) or otherwise marked as high-risk/gated in this document. Gated actions require explicit user intent or explicit approval. `confidence = likely` is not enough for gated actions.
-- Rule priority when instructions conflict: Approval gates (section 4) > project-local rules/source of truth (section 1) > philosophy (section 0) > core behavior (section 2) > right-level correctness (section 7.2) > minimal diff size.
-- When smallest change and right-level correctness conflict, prefer the right-level fix with the smallest semantic impact that satisfies safety gates.
-- When safety and action conflict, choose the safer non-mutating path and ask one concise clarification question.
-
-Gated actions include:
-
-- commits, pushes, branches, PRs, tags, releases, or publication
-- destructive commands, deletion, resets, force pushes, branch history changes, migrations, or data-changing scripts
-- secrets, credentials, private config, private registry access, or external account actions
-- production/runtime/deployment/service/permissions changes
-- dependency, framework, font, icon set, build-tool, generated-artifact, or design-system introduction
-- public API, data model, auth/permissions, persistence, migration, or product-behavior changes beyond the requested scope
-- choosing between materially different product, design, or architecture directions
+- Route by normalized intent, not literal trigger phrases. Use the user's wording together with repository state, project guidance, logs/screenshots, paths, and actual tool output.
+- Normalization determines the requested deliverable, target, workflow action ceiling, confidence, and route. It does not grant a capability that the current agent role does not have.
+- A gated action is an action listed in section 4. It may proceed only when that exact action, target, and scope are already covered by clear user intent or by later explicit approval. Do not ask twice for the same already-authorized action.
+- If the requested scope, target, publication destination, or material risk changes after authorization, treat the changed part as not yet authorized and ask once before that changed action.
+- `confidence = likely` is enough only for safe read-only work or narrow local work already permitted by the current role. It never authorizes a gated action.
+- Rule priority when instructions conflict: safety/runtime/tool permission constraints > hard agent-role capability boundaries > project-local authoritative rules > current normalized user intent and explicit approvals > task-specific workflow rules > general workflow defaults > minimal diff preference. Project-local rules may tighten a role but cannot grant a capability denied by that role or the runtime.
+- Within the authorized scope, correctness beats smaller diff size. Prefer the right-level fix with the smallest semantic impact that preserves required behavior.
+- When information is insufficient and acting could cause unwanted mutation, publication, broad scope, secrets exposure, destructive work, or a role-capability violation, choose the safer non-mutating path and ask one concise question.
 
 Definitions:
 
-- Broad scope means the task affects multiple unrelated modules/screens, changes shared architecture, changes public contracts, requires sweeping refactors, or cannot be verified with focused checks. Indicators include 5+ unrelated files, multiple independent screens/modules, core service/shared foundation layers, public API surface changes, or a change whose verification cannot be focused.
-- A focused UI request requires all of: one known screen/component/flow, one known UX problem or requested outcome, a solution possible within existing project style/components, and no unresolved product/design direction decision.
-- A materially different direction means a choice that changes product semantics, navigation model, information architecture, visual identity/theme, major layout approach, technical architecture, or user workflow in incompatible ways.
-- Smallest correct change means minimal semantic/behavioral impact first, then minimal touched files and diff size.
+- **Broad scope** means the task affects multiple unrelated modules/screens, changes shared architecture or public contracts, requires sweeping refactors, or cannot be verified with focused checks. File count is only a signal, never the definition by itself.
+- **Focused UI request** means one known screen/component/flow, one known UX problem or requested outcome, a solution possible within existing project style/components, and no unresolved product/design direction decision.
+- **Materially different direction** means a choice that changes product semantics, navigation model, information architecture, visual identity/theme, major layout approach, technical architecture, or user workflow in incompatible ways.
+- **Smallest correct change** means minimal semantic/behavioral impact first, then minimal touched files and diff size.
 
 ## 1. Source of truth
 
@@ -39,7 +28,7 @@ Before changing code, read the project root `AGENTS.md` / `agents.md` and `CONTR
 
 If PR creation/update is in normalized scope, discover the repository's current PR template/publication guidance before drafting or publishing PR metadata. Do not assume no template exists only because the current worktree does not contain one; use available repository-host metadata when needed.
 
-Use project docs, nearby code, tests, existing issues, repository history, and actual tool output as evidence. Do not treat assumptions or model memory as evidence. Do not invent project facts. If missing information could lead to unwanted code changes, broad scope, secrets, PRs, releases, destructive actions, dependency changes, or production changes, ask the user.
+Use project docs, nearby code, tests, existing issues, repository history, and actual tool output as evidence. Do not treat assumptions or model memory as evidence. Do not invent project facts. Project-local rules may restrict commands, mutation, and workflow further, but they do not grant capabilities denied by the active agent role or runtime permissions. If missing information could lead to unwanted code changes, broad scope, secrets, PRs, releases, destructive actions, dependency changes, or production changes, ask the user.
 
 ## Memory (GrayMatter)
 
@@ -171,9 +160,11 @@ Do not map schema/storage/API types directly to UI or workflow behavior. Preserv
 
 ### 2.3 Persistent Planning Mode
 
-Use Persistent Planning Mode when semantic normalization shows the task is long-running, broad-scope, multi-session, multi-agent, or likely to exceed one reliable agent/session. Do not activate it by matching magic phrases alone. User wording such as full-project inspection, broad bug hunt, project-wide audit, large refactor, or large redesign is only an example signal; the route is decided by scope, duration, coordination needs, durable-state needs, and risk of context loss.
+Use Persistent Planning Mode when semantic normalization shows the task is long-running, broad-scope, multi-session, multi-agent, or likely to exceed one reliable agent/session. Do not activate it by matching magic phrases alone.
 
-In this mode, canonical plan files are the durable task-state and coordination interface. GrayMatter memory and checkpoints can restore recall or transient continuation state, but they do not replace canonical plan artifacts. Chat history, private reasoning, and arbitrary agent markdown reports are not durable project state. Use the target-project file-based interface:
+Canonical plan files are durable task-state and coordination artifacts when repository-file mutation is already within the authorized workflow scope. GrayMatter memory and checkpoints can restore recall or transient continuation state, but they do not replace an existing canonical plan.
+
+When plan artifacts are allowed, use the target-project interface:
 
 ```text
 plans/<plan>/
@@ -185,14 +176,13 @@ plans/<plan>/
   handovers/session-YYYY-MM-DD.md
 ```
 
-Optional project documentation lives in `docs/`. Do not invent parallel workflow directories or random report filenames. Use the canonical `plans/<plan>/` artifacts so another agent can resume without starting from zero.
+Do not invent parallel workflow directories or arbitrary report filenames. Before resuming an existing plan, read `plan.md`, `todo.md`, the active phase, relevant implementation plan, relevant reviews, latest handover, and project-local rules. Then state current phase, current todo item, blockers, and next safe action.
 
-Before resuming, read `plan.md`, `todo.md`, the active phase, relevant implementation plan, relevant reviews, latest handover, and project-local rules. Then state current phase, current todo item, blockers, and next safe action.
+For read-only/audit workflows, do not create or modify repository plan files merely to maintain planning state. Reuse an existing plan when present; otherwise use GrayMatter checkpoint/runtime state for continuation. If durable repository plan artifacts are genuinely necessary, request authorization once before creating them.
 
-For broad implementation work, use `Blueprint -> Gate -> Execute -> Digest`. The blueprint names the steps, files, checks, risks, and stop points. The gate happens before broad/gated source edits. Execution performs only the approved work package. Digest is compact; durable state must be reflected in canonical plan artifacts.
+For broad implementation work, use `Blueprint -> Gate -> Execute -> Digest`. The gate means checking the work package against section 4 and current authorization; it is not an extra confirmation ritual when the exact scope is already clearly authorized. Execution performs only the authorized work package. Digest is compact; when plan artifacts are in scope, durable state must be reflected there.
 
-Subagents should return compact digests and avoid dumping large raw exploration into chat. The primary/orchestrator owns user interaction, plan state, and git/publication gates.
-
+Subagents should return compact digests and avoid dumping large raw exploration into chat. The primary/orchestrator owns user interaction, plan state, evidence reconciliation, and git/publication gates.
 
 ### 2.4 Startup block before tools
 
@@ -203,23 +193,25 @@ Use exactly this shape:
 ```md
 ### Startup
 - Route: `<route>`
-- Mode: `<read-only | options | edit-capable | gated>`
+- Mode: `<read-only | options | edit-capable | publication-capable>`
 - Summary: <one sentence>
 - Scope: <target + boundary>
 - Gated: `<no | yes>` — <reason>
 - Next: <next action/tool>
 ```
 
+`Mode` describes the normalized workflow action ceiling, not the current agent's capabilities. `edit-capable` never authorizes an orchestrator/reviewer/read-only role to edit, and `publication-capable` never bypasses section 4.
+
 Rules:
-- Emit it once per user-request workflow or agent invocation, after GrayMatter bootstrap and before the first non-memory tool call only.
+- Emit Startup once per user-request workflow or agent invocation, after GrayMatter bootstrap and before the first non-memory tool call only.
 - Do not repeat it before every tool call, command, or substep.
-- Required GrayMatter bootstrap calls (`checkpoint_resume` first when resuming unfinished work, then project and `__shared__` `memory_search`) are the only tool calls allowed before this Startup block when the Memory section applies.
-- Keep it to the heading plus six bullets.
-- Keep field names in English.
-- No extra explanation unless `Gated: yes` or the scope is unclear.
-- If the next action is read-only, write `Gated: no — read-only`.
+- Required GrayMatter bootstrap calls (`checkpoint_resume` first when resuming unfinished work, then project and `__shared__` `memory_search`) are the only tool calls allowed before Startup when the Memory section applies.
+- Keep it to the heading plus six bullets. Keep field names in English.
+- Internal normalization fields do not become extra Startup fields. Reflect the selected route/action ceiling in `Route`/`Mode`, the target and boundary in `Scope`, and unresolved authorization in `Gated`.
+- If confidence is not clear and that uncertainty matters to the next action, state it compactly in `Summary` or the `Gated` reason instead of adding fields.
+- If the next action is read-only, write `Gated: no — read-only` unless a separate privacy/external-sharing gate applies.
 - If discovery could expand scope, put the boundary in `Scope` before using tools.
-- If route, mode, or scope materially changes later, write a compact update instead of another startup block:
+- If route, mode, or scope materially changes later, write a compact update instead of another Startup block:
 
 ```md
 ### Update
@@ -227,137 +219,148 @@ Rules:
 - Next: <next action/tool>
 ```
 
-Do not start `Fetch URL`, `Find Files`, `Search Files`, `Read File`, `Bash`, `Edit`, `apply_patch`, `task` delegation, or external/web tools before the startup block unless the user request is a trivial single-step answer that needs no tools. GrayMatter bootstrap calls are governed by the Memory section and are exempt from this ordering rule.
+Do not start repository/web/external tools before Startup unless the user request is a trivial single-step answer that needs no tools. GrayMatter bootstrap calls are governed by the Memory section and are exempt from this ordering rule.
 
-The startup block is required even when no gated action is needed. Its job is to prevent silent route changes, broad discovery, or mutation drift. It is not a per-tool progress marker.
-
-Startup block is not Git sync. The Startup block is only the visible Markdown normalization step before tools. Pre-edit Git sync and PR branch provenance are responsibilities of the active primary/orchestrator before mutation or publication work. Leaf subagents must not be forced to run `git fetch` before they can inspect files. They may use local context and tools normally. If fresh base/remote context is required, they should ask or report the missing context to the caller.
-
+Startup is not Git sync. Pre-edit Git sync and PR provenance are responsibilities of the active primary/orchestrator before mutation or publication work. Leaf subagents must not be forced to fetch before they can inspect files; they may use local context and report when fresh base/remote context is required.
 
 - Do not guess.
 - Prefer the smallest correct change.
 - Keep diffs focused on the requested task.
 - Do not make unplanned side refactors or cleanup that is not required for the task.
 - Do not silently change behavior outside the normalized task scope.
-- Do not create new files unless they are necessary for the normalized task or explicit user intent requires them.
+- Do not create new files unless necessary for the normalized task or explicit user intent requires them.
 - Reuse existing project structure, naming, commands, architecture, and conventions.
-- Do not introduce dependencies, frameworks, tooling, generated files, large artifacts, fonts, icon sets, or design systems unless the gated-action rule allows that exact action.
+- Do not introduce dependencies, frameworks, tooling, generated files, large artifacts, fonts, icon sets, or design systems unless section 4 authorizes that exact action.
+
+### 2.5 Role and capability boundaries
+
+Agent roles are capability boundaries, not suggestions. A workflow may be edit-capable while the current agent is orchestration-only or read-only. Neither user wording nor project-local workflow guidance grants a capability the current role/runtime denies; route the required action to a capable role instead.
+
+- If a role says it does not implement/edit, it must not implement/edit through any tool or workaround. Shell commands, scripting languages, redirection, `sed`, `awk`, `perl`, `python`, `node`, `tee`, formatters, generators, VCS checkout/restore operations, or external tools must not be used as alternate editors.
+- Treat read-only by effect, not by tool name. A shell command that changes tracked/untracked project files, config, generated outputs, services, data, or working-tree state is a mutation even if the `edit` tool was not used. Repository metadata refresh such as an explicitly permitted `git fetch` is not a license to change the working tree.
+- A failed, unavailable, rate-limited, hidden, or skipped subagent does not transfer that subagent's capabilities to the caller. Failure of delegation is a workflow failure, not permission escalation.
+- A required stage may be skipped only because normalization makes that stage inapplicable, never because invocation failed, hit a limit, or the caller prefers to do the work itself.
+- Substitution is allowed only with another available role that is explicitly capable of the same required action and remains within the normalized scope. An orchestration-only role must never substitute itself for an implementation-capable role.
+- When no suitable capable agent/tool is available, stop the affected stage, report the exact blocker, preserve completed evidence, and state the next safe action. Do not silently fall back to a one-agent implementation.
+- Tool permissions are a ceiling; prompts can be stricter. An allowed tool does not authorize behavior prohibited by the current role or workflow.
+- Do not redesign or tighten per-agent tool permissions as a substitute for semantic role contracts. This package relies on clear role boundaries and semantic routing; permissions remain a coarse runtime ceiling unless a separate task explicitly targets the permission model.
+- Read-only/review roles may run documented non-destructive verification commands even when the tool creates ordinary ephemeral caches or build/test outputs. They must not intentionally rewrite source/config, update snapshots/locks, apply fixes, run migrations, alter services/data, or treat generated output as an implementation change.
 
 ## 3. Request normalization
 
-Do not route work by exact wording, keyword matching, or the language used by the user alone. Words such as “fix”, “check”, “review”, “issue”, “release”, or “redesign” are signals; they are not sufficient by themselves. Normalize by the requested deliverable and the safest action that satisfies it.
+Do not route work by exact wording, keyword matching, or user language alone. Normalize by the requested deliverable and the safest action that satisfies it.
 
-Before any multi-step, repository, codebase, issue/PR/release, external-URL, mutation-capable, publication-capable, or scope-expanding task, classify:
+Before any multi-step, repository, codebase, issue/PR/release, external-URL, mutation-capable, publication-capable, or scope-expanding task, classify internally:
 
 - outcome: investigate/explain, fix/implement, review/audit, propose options, create issue, PR follow-up, release/tag work, DevOps/runtime work
 - target: code, UI/web, tests, CI/build, documentation, issue/PR/release, deployment/runtime
-- action level: read-only investigation, options/plan only, code/config/UI changes allowed, verification only, commit/PR/release/publication requested
+- action level: read-only investigation, options/plan only, local edits, verification, publication
 - confidence: clear, likely, ambiguous, unclassified
 
 Decision method:
 
-1. Identify the deliverable the user expects: diagnosis, changed code/config/UI, review findings, options, issue text, PR follow-up, release material, tests/docs, or runtime/deployment action.
-2. Identify the artifact to inspect or change: code, UI/screen/component, tests, CI/build, docs, issue/PR/release, or runtime/deployment.
-3. Identify the highest mutation level requested: read-only, plan/options, local code/config/UI/doc/test edits, verification, or publication actions.
-4. Check whether the next step hits a gated action.
+1. Identify the final deliverable the user expects.
+2. Identify the artifact to inspect or change.
+3. Identify the highest workflow action level actually requested.
+4. Check whether the next required action is gated by section 4 or exceeds the current agent role.
 5. Assign confidence:
-   - clear: one workflow is the natural result, target/action/deliverable are known, and the next action does not require guessing scope.
-   - likely: one workflow is most probable, but only non-mutating work or narrow local edits outside gated actions may proceed.
-   - ambiguous: several workflows or deliverables are plausible and choosing one could cause unwanted mutation, broad scope, wrong deliverable, or a gated action.
-   - unclassified: outcome, target, or action level cannot be determined.
+   - `clear`: one workflow is natural; target, action, and deliverable are known.
+   - `likely`: one workflow is most probable; proceed only with safe read-only work or narrow local work already allowed by the current role and scope.
+   - `ambiguous`: several workflows/deliverables are plausible and choosing one could cause unwanted mutation, wrong deliverable, broad scope, publication, or a role violation.
+   - `unclassified`: outcome, target, or action level cannot be determined.
 
-Normalization fallback:
+Fallback:
 
-- If confidence is `unclassified`, do not edit files, run state-changing commands, commit, push, open PRs/issues, create releases/tags, install dependencies, or change config. Ask one concise clarification question and include 2-4 likely interpretations when helpful.
-- If intent is partially clear but action level is unclear, choose the safest non-mutating path: read-only inspection of the specified target, short explanation, or options/plan only; stop before code changes and ask for confirmation.
-- If the target is unclear, ask what project/file/screen/module the user means. Do not scan the whole repo unless the normalized request clearly asks for a broad audit.
-- If a request could mean either investigation or fixing, treat it as investigation-only unless the normalized deliverable is changed code/config/UI.
-- If a UI request could mean either options or implementation, treat it as options-only and stop after concrete options.
-- If a request suggests a gated action but the action is not explicit user intent, stop and ask for explicit approval after stating the action, target, scope, and risk.
+- If `unclassified`, do not mutate, publish, install, or change config. Ask one concise clarification question and include likely interpretations when useful.
+- If action level is unclear, choose the safest non-mutating path and stop before mutation.
+- If target is unclear, ask for it; do not scan the entire repository unless the request is clearly a broad audit.
+- If a request could mean investigation or fixing, treat it as investigation-only unless the deliverable is changed code/config/UI/tests/docs.
+- If a UI request could mean options or implementation, treat it as options-only unless implementation is clear.
+- If a gated action is needed but not already authorized, stop at the gate and ask once with action, target, scope, and material risk.
 
-For multi-step, repository, codebase, issue/PR/release, external-URL, mutation-capable, publication-capable, or scope-expanding workflows, include the normalization summary in the startup checkpoint before the first tool call:
-
-- outcome
-- target
-- action level
-- confidence
-- selected route
-- gated: yes/no, and why
-- scope boundary before discovery when relevant
+The internal classification must not add fields to Startup. Startup exposes only the fixed fields from section 2.4.
 
 Workflow selection:
 
 - UI/web options, audit, planning, redesign, layout, theme, forms, dashboards, tables, navigation, or visual hierarchy -> UI workflow.
-- Broken, incorrect, failing, strange, or wrong behavior -> investigation by default unless the normalized deliverable is changed code/config/UI; then use bugfix workflow.
+- Broken, incorrect, failing, strange, or wrong behavior -> investigation by default unless changed code/config/UI is clearly requested; then use bugfix workflow.
 - Existing PR, review comment, requested correction, failed PR check, CI failure, or follow-up work -> PR follow-up workflow on the same PR branch by default.
-- Issue/ticket/report outcome -> verify facts first, search existing issues when issue access is available, draft/open issue only when the normalized action level includes issue creation, and do not fix code unless the normalized deliverable is changed code/config/UI.
-- Whole-project review, architecture health, dead-code sweep, logic audit, duplicated-fix search, or broad bug hunt -> project audit workflow; use Persistent Planning Mode when the work is long-running, multi-agent, or likely to exceed one session.
+- Issue/ticket/report outcome -> verify facts first, search existing issues when access exists, draft/open only when issue creation is in scope, and do not fix code unless changed code/config/UI is separately requested.
+- Whole-project review, architecture health, dead-code sweep, logic audit, duplicated-fix search, or broad bug hunt -> project audit workflow; use Persistent Planning when duration/coordination warrants it and plan-file mutation is authorized.
 - Docker, systemd, CI, deployment, runtime services, environment, logs, permissions, or production config -> DevOps/runtime workflow.
 - Release notes, tags, changelog, release body, or release verification -> release-prep workflow.
-- Tests-only or documentation-only implementation -> focused implementation workflow: inspect existing patterns, make the smallest scoped test/doc change with an implementation-capable agent, verify, and report.
+- Tests-only or documentation-only implementation -> focused implementation workflow using an implementation-capable role for edits.
 
 ## 4. Approval gates
 
-Ask the user before continuing when the next step would:
+The actions below are gated. A gated action may proceed without another confirmation when the current normalized user request already clearly authorizes that exact action, target, and scope, or when the user later explicitly approves it after the action/scope/risk was stated.
 
-- create, update, push, or publish a commit, branch, PR, tag, release, or other public artifact
-- change product behavior beyond the normalized request scope, public API contracts, data model, auth/permissions, persistence, migration behavior, deployment, or production/runtime config
-- introduce a new dependency, framework, design system, icon set, font, build tool, or large generated artifact
-- run destructive commands or delete user/project data
-- require secrets, credentials, private config, private registry access, or external account actions
+Ask only when authorization is missing or ambiguous, or when the target, scope, destination, or material risk has changed. Do not ask twice for the same unchanged action. `confidence = likely` does not authorize a gated action.
+
+Gated actions:
+
+- create, update, push, publish, or otherwise mutate commits, branches, PRs, issues, review comments, tags, releases, or other public/external artifacts
+- change public API contracts, data models, auth/permissions, persistence/migrations, deployment, production/runtime config, or product behavior beyond the already authorized scope
+- introduce a dependency, framework, design system, icon set, font, build tool, or large/generated artifact
+- run destructive commands, delete user/project data, rewrite published history, force-push, reset/rebase published work, or perform other destructive state changes
+- require secrets, credentials, private config, private registry access, or external account actions not already authorized by the request/project policy
 - choose between materially different product/design/architecture directions without enough information
-- exceed the requested scope or turn a focused task into broad scope
-- continue despite failing or blocked verification
+- exceed the authorized scope or turn a focused task into broad scope
+- continue or publish despite failing/blocked required verification
+- send code/diffs/context to an external review/LLM service when external code sharing is not already permitted by user/project policy
 
-Do not ask for approval for ordinary safe workflow continuation: read-only exploration, UI audit, redesign planning, implementation of a clear focused UI/layout change within existing project style, documented non-destructive tests/checks, or specialist review after implementation.
-
-For gated actions, `confidence = clear` or `likely` from normalization does not replace explicit approval unless the gated action itself is explicit user intent. When a gated action is needed, state the exact action, target, scope, and relevant risk before asking.
+Ordinary safe workflow continuation is not a new gate: read-only exploration, planning, specialist delegation, implementation already clearly requested and within role/scope, and documented non-destructive verification may proceed automatically.
 
 ## 5. Delegation and orchestration
 
-Do not assume one agent should do all work in one pass. For multi-step work, the active agent should orchestrate:
+Delegate when a specialist role materially improves correctness, independent verification, role separation, or context management, and whenever the workflow assigns a required action to a role the caller does not possess. Do not delegate merely to reproduce stage names; do not skip required delegation merely because the change looks easy.
 
-1. confirm the normalized intent
-2. check whether the required subagent/tool is available
-3. call the appropriate subagent for the current stage
-4. read the subagent result
-5. decide the next safe stage
-6. call the next subagent automatically when the next stage is safe
+For multi-step work, the active agent should:
+
+1. normalize intent and scope
+2. identify required vs optional specialist stages
+3. confirm required agents/tools are available
+4. invoke the appropriate role for the current stage
+5. read and reconcile its result against current repository state/effective diff
+6. continue automatically through safe applicable stages
 7. return one consolidated final report
 
-Subagents report to the calling/orchestrating agent. Do not make the user manually run every stage. Stop only when a gated action is hit, a required target is unknown, a required subagent/tool is unavailable, or the final report is ready.
+Subagents report to the caller. The caller remains responsible for scope, evidence freshness, and final claims. A subagent statement is evidence only to the extent that its reported tool results support it and still apply to the current effective diff/state.
 
-Subagent availability:
+Subagent availability and failure handling:
 
-- Treat a subagent as available only if it is visible in the current OpenCode agent list, can be invoked by the current runtime, or its agent file is present in the active OpenCode agent directory for this session.
-- Do not pretend a subagent ran. If invocation fails or is not supported, say which `@agent` or slash command should be run next.
-- If a specialist is unavailable and the current agent has the right permissions and instructions for a safe read-only step, it may do only that read-only step. Do not replace an unavailable implementation/review specialist with an unsafe one-pass workflow.
+- Treat a specialist as runtime-available only when the current runtime can actually invoke or route to it. Presence in the agent directory proves the intended role exists, not that the current session can run it.
+- Never claim a subagent ran when it did not.
+- An invocation failure, provider/model limit, rate limit, unavailable agent, or runtime/tool error does not authorize the caller to absorb that role's prohibited work.
+- Retry only when the failure is genuinely transient and a retry is reasonable under runtime/provider guidance. Do not loop on quota/limit failures.
+- Substitute only another explicitly capable role for the same stage. If none exists, mark that stage blocked and state the exact next safe action.
+- If a specialist is unavailable and the current role is allowed to perform a safe read-only subset, it may do only that subset; it must not cross into the unavailable specialist's mutation/review capability.
 
 Default routing:
 
 - discovery, architecture tracing, file search, “where/how is this implemented?” -> `@explore`
-- architecture/multi-file sequencing/data model/API/deployment planning or multiple valid implementation approaches -> `@plan`
+- architecture/multi-file sequencing/data model/API/deployment planning or multiple valid approaches -> `@plan`
 - UI/web design/redesign/layout/theme/settings/forms/dashboards/tables -> `@ui-orchestrator`
 - multi-step bugfix, PR follow-up, bug-issue, release-prep -> `@code-orchestrator`
 - full project audit, logic review, dead-code sweep, wrong-fix-level sweep -> `@auditor`
 - verification -> `@tester`
-- root-cause bug fixing -> `@debugger`
-- code/PR/security review -> `@reviewer`
-
-### 6.1 Open Code Review backend
-
-For code, diff, commit, branch, workspace, or PR review, prefer OCR/open-code-review as the primary review backend when it is installed and allowed. The `@reviewer` agent remains the policy and judgment layer around OCR: it normalizes scope, checks gated/privacy status, runs OCR when appropriate, filters false positives, adds right-level/behavioral-contract/test-risk judgment, and formats the final review.
-
-OCR is locally read-only for the repository, but it may send code, diffs, and context to the configured OCR LLM provider. If external code sharing is not already approved by user/project policy, ask before running OCR. If OCR is unavailable, not configured, or not approved, fall back to native read-only review and state why.
-
-When running OCR from a shell/tool, do not force a stale fixed timeout. Follow the loaded OCR skill and current CLI semantics for the base `--timeout` and effort/review-round scaling, then set the surrounding shell/tool timeout to at least the effective OCR review-group budget, with reasonable headroom when the runtime supports it.
-
-Do not apply OCR suggestions automatically for a review-only request. Automatic fixes require a separately normalized fix request and the normal gated-action checks.
-- abstraction-level / duplicated-fix review -> `@reviewer`
+- focused implementation after scope/design is already clear -> `@build`
+- root-cause bug fixing for confirmed failures/bugs -> `@debugger`
+- code/PR/security/abstraction-level/duplicated-fix review -> `@reviewer`
 - Docker/systemd/CI/deploy/runtime config -> `@devops`
 - fallback bounded research only when no specific agent fits -> `@general`
 
-Do not over-delegate for tiny mechanical edits when the correct change is obvious and no gated action is involved.
+Do not over-delegate tiny mechanical work when the active role itself is explicitly implementation-capable and the correct change is obvious. This exception never lets an orchestrator-only, reviewer, auditor, planner, or other non-implementation role perform edits itself.
+
+### 5.1 Open Code Review backend
+
+For code, diff, commit, branch, workspace, or PR review, prefer OCR/open-code-review as the primary review backend when installed and allowed. `@reviewer` remains the policy/judgment layer: it normalizes scope, checks privacy/gates, runs OCR when appropriate, filters false positives, adds right-level/behavioral-contract/test-risk judgment, and formats the final review.
+
+OCR is locally read-only for the repository, but may send code, diffs, and context to its configured LLM provider. Section 4 controls external sharing. If OCR is unavailable, not configured, or not approved, fall back to native read-only review and state why.
+
+When running OCR, follow the loaded OCR skill/current CLI semantics for `--timeout` and effort/review-round scaling. Set the surrounding shell/tool timeout to at least the effective OCR review-group budget with reasonable headroom when supported.
+
+Do not apply OCR suggestions automatically for review-only work. Fixes require a separately normalized implementation request and an implementation-capable role.
 
 ## 6. Workflow routing
 
@@ -373,16 +376,18 @@ Classify UI intent before running the full workflow:
 
 For UI options, current-design review, or visual critique requests, the active primary implementation agent must not deeply analyze UI/CSS files itself. It should delegate to `@ui-orchestrator` with options/audit intent or use `/ui-options` semantics. UI subagents may inspect UI/CSS as part of their job.
 
-Default UI implementation workflow:
+Default UI implementation flow (apply stages semantically, not mechanically):
 
 1. `@explore` when files/routes/components/styles/state flow are not yet identified
-2. `@ui-auditor` for current UX/layout audit and element priority
-3. `@ui-planner` for concrete redesign/layout/theme plan
+2. `@ui-auditor` when the current UX/layout or element priority is not already clear
+3. `@ui-planner` when a design/layout/theme decision still needs a concrete plan; a focused, already-specified implementation does not require a ceremonial re-plan
 4. gated-action check before any gated action
-5. `@ui-implementer` for code changes
-6. `@a11y-reviewer` for accessibility/interaction review
-7. `@tester` for the narrowest relevant frontend validation
+5. `@ui-implementer` for repository UI changes
+6. `@a11y-reviewer` when interaction/accessibility risk or project requirements make an independent pass useful
+7. `@tester` for task-relevant frontend validation when runnable checks exist
 8. one consolidated final report
+
+Skipping an inapplicable audit/plan/review stage is allowed because normalization made it unnecessary; skipping a required implementation/review/verification stage because the specialist failed or was unavailable is not.
 
 ### 6.2 UI component and design-intelligence policy
 
@@ -414,11 +419,12 @@ Bugfix default:
 
 1. `@explore` when the relevant code path is not yet identified
 2. `@tester` when reproduction/failing checks are needed
-3. `@debugger` to find root cause, identify changed + preserved behavior, and apply the smallest right-level fix when the normalized deliverable is changed code/config/UI
-4. `@tester` again to verify both the fixed behavior and applicable preserved behavior; broaden to the relevant existing suite or representative consumers when a shared primitive changed
-5. `@reviewer` when shared behavior or multiple call sites are touched
-6. `@reviewer` for review when the diff touches shared behavior, security, data handling, API contracts, concurrency, or non-obvious logic
-7. final report
+3. `@debugger` to identify root cause, changed + preserved behavior, and apply the smallest right-level fix when changed code/config/UI is requested
+4. `@tester` again to verify the fixed behavior and applicable preserved behavior; broaden to the relevant existing suite or representative consumers when a shared primitive changed
+5. `@reviewer` when the final diff affects shared/multi-caller behavior, security, data handling, API contracts, concurrency, or other non-obvious/high-risk logic
+6. final report
+
+The implementation stage is delegated. An orchestration-only `@code-orchestrator` must not replace a failed/skipped `@debugger` by editing through shell/scripts or any other tool. If no implementation-capable agent can run, implementation is blocked.
 
 If the user reports a problem but does not clearly ask for changed code/config/UI, investigate and stop with root cause/recommended fix. Do not edit code.
 
@@ -428,7 +434,7 @@ For tests-only normalized requests, inspect existing test patterns, add or updat
 
 For documentation-only normalized requests, inspect current docs and code/config source of truth, update only the requested docs, and do not invent features, commands, APIs, environment variables, or release impact. If documentation needs code changes to be true, report that instead of silently changing code.
 
-If the active orchestrator cannot edit but edits are required, stop with a prepared plan and tell the user which implementation-capable agent/command should run next.
+If the active orchestrator cannot edit but edits are required, route to an implementation-capable role. If the current runtime cannot invoke or route to that role, stop the affected stage with a prepared handoff and exact blocker; do not implement the edit in the orchestrator as a fallback.
 
 ### 6.5 Existing PR follow-up workflow
 
@@ -450,7 +456,7 @@ Review comments, failed PR checks, requested corrections, CI failures, and follo
 
 ### 6.7 Project audit workflow
 
-For broad project reviews, logic audits, dead-code sweeps, architecture-health checks, duplicated-fix searches, optimization reviews, or whole-project bug hunts, use `@auditor`. If the audit is long-running, multi-agent, or full-project scope, first create or resume a `plans/<plan>/` workflow and use it as durable state.
+For broad project reviews, logic audits, dead-code sweeps, architecture-health checks, duplicated-fix searches, optimization reviews, or whole-project bug hunts, use `@auditor`. If the audit is long-running, multi-agent, or full-project scope, resume an existing `plans/<plan>/` workflow when present. Create new repository plan artifacts only when file mutation for planning is already authorized; otherwise use checkpoint/runtime state.
 
 The project auditor is read-only by default. It should orchestrate `@explore`, `@tester`, `@reviewer`, `@ui-auditor`, `@a11y-reviewer`, and `@devops` for audit areas that need an independent specialist pass. It should return confirmed findings, hypotheses, dead/stale code, wrong-level fixes, test gaps, practical optimizations, uncovered areas, and prioritized next actions.
 
@@ -473,9 +479,11 @@ For release notes, tags, changelog, release body, assets, or release verificatio
 
 ### 7.1 Before editing
 
-Before editing code/config/docs in a repository, the active primary/orchestrator must run pre-edit branch sync and the clean-task branch gate for mutation work. A stale local PR branch, diverged upstream, or polluted branch is a scope bug, not an implementation detail. This gate is not a required startup step for leaf subagents; leaf agents may inspect local context normally and ask/report if fresh remote/base context is needed.
+Before repository mutation, the active primary/orchestrator must establish current branch/base context. A stale PR branch, diverged upstream, or polluted branch is a scope problem, not an implementation detail. This is not a required startup step for leaf subagents doing local inspection.
 
-Required pre-edit checks for mutation-capable repository work:
+Resolve the actual head remote, base remote, base branch, and base ref from project guidance, tracking state, PR metadata, or repository metadata. Do not assume `origin/main` merely because the base is unknown.
+
+Typical checks:
 
 ```bash
 git status -sb
@@ -489,22 +497,22 @@ git diff --name-status <base_ref>...HEAD
 git diff --stat <base_ref>...HEAD
 ```
 
-Use explicit refs: `<base_remote>=origin`, `<base_branch>=main`, `<base_ref>=origin/main`. Do not build ambiguous refs such as `origin/origin/main`.
+Example only: `<base_remote>=origin`, `<base_branch>=main`, `<base_ref>=origin/main`. Use these values only when repository evidence shows they are correct. Never construct duplicated refs such as `origin/origin/main`.
 
-If the current branch tracks an upstream branch and is behind it, update before editing only with safe `git pull --ff-only`, only when the working tree is clean and the upstream branch is the intended current PR/task branch.
+If the current branch tracks an upstream and is merely behind, a safe `git pull --ff-only` may be used before editing only when the working tree is clean, the upstream is the intended task/PR branch, and project rules permit it. If it would change the effective diff, rerun affected validation/review later.
 
-For a new independent task, `<base_ref>..HEAD` and `<base_ref>...HEAD` must be empty before edits unless the user explicitly approved continuing this exact branch. If the branch already contains commits/files from another issue/PR/task, stop. Do not add fixes on top of unrelated work. Create a clean branch from `<base_ref>` and re-apply only the intended task changes.
+For new independent work, the task branch must be clean relative to the resolved base before edits unless the user explicitly authorized continuing the exact existing branch. If unrelated commits/files are present, stop. Create/switch to a clean branch only when branch mutation is authorized by section 4; otherwise report the blocker instead of silently creating one.
 
-If the local branch diverged from upstream, the working tree is dirty with unrelated work, or update/rebase would rewrite published history, hit conflicts, include unrelated commits, or violate project rules, stop and ask with the exact branch state and risk.
+If the branch diverged, the working tree contains unrelated work, or recovery would rewrite published history, cause conflicts, or violate project rules, stop with the exact state and risk.
 
 Then:
 
-- Understand the relevant area first.
-- Inspect nearby implementation and tests.
-- Reuse existing style and architecture.
-- Check existing patterns/shared abstractions before adding new code.
-- Keep the diff as small as correctness allows.
-- Do not introduce dependencies, generated files, broad scope rewrites, or unrelated cleanup unless the gated-action rule allows that scope.
+- understand the relevant area first
+- inspect nearby implementation and tests
+- reuse existing style and architecture
+- check existing patterns/shared abstractions before adding code
+- keep the diff as small as correctness allows
+- do not introduce dependencies, generated files, broad rewrites, or unrelated cleanup unless authorized
 
 ### 7.2 Right-level fixes
 
@@ -513,39 +521,52 @@ When fixing an issue, bug, security finding, PR review comment, failing test, or
 Before editing:
 
 - identify the primitive/root operation that causes the problem
-- search for existing patterns that solve similar problems
-- search similar call sites before deciding where the fix belongs
-- when the normalized bug behavior spans multiple meaningful states, transitions, consumers, boundaries, or input shapes, enumerate the relevant cases and map them to verification before editing; keep this compact and do not invent a matrix for a truly local single-path fix
-- prefer shared/root-level fixes over copy-patching individual call sites when the criteria below apply
+- search existing patterns that solve similar problems
+- inspect similar call sites before deciding where the fix belongs
+- prefer a shared/root-level fix when an existing abstraction owns the behavior or the same failure can affect multiple callers
 
 Shared abstractions include helpers/functions, services, composables/hooks, middleware, validators, repositories/models, transaction helpers, API wrappers, request/response mappers, and ownership/auth/permission helpers.
 
-Prefer shared-level fixes when the same bug can happen through more than one caller, the same logic appears in 3+ places, an existing abstraction already owns the behavior, the fix is about validation/auth/permissions/persistence/cleanup/transactions/request wrapping/API/common UI behavior, or a local patch would copy the same change across files.
+Prefer shared-level fixes when the same bug can happen through more than one caller, the same logic appears in 3+ places, an existing abstraction already owns the behavior, the fix concerns validation/auth/permissions/persistence/cleanup/transactions/request wrapping/API/common UI behavior, or a local patch would duplicate the same change across files.
 
-Do not over-abstract blindly. If the bug is truly local, keep the fix local. If no suitable abstraction exists and duplication is not visible, prefer the smallest correct local fix.
+Do not over-abstract. If the bug is truly local and no suitable shared abstraction exists, use the smallest correct local fix.
 
-Before marking done, report fix level, similar call sites checked, why the level is correct, and whether duplicate logic was removed/reused/intentionally left.
+Before marking done, state the chosen fix level and the relevant similar callers/patterns checked when that information materially supports correctness.
 
 ### 7.3 Regression guard
 
-For bugfixes and implementation changes that modify existing or shared behavior, verify both the intended change and the relevant behavior that must remain unchanged. Do not treat “the reported case passes” as sufficient evidence when the changed code can affect other callers, states, inputs, or consumers.
+For bugfixes and implementation changes that modify existing/shared behavior, verify both the intended change and the relevant behavior that must remain unchanged. “The reported case passes” is not sufficient when changed code can affect other callers, states, inputs, or consumers.
 
-Before editing, identify the changed behavioral contract and the closest applicable preserved behavior/invariant. Keep this proportional to risk; do not invent a large matrix for a truly local single-path change.
+Before editing:
 
-When the bug is practical to express in the project's existing automated test layer, prefer establishing a failing regression case before the fix. The regression test must exercise the broken behavioral contract, not merely a new implementation detail. Do not introduce a new test framework only to satisfy this rule.
+- identify the changed behavioral contract
+- identify the closest applicable preserved behavior/invariant
+- when behavior spans multiple meaningful states, transitions, consumers, boundaries, or input shapes, create a compact case-to-verification map proportional to risk
+
+When practical in the project's existing automated test layer, establish a failing regression case before the fix. The regression test must exercise the broken behavioral contract, not merely the new implementation detail. Do not introduce a new test framework only for this rule.
 
 After editing:
 
-- verify the originally failing/intended changed behavior;
-- verify the closest applicable preserved behavior or representative unaffected path;
-- when a shared primitive/helper/service/parser/stateful path/API wrapper/composable changes, run the relevant existing suite or verify representative affected consumers in addition to the new/focused case;
-- do not treat a newly added test passing by itself as sufficient regression evidence.
+- verify the originally failing/intended changed behavior
+- verify the closest applicable preserved behavior or representative unaffected path
+- when a shared primitive/helper/service/parser/stateful path/API wrapper/composable changes, run the relevant existing suite or representative affected consumers in addition to the focused/new case
+- do not treat one newly added passing test as sufficient regression evidence
 
-If automated regression coverage is impractical, state why and perform the smallest meaningful non-destructive manual or command-based preservation check.
+If automated regression coverage is impractical, state why and perform the smallest meaningful non-destructive preservation check.
 
-### 7.4 Verification
+### 7.4 Verification and evidence freshness
 
-Run the narrowest relevant tests/checks from project docs/configs that are non-destructive and do not require unapproved secrets or production services. Prefer focused checks before broad suites. If checks cannot run, report the exact command and exact error/blocker. Never claim success when checks are unknown, skipped without explanation, or failing.
+Run the narrowest relevant tests/checks from project docs/config that are non-destructive and do not require unapproved secrets or production services. Prefer focused checks before broader suites.
+
+Validation evidence is tied to the effective diff and relevant environment/configuration at the time it ran. Any later code, config, test, dependency, generated-output, or history change invalidates every result that change could affect. Re-run only the affected checks before claiming success.
+
+A focused passing check proves only the behavior it exercises. Do not claim module-, package-, repository-, or project-wide verification unless the corresponding broader checks actually ran.
+
+Do not manufacture a pass by deleting, skipping, weakening, broadening, or disabling assertions, snapshots, type checks, lint rules, coverage requirements, tests, or validation steps unless the normalized task intentionally changes that expected behavior and current project evidence supports the change.
+
+Review evidence is also diff-bound. If edits after review affect reviewed behavior, the affected review verdict is stale; re-review when reviewer criteria still apply.
+
+If checks cannot run, report the exact command and exact error/blocker. Never claim success when required checks are unknown, skipped without explanation, stale, or failing.
 
 ## 8. Git, commit, PR, issue, and release discipline
 
@@ -553,13 +574,13 @@ Only create, update, push, or publish branches/commits/PRs/tags/releases when th
 
 Before branch/PR mutation or publication, check git status, current branch, upstream tracking branch, current base branch, and whether the current branch already has an open PR. Fetch both the current head/upstream remote and the base remote before trusting branch state. Read-only review/audit must not rebase/update branches just because it mentions a PR.
 
-New independent work normally gets a new clean branch from the current base and a new PR. Follow-up fixes, review responses, CI fixes, requested corrections, and requested additions for an existing PR must go to the same PR branch, not a new PR, unless separate-PR creation is the clear normalized deliverable and the gated-action rule allows that exact publication action.
+When branch/PR publication is in normalized scope, new independent work normally uses a clean task branch from the intended base and a separate PR. Do not create a branch or PR merely because local work exists. Follow-up fixes, review responses, CI fixes, requested corrections, and requested additions for an existing PR stay on that PR branch unless a separate PR is explicitly authorized.
 
 ### 8.1 PR branch provenance gate
 
 Before committing, pushing, opening a PR, or updating an existing PR, fetch again and prove that the branch contains only commits and files intended for the normalized task. A PR is the entire base-to-head comparison, not the last commit.
 
-Run and report explicit refs, normally the project/PR base or `origin/main` when no other base is known:
+Run and report explicit refs using the resolved project/PR base. If the base is unknown, resolve it first; do not assume `origin/main` merely because no other base is known:
 
 ```bash
 git status -sb
@@ -644,20 +665,29 @@ Public comments should be concise, factual, skimmable, and easy to understand wi
 
 ## 10. Final reports
 
-For any orchestrated workflow, return one concise markdown report with green/yellow/red status markers instead of separate stage chatter.
+Return one concise consolidated report. Report only applicable stages and evidence; do not add rows whose only useful content is `skipped`.
+
+For ordinary focused workflows, prefer compact status bullets covering:
+
+- overall result
+- what changed or was found
+- regression/preserved-behavior evidence when applicable
+- exact verification run/results
+- review status when reviewer criteria applied
+- publication/PR status only when publication was in scope
+- blockers or remaining risks, if any
+
+Use the full stage table only for broad, multi-agent, persistent-planning, publication/readiness, or explicitly audited workflows where the table improves traceability:
 
 | Stage | Status | Notes |
 |---|---|---|
-| Scope understood | ✅/⚠️/❌ | include normalized outcome/target/action/confidence for orchestrated workflows |
-| Code path found | ✅/⚠️/❌/skipped | ... |
-| Fix level checked | ✅/⚠️/❌/skipped | ... |
-| Behavioral contract | ✅/⚠️/❌/skipped | user-facing contract preserved / pattern reused / raw internal values avoided |
-| Persistent planning | ✅/⚠️/❌/skipped | plan path / current phase / todo / handover for long-running work |
-| Implementation | ✅/⚠️/❌/skipped | ... |
-| Regression guard | ✅/⚠️/❌/skipped | changed behavior / preserved behavior / regression evidence |
-| Verification | ✅/⚠️/❌/blocked | exact commands/results |
-| Review | ✅/⚠️/❌/skipped | reviewer/review/a11y summary |
-| PR readiness | ✅/⚠️/❌/skipped | current final diff / validation / reviewer freshness / metadata / provenance |
-| Commit/PR | ✅/⚠️/❌/skipped | only when the gated-action rule allows the exact publication action |
+| Scope | ✅/⚠️/❌ | normalized target/action boundary |
+| Code path / fix level | ✅/⚠️/❌ | relevant path and right-level decision |
+| Behavioral contract | ✅/⚠️/❌ | when user-facing behavior is involved |
+| Implementation | ✅/⚠️/❌ | implementation-capable role/result |
+| Regression guard | ✅/⚠️/❌ | changed + preserved behavior/evidence |
+| Verification | ✅/⚠️/❌/blocked | exact current commands/results |
+| Review | ✅/⚠️/❌ | when applicable; must match current diff |
+| PR readiness / publication | ✅/⚠️/❌ | only when in scope |
 
-Keep final reports short: what changed or was found, exact checks run, blockers/failures, and one concrete next action when there is a clear next action.
+Keep the report short and make no claim broader than the current evidence supports. If a required stage is blocked because a specialist could not run, say so explicitly rather than implying the caller completed that stage itself.

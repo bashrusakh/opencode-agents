@@ -1,19 +1,15 @@
 # Long-running audit prompt
 
-Use this when asking an agent to start or resume a full-project inspection or bug hunt.
+Use this when a broad read-only audit needs resumable state.
 
 ```text
-Use Persistent Planning Mode.
+Audit <project/scope> in read-only mode.
 
-Task: full-project inspect / bug find for <project>.
+Follow the active AGENTS.md and auditor contract. Use Persistent Planning semantics because the audit is broad/resumable, but do not create or modify repository plan files merely to hold audit state unless that file mutation is separately authorized.
 
-Do not create arbitrary markdown reports.
-Use `plans/<plan>/` as durable state.
-If no plan exists, create one with `plan.md`, phase docs, and `todo.md`.
-If a plan exists, read `plan.md`, `todo.md`, the active phase, implementation/review files if present, and latest handover before doing anything else.
+If an existing plans/<plan>/ applies, read its current canonical state. Otherwise use checkpoint/runtime state for continuation.
 
-Return only a compact digest in chat. Durable findings, progress, decisions, and next steps must be reflected in the canonical plan artifacts.
+Use specialist read-only passes only when they materially improve coverage or independence. If a specialist cannot run, report that coverage as blocked/missing rather than performing its prohibited role yourself.
 
-Before source edits, use Blueprint -> Gate -> Execute -> Digest.
-Git operations remain gated.
+Return a compact consolidated digest with prioritized findings, evidence, limitations, and next actions. Do not implement fixes or publish issues/PRs as part of the audit.
 ```

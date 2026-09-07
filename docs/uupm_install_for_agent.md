@@ -1,125 +1,59 @@
 # UI UX Pro Max / UUPM setup for OpenCode agents
 
-Purpose: install UI UX Pro Max / UUPM as UI/web design intelligence for OpenCode workflows.
+Use this only when UUPM installation/configuration is the normalized deliverable. The root `AGENTS.md` controls authorization, and `docs/ui_component_policy.md` defines UUPM's role in UI work.
 
-UUPM is not a component MCP server. It is used for design-system reasoning, layout density, visual hierarchy, palette, typography, forms, dashboards, responsive behavior, anti-patterns, and accessibility/pre-delivery checklists.
+UUPM is design intelligence for UI/UX reasoning; it is not the component MCP server.
 
-## Final role in this stack
+## Preferred CLI setup
 
-```text
-UI workflow:
-  /ui-redesign
-    -> ui-orchestrator
-      -> ui-auditor
-      -> ui-planner + UUPM only after availability check
-      -> ui-implementer + UUPM-derived plan when it was clearly adopted by the planner
-      -> a11y-reviewer
-      -> tester
-
-Component sources:
-  1. Existing project components
-  2. Official shadcn MCP + standard shadcn registry
-  3. Official shadcn MCP + GitHub/public shadcn-compatible registries
-  4. Jpisnice shadcn-ui-mcp-server + GitHub token
-  5. Manual implementation
-
-Design intelligence:
-  UUPM / UI UX Pro Max
-```
-
-## Install option A: UUPM CLI
-
-Use this when you want UUPM to install/configure the assistant integration itself.
+Current upstream CLI package installs the `uipro` command:
 
 ```bash
-npm install -g uipro-cli
+npm install -g ui-ux-pro-max-cli
 cd /path/to/project
 uipro init --ai opencode
 ```
 
-Before running this in an existing repository:
+Before installing into an existing repository, inspect current Git/OpenCode/skill state. After running the initializer, inspect the exact files it created/changed and preserve its upstream-generated structure rather than guessing a local layout.
 
-```bash
-git status --short
-find . -maxdepth 3 \( -name 'AGENTS.md' -o -path './.opencode/*' -o -path './.claude/*' \) -print
-```
+Do not run `--force` or overwrite an existing skill/config blindly. If an existing installation is present, compare/update deliberately.
 
-After installation:
+## Project-local vs global
 
-```bash
-git status --short
-find . -maxdepth 4 \( -iname '*uupm*' -o -iname '*ui-ux*' -o -path './.opencode/*' -o -path './.claude/*' \) -print
-```
+Default to the scope requested by the user/project. Do not silently turn project-local setup into global setup.
 
-Report any files created or modified before continuing.
+For a project-local installation, use the structure generated/documented by the current UUPM OpenCode integration. Do not hand-create guessed wrapper files.
 
-## Install option B: project-local skill/reference only
+Use a global install only when the deliverable explicitly requires UUPM across projects. Verify the actual target path created by the current CLI/runtime rather than assuming a stale path from older releases.
 
-Use this when the project should keep UUPM files local and reviewable.
+## Usage boundary
 
-```bash
-mkdir -p .opencode/skills
-# Install UUPM using its documented OpenCode method or copy the generated skill/reference files here.
-```
+UUPM may be used by UI roles when relevant and available. It should not be pulled into ordinary backend bugfix/review/test/DevOps work unless the requested deliverable genuinely needs UI/design guidance.
 
-Do not guess the file layout. If the CLI generated a different structure, preserve it and report what was created.
+Normal UI work must not auto-install or auto-update UUPM. Setup/update is a separate operation.
 
-## Install option C: global user-level install
+## Gated scope expansion
 
-Use this only when the normalized deliverable is global UUPM availability across projects.
+Follow the root gate before UUPM-driven work introduces scope not already authorized, including new dependencies, fonts/assets/icon or animation libraries, persistent generated design-system artifacts, broad project-wide theming, or product/API/data/routing changes.
 
-Expected location for local user skills in this setup:
+Read-only design guidance within the existing authorized UI scope does not require an extra confirmation ritual.
 
-```text
-~/.config/opencode/skills/
-```
+## Verify
 
-Back up any existing skill with the same name before replacing it.
+After setup:
 
-## Agent usage rules
+- confirm the `uipro` command/integration succeeded;
+- confirm OpenCode exposes or can load the resulting `ui-ux-pro-max` skill;
+- inspect/report exact files/config changed;
+- do not claim availability solely because the CLI command exited successfully if OpenCode cannot see the integration.
 
-Allowed to use UUPM directly:
+## Final report
 
-```text
-ui-orchestrator
-ui-auditor
-ui-planner
-ui-implementer
-a11y-reviewer
-```
+Report compactly:
 
-Do not use UUPM directly for ordinary bugfix/review/test/devops work unless the normalized deliverable targets it for UI/design guidance.
-
-## Availability check for agents
-
-Agents must not assume UUPM is installed. Treat it as available only if a runtime skill is exposed, a project or installed OpenCode `ui-ux-pro-max/SKILL.md` exists, project docs say it is installed, or an allowed `uipro` CLI check succeeds. If unavailable or not checked, continue without UUPM and report that status. Do not install UUPM during normal UI work; use `/ui-uupm-setup` only when setup is requested.
-
-## Gated actions
-
-Stop and ask before applying UUPM guidance that requires:
-
-- new dependencies
-- new fonts
-- new assets
-- icon library changes
-- animation library changes
-- generated persistent design-system files
-- broad scope rewrite
-- project-wide theming change outside the requested scope
-- API/data/auth/routing behavior changes
-
-No approval is needed for read-only UUPM lookup or for applying guidance that only changes local layout, spacing, density, hierarchy, accessible labels, focus states, or responsive behavior within the existing project style system.
-
-## Final report format
-
-```markdown
-## UUPM setup / usage report
-
-✅/⚠️/❌ Installed or available:
-✅/⚠️/❌ Files changed:
-✅/⚠️/❌ UUPM used for:
-✅/⚠️/❌ Gated-action checks triggered:
-
-Notes:
-- ...
-```
+- requested scope (project/global);
+- detected prior installation;
+- install/update command actually run;
+- files/config created or changed;
+- OpenCode skill visibility/verification;
+- any gates/blockers or intentionally skipped scope expansion.

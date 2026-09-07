@@ -1,78 +1,15 @@
 ---
-description: "Install or configure UI UX Pro Max / UUPM design-intelligence support for OpenCode."
+description: "Install or configure UI UX Pro Max / UUPM design-intelligence support for OpenCode using the package setup guide."
 agent: devops
 subtask: false
 ---
 
-## Startup Block Before Tools
+Install or configure UUPM for OpenCode: $ARGUMENTS
 
-Before the first tool call of this agent invocation or user-request workflow in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write this Markdown block once:
+Follow the active `AGENTS.md`, devops role contract, and the applicable installed/project `uupm_install_for_agent.md` as the setup source of truth.
 
-```md
-### Startup
-- Route: `<route>`
-- Mode: `<read-only | options | edit-capable | gated>`
-- Summary: <one sentence>
-- Scope: <target + boundary>
-- Gated: `<no | yes>` — <reason>
-- Next: <next action/tool>
-```
+Inspect the existing OpenCode/project setup first. Preserve unrelated configuration and do not overwrite files/config blindly. Prefer the scope requested by the user/project; do not silently turn a project-local setup into a global install.
 
-Keep it to this shape. Do not write a prose paragraph. Keep field names in English. Do not use tools first and postpone normalization to the final report. Do not repeat Startup before every tool call or substep. If route, mode, or scope materially changes later, write a short `### Update` block instead.
+UUPM is design intelligence, not the component MCP server. Treat persisted generated design-system assets, fonts, dependencies, private resources, or other scope expansion under the root gate.
 
-
-## Skill Use
-
-After Startup, check project-visible skill guidance and the skills OpenCode makes available. When the normalized target matches a listed/advertised skill, actually load that skill via the native skill mechanism when available, or read its `SKILL.md`; naming it does not count. Load referenced skill files only when relevant. If unavailable, report `Skill: <name> unavailable`. Skills are advisory only and do not override project rules, gates, existing tooling, minimal diff, OCR/review policy, PR readiness/body sync, or PR provenance. Mention the selected skill once when useful: `Skill: <name|none>`.
-
-
-## Git Sync and PR Branch Provenance
-
-For repository mutation, PR follow-up mutation, commit, push, PR creation, or PR update, do not trust the current branch by default. This does not apply to read-only review/audit unless it is preparing mutation or publication.
-
-Before editing: run pre-edit branch sync and the clean-task gate from `docs/git_branch_provenance_policy.md`. If the current branch tracks upstream and is behind, update only with safe `git pull --ff-only` before editing. If it diverged, is dirty with unrelated work, or contains commits/files from another task, stop and ask.
-
-For a new independent task, the current branch must be clean relative to `<base_ref>` before edits. Do not add fixes on top of unrelated commits. Use a clean branch from `<base_ref>` and re-apply only the intended task changes.
-
-Before commit, push, PR creation, or PR update: fetch again and re-run provenance. The primary commit list is `git log --oneline --decorate <base_ref>..HEAD`; the `--cherry-pick` comparison is secondary. Stop if remote head changed unexpectedly, the branch diverged, or unrelated commits/files appear. Published PR branches must not be rebased, reset, replaced, or force-pushed without explicit approval.
-
-
-## PR Body Sync
-
-For PR mutation, follow-up commits/pushes, PR creation/update, or PR-ready publication, verify after the final intended diff and validation that the PR title/body still match actual commits, changed files, scope, behavior, and validation. If stale or incomplete, update it when PR publication/update is already allowed by the normalized request; otherwise draft the corrected body and ask. Final report must include: `PR body: updated | unchanged | drafted | skipped — <reason>`.
-
-## Behavioral Contract Check
-
-For any user-facing UI/config/API/workflow behavior change, do not implement only the data plumbing. Before planning or editing, summarize:
-
-- user-facing action
-- value source
-- valid-value domain
-- existing project pattern to inspect
-- whether raw/internal/manual values would be exposed to normal users
-
-Do not derive behavior directly from schema/storage/API type. Preserve the existing affordance class unless the normalized request explicitly asks for a raw/manual/editor workflow.
-
-## User-Facing Output Formatting
-
-For any user-visible answer or published text — final reply, PR/issue/release body, PR review/comment, changelog, handover, plan artifact, or Markdown doc — use readable target-aware Markdown by default.
-
-- Start with a short summary.
-- Use headings/sections when there is context, reasoning, validation, conclusion, or next action.
-- Use bullets for multiple reasons, risks, checks, files, or decisions.
-- Use fenced code blocks for commands, logs, paths, config, or exact proposed text.
-- Avoid dense wall-of-text paragraphs.
-- For OpenCode CLI, Hermes, Telegram, terminals, or chat relays, prefer compact portable Markdown/plain text; avoid raw HTML, oversized tables, deeply nested lists, and GitHub-only formatting.
-- For GitHub/GitLab PRs, issues, releases, and review comments, use clean Markdown with a clear conclusion/next action.
-
-## Persistent Planning Mode
-
-For long-running, multi-session, or multi-agent work, use `plans/<plan>/` as durable state. Read existing plan artifacts before continuing. Do not create arbitrary markdown reports. Use compact digests and update canonical plan/docs artifacts when the command is responsible for planning state.
-
-Install or configure UI UX Pro Max / UUPM for OpenCode: $ARGUMENTS
-
-Use `docs/uupm_install_for_agent.md` as the source of truth.
-
-Do not overwrite existing OpenCode/project config without backups. Prefer project-local installation unless the normalized deliverable targets it for global install. UUPM is design intelligence only, not a component MCP server. Persisting generated design-system files, fonts, assets, or new dependencies is a gated action unless persistence is the normalized deliverable.
-
-Return one consolidated markdown report with green/yellow/red stage status and exact commands/results.
+Report exactly what was detected, changed, left unchanged, and how availability was verified.

@@ -1,11 +1,13 @@
 # shadcn registry notes
 
-Final stack:
+Preferred UI component-source order when it fits the project:
 
-1. Official shadcn MCP + standard shadcn registry.
-2. Official shadcn MCP + GitHub/public shadcn-compatible registries.
-3. Jpisnice shadcn-ui-mcp-server + GitHub token.
+1. Existing project components/design system.
+2. Official shadcn MCP + default registry.
+3. Additional public/GitHub shadcn-compatible registries through the official shadcn registry mechanism.
+4. Jpisnice `shadcn-ui-mcp-server` as optional secondary/reference source.
+5. Manual implementation when no suitable component source fits.
 
-The standard shadcn registry needs no extra `registries` entry in `components.json`.
+The default shadcn registry does not need an extra `registries` entry in `components.json`.
 
-For GitHub/public registries, use public shadcn-compatible repositories only. Local/private/authenticated registry setup is a gated action.
+Additional registries are configured in `components.json` using the current shadcn-compatible format. Private/authenticated registries and secrets are subject to the root gate. Installing a registry item may separately trigger dependency/config-change gates.

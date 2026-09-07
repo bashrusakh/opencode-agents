@@ -1,347 +1,344 @@
 <div align="center">
 
-> v28.26 adds a verified GrayMatter memory protocol and refreshes vendored upstream skills while retaining the proportional regression guard.
+> v28.27 cleans up the behavioral contract for stronger model-agnostic execution: semantic routing, hard role boundaries, evidence freshness, and command/docs consistency without rebuilding the package around per-agent permission mazes.
 
-# OpenCode Agent Pack v28.26
+# OpenCode Agent Pack v28.27
 
-### Model-agnostic agents · Startup blocks · OCR review · Clean PR branches · Persistent planning · Readable output
+### Semantic routing · Hard role boundaries · GrayMatter memory · OCR review · Clean PR provenance · Persistent planning
 
 [![OpenCode](https://img.shields.io/badge/OpenCode-Agents-111827?style=for-the-badge)](#)
 [![Model Agnostic](https://img.shields.io/badge/Model--Agnostic-Yes-2563eb?style=for-the-badge)](#)
-[![Startup Block](https://img.shields.io/badge/Startup--Block-On-7c3aed?style=for-the-badge)](#)
+[![Semantic Routing](https://img.shields.io/badge/Semantic--Routing-On-7c3aed?style=for-the-badge)](#)
 [![OCR Review](https://img.shields.io/badge/OCR--Review-Preferred-0f766e?style=for-the-badge)](#)
-[![Clean PR Branches](https://img.shields.io/badge/Clean--PR--Branches-On-f97316?style=for-the-badge)](#)
+[![Regression Guard](https://img.shields.io/badge/Regression--Guard-On-f97316?style=for-the-badge)](#)
 
 </div>
 
 ---
 
-## What's new in v28.26
+## What changed in v28.27
 
-- Added a compact GrayMatter session protocol in root `AGENTS.md`: stable `agent_id`, project + `__shared__` recall before Startup, checkpoint continuity, durable-memory triggers, quality filtering, and repository source-of-truth precedence.
-- Updated GrayMatter tool usage to the current contract: `memory_reflect` uses canonical `agent_id`; `update` replaces the exact old fact; `pin`/`unpin` cover standing rules; transient state stays in checkpoints.
-- Refreshed vendored upstream skill content without changing package-local policy: Alibaba `open-code-review/SKILL.md` is current upstream, and the changed React migration reference is synced from Jeffallan `claude-skills`. UI UX Pro Max is intentionally unchanged.
-- Startup ordering explicitly permits only the required GrayMatter bootstrap calls before the visible Startup block.
-- The v28.25 proportional Regression Guard and earlier PR-readiness, PR-body, OCR, provenance, and skill-loading rules are retained.
+- Reworked root `AGENTS.md` to remove accumulated contradictions and duplicated policy layers.
+- Kept routing semantic: the requested outcome selects the appropriate role/workflow; users do not need magic trigger phrases or to know the internal agent graph.
+- Strengthened hard role boundaries. An orchestrator/reviewer/auditor/planner does not become an implementer because a specialist failed, was rate-limited, was unavailable, or looked unnecessary.
+- Explicitly blocks alternate-editor fallbacks such as `sed`, `python`, shell redirection, generators, or VCS restore/checkout when a role is not allowed to implement.
+- Kept per-agent permissions as a coarse runtime ceiling rather than rebuilding semantic behavior as a large permission matrix.
+- Added evidence freshness for all workflows: validation/review claims belong to the effective state/diff they actually checked.
+- Prohibits weakening/skipping tests, assertions, snapshots, lint/type rules, or coverage merely to manufacture a passing result.
+- Fixed Git base semantics: resolve the actual PR/project base; `origin/main` is only an example, never a universal default.
+- Made persistent planning compatible with read-only workflows: audits do not create repository plan files merely to maintain agent state.
+- Simplified all 21 commands into intent entry points instead of copies of the root policy.
+- Aligned docs/snippets with the same root contract and refreshed UI MCP/UUPM setup guidance.
 
-## v28.15 cleanup retained
-
-- Permissions now follow default-allow style with only role-incompatible tools disabled.
-- Commands stay minimal: `description`, `agent`, and `subtask: false`; no command-level permission sandbox.
-- Built-in/base agents `build`, `explore`, `general`, and `plan` are preserved unchanged by name.
-- Duplicate plan/review commands were folded into `/plan` and `/review`.
-- Custom agent/command names were shortened and made consistent.
-- The stale command JSONC snippet was removed; `commands/*.md` is the single command source of truth.
-
----
-
-## What this is
-
-This is an opinionated **OpenCode / OpenChamber agent configuration pack** for real project work: bugfixing, UI work, PR follow-up, code review, release prep, project audits, long investigations, and multi-agent workflows.
-
-Core rule:
-
-> Understand the request by meaning, preserve user/project contracts, keep long work in files, prove branch safety before publication, and write human-readable output.
+v28.26 GrayMatter memory integration and upstream skill refresh remain in place. UI UX Pro Max bundled skill content remains intentionally unchanged in this release.
 
 ---
 
-## Highlights
+## What this pack is
 
-| Area | What this pack enforces |
-|---|---|
-| Model agnostic | Agents do not contain provider-specific `model:` overrides. They use the active OpenCode/OpenChamber model. |
-| Semantic routing | Route by normalized intent, scope, target, action level, confidence, and evidence — not magic trigger phrases. |
-| Startup block | Before tools, emit a compact Markdown block with route, mode, summary, scope, gated status, and next action. |
-| GrayMatter memory | When the MCP tools are present, recall project + shared context before Startup, store durable conclusions, and checkpoint unfinished transient state. |
-| Behavioral contracts | Before user-facing changes, preserve the natural user action/value source instead of exposing raw internals. |
-| Right-level fixes | Fix the shared helper/service/composable/API wrapper when the bug belongs there, not only the first call site. |
-| Regression guard | For bugfixes and existing/shared behavior changes, prove both changed behavior and applicable preserved behavior; broaden verification proportionally for shared primitives. |
-| Gated actions | Commits, pushes, PRs, releases, deps, secrets, destructive commands, runtime config, and broad product/architecture choices require approval. |
-| Git sync before mutation | The active primary/orchestrator handles base-branch sync before mutation/publication work; leaf subagents are not forced to fetch before inspection. |
-| PR branch provenance | Before commit/push/PR/update, agents prove the branch contains only intended commits/files. |
-| PR body sync | Before marking PR work done, agents verify the PR title/body still match final commits, diff, scope, and validation. |
-| PR readiness | Before publishing task changes, the primary/orchestrator proves the current final diff has fresh contract, validation, review, provenance, and PR metadata evidence. |
-| OCR review | Alibaba [`open-code-review`](https://github.com/alibaba/open-code-review) is the preferred backend for code/diff/PR review when installed and allowed. |
-| Skills | Matching installed/project-listed skills are actually read from `SKILL.md` before implementation/review; referenced material is loaded only when relevant. |
-| Persistent planning | Long-running/multi-agent work uses durable `plans/<plan>/` artifacts. |
-| Readable output | User replies, PR comments, issues, releases, changelogs, reviews, and handovers must be concise, skimmable Markdown/plain text. |
+An opinionated OpenCode/OpenChamber agent configuration pack for project work: focused implementation, bugfixes, UI work, PR follow-up, review, release prep, audits, DevOps diagnostics, and resumable multi-agent workflows.
+
+Core principle:
+
+> Normalize the requested outcome, route it to a capable role, preserve the user/project contract, prove current evidence, and never silently escalate a role because delegation failed.
 
 ---
 
-## Startup block before tools
+## Behavioral architecture
 
-Every multi-step, repository, issue/PR/release, external-URL, codebase, mutation-capable, publication-capable, or scope-expanding workflow must emit this visible Markdown block **once, after any required GrayMatter bootstrap and before the first non-memory tool call**:
+### 1. Semantic routing
+
+Routing is based on the normalized deliverable, target, action level, repository evidence, and current scope — not literal keywords.
+
+Examples:
+
+- "where is this implemented?" -> discovery/explore
+- "fix this failing test/runtime bug" -> bugfix/debug workflow
+- "change this known config/code path" -> focused implementation
+- "review this PR/diff" -> reviewer
+- "audit the whole project" -> auditor
+- "redesign these settings" -> UI workflow
+- "why is the service failing?" -> DevOps diagnostics
+
+The same meaning should route consistently even when phrased differently or in another language.
+
+### 2. Role boundaries
+
+Roles are capability contracts, not suggestions.
+
+- `code-orchestrator` coordinates multi-step coding workflows and never implements repository changes itself.
+- `ui-orchestrator` coordinates UI workflows and never implements repository changes itself.
+- `reviewer`, `auditor`, `explore`, `tester`, `a11y-reviewer`, and `general` remain read-only for their assigned responsibilities.
+- `plan` may maintain authorized planning artifacts but does not implement source/config/tests.
+- `build`, `debugger`, `ui-implementer`, and authorized `devops` work are implementation-capable within their role/scope.
+
+A failed/unavailable/rate-limited specialist does **not** transfer its capability to the caller. Substitute only another role that genuinely owns the required action; otherwise report that stage as blocked.
+
+The pack intentionally does not use a large per-agent shell/command permission matrix as a substitute for this semantic contract.
+
+### 3. Authorization gates
+
+External/public/destructive/scope-expanding actions are gated in root `AGENTS.md`. If the user's normalized request already clearly authorizes the exact action, target, and scope, do not ask again.
+
+Typical gated actions include branch/commit/PR/issue/release mutation, destructive history/data operations, new dependencies/design systems, secrets/private resources, production/runtime changes, materially different product/architecture direction, and publication with blocked required verification.
+
+---
+
+## Startup block
+
+After any required GrayMatter bootstrap and before the first non-memory tool call in a multi-step/tool-driven workflow, emit exactly one compact Startup block:
 
 ```md
 ### Startup
 - Route: `<route>`
-- Mode: `<read-only | options | edit-capable | gated>`
+- Mode: `<read-only | options | edit-capable | publication-capable>`
 - Summary: <one sentence>
 - Scope: <target + boundary>
 - Gated: `<no | yes>` — <reason>
 - Next: <next action/tool>
 ```
 
-Rules:
+`Mode` is the normalized workflow action ceiling; it never overrides the current agent's role boundary.
 
-- Use Markdown, not a prose paragraph.
-- Keep field names in English.
-- Keep it short: heading + six bullets.
-- Emit it once per user-request workflow or agent invocation.
-- Do not repeat it before every tool call or substep.
-- For read-only work: `Gated: no — read-only`.
-- Put the scope boundary in `Scope` before broad discovery.
-- Required GrayMatter bootstrap calls are the only tool calls allowed before this block when the Memory section applies; otherwise do not use tools before it except for a trivial single-step answer that needs no tools.
-- If route, mode, or scope materially changes later, write a short `### Update` block instead.
+If route/mode/scope materially changes later, use a compact `### Update` instead of repeating Startup.
 
 ---
 
-## Git and PR safety
+## GrayMatter memory
 
-### Pre-edit branch sync and clean-task gate
+When GrayMatter MCP tools are present, the pack uses persistent memory deliberately:
 
-Before changing code/config/docs in a repository, the active primary/orchestrator must prove the branch is safe to edit.
+1. resume unfinished work with `checkpoint_resume` when applicable;
+2. search the stable repository `agent_id` and `__shared__` before Startup;
+3. store durable atomic conclusions/preferences/decisions/workarounds;
+4. use checkpoints for transient unfinished-task state;
+5. update/forget stale memories instead of leaving conflicting facts live.
 
-Typical pre-edit checks:
+Repository code/docs/history/tool output remain authoritative over recalled memory.
 
-```bash
-git status -sb
-git branch -vv
-git remote -v
-git fetch --prune <head_remote>
-git fetch --prune <base_remote>
-git log --oneline --decorate <base_ref>..HEAD
-git diff --name-status <base_ref>...HEAD
-git diff --stat <base_ref>...HEAD
-```
+---
 
-If the current branch tracks upstream and is behind, update before editing only with safe `git pull --ff-only`.
+## Correctness and regression discipline
 
-For a new independent task, the branch must be clean relative to `<base_ref>` before edits. Do not fix on a branch already carrying unrelated commits/files. Use a clean branch from `<base_ref>` and re-apply only intended work.
+### Behavioral contract
 
-### PR branch provenance gate
+For user-facing UI/config/API/workflow changes, identify the natural user action, value source/domain, existing project pattern, and whether a naive implementation would expose raw/internal controls that normal users should not need.
 
-A PR is the entire base-to-head comparison, not the last commit.
+### Right-level fixes
 
-Before commit, push, PR creation, or PR update, fetch again and prove that the branch contains only intended commits/files. Stop if remote head changed unexpectedly, the branch diverged, or unrelated work appears.
-
-Use explicit refs such as `<base_remote>=origin`, `<base_branch>=main`, `<base_ref>=origin/main`.
-
-Useful file:
-
-```text
-docs/git_branch_provenance_policy.md
-```
-
-Command:
-
-```text
-/pr-provenance
-```
-
-### PR readiness gate
-
-Before the first push/PR publication of task changes, and before later pushes that change an existing PR diff, establish readiness for the **current final local diff**. This is separate from approval: the normal gated-action rule still controls whether publication is allowed.
-
-Applicable readiness evidence covers repository/scoped guidance, selected skills, right-level/edge-path reasoning, actual validation results, reviewer freshness when reviewer criteria apply, branch provenance, and current PR metadata. External CI/bot review is additional post-publication evidence, not a substitute for required pre-publication review.
-
-If code or history changes after validation/review, re-run only the affected evidence. Do not repeat the gate before every local edit or commit.
-
-Useful file:
-
-```text
-docs/pr_readiness.md
-```
+Fix the behavior at the abstraction that owns it. Do not patch only the first caller when a shared helper/service/composable/API wrapper is the real fault boundary.
 
 ### Regression guard
 
-For bugfixes and changes to existing/shared behavior, validation must cover both the intended changed behavior and the closest applicable behavior/invariant that should remain unchanged. When practical, establish a failing regression case in the project's existing test layer before the fix. Shared-primitive changes need the relevant existing suite or representative-consumer verification; a newly added focused test alone is not enough. Keep this proportional — do not force a full suite or a large matrix for a truly local single-path fix.
+For bugfixes and changes to existing/shared behavior:
+
+- prove the intended changed behavior;
+- prove the closest applicable preserved behavior/invariant;
+- broaden verification proportionally for shared/multi-caller/stateful paths;
+- prefer a regression test at the existing test layer when practical;
+- do not introduce a new test framework just to satisfy the rule.
+
+### Evidence freshness
+
+Validation and review verdicts belong to the effective state/diff they checked. Later changes invalidate affected evidence. Re-run only what the later change can affect before claiming success.
+
+A focused passing check proves only the behavior it exercises. Never claim project/module-wide verification unless the broader checks actually ran.
+
+Do not make a failing check pass by deleting, skipping, weakening, or broadening assertions/snapshots/type/lint/coverage requirements unless the normalized task intentionally changes that expected behavior and project evidence supports it.
 
 ---
 
-## Installed skills
+## Git / PR safety
 
-Installed skills are advisory guidance after Startup/normalization. When a matching skill is selected or required, read its `SKILL.md` before implementation/review; naming it is not enough. Load referenced skill material only when relevant. Skills do not override project rules, gates, existing tooling, minimal diff, OCR policy, PR readiness, or PR provenance.
+Resolve the actual head remote, base remote, base branch, and `<base_ref>` from project guidance, tracking state, PR metadata, or repository metadata.
 
-Useful file:
+Example only:
 
 ```text
-docs/language_spec.md
+<base_remote>=origin
+<base_branch>=main
+<base_ref>=origin/main
 ```
 
-Current mapping includes Python, TypeScript, Go, C++, Rust, React, Vue, security-sensitive code, Playwright/E2E, and API/OpenAPI work.
+Never use that example blindly.
+
+A PR is the entire base-to-head comparison, not the last commit. Before publication, prove the intended commit range/files, current branch state, fresh validation/review evidence, and synchronized PR metadata.
+
+Detailed references:
+
+```text
+docs/git_branch_provenance_policy.md
+docs/pr_readiness.md
+```
 
 ---
 
-## OCR / Open Code Review integration
+## OCR / Open Code Review
 
-Alibaba [`open-code-review`](https://github.com/alibaba/open-code-review) is the **preferred backend for code/diff/PR review** when installed and allowed.
-
-Policy:
+Alibaba `open-code-review` is the preferred backend for code/diff/commit/branch/workspace/PR review when installed and external code sharing is allowed.
 
 ```text
-OCR is the review engine. @reviewer is the policy and judgment layer.
+OCR = review engine
+@reviewer = scope/privacy/judgment/verdict layer
 ```
 
-The reviewer must:
+The package vendors the upstream `open-code-review` skill unchanged from upstream policy. Follow the loaded skill/current CLI timeout + effort semantics; do not hardcode an old package timeout or kill reviews with a 120-second outer cap.
 
-- emit the Startup block before tools;
-- normalize review target and scope;
-- check privacy/gated status because OCR may send code/diffs/context to the configured LLM provider;
-- run OCR with `--audience agent` and useful `--background` context when allowed; use the loaded OCR skill/current CLI timeout and effort semantics rather than a stale package constant;
-- make the surrounding shell/tool timeout at least the effective OCR review-group budget with reasonable headroom; never cap it at 120 seconds;
-- filter false positives and low-value nits;
-- add right-level, behavioral-contract, tests, and risky API/schema/config judgment;
-- never auto-apply fixes for review-only requests.
+Review-only requests never auto-apply OCR suggestions.
 
-Useful files:
+See:
 
 ```text
 docs/ocr_review_policy.md
-commands/review.md
-agents/reviewer.md
 snippet/open-code-review-usage.md
 ```
 
 ---
 
-## Core philosophy
+## Persistent planning
 
-### Route by meaning, not words
+Use persistent planning only when work genuinely needs durable coordination/resumability across broad scope, phases, agents, or sessions.
 
-Persistent Planning Mode activates when the normalized task is long-running, broad-scope, multi-agent, multi-session, likely to lose useful context, or likely to require phased execution, reviews, handoffs, or resumable state.
-
-Phrases like `full-project inspection`, `broad bug hunt`, `large refactor`, or `project-wide audit` are examples/signals, not trigger phrases.
-
-### Preserve behavioral contracts
-
-A schema type does not define the user experience.
-
-Before changing user-facing behavior, agents must identify:
-
-- what action the user naturally performs;
-- who or what provides the value;
-- what values are valid and where that domain comes from;
-- which existing project pattern handles the same kind of action;
-- whether the naive fix exposes raw/internal/manual values.
-
-### Files are memory for long work
-
-For long-running tasks:
-
-> Chat history is not memory. Private reasoning is not memory. Canonical files are memory.
-
-Use `plans/<plan>/` so another model/provider/session can resume from durable artifacts.
-
-### Public output should be readable
-
-No AI wall of text.
-
-Default to target-aware Markdown/plain text:
-
-- short summary first;
-- headings only when useful;
-- bullets for multiple reasons, risks, files, or checks;
-- fenced code blocks for commands, logs, paths, config, or exact proposed text;
-- compact tables only when the target renders them well;
-- clear conclusion/next action.
-
-For OpenCode CLI, Telegram, Hermes, terminals, and chat relays, prefer compact Markdown/plain text and avoid raw HTML, oversized tables, deeply nested lists, and GitHub-only formatting.
-
----
-
-## Directory layout
-
-```text
-AGENTS.md
-agents/
-commands/
-docs/
-install/
-snippet/
-```
-
-Persistent planning layout inside a target project:
+When repository plan artifacts are authorized:
 
 ```text
 plans/<plan>/
   plan.md
-  phases/
-    phase-N.md
-  implementation/
-    phase-N-impl.md
-  reviews/
-    plan-review.md
-    impl-plan-review-phase-N.md
-    impl-review-phase-N.md
+  phases/phase-N.md
+  implementation/phase-N-impl.md
+  reviews/*.md
   todo.md
-  handovers/
-    session-YYYY-MM-DD.md
-
-docs/
-  overview.md
-  modules/
-  features/
-  handovers/
-    session-YYYY-MM-DD.md
+  handovers/session-YYYY-MM-DD.md
 ```
 
----
+For read-only/audit workflows, do not create repository plan files merely to persist agent state. Reuse existing plan state or use GrayMatter checkpoint/runtime state unless file mutation is separately authorized.
 
-## Workflow modes
-
-| Mode | Flow |
-|---|---|
-| Small/focused work | `normalize -> inspect -> implement if allowed -> verify -> report` |
-| User-facing work | `normalize -> inspect -> Behavioral Contract Check -> implement -> verify -> review/report` |
-| Long-running work | `Discuss -> /plan -> /review when needed -> /execute-plan -> /review when needed -> /plan update/handover` |
-
-Broad implementation uses:
+Broad execution uses:
 
 ```text
 Blueprint -> Gate -> Execute -> Digest
 ```
 
+`Gate` checks authorization; it is not a repeated confirmation ritual for already authorized scope.
+
+---
+
+## UI component / design intelligence stack
+
+Existing project components and design system come first.
+
+When appropriate and available:
+
+1. existing project components/tokens/styles;
+2. official shadcn MCP/default registry;
+3. additional public/GitHub shadcn-compatible registries through the official shadcn mechanism;
+4. optional Jpisnice `shadcn-ui-mcp-server` as secondary/reference source;
+5. manual implementation when no suitable source fits.
+
+UUPM/UI UX Pro Max is optional design intelligence, not the component MCP and not permission to create a new design system.
+
+Setup references:
+
+```text
+docs/ui_component_policy.md
+docs/ui_mcp_install_for_agent.md
+docs/uupm_install_for_agent.md
+```
+
+---
+
+## Bundled agents
+
+| Agent | Role |
+|---|---|
+| `build` | Focused, clearly scoped implementation |
+| `code-orchestrator` | Multi-step coding/PR/bug-issue/release coordination; never implements itself |
+| `debugger` | Root-cause bugfix implementation |
+| `explore` | Read-only codebase discovery/call-path tracing |
+| `tester` | Independent verification; never fixes failures |
+| `reviewer` | Independent code/diff/PR/plan review |
+| `auditor` | Broad read-only project audit orchestrator |
+| `plan` | Architecture/persistent planning artifacts; no source implementation |
+| `devops` | Runtime/CI/deploy diagnostics and authorized operational changes |
+| `general` | Read-only bounded fallback research when no specialist fits |
+| `ui-orchestrator` | Coordinated UI workflow; never implements itself |
+| `ui-auditor` | Read-only UI/UX audit |
+| `ui-planner` | Concrete UI implementation planning |
+| `ui-implementer` | Focused UI implementation |
+| `a11y-reviewer` | Independent accessibility/interaction review |
+
+No agent file contains a provider-specific `model:` override.
+
 ---
 
 ## Commands included
 
+Commands are **intent entry points**, not duplicate policy documents. Root `AGENTS.md` and the selected agent contract provide shared behavior.
+
 | Command | Purpose |
 |---|---|
-| `/bugfix` | Full bugfix workflow with investigation, fix, verification, and review. |
-| `/bug-issue` | Verify a bug report and draft/open a factual issue when requested. |
-| `/code-explore` | Explore code and return facts, paths, call paths, and patterns. |
-| `/debug` | Reproduce/root-cause/fix a concrete failure or runtime error. |
-| `/devops-check` | Inspect Docker/systemd/CI/runtime/deployment state. |
-| `/verify` | Run tests, linters, builds, and smoke checks without editing. |
-| `/review` | Unified review command for code, PRs, plans, implementation plans, results, and fix-level checks; prefers OCR when installed and allowed. |
-| `/pr-followup` | Follow-up work on an existing PR with branch provenance checks. |
-| `/pr-provenance` | Read-only proof that the current branch/PR contains only intended commits/files. |
-| `/audit` | Broad repository/project audit with persistent planning when scope requires it. |
-| `/release-prep` | Release notes and release checks from verified facts only. |
-| `/plan` | Create/resume/update/handover persistent plan state and author implementation plans. |
-| `/execute-plan` | Execute an approved plan/work package using Blueprint → Gate → Execute → Digest. |
-| `/ui-audit` | UI/layout/UX audit. |
-| `/ui-options` | UI redesign options without editing. |
-| `/ui-plan` | Concrete UI redesign/theme plan. |
-| `/ui-redesign` | Full UI redesign workflow. |
-| `/ui-implement` | Implement an approved UI plan. |
-| `/ui-a11y-check` | Accessibility/keyboard/focus/contrast/responsive check. |
-| `/ui-mcp-setup` | UI MCP setup. |
-| `/ui-uupm-setup` | UI UX Pro Max / UUPM setup. |
+| `/audit` | Broad read-only project/repository audit |
+| `/bug-issue` | Verify a reported bug and draft/open a factual non-duplicate issue |
+| `/bugfix` | Multi-step bugfix coordination |
+| `/code-explore` | Read-only codebase exploration |
+| `/debug` | Root-cause and fix a confirmed failure |
+| `/devops-check` | Runtime/CI/deploy/config diagnostics |
+| `/execute-plan` | Execute the current persistent-plan work package |
+| `/plan` | Create/resume/update persistent plan state |
+| `/pr-followup` | Existing PR comments/checks/fixes/verification/publication follow-up |
+| `/pr-provenance` | Read-only base-to-head branch provenance proof |
+| `/release-prep` | Grounded release-note/release-state preparation or verification |
+| `/review` | Independent review; OCR preferred for code when allowed |
+| `/ui-a11y-check` | Accessibility/interaction review |
+| `/ui-audit` | UI/UX audit |
+| `/ui-implement` | Implement an understood UI change/accepted plan |
+| `/ui-mcp-setup` | Configure supported UI MCP stack |
+| `/ui-options` | Produce 2-3 grounded UI directions without implementation |
+| `/ui-plan` | Concrete implementable UI plan |
+| `/ui-redesign` | Coordinate complete UI redesign workflow by semantic need |
+| `/ui-uupm-setup` | Configure UUPM for OpenCode |
+| `/verify` | Independent tests/lint/build/smoke verification |
 
+---
+
+## Bundled skills
+
+The package currently bundles:
+
+```text
+api-designer
+cpp-pro
+golang-pro
+open-code-review
+playwright-expert
+python-pro
+react-expert
+rust-engineer
+secure-code-guardian
+typescript-pro
+ui-ux-pro-max
+vue-expert
+```
+
+Skills are advisory and selected semantically from actual project context. A matching skill must actually be loaded/read before claiming it was used.
+
+Upstream sources:
+
+- Alibaba `open-code-review`: https://github.com/alibaba/open-code-review
+- Jeffallan `claude-skills`: https://github.com/Jeffallan/claude-skills
+- UI UX Pro Max: bundled content intentionally retained unchanged in v28.27
 
 ---
 
 ## Install
 
-### Global install
+### Global
 
 ```bash
 ./install/install-global.sh
 ```
 
-Installs to:
+Installs under:
 
 ```text
 ~/.config/opencode/AGENTS.md
@@ -352,12 +349,12 @@ Installs to:
 ~/.config/opencode/snippet/
 ```
 
-### Project-local install
+### Project-local
 
-Run from the repository root:
+From the target repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_26/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_27/install/install-project.sh
 ```
 
 Installs to:
@@ -373,49 +370,26 @@ Installs to:
 
 ---
 
-## Validation checklist
+## Validation expectations
 
-This pack is expected to validate with:
+A release archive should verify at least:
 
-- expected v28.15 compact baseline plus v28.26 GrayMatter/upstream-skill refresh, retained v28.25 regression guard, v28.24 PR-readiness/skill-freshness rules, and v28.23 PR-body/OCR rules;
-- YAML frontmatter parses for all agents and commands;
-- no command has `subtask: true`;
-- no command has a `permission:` block;
-- no stale deleted command or renamed agent references remain;
-- install scripts pass `bash -n` and copy complete skill directories to project/global OpenCode skill roots;
-- no provider-specific `model:` overrides in agents;
-- no stale provider-specific model IDs;
-- no plural snippet-directory path references;
-- root rules include GrayMatter memory bootstrap/curation, semantic routing, startup blocks, behavioral contracts, skills, OCR review, branch provenance, persistent planning, and readable public output.
-
----
-
-## Recommended use
-
-Use this pack when you want agents that can:
-
-- inspect a project for a long time without losing context;
-- hand off work between models/providers;
-- avoid duplicate fixes across multiple agents;
-- preserve UI/product behavior instead of only satisfying schema plumbing;
-- use OCR for stronger code/diff/PR review when available;
-- keep GitHub/PR/release work safe and evidence-based;
-- format GitHub/Telegram/Hermes/OpenCode CLI output cleanly.
-
----
-
-## Upstream references
-
-This pack vendors selected upstream skill files for predictable OpenCode discovery. Upstream skill content is kept separate from package-local policy in `AGENTS.md`/`docs/` and is refreshed from the sources below.
-
-- Alibaba `open-code-review`: https://github.com/alibaba/open-code-review
-- Jeffallan `claude-skills`: https://github.com/Jeffallan/claude-skills
+- 15 agents and 21 commands;
+- YAML frontmatter parses for every agent/command;
+- no provider-specific agent `model:` overrides;
+- no command-level permission blocks or `subtask: true`;
+- agent `mode`/permission frontmatter unchanged unless a release explicitly targets permissions;
+- no stale `Mode: gated`, hardcoded universal `origin/main`, old OCR timeout contract, or obsolete version-path references;
+- install scripts pass `bash -n` and copy complete skill directories;
+- UI UX Pro Max bundled skill stays byte-identical when a release explicitly excludes its update;
+- upstream-vendored skill files are not silently wrapped/replaced by package-authored copies;
+- archive roundtrip manifest matches the working tree.
 
 ---
 
 <div align="center">
 
-**OpenCode Agent Pack v28.26**  
-Semantic routing · Skills · OCR review · Clean PR branches · Durable plans
+**OpenCode Agent Pack v28.27**  
+Semantic routing · Role boundaries · Fresh evidence · GrayMatter · OCR · Clean PRs
 
 </div>

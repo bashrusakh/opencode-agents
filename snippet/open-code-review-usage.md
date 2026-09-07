@@ -1,19 +1,8 @@
 # Open Code Review usage
 
-This pack vendors the upstream Alibaba `open-code-review` skill for predictable OpenCode discovery. Keep package-local review policy outside the upstream `SKILL.md`; refresh that skill from upstream rather than editing it locally. The pack integrates with OCR through `@reviewer` and `/review`.
+This pack vendors the upstream Alibaba `open-code-review` skill. Keep package-local policy outside that upstream `SKILL.md`; refresh the skill from upstream rather than editing it locally.
 
-Recommended flow:
-
-```text
-Startup block
-→ normalize review target/scope
-→ privacy/gated check
-→ OCR when installed and approved
-→ reviewer filters OCR output and adds policy judgment
-→ readable Markdown verdict
-```
-
-Preferred command:
+`@reviewer` is the policy/judgment layer. For code/diff/commit/branch/workspace/PR review, prefer OCR when installed and external code sharing is allowed.
 
 ```bash
 ocr review --audience agent --background "<project/request context>"
@@ -27,6 +16,6 @@ ocr review --audience agent --background "<context>" --from <base> --to <head>
 ocr review --preview
 ```
 
-Do not hardcode a stale OCR timeout. Follow the loaded skill/current CLI timeout and effort semantics, and give the surrounding shell/tool call enough time to cover the effective OCR review-group budget with headroom. Never cap it at 120 seconds.
+Do not emit a second Startup merely because OCR is invoked. Do not hardcode a package timeout: follow the loaded skill/current CLI `--timeout` + effort/review-round semantics, and give the surrounding tool/shell call at least the effective review-group budget with reasonable headroom. Never kill a healthy review with a short cap such as 120 seconds.
 
-Review-only requests must not auto-apply fixes.
+Review-only work must not auto-apply fixes. A fix requires a separately normalized implementation deliverable and an implementation-capable role.

@@ -1,63 +1,19 @@
 ---
-description: "Create, resume, update, hand over, or author implementation plans for persistent planning workflows."
+description: "Create, resume, update, hand over, or verify persistent implementation plans and canonical plan state."
 agent: plan
 subtask: false
 ---
 
-## Startup Block Before Tools
+Handle planning for: $ARGUMENTS
 
-Before the first tool call of this agent invocation or user-request workflow in any multi-step, repository, codebase, issue/PR/release, external-URL, publication-capable, or scope-expanding workflow, write this Markdown block once:
+Follow the active `AGENTS.md`, plan role contract, and the applicable installed/project `persistent_planning_policy.md`.
 
-```md
-### Startup
-- Route: `<route>`
-- Mode: `<read-only | options | edit-capable | gated>`
-- Summary: <one sentence>
-- Scope: <target + boundary>
-- Gated: `<no | yes>` — <reason>
-- Next: <next action/tool>
-```
+Use `/plan` semantics for:
+- creating authorized canonical `plans/<plan>/` artifacts;
+- resuming from existing plan/todo/phase/review/handover state;
+- updating durable status/todo/handover state after work;
+- authoring an implementation plan grounded in actual files, symbols, constraints, and verification needs.
 
-Keep it to this shape. Do not write a prose paragraph. Keep field names in English. Do not use tools first and postpone normalization to the final report. Do not repeat Startup before every tool call or substep. If route, mode, or scope materially changes later, write a short `### Update` block instead.
+Do not implement source/config/test changes. Do not invent parallel workflow directories or arbitrary report files. If a plan/result needs independent review, treat that as review work rather than silently changing the planner role.
 
-
-## Skill Use
-
-After Startup, check project-visible skill guidance and the skills OpenCode makes available. When the normalized target matches a listed/advertised skill, actually load that skill via the native skill mechanism when available, or read its `SKILL.md`; naming it does not count. Load referenced skill files only when relevant. If unavailable, report `Skill: <name> unavailable`. Skills are advisory only and do not override project rules, gates, existing tooling, minimal diff, OCR/review policy, PR readiness/body sync, or PR provenance. Mention the selected skill once when useful: `Skill: <name|none>`.
-
-
-## PR Body Sync
-
-For PR mutation, follow-up commits/pushes, PR creation/update, or PR-ready publication, verify after the final intended diff and validation that the PR title/body still match actual commits, changed files, scope, behavior, and validation. If stale or incomplete, update it when PR publication/update is already allowed by the normalized request; otherwise draft the corrected body and ask. Final report must include: `PR body: updated | unchanged | drafted | skipped — <reason>`.
-
-## User-Facing Output Formatting
-
-For any user-visible answer or published text — final reply, PR/issue/release body, PR review/comment, changelog, handover, plan artifact, or Markdown doc — use readable target-aware Markdown by default.
-
-- Start with a short summary.
-- Use headings/sections when there is context, reasoning, validation, conclusion, or next action.
-- Use bullets for multiple reasons, risks, checks, files, or decisions.
-- Use fenced code blocks for commands, logs, paths, config, or exact proposed text.
-- Avoid dense wall-of-text paragraphs.
-
-## Purpose
-
-Handle persistent planning state through one command instead of exposing separate lifecycle commands.
-
-Use `/plan` for:
-
-- creating canonical `plans/<plan>/` artifacts;
-- resuming an existing plan from `plan.md`, `todo.md`, phase docs, reviews, and handovers;
-- updating todo/status/changelog/phase state after work;
-- generating durable handover notes;
-- authoring/verifying implementation plans grounded in actual files and symbols.
-
-## Required behavior
-
-- Read project `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` when present.
-- Use `docs/persistent_planning_policy.md` as the durable planning source of truth.
-- Keep plan state in canonical `plans/<plan>/` artifacts.
-- Do not edit source code.
-- Do not create random reports with new names.
-- If the user asks for review of a plan/result, route that to `/review` semantics rather than inventing another plan command.
-- Return a compact digest with changed plan files, blockers, and next safe action.
+Return a compact digest of plan state, changed planning artifacts, blockers, and next safe action.

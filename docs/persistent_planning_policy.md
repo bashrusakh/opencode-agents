@@ -1,18 +1,22 @@
 # Persistent Planning Policy
 
-This policy adapts the file-based planning model from `opencode-processing-skills` into this OpenCode agent pack. Use it when semantic normalization shows the task is long-running, broad-scope, multi-session, multi-agent, or likely to lose useful context if kept only in chat. Phrases like full-project inspection, broad bug hunt, large refactor, large UI redesign, or project-wide audit are examples, not triggers.
+The root `AGENTS.md` Persistent Planning section is normative. This document defines the canonical repository-file interface when durable planning artifacts are actually in scope.
+
+Use persistent planning when semantic normalization shows that work is broad, long-running, multi-session, multi-agent, phased, or likely to lose necessary coordination state. Example phrases are not triggers by themselves.
 
 ## Core principle
 
-The file structure is the interface. For long-running work, durable state lives in files, not in chat history, private reasoning, or ad-hoc markdown reports. A new agent must be able to resume from canonical files alone.
+When repository planning artifacts are authorized, use one canonical `plans/<plan>/` directory as durable task/coordination state. Do not invent parallel workflow directories or agent-specific report files.
 
-Route by normalized scope, not by exact wording. Use Persistent Planning Mode when the work needs durable coordination, resumability, phased execution, or handoff between agents/sessions. Do not use it for a narrow single-session fix merely because the user used a phrase that resembles an example.
+GrayMatter memory/checkpoints complement this interface:
 
-Subagents should return compact digests. Durable findings, decisions, todos, implementation plans, reviews, and handovers belong in `docs/` and `plans/` artifacts.
+- memory stores durable conclusions/preferences that are not already authoritative in project files;
+- checkpoints store transient unfinished-task continuation state;
+- existing canonical plan files remain the authority for the plan itself.
 
-## Canonical target layout
+For read-only/audit workflows, do not create or modify repository plan files merely to preserve agent state. Reuse an existing plan when present; otherwise use checkpoint/runtime state unless plan-file mutation is separately authorized.
 
-Use this layout in the target project:
+## Canonical layout
 
 ```text
 plans/<plan>/
@@ -28,85 +32,73 @@ plans/<plan>/
   todo.md
   handovers/
     session-YYYY-MM-DD.md
-
-docs/
-  overview.md
-  modules/
-  features/
-  handovers/
-    session-YYYY-MM-DD.md
 ```
 
-Do not invent parallel workflow directories such as `.opencode/workflows/` for this mode. Do not create random files like `audit-notes.md`, `deepseek-report.md`, `final-final.md`, or agent-specific reports unless the user explicitly asks for that artifact.
+Project documentation may live in the project's existing `docs/` structure when the task actually requires documentation. Do not create generic `audit-notes.md`, model-specific reports, or `final-final.md` files merely to persist chat output.
 
 ## Planning entities
 
 | Entity | File | Purpose |
 |---|---|---|
-| Plan | `plans/<plan>/plan.md` | Objective, requirements, Definition of Done, phases overview |
-| Phase | `plans/<plan>/phases/phase-N.md` | What this phase delivers and why |
-| Implementation Plan | `plans/<plan>/implementation/phase-N-impl.md` | How to implement the phase; grounded file/symbol steps |
-| Review | `plans/<plan>/reviews/*.md` | Independent quality gate for plan, implementation plan, or implementation |
-| Todo | `plans/<plan>/todo.md` | Trackable items, status, changelog, current next action |
-| Handover | `plans/<plan>/handovers/session-*.md` | Session continuity: progress, decisions, blockers, next step |
+| Plan | `plan.md` | objective, requirements, Definition of Done, phase overview |
+| Phase | `phases/phase-N.md` | what the phase delivers and why |
+| Implementation plan | `implementation/phase-N-impl.md` | grounded file/symbol-level execution approach |
+| Review | `reviews/*.md` | independent review artifact when such an artifact is in scope |
+| Todo | `todo.md` | current items/status/changelog/next action |
+| Handover | `handovers/session-*.md` | concise session continuity when durable handover is useful |
 
-Phases define what and why. Implementation plans define how. This separation allows a technical approach to change without silently changing the accepted scope.
+Phases define what/why; implementation plans define how. Do not silently change accepted scope while changing the technical approach.
 
-## Typical flow
+## Typical lifecycle
 
-1. Discuss: clarify requirements and scope.
-2. Create Plan: create `plan.md`, phase files, and `todo.md`.
-3. Review Plan: optional quality gate for scope, DoD, risks, and phase boundaries.
-4. Author Implementation Plan: create `implementation/phase-N-impl.md`, grounded against actual files/symbols.
-5. Review Implementation Plan: optional quality gate for actionability and feasibility.
-6. Execute Work Package: gated execution using Blueprint -> Gate -> Execute -> Digest.
-7. Review Implementation: optional code/result review against acceptance criteria.
-8. Update Plan: update `todo.md`, changelog, phase status, decisions, and next step.
-9. Generate Handover: write session context for the next agent/session.
+Apply stages semantically rather than mechanically:
 
-## Execution protocol
+1. clarify objective/scope;
+2. create/resume canonical plan state when needed and authorized;
+3. review plan when independent plan review is materially useful;
+4. author the active implementation plan grounded in actual files/symbols;
+5. review that plan when risk/complexity warrants it;
+6. execute the current work package via `Blueprint -> Gate -> Execute -> Digest`;
+7. review the implementation when root reviewer criteria apply;
+8. update canonical status/todo/decision state;
+9. write a handover only when another session/agent genuinely needs durable continuation.
 
-For broad implementation work use:
+## Blueprint -> Gate -> Execute -> Digest
 
-```text
-Blueprint -> Gate -> Execute -> Digest
-```
+- **Blueprint** — bounded steps, target surfaces/files, checks, material risks, and stop points.
+- **Gate** — check the work package against current authorization; do not ask again for unchanged scope already authorized.
+- **Execute** — route implementation to a capable role. Orchestrators/planners do not absorb implementation when delegation fails.
+- **Digest** — reconcile current evidence, ensure any required canonical plan-file update is performed by a role allowed to maintain planning artifacts, and return a compact result.
 
-- Blueprint: propose concrete step list, touched files, checks, risks, and rollback/stop points.
-- Gate: primary agent/user reviews and approves before source edits when the action is broad or otherwise gated.
-- Execute: implementation agent changes code and verifies.
-- Digest: compact result summary; durable state is reflected in plan artifacts by the planning/maintainer workflow.
-
-Git operations stay gated and must not be performed by implementation subagents unless the exact publication action is allowed by the root rules.
+Git/publication actions remain governed by the root gates and Git/PR policy.
 
 ## Resume protocol
 
-Before resuming a long-running plan, read:
+Before resuming an existing plan, read the applicable current state:
 
-1. `plans/<plan>/plan.md`
-2. `plans/<plan>/todo.md`
-3. relevant `phases/phase-N.md`
-4. relevant `implementation/phase-N-impl.md` when implementation is next
-5. latest `reviews/*.md` related to the active phase
-6. latest `handovers/session-*.md`
-7. project `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` when present
+1. `plan.md`;
+2. `todo.md`;
+3. active `phases/phase-N.md`;
+4. active `implementation/phase-N-impl.md` when implementation is next;
+5. relevant current reviews;
+6. latest relevant handover;
+7. current project-local rules.
 
-Then report the current phase, current todo item, known blockers, and the next safe action. Do not restart from zero unless the canonical files are missing or stale.
+Then state the current phase/item, blockers, and next safe action. Do not restart from zero unless the canonical state is missing/unusable.
 
 ## Multi-agent rules
 
-- One canonical plan directory per long-running task.
-- All agents read the canonical plan artifacts before continuing.
-- No arbitrary markdown files or private side reports.
-- Do not duplicate another agent's work; update the existing plan/todo/review artifact instead.
-- Subagents return digests, not giant dumps.
-- The primary/orchestrator owns user interaction, planning decisions, and git/publication gates.
-- Implementation agents execute only the approved work package and return digest.
-- Review agents write review artifacts or return review digest according to the command.
+- one canonical plan directory per long-running task;
+- specialists read the state relevant to their assigned work;
+- subagents return compact evidence/digests rather than giant dumps;
+- the primary/orchestrator owns scope, evidence reconciliation, user interaction, and Git/publication gates;
+- implementation roles execute only the authorized work package;
+- a failed specialist does not transfer its prohibited capability to the caller;
+- update existing canonical artifacts rather than creating competing side reports.
 
 ## Status vocabulary
 
-Use a small stable status set in `todo.md` and reviews:
+Prefer a small stable set when `todo.md` needs status values:
 
 ```text
 new
@@ -120,4 +112,4 @@ deferred
 rejected
 ```
 
-Each status change should include a short dated changelog entry with evidence or command output when relevant.
+Keep status changes concise and evidence-based. Do not add ceremony when a simpler existing project status convention already exists.

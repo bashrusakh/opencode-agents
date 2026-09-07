@@ -1,58 +1,36 @@
-# Public / User-Facing Output Formatting Policy
+# Public / user-facing output formatting
 
-Use this policy whenever an agent writes text for a human or for a public/project artifact: final answers, PR comments, PR bodies, issue bodies, release notes, changelog entries, code-review comments, handovers, plan artifacts, and Markdown docs.
+The root `AGENTS.md` output rules are normative. This page is the compact destination-specific reference for final answers and public/project Markdown.
 
 ## Core rule
 
-Correct content is not enough. The output must also be easy to skim, quote, and act on.
+Correct content must also be easy to skim and act on. Avoid AI wall-of-text output, filler, repeated policy narration, and long dense paragraphs when the content contains multiple findings, decisions, risks, steps, or validation results.
 
-No AI wall of text: write briefly, clearly, accessibly, and with enough structure to skim. Avoid excessive chatter, filler, self-justification, and long dense paragraphs.
+## Default structure
 
-Avoid dense wall-of-text paragraphs when the content contains multiple reasons, decisions, risks, steps, validation results, or evidence.
+Use target-aware portable Markdown unless the destination requires another format. Prefer:
 
-## Default format
+- one short summary first;
+- short headings when they improve navigation;
+- bullets for multiple findings/reasons/checks;
+- fenced code blocks for commands, logs, paths, config, diffs, or exact proposed text;
+- compact tables only when they materially improve comparison/status;
+- a clear conclusion or next action when useful.
 
-Use target-aware portable Markdown unless the destination requires another format.
+Do not emit ceremonial sections or rows whose only content is `skipped`.
 
-Prefer:
-
-- one short summary first
-- clear headings for context, reason, validation, conclusion, and next action when useful
-- bullets for multiple points
-- fenced code blocks for commands, logs, paths, config snippets, diffs, and exact proposed text
-- compact tables only when they improve comparison/status and the target supports them
-- explicit conclusion when closing, rejecting, deferring, superseding, approving, or recommending work
-
-## Target-specific guidance
+## Destination guidance
 
 ### GitHub / GitLab
 
-Use normal Markdown: headings, bullets, code fences, checklists when useful, links, and compact tables. For PR/issue/release text, make the decision and validation easy to find.
+Use normal Markdown. For PR/issue/release/review text, make scope, evidence/validation, and conclusion easy to find. Follow project templates when they exist.
 
 ### OpenCode CLI / terminals
 
-Use compact Markdown/plain text. Prefer short headings, bullets, and code fences. Avoid raw HTML and wide tables.
+Use compact Markdown/plain text. Prefer short headings, bullets, and code fences. Avoid raw HTML, wide tables, and deep nesting.
 
 ### Telegram / Hermes / chat relays
 
-Use simple portable Markdown or plain text. Prefer short paragraphs, bullets, and code fences. Avoid raw HTML, oversized tables, deeply nested lists, and formatting that only works on GitHub.
+Use simple portable Markdown/plain text. Keep paragraphs short and avoid GitHub-only formatting.
 
-## Minimum structure for public comments
-
-When posting or drafting a PR/issue/release/review comment, use this shape unless the target/project asks for another one:
-
-```md
-Short summary.
-
-### Why / Context
-- ...
-- ...
-
-### Validation / Evidence
-- ...
-
-### Conclusion / Next action
-...
-```
-
-For very small comments, a one-line summary plus 2–4 bullets is enough.
+For a tiny public comment, one short summary plus a few bullets is enough. For larger artifacts, use only the sections that help the target reader understand context, evidence, and the next action.

@@ -1,6 +1,6 @@
 # Persistent plans layout
 
-Use this layout for long-running or multi-agent work:
+Use this repository layout only when durable plan-file state is actually in scope and authorized:
 
 ```text
 plans/<plan>/
@@ -22,7 +22,9 @@ plans/<plan>/
 
 Rules:
 
-- The plan directory is durable memory.
-- Do not create arbitrary agent report markdown files.
-- A new agent/session must read `plan.md`, `todo.md`, the active phase, active implementation plan, latest reviews, and latest handover before continuing.
-- Use `Blueprint -> Gate -> Execute -> Digest` for broad implementation.
+- The plan directory is durable task/coordination state, not general memory.
+- GrayMatter memory stores durable conclusions/preferences; checkpoints store transient unfinished-task state.
+- Read-only workflows do not create plan files merely to persist agent state.
+- Do not create arbitrary model/agent report Markdown files.
+- Resume from the current canonical plan/todo/active phase/implementation/reviews/handover that are relevant to the next step.
+- Use `Blueprint -> Gate -> Execute -> Digest` for broad implementation, without turning Gate into a repeated approval ritual for already authorized scope.
