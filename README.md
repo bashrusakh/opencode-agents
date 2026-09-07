@@ -86,7 +86,7 @@ Typical gated actions include branch/commit/PR/issue/release mutation, destructi
 
 ## Startup block
 
-After any required GrayMatter bootstrap and before the first non-memory tool call in a multi-step/tool-driven workflow, emit exactly one compact Startup block:
+After any required GrayMatter bootstrap and before the first non-memory tool call in a workflow covered by the root `AGENTS.md` Startup rule (including repository/codebase, issue/PR/release, external-URL, publication-capable, scope-expanding, or other multi-step tool workflows), emit exactly one compact Startup block:
 
 ```md
 ### Startup
@@ -106,6 +106,10 @@ If route/mode/scope materially changes later, use a compact `### Update` instead
 
 ## GrayMatter memory
 
+GrayMatter is an **optional external MCP integration**; it is not bundled in this archive. Install and wire it separately when persistent memory is wanted:
+
+- Upstream: https://github.com/angelnicolasc/graymatter
+
 When GrayMatter MCP tools are present, the pack uses persistent memory deliberately:
 
 1. resume unfinished work with `checkpoint_resume` when applicable;
@@ -114,7 +118,7 @@ When GrayMatter MCP tools are present, the pack uses persistent memory deliberat
 4. use checkpoints for transient unfinished-task state;
 5. update/forget stale memories instead of leaving conflicting facts live.
 
-Repository code/docs/history/tool output remain authoritative over recalled memory.
+If GrayMatter is not available in the current toolbelt, the memory-specific rules are skipped. Repository code/docs/history/tool output remain authoritative over recalled memory.
 
 ---
 
@@ -322,11 +326,12 @@ vue-expert
 
 Skills are advisory and selected semantically from actual project context. A matching skill must actually be loaded/read before claiming it was used.
 
-Upstream sources:
+Upstream sources / external integrations:
 
+- GrayMatter persistent memory: https://github.com/angelnicolasc/graymatter
 - Alibaba `open-code-review`: https://github.com/alibaba/open-code-review
 - Jeffallan `claude-skills`: https://github.com/Jeffallan/claude-skills
-- UI UX Pro Max: bundled content intentionally retained unchanged in v28.27
+- UI UX Pro Max: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill (bundled content intentionally retained unchanged in v28.27)
 
 ---
 
@@ -377,7 +382,7 @@ A release archive should verify at least:
 - 15 agents and 21 commands;
 - YAML frontmatter parses for every agent/command;
 - no provider-specific agent `model:` overrides;
-- no command-level permission blocks or `subtask: true`;
+- all bundled commands keep `subtask: false` and contain no command-level permission or model overrides;
 - agent `mode`/permission frontmatter unchanged unless a release explicitly targets permissions;
 - no stale `Mode: gated`, hardcoded universal `origin/main`, old OCR timeout contract, or obsolete version-path references;
 - install scripts pass `bash -n` and copy complete skill directories;
