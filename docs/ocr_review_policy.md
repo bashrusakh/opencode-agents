@@ -23,6 +23,13 @@ ocr llm test
 
 If OCR is unavailable, not configured, fails for a non-transient reason, or external sharing is not authorized, fall back to native read-only review and state why. Do not install OCR, configure providers, or request/store credentials as part of ordinary review.
 
+
+## Owned-PR Ready evidence
+
+OCR remains optional review tooling unless the user/project explicitly requires it. `@reviewer` decides whether OCR materially improves the current code/diff/PR review under the normal availability/privacy rules; OCR availability by itself is not a Draft/Ready gate.
+
+Do not run OCR after every intermediate Draft batch merely because another commit was pushed. For a final whole-PR review, the reviewer may invoke OCR on the stable Candidate HEAD when useful and must reconcile any OCR findings into its own verdict.
+
 ## Invocation
 
 Load and follow the current `open-code-review` skill. Use agent-friendly output and concise request/business context:
@@ -49,6 +56,8 @@ After OCR, the reviewer should:
 - filter obvious false positives and low-value nits;
 - preserve precise file/line references;
 - classify material findings by severity (`critical`, `high`, `medium`, with low notes only when useful);
+- group manifestations that share one affected state/lifecycle/protocol invariant rather than emitting an isolated patch queue;
+- distinguish current-diff blockers from latent/unrelated report-only findings;
 - add judgment for right-level placement, regression risk, behavioral contracts, project rules, security/data/API concerns, and missing verification;
 - issue a verdict tied to the reviewed effective diff/state.
 
@@ -61,7 +70,8 @@ A later change that affects reviewed behavior makes the affected review evidence
 
 **Scope:** ...
 **Backend:** OCR | native fallback
-**Verdict:** pass | pass with notes | changes required
+**Reviewer:** pass | pass with notes | changes required
+**OCR:** pass | findings | unavailable/blocked
 
 ### Critical / High / Medium
 - **`path/file.ts:42`** — finding

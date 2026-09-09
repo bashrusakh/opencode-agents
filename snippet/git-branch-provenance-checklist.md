@@ -49,3 +49,5 @@ git diff --stat <base_ref>...HEAD
 Use `<base_ref>..HEAD` as the primary commit list. If effective branch/diff state changes, re-run affected validation/review/readiness. If the branch diverged or unrelated work appears, stop before publication.
 
 Remember: a PR is the whole base-to-head comparison, not the last commit.
+
+For a specific PR, also resolve and report the canonical PR URL, ownership, Draft/Ready state, and current head SHA. Owned PRs under active implementation stay Draft; Ready uses the separate final Candidate-HEAD gate from `docs/pr_readiness.md`.

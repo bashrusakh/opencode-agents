@@ -12,7 +12,8 @@ Use `/plan` semantics for:
 - creating authorized canonical `plans/<plan>/` artifacts;
 - resuming from existing plan/todo/phase/review/handover state;
 - updating durable status/todo/handover state after work;
-- authoring an implementation plan grounded in actual files, symbols, constraints, and verification needs.
+- authoring an implementation plan grounded in actual files, symbols, constraints, and verification needs;
+- complexity/design escalation where a shared state/lifecycle/protocol invariant needs a bounded state/transition/interleaving matrix and implementation batches.
 
 Do not implement source/config/test changes. Do not invent parallel workflow directories or arbitrary report files. If a plan/result needs independent review, treat that as review work rather than silently changing the planner role.
 

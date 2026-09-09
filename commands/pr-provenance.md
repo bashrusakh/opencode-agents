@@ -13,3 +13,5 @@ Resolve the actual head remote, base remote, base branch/ref, tracking state, an
 Prove the task's complete base-to-head commit range and changed-file set, identify unrelated/pre-existing commits or files, and distinguish a clean task branch from a polluted/diverged branch.
 
 This command is provenance verification, not implementation. Do not rewrite history or repair a polluted branch unless a separate authorized workflow requests that action.
+
+When a specific PR is part of the provenance target, include its canonical PR URL and current Draft/Ready state in the report.

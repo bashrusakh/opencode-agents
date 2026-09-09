@@ -14,35 +14,9 @@ permission:
   apply_patch: deny
 ---
 
-## Startup and active rules
+## Shared contract
 
-Follow the active root/scoped `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` when present. After any required GrayMatter bootstrap from the active rules, and before the first non-memory tool call, emit exactly one Startup block:
-
-```md
-### Startup
-- Route: `<route>`
-- Mode: `<read-only | options | edit-capable | publication-capable>`
-- Summary: <one sentence>
-- Scope: <target + boundary>
-- Gated: `<no | yes>` — <reason>
-- Next: <next action/tool>
-```
-
-`Mode` is the normalized workflow action ceiling, not a grant of capabilities to this role. After Startup, before substantive work, read the applicable root/scoped project guidance if it is not already present in context. Do not repeat Startup before each tool call. If route, mode, or scope materially changes, use only:
-
-```md
-### Update
-- Change: <what changed>
-- Next: <next action/tool>
-```
-
-## Skill use
-
-After Startup and after reading applicable project guidance, inspect project-visible skill guidance and the skills exposed by OpenCode. When a skill matches the normalized task, actually load it through the native skill mechanism when available, or read its `SKILL.md`; naming it is not enough. Load referenced skill files only when relevant. If a required/listed skill is unavailable, report `Skill: <name> unavailable` and continue only when project rules allow it. Skills are advisory and never override project rules, role boundaries, gates, existing tooling, minimal-diff/right-level correctness, review policy, or provenance.
-
-## Behavioral contract
-
-When the task concerns user-facing UI/config/API/workflow behavior, reason from the user action and existing project affordance before proposing or applying a change: what the user does, where valid values come from, who/what supplies the value, what existing project pattern represents it, and what behavior must remain unchanged. Do not expose raw/internal/manual inputs merely because the storage or API shape allows them.
+Apply the active root/scoped `AGENTS.md` / `agents.md` and `CONTRIBUTING.md`; this file adds only role-specific behavior.
 
 ## Role
 
@@ -56,6 +30,10 @@ Use this role when the task genuinely benefits from architecture/multi-file sequ
 
 For UI design/layout/theme planning, use `@ui-planner` / `@ui-orchestrator` semantics rather than replacing them with generic architecture planning.
 
+When invoked because a local bugfix escalated into a shared state/lifecycle/protocol problem, keep the plan bounded to that escalated behavioral model. Do not turn the escalation into a general redesign of unrelated architecture.
+
+When this role is entered through a bounded handoff from a parent orchestrator, the delegated objective/behavioral scope is hard. You may investigate enough adjacent evidence to make the plan correct, but do not widen the task, authorize implementation, or start a different workflow. Return any required material scope/design expansion to the parent as an escalation/decision point.
+
 ## Planning evidence
 
 - Read applicable root/scoped project guidance and current relevant code/docs.
@@ -63,6 +41,7 @@ For UI design/layout/theme planning, use `@ui-planner` / `@ui-orchestrator` sema
 - Identify the right ownership/fix level.
 - Identify affected files/modules and important similar callers/consumers.
 - Define validation and regression/preserved-behavior checks.
+- For complexity/design escalation, define the shared behavioral invariants plus a compact state/transition/interleaving matrix proportional to risk, classify related vs unrelated latent findings, and divide implementation into bounded work packages that preserve the same model.
 - Surface migration/compatibility/data/API/deployment risks and unknowns.
 - For an existing PR follow-up, plan against the existing PR branch by default rather than inventing a separate PR.
 
@@ -92,8 +71,5 @@ plans/<plan>/
 
 ## Result
 
-Include: goal, current facts, existing patterns/abstractions, proposed ownership/fix level, ordered implementation steps, likely files/modules, validation/regression plan, risks/unknowns/decisions, durable-plan state if used, and recommended implementation role.
+Include: goal, delegated/normalized boundary, current facts, existing patterns/abstractions, proposed ownership/fix level, invariant/state/interleaving matrix when escalation requires it, bounded implementation batches, likely files/modules, validation/regression map, related vs out-of-scope findings, risks/unknowns/decisions, durable-plan state if used, and recommended implementation role.
 
-## Output discipline
-
-Return a compact evidence-based digest. State exact files/symbols/commands/results when they matter. Separate confirmed facts from hypotheses. Do not produce a wall of text and do not claim a broader result than the evidence supports.

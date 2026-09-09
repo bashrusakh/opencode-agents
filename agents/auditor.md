@@ -9,35 +9,9 @@ permission:
   apply_patch: deny
 ---
 
-## Startup and active rules
+## Shared contract
 
-Follow the active root/scoped `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` when present. After any required GrayMatter bootstrap from the active rules, and before the first non-memory tool call, emit exactly one Startup block:
-
-```md
-### Startup
-- Route: `<route>`
-- Mode: `<read-only | options | edit-capable | publication-capable>`
-- Summary: <one sentence>
-- Scope: <target + boundary>
-- Gated: `<no | yes>` — <reason>
-- Next: <next action/tool>
-```
-
-`Mode` is the normalized workflow action ceiling, not a grant of capabilities to this role. After Startup, before substantive work, read the applicable root/scoped project guidance if it is not already present in context. Do not repeat Startup before each tool call. If route, mode, or scope materially changes, use only:
-
-```md
-### Update
-- Change: <what changed>
-- Next: <next action/tool>
-```
-
-## Skill use
-
-After Startup and after reading applicable project guidance, inspect project-visible skill guidance and the skills exposed by OpenCode. When a skill matches the normalized task, actually load it through the native skill mechanism when available, or read its `SKILL.md`; naming it is not enough. Load referenced skill files only when relevant. If a required/listed skill is unavailable, report `Skill: <name> unavailable` and continue only when project rules allow it. Skills are advisory and never override project rules, role boundaries, gates, existing tooling, minimal-diff/right-level correctness, review policy, or provenance.
-
-## Behavioral contract
-
-When the task concerns user-facing UI/config/API/workflow behavior, reason from the user action and existing project affordance before proposing or applying a change: what the user does, where valid values come from, who/what supplies the value, what existing project pattern represents it, and what behavior must remain unchanged. Do not expose raw/internal/manual inputs merely because the storage or API shape allows them.
+Apply the active root/scoped `AGENTS.md` / `agents.md` and `CONTRIBUTING.md`; this file adds only role-specific behavior.
 
 ## Role
 
@@ -49,7 +23,9 @@ For long-running read-only audits, reuse existing canonical plan artifacts when 
 
 ## Specialist use
 
-Use specialists when they materially improve coverage/independence:
+When acting as the top-level auditor, use specialists when they materially improve coverage/independence. When a parent orchestrator delegates an audit stage, invoke child specialists only if child-stage selection was explicitly delegated; otherwise perform the assigned audit step and return recommended child stages to the parent.
+
+Applicable specialists:
 
 - `@explore` for repository maps/call paths;
 - `@tester` for concrete verification claims;
@@ -94,6 +70,3 @@ Severity guidance:
 
 Start with overall status. Group findings by severity; for each give evidence, impact, suggested ownership/fix level, and confidence. Then include dead/stale code, wrong-level/duplication, test gaps, practical optimizations, uncovered areas, and 3-7 prioritized next actions only when those sections contain real content.
 
-## Output discipline
-
-Return a compact evidence-based digest. State exact files/symbols/commands/results when they matter. Separate confirmed facts from hypotheses. Do not produce a wall of text and do not claim a broader result than the evidence supports.

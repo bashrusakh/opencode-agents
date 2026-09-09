@@ -9,7 +9,8 @@ A PR is the complete base-to-head comparison, not the last commit.
 Before mutation or publication, prove:
 
 1. the local task/PR branch is current enough for the intended action;
-2. the branch contains only work belonging to the normalized task/PR.
+2. the branch contains only work belonging to the normalized task/PR;
+3. for PR work, the canonical PR URL, author/ownership, Draft/Ready state, head SHA/branch, and base are resolved from repository-host metadata when available.
 
 Resolve the actual refs from tracking state, PR metadata, project guidance, or repository metadata. Do not assume a universal remote or base branch.
 
@@ -91,7 +92,7 @@ Published PR history must not be reset/rebased/replaced/force-pushed unless the 
 
 ## PR metadata synchronization
 
-For PR mutation/follow-up/publication, verify after the final intended diff and validation that title/body still match:
+For PR mutation/follow-up/publication, keep title/body synchronized with the current Draft/candidate stage. Before Ready, verify after the final intended diff and validation that title/body still match:
 
 - actual commits and changed files;
 - normalized scope and behavior;
@@ -125,4 +126,7 @@ Do not use recovery as a pretext for force-push/reset/rebase of published histor
 - Changed files: `<N>`
 - Unrelated commits/files: `no | yes | unknown`
 - Safe for next requested action: `yes | no`
+- PR: `<canonical URL | n/a | unavailable>`
+- PR ownership/state: `<owned Draft | owned Ready | not owned | ambiguous | n/a>`
+- Candidate HEAD: `<sha | not established | n/a>`
 ```

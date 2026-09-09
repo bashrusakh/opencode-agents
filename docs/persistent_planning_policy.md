@@ -57,15 +57,16 @@ Apply stages semantically rather than mechanically:
 2. create/resume canonical plan state when needed and authorized;
 3. review plan when independent plan review is materially useful;
 4. author the active implementation plan grounded in actual files/symbols;
-5. review that plan when risk/complexity warrants it;
-6. execute the current work package via `Blueprint -> Gate -> Execute -> Digest`;
-7. review the implementation when root reviewer criteria apply;
-8. update canonical status/todo/decision state;
-9. write a handover only when another session/agent genuinely needs durable continuation.
+5. when complexity/design escalation is the reason for planning, establish the shared invariant/state/transition/interleaving model and bounded work packages before implementation;
+6. review that plan when risk/complexity warrants it;
+7. execute the current work package via `Blueprint -> Gate -> Execute -> Digest`;
+8. review the stable implementation candidate when root reviewer/readiness criteria apply;
+9. update canonical status/todo/decision state;
+10. write a handover only when another session/agent genuinely needs durable continuation.
 
 ## Blueprint -> Gate -> Execute -> Digest
 
-- **Blueprint** — bounded steps, target surfaces/files, checks, material risks, and stop points.
+- **Blueprint** — bounded steps, target behavioral/surface boundary, files, checks, material risks, stop/escalation points, and—when complexity escalation applies—the invariant/interleaving cases this package must preserve.
 - **Gate** — check the work package against current authorization; do not ask again for unchanged scope already authorized.
 - **Execute** — route implementation to a capable role. Orchestrators/planners do not absorb implementation when delegation fails.
 - **Digest** — reconcile current evidence, ensure any required canonical plan-file update is performed by a role allowed to maintain planning artifacts, and return a compact result.
@@ -91,8 +92,9 @@ Then state the current phase/item, blockers, and next safe action. Do not restar
 - one canonical plan directory per long-running task;
 - specialists read the state relevant to their assigned work;
 - subagents return compact evidence/digests rather than giant dumps;
-- the primary/orchestrator owns scope, evidence reconciliation, user interaction, and Git/publication gates;
-- implementation roles execute only the authorized work package;
+- the primary/orchestrator owns scope, stage order, current findings set, evidence reconciliation, user interaction, and Git/publication gates;
+- every delegated work package is a hard behavioral/target boundary: specialists may choose execution details inside it but report required scope expansion back to the orchestrator before acting;
+- implementation roles execute only the authorized work package and do not silently fix adjacent findings;
 - a failed specialist does not transfer its prohibited capability to the caller;
 - update existing canonical artifacts rather than creating competing side reports.
 

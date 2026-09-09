@@ -21,6 +21,9 @@ Definitions:
 - **Focused UI request** means one known screen/component/flow, one known UX problem or requested outcome, a solution possible within existing project style/components, and no unresolved product/design direction decision.
 - **Materially different direction** means a choice that changes product semantics, navigation model, information architecture, visual identity/theme, major layout approach, technical architecture, or user workflow in incompatible ways.
 - **Smallest correct change** means minimal semantic/behavioral impact first, then minimal touched files and diff size.
+- **Owned PR** means a pull request whose author is the current authenticated/user account, or a PR this workflow previously created on that user's behalf and whose ownership is confirmed from repository-host metadata. Do not infer ownership from a branch name alone.
+- **Candidate HEAD** means the exact PR head commit/effective diff selected for final verification and review before an owned PR can move from Draft to Ready for review.
+- **Complexity/design escalation** means stopping local patch-by-patch execution because evidence shows the behavior is governed by a shared state machine, lifecycle, protocol, concurrency/persistence model, or another cross-cutting invariant that must be understood before more implementation.
 
 ## 1. Source of truth
 
@@ -306,26 +309,26 @@ Gated actions:
 - require secrets, credentials, private config, private registry access, or external account actions not already authorized by the request/project policy
 - choose between materially different product/design/architecture directions without enough information
 - exceed the authorized scope or turn a focused task into broad scope
-- continue or publish despite failing/blocked required verification
+- mark a PR Ready/request final review, merge, release, claim completion, or otherwise cross a final-quality boundary despite failing/blocked required verification
 - send code/diffs/context to an external review/LLM service when external code sharing is not already permitted by user/project policy
 
-Ordinary safe workflow continuation is not a new gate: read-only exploration, planning, specialist delegation, implementation already clearly requested and within role/scope, and documented non-destructive verification may proceed automatically.
+Ordinary safe workflow continuation is not a new gate: read-only exploration, planning, specialist delegation, implementation already clearly requested and within role/scope, and documented non-destructive verification may proceed automatically. An already-authorized owned-PR Draft repair workflow may also publish intermediate in-scope Draft batches with known failing/blocked checks when the purpose is to repair or obtain CI evidence and the Draft publication-safety rules are satisfied; those failures must be reported honestly and still block Ready.
 
 ## 5. Delegation and orchestration
 
-Delegate when a specialist role materially improves correctness, independent verification, role separation, or context management, and whenever the workflow assigns a required action to a role the caller does not possess. Do not delegate merely to reproduce stage names; do not skip required delegation merely because the change looks easy.
+Delegate when a specialist materially improves correctness, independent verification, role separation, or context management, and whenever the next required action belongs to another role. Do not delegate merely to reproduce stage names, and do not skip required delegation because a change looks easy.
 
-For multi-step work, the active agent should:
+For multi-step work, the active primary/orchestrator is the workflow owner. It owns normalized scope, stage order, mutation/publication envelope, current findings, evidence freshness, and final claims. A specialist assignment must state enough to make its boundary clear: objective, behavioral/target scope, action level, expected result, stop/escalation conditions, and current diff/Candidate-HEAD/PR context when relevant.
 
-1. normalize intent and scope
-2. identify required vs optional specialist stages
-3. confirm required agents/tools are available
-4. invoke the appropriate role for the current stage
-5. read and reconcile its result against current repository state/effective diff
-6. continue automatically through safe applicable stages
-7. return one consolidated final report
+Inside that assignment, the specialist owns ordinary execution details and may inspect adjacent evidence needed to answer it. Unless broader orchestration was explicitly delegated, it must not widen scope/direction/destination, start the next stage, decide to fix another finding, mutate outside the assignment, change PR/publication state, absorb another role, or create a new implementation batch.
 
-Subagents report to the caller. The caller remains responsible for scope, evidence freshness, and final claims. A subagent statement is evidence only to the extent that its reported tool results support it and still apply to the current effective diff/state.
+If new evidence requires material expansion, a new protocol/design concept, another role, a user decision, or a gated action outside the assignment, stop before that action and return an **escalation request** with the evidence and smallest proposed new boundary. The parent decides and issues the next assignment. A delegated specialist asks the user directly only when that interaction was explicitly delegated; otherwise return the question/gate to the parent. Out-of-scope findings remain report-only until explicitly brought into scope.
+
+Specialist results must be auditable but compact: assignment/scope, material actions/evidence, boundary status, and any escalation/out-of-scope finding; mutation-capable roles also report files/behavior actually changed. A specialist result is evidence, not authority: after every mutation stage, the orchestrator reconciles the actual current diff/state against the assignment before authorizing more mutation.
+
+Nested orchestrators are allowed only inside the parent's delegated envelope. The parent must state whether child-stage selection is delegated; without that authority, the nested orchestrator returns recommended next stages rather than launching them. Prefer serialized mutation stages. Parallel read-only work is fine when independent; parallel mutation requires established disjoint files/state/contracts.
+
+For multi-step work, the orchestrator loops: normalize scope -> establish the current task/findings set -> assign the next bounded stage -> reconcile actual result/state -> classify new findings/escalations -> continue through safe applicable stages -> return one consolidated report.
 
 Subagent availability and failure handling:
 
@@ -354,9 +357,11 @@ Do not over-delegate tiny mechanical work when the active role itself is explici
 
 ### 5.1 Open Code Review backend
 
-For code, diff, commit, branch, workspace, or PR review, prefer OCR/open-code-review as the primary review backend when installed and allowed. `@reviewer` remains the policy/judgment layer: it normalizes scope, checks privacy/gates, runs OCR when appropriate, filters false positives, adds right-level/behavioral-contract/test-risk judgment, and formats the final review.
+For code, diff, commit, branch, workspace, or PR review, prefer OCR/open-code-review as the primary review backend when installed and allowed. `@reviewer` remains the policy/judgment layer: it normalizes scope, checks privacy/gates, runs OCR when appropriate, filters false positives, groups related findings by invariant/root cause, adds right-level/behavioral-contract/test-risk judgment, and formats the final review.
 
-OCR is locally read-only for the repository, but may send code, diffs, and context to its configured LLM provider. Section 4 controls external sharing. If OCR is unavailable, not configured, or not approved, fall back to native read-only review and state why.
+OCR is locally read-only for the repository, but may send code, diffs, and context to its configured LLM provider. Section 4 controls external sharing. For ordinary review, if OCR is unavailable, not configured, or not approved, fall back to native read-only review and state why.
+
+OCR is not a universal PR-readiness requirement. `@reviewer` decides whether OCR materially improves a review under the ordinary availability/privacy rules, unless the user or project explicitly requires OCR. When OCR is used, its findings are evidence for the reviewer to reconcile; OCR availability alone does not determine Draft/Ready state.
 
 When running OCR, follow the loaded OCR skill/current CLI semantics for `--timeout` and effort/review-round scaling. Set the surrounding shell/tool timeout to at least the effective OCR review-group budget with reasonable headroom when supported.
 
@@ -417,14 +422,42 @@ Use `@code-orchestrator` for multi-step coding workflows.
 
 Bugfix default:
 
-1. `@explore` when the relevant code path is not yet identified
-2. `@tester` when reproduction/failing checks are needed
-3. `@debugger` to identify root cause, changed + preserved behavior, and apply the smallest right-level fix when changed code/config/UI is requested
-4. `@tester` again to verify the fixed behavior and applicable preserved behavior; broaden to the relevant existing suite or representative consumers when a shared primitive changed
-5. `@reviewer` when the final diff affects shared/multi-caller behavior, security, data handling, API contracts, concurrency, or other non-obvious/high-risk logic
-6. final report
+1. `@explore` when the relevant code path is not yet identified;
+2. `@tester` when reproduction/failing checks are needed;
+3. `@debugger` to identify root cause, changed + preserved behavior, and apply the smallest right-level fix when changed code/config/UI is requested;
+4. `@tester` again to verify the fixed behavior and applicable preserved behavior; broaden to the relevant existing suite or representative consumers when a shared primitive changed;
+5. once the effective diff is a stable candidate, use `@reviewer` when reviewer criteria apply; for owned-PR readiness the final review must cover the PR as one complete base-to-Candidate-HEAD change under section 8.2;
+6. final report.
 
-The implementation stage is delegated. An orchestration-only `@code-orchestrator` must not replace a failed/skipped `@debugger` by editing through shell/scripts or any other tool. If no implementation-capable agent can run, implementation is blocked.
+The implementation stage is delegated. An orchestration-only `@code-orchestrator` must not replace a failed/skipped implementation role by editing through shell/scripts or any other tool. If no implementation-capable agent can run, implementation is blocked.
+
+Do not turn reviewer comments into an automatic one-comment/one-patch loop. Before dispatching new mutation, collect current findings, deduplicate them, and determine whether they are independent local defects or manifestations of the same behavioral invariant.
+
+#### Complexity/design escalation
+
+Stop local patch-by-patch execution and escalate to invariant/design analysis when evidence materially shows one or more of these patterns:
+
+- several findings depend on the same shared state, identity, lifecycle, ownership, ordering, retry, persistence, migration, or concurrency rule;
+- fixing one interleaving repeatedly exposes adjacent interleavings under the same model;
+- the next fix requires introducing a materially new protocol concept such as generations, receipts, leases/tokens, ownership rules, migration/recovery semantics, retry/idempotency semantics, or shutdown/drain behavior not already established by the task/plan;
+- the effective diff expands across interacting layers/consumers because the underlying behavioral model is incomplete;
+- existing tests/requirements disagree about the intended behavior;
+- required verification for an affected behavioral boundary is unavailable while implementation is still expanding the design;
+- review evidence indicates that the architecture/invariant model itself is incomplete rather than one branch simply being wrong.
+
+File count or diff size alone does not trigger escalation.
+
+When escalation occurs:
+
+1. stop adding independent guards/patches for individual findings;
+2. aggregate and classify current findings: current-diff regression, missed case of the current invariant, design/invariant gap, verification gap, related latent/pre-existing defect, or unrelated latent/pre-existing defect;
+3. establish the shared behavioral invariants and a compact state/transition/interleaving matrix proportional to the risk;
+4. distinguish intended changed behavior, preserved behavior, in-scope related defects, and out-of-scope findings;
+5. use `@plan` when durable architecture/sequencing is needed, then split implementation into bounded work packages;
+6. execute those batches through implementation-capable roles and verify each batch against the same invariant model;
+7. reserve expensive independent final review for a stable candidate boundary rather than re-running it after every intermediate batch, unless independent judgment is specifically required to choose the next safe direction. OCR remains reviewer-selected under section 5.1.
+
+A review finding is evidence of a defect, not automatically an instruction to patch the commented line. Unrelated pre-existing findings do not silently expand the current task; report them for follow-up.
 
 If the user reports a problem but does not clearly ask for changed code/config/UI, investigate and stop with root cause/recommended fix. Do not edit code.
 
@@ -440,10 +473,11 @@ If the active orchestrator cannot edit but edits are required, route to an imple
 
 Review comments, failed PR checks, requested corrections, CI failures, and follow-up changes belong to the existing PR branch by default.
 
-- Do not open a separate PR unless separate-PR creation is the clear normalized deliverable and the gated-action rule allows that exact publication action.
-- Inspect current branch, git status, diff, PR number/branch when accessible, and relevant review/CI context.
-- Keep fixes focused and on the same PR branch.
-- Commit or push only when the gated-action rule allows that publication action.
+Before assigning fixes, inspect the current PR URL/number, author/ownership, Draft/Ready state, branch/base, effective diff, current review comments, failed/pending checks, and known task todo. Build one current findings set before starting a patch loop. Classify/deduplicate related findings and apply section 6.3 complexity escalation when they share an invariant.
+
+Apply the owned-PR Draft/Candidate/Ready lifecycle from section 8.2. Read-only work never changes PR state; unowned/ambiguous PR state is never changed automatically. Keep fixes focused on the same PR branch unless a separate PR is the explicit deliverable.
+
+When the intended diff is complete, establish one **Candidate HEAD**, finish applicable verification/CI, then require a final `@reviewer` pass over the **entire PR base-to-Candidate-HEAD change**, not only the latest commit or incremental diff. Resolve blocking findings, refresh affected evidence after fixes, synchronize metadata/provenance, and only then move an owned PR to Ready under section 8.2.
 
 ### 6.6 Issue-from-bug workflow
 
@@ -539,18 +573,22 @@ For bugfixes and implementation changes that modify existing/shared behavior, ve
 
 Before editing:
 
-- identify the changed behavioral contract
-- identify the closest applicable preserved behavior/invariant
-- when behavior spans multiple meaningful states, transitions, consumers, boundaries, or input shapes, create a compact case-to-verification map proportional to risk
+- identify the changed behavioral contract;
+- identify the closest applicable preserved behavior/invariant;
+- when behavior spans multiple meaningful states, transitions, consumers, boundaries, or input shapes, create a compact case-to-verification map proportional to risk;
+- after complexity/design escalation, make the invariant/state/transition/interleaving matrix the common contract for subsequent implementation batches and verification.
 
 When practical in the project's existing automated test layer, establish a failing regression case before the fix. The regression test must exercise the broken behavioral contract, not merely the new implementation detail. Do not introduce a new test framework only for this rule.
 
+Tests are evidence of the behavioral contract, not automatically the contract itself. If existing tests contradict each other, current authoritative requirements, or established project behavior, stop implementation long enough to resolve the intended invariant. Do not alternate between changing production code and changing contradictory tests until the suite happens to become green.
+
 After editing:
 
-- verify the originally failing/intended changed behavior
-- verify the closest applicable preserved behavior or representative unaffected path
-- when a shared primitive/helper/service/parser/stateful path/API wrapper/composable changes, run the relevant existing suite or representative affected consumers in addition to the focused/new case
-- do not treat one newly added passing test as sufficient regression evidence
+- verify the originally failing/intended changed behavior;
+- verify the closest applicable preserved behavior or representative unaffected path;
+- when a shared primitive/helper/service/parser/stateful path/API wrapper/composable changes, run the relevant existing suite or representative affected consumers in addition to the focused/new case;
+- for escalated stateful/protocol work, map verification results back to the established invariant/interleaving cases;
+- do not treat one newly added passing test as sufficient regression evidence.
 
 If automated regression coverage is impractical, state why and perform the smallest meaningful non-destructive preservation check.
 
@@ -558,19 +596,23 @@ If automated regression coverage is impractical, state why and perform the small
 
 Run the narrowest relevant tests/checks from project docs/config that are non-destructive and do not require unapproved secrets or production services. Prefer focused checks before broader suites.
 
-Validation evidence is tied to the effective diff and relevant environment/configuration at the time it ran. Any later code, config, test, dependency, generated-output, or history change invalidates every result that change could affect. Re-run only the affected checks before claiming success.
+Validation evidence is tied to the effective diff, relevant environment/configuration, and—during owned-PR readiness—the exact Candidate HEAD that was checked. Any later code, config, test, dependency, generated-output, or history change invalidates every result that change could affect. Re-run only the affected checks before claiming success.
 
-A focused passing check proves only the behavior it exercises. Do not claim module-, package-, repository-, or project-wide verification unless the corresponding broader checks actually ran.
+A focused passing check proves only the behavior it exercises. Passing server/service tests do not prove a changed frontend/UI boundary; passing UI tests do not prove persistence/migration behavior; one layer's evidence never substitutes for another affected boundary. Do not claim module-, package-, repository-, or project-wide verification unless the corresponding broader checks actually ran.
+
+If required verification for an affected behavioral boundary cannot run, report the exact blocker. Implementation may continue only inside an already-established invariant/work package when doing so is still safe; do not keep expanding the design while its affected verification boundary is unavailable. An owned PR cannot move to Ready while mandatory candidate evidence is blocked or stale.
 
 Do not manufacture a pass by deleting, skipping, weakening, broadening, or disabling assertions, snapshots, type checks, lint rules, coverage requirements, tests, or validation steps unless the normalized task intentionally changes that expected behavior and current project evidence supports the change.
 
-Review evidence is also diff-bound. If edits after review affect reviewed behavior, the affected review verdict is stale; re-review when reviewer criteria still apply.
+Review evidence is diff/Candidate-HEAD-bound. If edits after review affect reviewed behavior, the affected verdict is stale; re-review the changed candidate when required. For final owned-PR readiness, that refreshed review again covers the whole PR base-to-head change.
 
 If checks cannot run, report the exact command and exact error/blocker. Never claim success when required checks are unknown, skipped without explanation, stale, or failing.
 
 ## 8. Git, commit, PR, issue, and release discipline
 
 Only create, update, push, or publish branches/commits/PRs/tags/releases when the gated-action rule allows that exact publication action.
+
+For PR work, resolve and retain the canonical PR URL, author/ownership, Draft/Ready state, head branch/SHA, and base branch before making user-facing PR claims. For an owned PR with authorized follow-up implementation, keeping the PR Draft during active iteration is part of the same follow-up lifecycle; read-only review alone never authorizes a status mutation.
 
 Before branch/PR mutation or publication, check git status, current branch, upstream tracking branch, current base branch, and whether the current branch already has an open PR. Fetch both the current head/upstream remote and the base remote before trusting branch state. Read-only review/audit must not rebase/update branches just because it mentions a PR.
 
@@ -612,28 +654,49 @@ Before any commit:
 
 Before pushing: confirm remote, branch, base, commit range, and changed files. Never force-push unless the gated-action rule allows force-push and the risk is explained.
 
-Before any PR: prove branch provenance, ensure branch base is correct, diff is reviewable, title follows `CONTRIBUTING.md`, PR body includes summary/context/validation and UI screenshots or manual verification for UI changes. Do not mark ready if checks are unknown or failing. For code/diff/PR review, route to `@reviewer`. Prefer OCR/open-code-review when installed and allowed. Ask before running OCR if external code sharing is not already approved by user/project policy.
+Before any PR creation/update: prove branch provenance, ensure branch base is correct, diff is reviewable for its current Draft/candidate stage, title follows `CONTRIBUTING.md`, and PR body includes summary/context/actual validation plus UI screenshots/manual verification when relevant. Create owned PRs as Draft by default. Final Ready transition follows section 8.2 rather than the ordinary push/update boundary.
 
-For PR mutation, follow-up commits/pushes, PR creation/update, or PR-ready publication, verify after the final intended diff and validation that the PR title/body still match actual commits, changed files, scope, behavior, and validation. If stale or incomplete, update it when PR publication/update is already allowed by the normalized request; otherwise draft the corrected PR body and ask before publishing. Final report must include: `PR body: updated | unchanged | drafted | skipped — <reason>`.
+For PR mutation, follow-up commits/pushes, PR creation/update, or Ready transition, keep the PR title/body synchronized with actual commits, changed files, scope, behavior, and current validation. During Draft iteration metadata may describe the current work-in-progress honestly; before Ready it must describe the final candidate. If stale or incomplete, update it when PR publication/update is already allowed by the normalized request; otherwise draft the corrected metadata and stop before publication. Report PR metadata status under section 10.
 
-### 8.2 PR readiness gate
+### 8.2 Draft publication and Ready-for-review gates
 
-Before the first push that would publish the current task changes, PR creation/update, or any later push that changes an existing PR diff, the active primary/orchestrator must establish a current PR-ready state. This is not a new approval gate: publication still follows the existing gated-action rule. Do not run this gate before every local edit or local commit.
+Draft publication and Ready-for-review are different boundaries. Do not require final-review evidence before every intermediate Draft push, and do not treat an intermediate Draft push as proof that the PR is ready.
 
-PR-ready means all applicable conditions are true for the current effective diff:
+#### Draft publication safety
 
-- repository contract: relevant root/scoped guidance and selected skills were actually read; PR template/publication guidance was discovered when PR metadata is in scope
-- fix contract: right-level/root cause was checked, and non-trivial multi-path/state behavior has a compact case-to-verification map when applicable
-- validation: project-required and task-relevant checks are complete for the current diff; validation claims and counts come from actual tool output, not assumptions
-- review: when the existing reviewer applicability criteria match, `@reviewer` has reviewed the current final local diff before publication; external CI/bot review is additional evidence, not a substitute
-- provenance: branch sync/provenance is current after the latest branch/history changes
-- PR metadata: when a PR exists or will be created/updated, title/body match the final diff and actual validation
+Before creating/updating/pushing an owned Draft PR during active work, establish:
 
-A reviewer verdict of `changes required` blocks readiness until the finding is resolved or the user explicitly approves publishing with the known risk. `pass` or non-blocking notes do not require unnecessary refactors.
+- correct repository/PR branch, base, remote, and provenance for the intended task;
+- no unrelated commits/files/secrets/artifacts in the published diff;
+- the batch belongs to the authorized PR scope and does not silently expand product/architecture/publication scope;
+- task-relevant batch verification has run where practical, with failures/blockers stated honestly;
+- the PR remains Draft and its current metadata is not misleading.
 
-Readiness is tied to the effective diff, not to an earlier checkpoint. Code/config/test changes, reviewer-requested fixes, rebase/merge/cherry-pick/reset, or remote/head changes that alter the effective diff invalidate the affected readiness evidence. Re-run only the affected checks. If reviewer criteria still apply after code changes, review the new final local diff again. A fetch that does not change the effective diff does not by itself invalidate readiness.
+This is the normal publication boundary for intermediate implementation batches. It does **not** require re-running final `@reviewer` after each batch; OCR follows the ordinary reviewer-selected policy.
 
-See `docs/pr_readiness.md` for the compact workflow.
+#### Candidate HEAD
+
+When the intended implementation and in-scope bugfixes are complete, publish the final intended commit(s) to the owned PR **while it is still Draft** under the Draft publication-safety boundary. The exact resulting remote PR head commit/effective diff is the Candidate HEAD. Final CI, whole-PR reviewer verdict, provenance, and metadata evidence must refer to that same candidate. Do not keep changing the candidate while simultaneously claiming final readiness.
+
+#### Ready-for-review gate for owned PRs
+
+An owned PR may move from Draft to Ready only when all applicable conditions are true for the Candidate HEAD:
+
+- **Scope/fixes complete** — the current findings/todo set has been reconciled; every in-scope blocking bugfix/review/check finding is resolved or correctly rejected as not applicable/false with evidence; unrelated latent findings are not silently folded into the PR.
+- **Repository/fix contract** — relevant root/scoped guidance and selected skills were actually read; right-level/root-cause placement was checked; complex stateful/protocol work has the compact invariant/state/interleaving map required by section 6.3.
+- **Validation** — project-required and task-relevant local checks are current for the Candidate HEAD, including changed and preserved behavior across every affected boundary that can be verified.
+- **CI/status checks** — all required/task-relevant checks available for the Draft candidate are complete and successful. Pending, failed, unknown, or stale required checks block automatic Ready.
+- **Reviewer** — `@reviewer` has performed a final **whole-PR review** of the complete base-to-Candidate-HEAD comparison and returned no unresolved blocking findings. Earlier per-commit, per-file, or incremental-diff reviews are useful evidence but never substitute for this integrated final pass. The reviewer must account for the complete changed-file/effective-diff set and consider cross-file/combined behavior; when size requires partitioned review, all slices must be covered and reconciled into one `Coverage: full PR` verdict. OCR, when used, follows section 5.1 and is reconciled into this verdict.
+- **Provenance** — branch/base/remote/head provenance is current and the remote PR head equals the reviewed Candidate HEAD.
+- **PR metadata** — title/body match the final candidate, actual validation, and current scope.
+
+If the repository has a required check that technically cannot run until the PR is marked Ready, do not fabricate a pass and do not bounce Draft/Ready repeatedly to trigger it. Report the repository-specific dependency and follow explicit project/user policy for that exception.
+
+A `changes required` reviewer verdict keeps the PR Draft. OCR findings, when OCR is used, are reconciled into that reviewer verdict. Resolve findings in bounded batches, re-run affected verification, establish the new Candidate HEAD, and repeat the final whole-PR reviewer pass for the changed candidate.
+
+Any code/config/test/generated-output/dependency/history change after final candidate verification/review invalidates the affected evidence. If an owned PR had already been marked Ready and new repository-content work begins, convert it back to Draft before continuing the next update cycle.
+
+Do not change Draft/Ready state for a PR that is not confirmed to be owned. Read-only review never changes PR state.
 
 Before publishing PR comments, review comments, issue bodies, release notes, changelog entries, or other public Markdown, apply the user-facing output formatting rule: short summary, readable sections, bullets for multiple points, code fences for exact text/commands/logs, and a clear conclusion or next action.
 
@@ -667,15 +730,17 @@ Public comments should be concise, factual, skimmable, and easy to understand wi
 
 Return one concise consolidated report. Report only applicable stages and evidence; do not add rows whose only useful content is `skipped`.
 
+Whenever the report discusses a specific PR—reviewed, fixed, checked, created, updated, or prepared for Ready—include the canonical clickable PR URL near the top of the report. Do not make the user infer it from a PR number, branch name, or repository name. If the URL cannot be resolved from available repository metadata, state `PR: URL unavailable` explicitly instead of silently omitting it. For owned-PR publication/readiness work, also report `State: Draft | Ready` and the Candidate HEAD when one has been established.
+
 For ordinary focused workflows, prefer compact status bullets covering:
 
-- overall result
-- what changed or was found
-- regression/preserved-behavior evidence when applicable
-- exact verification run/results
-- review status when reviewer criteria applied
-- publication/PR status only when publication was in scope
-- blockers or remaining risks, if any
+- overall result;
+- what changed or was found;
+- regression/preserved-behavior evidence when applicable;
+- exact verification run/results;
+- review/OCR status when applicable;
+- publication/PR state/readiness only when in scope;
+- blockers or remaining risks, if any.
 
 Use the full stage table only for broad, multi-agent, persistent-planning, publication/readiness, or explicitly audited workflows where the table improves traceability:
 
@@ -687,7 +752,7 @@ Use the full stage table only for broad, multi-agent, persistent-planning, publi
 | Implementation | ✅/⚠️/❌ | implementation-capable role/result |
 | Regression guard | ✅/⚠️/❌ | changed + preserved behavior/evidence |
 | Verification | ✅/⚠️/❌/blocked | exact current commands/results |
-| Review | ✅/⚠️/❌ | when applicable; must match current diff |
-| PR readiness / publication | ✅/⚠️/❌ | only when in scope |
+| Review / OCR | ✅/⚠️/❌/blocked | when applicable; must match current candidate/diff |
+| PR readiness / publication | ✅/⚠️/❌ | canonical PR URL + Draft/Ready/candidate status when relevant |
 
 Keep the report short and make no claim broader than the current evidence supports. If a required stage is blocked because a specialist could not run, say so explicitly rather than implying the caller completed that stage itself.
