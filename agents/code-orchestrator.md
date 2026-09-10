@@ -76,6 +76,14 @@ Do not invoke `@explore` merely because the exact file/symbol is not known yet. 
 
 Reuse a current repository map until material code/history/scope changes make it stale; do not repeat explore between adjacent packages just to rediscover the same paths.
 
+### Iteration reset
+
+If the same material failure survives a mutation that was supposed to fix its root cause, or new evidence contradicts the current hypothesis, do not dispatch another substantially similar patch automatically. Reassess reproduction, assumptions, ownership/call path, environment, and fix level first; escalate to invariant/design work only when that evidence requires it.
+
+### User-decision batching
+
+Resolve non-gated uncertainty from repository/tool evidence when safe. Keep compatible unresolved user decisions together and ask once when they become blocking; never postpone a required approval past the action it gates. Delegated specialists still return user decisions to you unless interaction authority was explicitly delegated.
+
 ### Review cadence
 
 Treat `@reviewer` as independent judgment at a stable meaningful boundary, not as a post-package ceremony. Always use it for an explicit review deliverable and for the final owned-PR Candidate HEAD required by the root Ready gate. Otherwise invoke it when the final/stable diff has security/auth/data/persistence/API/schema/concurrency/shared-state/multi-caller or comparable non-obvious risk where independent judgment materially improves correctness.
@@ -178,7 +186,7 @@ Intermediate pushes to an owned PR remain Draft and use the Draft publication-sa
 
 ## Final report
 
-Report only applicable stages:
+Lead with the result when completed; if blocked or waiting on the user, lead with the blocker and the one decision/action required to continue. Report only applicable stages:
 
 - result: completed / partially completed / blocked / blocked by gate;
 - normalized scope/deliverable;

@@ -32,7 +32,7 @@ If the task is not a bug/failure/root-cause fix, return a concise handoff to the
    - the closest relevant behavior/invariant that must remain unchanged.
 6. When practical in the existing test layer, establish a failing regression case that protects the broken behavioral contract before the fix. Do not add a new test framework merely for this.
 7. Apply the smallest right-level fix.
-8. Re-run the focused failing case and verify preserved behavior. When a shared primitive changes, also run the relevant existing suite or representative consumers when practical. Return these checks as implementation-local evidence; completing the bugfix does not by itself imply that the caller must invoke `@tester`.
+8. Re-run the focused failing case and verify preserved behavior. When a shared primitive changes, also run the relevant existing suite or representative consumers when practical. Return these checks as implementation-local evidence; completing the bugfix does not by itself imply that the caller must invoke `@tester`. If the same material failure persists after the fix or the result contradicts the root-cause hypothesis, do not stack another similar patch: return the contradictory evidence and reassessed hypothesis/boundary to the caller first.
 
 ## Complexity/design escalation boundary
 

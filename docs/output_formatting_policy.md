@@ -8,14 +8,15 @@ Correct content must also be easy to skim and act on. Avoid AI wall-of-text outp
 
 ## Default structure
 
-Use target-aware portable Markdown unless the destination requires another format. Prefer:
+Use target-aware portable Markdown unless the destination requires another format. Lead by reader state:
 
-- one short summary first;
-- short headings when they improve navigation;
-- bullets for multiple findings/reasons/checks;
-- fenced code blocks for commands, logs, paths, config, diffs, or exact proposed text;
-- compact tables only when they materially improve comparison/status;
-- a clear conclusion or next action when useful.
+- completed work -> result first;
+- blocked/user-decision work -> blocker plus required next action first;
+- user-executed procedure -> first executable step first.
+
+Then use short headings when they improve navigation, bullets for multiple findings/reasons/checks, fenced code blocks for commands/logs/paths/config/diffs/exact text, and compact tables only when they materially improve comparison/status. Do not invent a next action when nothing remains.
+
+Use numbered steps when the reader must perform an ordered multi-step procedure. Do not number findings, alternatives, internal workflow stages, or unordered status items merely for appearance.
 
 Do not emit ceremonial sections or rows whose only content is `skipped`.
 
@@ -33,4 +34,4 @@ Use compact Markdown/plain text. Prefer short headings, bullets, and code fences
 
 Use simple portable Markdown/plain text. Keep paragraphs short and avoid GitHub-only formatting.
 
-For a tiny public comment, one short summary plus a few bullets is enough. For larger artifacts, use only the sections that help the target reader understand context, evidence, and the next action.
+For a tiny public comment, one short result/summary plus a few bullets is enough. For larger artifacts, use only the sections that help the target reader understand context, evidence, and the next action.

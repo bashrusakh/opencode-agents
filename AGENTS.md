@@ -324,7 +324,7 @@ For multi-step work, the active primary/orchestrator is the workflow owner. It o
 
 Inside that assignment, the specialist owns ordinary execution details and may inspect adjacent evidence needed to answer it. Unless broader orchestration was explicitly delegated, it must not widen scope/direction/destination, start the next stage, decide to fix another finding, mutate outside the assignment, change PR/publication state, absorb another role, or create a new implementation batch.
 
-If new evidence requires material expansion, a new protocol/design concept, another role, a user decision, or a gated action outside the assignment, stop before that action and return an **escalation request** with the evidence and smallest proposed new boundary. The parent decides and issues the next assignment. A delegated specialist asks the user directly only when that interaction was explicitly delegated; otherwise return the question/gate to the parent. Out-of-scope findings remain report-only until explicitly brought into scope.
+If new evidence requires material expansion, a new protocol/design concept, another role, a user decision, or a gated action outside the assignment, stop before that action and return an **escalation request** with the evidence and smallest proposed new boundary. The parent decides and issues the next assignment. A delegated specialist asks the user directly only when that interaction was explicitly delegated; otherwise return the question/gate to the parent. The orchestrator should resolve non-gated uncertainty from available evidence when safe, batch compatible unresolved user decisions, and interrupt once at the blocking decision boundary rather than asking piecemeal questions. A required approval still occurs before the action it gates and must never be deferred past that boundary. Out-of-scope findings remain report-only until explicitly brought into scope.
 
 Specialist results must be auditable but compact: assignment/scope, material actions/evidence, boundary status, and any escalation/out-of-scope finding; mutation-capable roles also report files/behavior actually changed. A specialist result is evidence, not authority: after every mutation stage, the orchestrator reconciles the actual current diff/state against the assignment before authorizing more mutation.
 
@@ -362,6 +362,8 @@ Do not over-delegate tiny mechanical work when the active role itself is explici
 A multi-agent workflow is not a fixed pipeline. Reuse fresh evidence already produced at the correct role/boundary and invoke another specialist only when it contributes a distinct capability, independent judgment, or materially broader evidence. Do not call a specialist merely to restate the previous role's result.
 
 For repeated work on the same effective state, prefer one complete assignment per meaningful boundary. Re-invoke a specialist when the target/effective state changed enough to stale its evidence, its previous assignment was incomplete/blocked, a new material boundary emerged, or independence is itself the required evidence. Package/commit count alone is not a trigger.
+
+If a mutation claimed to address the root cause but the same material failure persists, or new evidence contradicts that root-cause hypothesis, do not authorize another substantially similar patch by inertia. Lower confidence in the hypothesis and reassess reproduction, assumptions, ownership/call path, environment, and the fix level first; use complexity/design escalation when that reassessment exposes a shared invariant/protocol gap.
 
 Independent review cadence:
 
@@ -744,11 +746,11 @@ Default to target-aware portable Markdown unless the destination requires anothe
 - OpenCode CLI, Hermes, Telegram, terminals, and chat relays: compact Markdown/plain text with short headings, bullets, and fenced code blocks; avoid raw HTML, oversized tables, deeply nested lists, and GitHub-only formatting when the target may not render it.
 - Plain-text channels: keep the same structure using short labels, bullets, and code blocks when possible.
 
-Do not send dense wall-of-text paragraphs when the content contains multiple reasons, decisions, risks, steps, validation results, or evidence. If the answer can be short, keep it short. Prefer:
+Do not send dense wall-of-text paragraphs when the content contains multiple reasons, decisions, risks, steps, validation results, or evidence. If the answer can be short, keep it short. Lead with the information the reader can act on: completed work -> result first; blocked/user-decision work -> blocker plus required next action first; user-executed procedures -> first executable step first. Do not invent a next action when the requested work is complete. Prefer:
 
-- one short summary first
 - clear sections for context/reason/validation/conclusion/next action when useful
-- bullets for multiple points
+- bullets for multiple findings/reasons/status items
+- numbered steps only when the reader must perform an ordered multi-step procedure
 - fenced code blocks for commands, logs, file paths, config snippets, and exact proposed text
 - explicit conclusion when closing, rejecting, deferring, superseding, or approving work
 

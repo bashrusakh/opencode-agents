@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.29
+# OpenCode Agent Pack v28.30
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,22 +14,16 @@
 
 ---
 
-## What changed in v28.29
+## What changed in v28.30
 
-v28.29 keeps the v28.28 orchestration and review-before-push PR lifecycle, but fixes **verification cadence** so independent tester work happens at meaningful boundaries instead of becoming a mechanical stage after every implementation package.
+v28.30 keeps the v28.29 verification cadence and adds four small workflow-hygiene rules aimed at avoiding unnecessary iteration and user friction.
 
-- **Fewer redundant tester calls** — implementers return their own focused local evidence; `@tester` is invoked when independent verification materially adds value or policy explicitly requires it.
-- **Verification is batched by behavioral boundary** — one tester assignment covers the already-applicable changed, preserved, representative-consumer, lint/build/smoke checks; it does not return after one small PASS or one independent FAIL when the rest can still add useful evidence.
-- **Work packages are no longer tester boundaries by default** — several packages may accumulate local evidence before one meaningful integration checkpoint.
-- **UI verification uses the same cadence** — runnable frontend checks existing does not automatically trigger `@tester`; `ui-implementer` supplies local evidence and the orchestrator decides whether an independent pass adds value.
-- **Reviewer no longer duplicates the tester stage** — it consumes fresh test/CI evidence and uses only narrow spot-checks when needed to judge a specific finding.
-- **Audit verification is grouped** — related executable questions are batched into one tester assignment per subsystem/invariant rather than one tester run per finding.
-- **Less ceremonial discovery** — `@explore` is reserved for materially broad/ambiguous mapping; debugger/implementer can locate exact files inside a bounded task.
-- **Better UI check ordering** — when both apply after implementation, functional/integration verification runs before the final accessibility pass so subsequent fixes do not immediately stale a11y evidence.
+- **Failed-fix spiral reset** — if the same material failure survives a supposed root-cause fix, reassess the hypothesis/ownership/environment before another similar patch.
+- **Batched user decisions** — resolve safe uncertainty from evidence and ask compatible blocking decisions together instead of interrupting the workflow piecemeal; approval gates remain unchanged.
+- **Result/action-first reporting** — completed work leads with the result; blocked work leads with the blocker/required action; user-run procedures lead with the first executable step.
+- **Numbered steps only for ordered human actions** — findings, options, status, and internal workflow stages remain bullets/sections unless order is itself meaningful.
 
-The v28.28 Draft → local Candidate HEAD → whole-PR review → push exact reviewed SHA → remote checks → Ready model remains unchanged.
-
-**Details:** [CHANGELOG.md](CHANGELOG.md) · [v28.29 release notes](docs/releases/v28.29.md) · [verification strategy](docs/verification_strategy.md)
+**Details:** [CHANGELOG.md](CHANGELOG.md) · [v28.30 release notes](docs/releases/v28.30.md)
 
 ---
 
@@ -114,7 +108,9 @@ For confirmed **owned PRs**, active implementation and final readiness are separ
 Draft
   ↓ implementation / repair / intermediate CI
 local Candidate HEAD
-  ↓ final local checks + whole-PR reviewer
+  ↓ final local checks
+  ↓ @tester if independent verification is useful/required
+  ↓ whole-PR reviewer
 push exact reviewed SHA
   ↓ remote SHA identity + CI/status
 Ready
@@ -125,7 +121,7 @@ Key points:
 - active owned PR work stays **Draft**;
 - intermediate Draft repair pushes do not require the expensive final review after every commit;
 - once implementation is complete, the exact **local** final commit becomes the Candidate HEAD;
-- final local checks and whole-PR `@reviewer` run against that Candidate HEAD **before its final push**;
+- final applicable local validation — including one batched `@tester` checkpoint when independent verification is useful/required — and whole-PR `@reviewer` run against that Candidate HEAD **before its final push**;
 - the exact reviewed SHA is then pushed unchanged and the remote PR head must match it;
 - push alone does not trigger another full review when the SHA is unchanged;
 - final `@reviewer` coverage is the complete base-to-local-Candidate-HEAD change, not only the latest patch or current older remote head;
@@ -183,7 +179,9 @@ Verification is layered rather than a fixed agent chain:
 ```text
 implementation role -> focused local evidence
 meaningful boundary -> @tester when independent verification adds value
-stable candidate -> applicable final local validation -> @reviewer
+stable candidate -> applicable final local validation
+                 -> @tester if independent verification is useful/required
+                 -> @reviewer
 published candidate -> remote CI/status
 ```
 
@@ -337,7 +335,7 @@ Installs under `~/.config/opencode/` (`AGENTS.md`, agents, commands, docs, skill
 From the target repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_29/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_30/install/install-project.sh
 ```
 
 Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` into the project.
@@ -350,7 +348,8 @@ Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` int
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release-by-release summary |
-| [`docs/releases/v28.29.md`](docs/releases/v28.29.md) | Human-readable v28.29 behavior changes |
+| [`docs/releases/v28.30.md`](docs/releases/v28.30.md) | Human-readable v28.30 behavior changes |
+| [`docs/releases/v28.29.md`](docs/releases/v28.29.md) | v28.29 verification-cadence changes |
 | [`docs/releases/v28.28.md`](docs/releases/v28.28.md) | v28.28 orchestration / PR lifecycle changes |
 | [`docs/verification_strategy.md`](docs/verification_strategy.md) | Verification layers, tester cadence, and batching |
 | [`docs/pr_readiness.md`](docs/pr_readiness.md) | Draft / Candidate HEAD / Ready lifecycle |
@@ -379,7 +378,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.29**  
+**OpenCode Agent Pack v28.30**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>

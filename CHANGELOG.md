@@ -2,6 +2,18 @@
 
 This changelog summarizes user-visible workflow changes. Detailed rationale and before/after behavior for major releases lives under `docs/releases/`.
 
+## v28.30
+
+v28.30 keeps the v28.29 role/verification cadence and adds four targeted workflow-hygiene rules without adding a new skill or mandatory stage.
+
+- A failed root-cause fix that leaves the same material failure now resets hypothesis confidence before another similar mutation is authorized.
+- Orchestrators resolve safe non-gated uncertainty from evidence and batch compatible blocking user decisions; existing approval gates are unchanged.
+- User-facing output now leads by state: result first when complete, blocker/action first when blocked, first executable step first for user-run procedures.
+- Numbered steps are reserved for ordered human procedures rather than findings, options, status, or internal workflow diagrams.
+- README Candidate/verification diagrams now explicitly show the optional/required Candidate-level `@tester` checkpoint before the final reviewer.
+
+See [`docs/releases/v28.30.md`](docs/releases/v28.30.md) for the detailed before/after explanation.
+
 ## v28.29
 
 v28.29 keeps the v28.28 orchestration/PR lifecycle and corrects verification cadence across implementation, testing, review, UI, and audit roles.
