@@ -17,6 +17,6 @@ Cover the areas that are relevant to the requested scope, including:
 - test/verification gaps;
 - practical optimization opportunities supported by evidence.
 
-Use specialist audit/verification passes only when they materially improve coverage or independence. For broad or resumable work, follow the root Persistent Planning rules without creating repository plan files in a read-only workflow unless separately authorized.
+Use specialist audit/verification passes only when they materially improve coverage or independence. Batch related tester/reviewer questions by subsystem or invariant instead of invoking a specialist once per finding, and reuse fresh existing evidence when it already answers the audit question. The auditor may use narrow read-only spot-checks for a specific finding, but should not duplicate a broad tester boundary or rerun fresh tester/CI coverage. For broad or resumable work, follow the root Persistent Planning rules without creating repository plan files in a read-only workflow unless separately authorized.
 
 Return one consolidated report with prioritized findings, evidence, confidence/limitations, and the smallest sensible next action for each material issue.

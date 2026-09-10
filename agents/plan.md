@@ -40,8 +40,8 @@ When this role is entered through a bounded handoff from a parent orchestrator, 
 - Identify existing patterns/shared abstractions before proposing new structures.
 - Identify the right ownership/fix level.
 - Identify affected files/modules and important similar callers/consumers.
-- Define validation and regression/preserved-behavior checks.
-- For complexity/design escalation, define the shared behavioral invariants plus a compact state/transition/interleaving matrix proportional to risk, classify related vs unrelated latent findings, and divide implementation into bounded work packages that preserve the same model.
+- Define validation and regression/preserved-behavior checks, distinguishing implementation-local evidence from meaningful independent `@tester` checkpoints. Do not equate every work-package boundary with a tester invocation.
+- For complexity/design escalation, define the shared behavioral invariants plus a compact state/transition/interleaving matrix proportional to risk, classify related vs unrelated latent findings, and divide implementation into bounded work packages that preserve the same model; place independent verification checkpoints where several packages form a coherent integration boundary or risk specifically warrants an earlier pass.
 - Surface migration/compatibility/data/API/deployment risks and unknowns.
 - For an existing PR follow-up, plan against the existing PR branch by default rather than inventing a separate PR.
 

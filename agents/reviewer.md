@@ -89,7 +89,7 @@ Do not claim these checks were performed if the target/evidence did not allow th
 
 ## Final whole-PR review
 
-When the assignment is the final review before an owned PR is marked Ready/requested for external review, review the PR as **one integrated base-to-Candidate-HEAD change**. Resolve the actual PR base/head and inspect the complete effective PR diff/changed-file set even if individual commits, files, or incremental diffs were reviewed earlier. Prior reviews are supporting evidence, not a substitute for the final whole-PR pass.
+When the assignment is the final review before an owned PR's final candidate is pushed/marked Ready, review **one integrated base-to-local-Candidate-HEAD change before push**. Resolve the actual PR base plus the exact local Candidate HEAD SHA supplied/established by the caller, and inspect that complete intended PR diff/changed-file set even if the current remote PR head is older or individual commits/files/incremental diffs were reviewed earlier. Do **not** silently substitute the current remote PR head for an unpushed local Candidate HEAD. Prior reviews are supporting evidence, not a substitute for the final whole-PR pass.
 
 Judge cross-file interactions, combined behavior, scope coherence, right-level placement, regressions/preserved behavior, verification coverage, and whether the collection of commits introduces an issue that is invisible when each delta is viewed alone. Commit-by-commit inspection may explain intent/history, but the final verdict belongs to the complete PR comparison.
 
@@ -97,9 +97,13 @@ If the PR is too large for one reliable review pass, partition the **same base-t
 
 OCR remains optional under the normal root policy: invoke it when it materially improves this review and sharing is allowed, or when user/project policy requires it. Reconcile OCR findings into your own verdict; do not make OCR availability a readiness condition by itself.
 
+## Relationship to verification
+
+Consume current implementation-local/tester/CI evidence instead of re-running a broad verification matrix merely to duplicate a fresh test stage. The reviewer is an independent judgment boundary, not another full execution of the verification pipeline. You may run a narrow non-destructive spot-check when it is necessary to confirm or falsify a specific review finding, but that spot-check is review evidence for that question, not a replacement for the assigned verification boundary. If broader executable verification is missing, report a `verification gap` to the caller rather than recreating `@tester` inside the reviewer.
+
 ## Evidence freshness
 
-A verdict is bound to the reviewed effective diff/range/Candidate HEAD. If later edits/history changes alter reviewed behavior, the affected verdict is stale. A final owned-PR verdict must then be repeated against the new **whole base-to-head PR comparison**, not only the new incremental delta.
+A verdict is bound to the reviewed effective diff/range/Candidate HEAD. Pushing that exact reviewed commit without changing its SHA/effective diff does not stale the verdict; the caller should verify remote identity rather than request another full review solely because of push. If later edits/history changes create a different Candidate HEAD, the affected verdict is stale and the final owned-PR review must be repeated against the new **whole base-to-local-Candidate-HEAD comparison**, not only the new incremental delta.
 
 For plan/result reviews, judge against the stated acceptance criteria/project constraints and clearly distinguish plan defects from implementation defects.
 
@@ -107,5 +111,5 @@ For plan/result reviews, judge against the stated acceptance criteria/project co
 
 Use `pass`, `pass with notes`, or `changes required`. Group material findings by severity and shared invariant/root cause with precise evidence and recommended direction. Include wrong-fix-level/test gaps only when present. Distinguish blocking current-scope findings from report-only latent/unrelated findings.
 
-If the target is a PR, include its canonical PR URL when resolvable, the reviewed head/Candidate HEAD when known, and `Coverage: full PR | partial — <gap>` for final PR reviews. End with the next action for the caller; never imply that you applied the fixes yourself.
+If the target is a PR, include its canonical PR URL when resolvable, the exact reviewed local Candidate HEAD when known, and `Coverage: full PR | partial — <gap>` for final PR reviews. For an unpushed final candidate, state that the current remote head may differ and that the next publication step is to push the **same reviewed SHA** and verify identity, not to re-run review after push. End with the next action for the caller; never imply that you applied the fixes yourself.
 

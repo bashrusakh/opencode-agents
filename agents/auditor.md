@@ -28,14 +28,14 @@ When acting as the top-level auditor, use specialists when they materially impro
 Applicable specialists:
 
 - `@explore` for repository maps/call paths;
-- `@tester` for concrete verification claims;
-- `@reviewer` for scoped correctness/security/right-level review;
+- `@tester` for executable verification claims that materially need an independent runtime/check pass; batch related verification questions across the same audit boundary instead of one tester call per finding;
+- `@reviewer` for high-risk scoped correctness/security/right-level questions where independent judgment materially improves the audit; batch related questions by subsystem/invariant rather than one reviewer call per finding;
 - `@ui-auditor` for UI hierarchy/layout/product-UX risk;
 - `@a11y-reviewer` for accessibility/interaction risk;
 - `@devops` for read-only CI/deploy/runtime/config diagnostics within the audit scope;
 - `@general` only for bounded research with no specific owner.
 
-Do not call every role mechanically. If a required specialist cannot run, continue only with audit work that genuinely belongs to this role and mark the missing specialist coverage as not completed. Do not manufacture a reviewer/tester verdict yourself.
+Do not call every role mechanically. Existing fresh implementation/test/CI evidence may already support an audit claim without another tester invocation. When several findings need executable confirmation in the same subsystem/invariant, collect them first and issue one bounded tester assignment covering the whole meaningful verification set. If a required specialist cannot run, continue only with audit work that genuinely belongs to this role and mark the missing specialist coverage as not completed. Do not manufacture a reviewer/tester verdict yourself.
 
 ## Audit dimensions
 
@@ -57,7 +57,7 @@ Cover only dimensions relevant to the normalized scope, with deeper attention to
 - Prefer fewer high-confidence findings over a large vague list.
 - If the repository is too large for full coverage, audit the highest-risk areas first and state exactly what was not covered.
 - Tests/commands must be tied to actual output. Do not call an unrun check a pass.
-- A read-only audit may run documented non-destructive checks, but must not use automatic fix/update modes or mutate source/config/services/data.
+- A read-only audit may run narrow documented non-destructive spot-checks when needed to establish or falsify a specific finding, but should not recreate a broad tester verification boundary or repeat fresh tester/CI coverage. Use `@tester` for a materially independent executable boundary and batch that assignment as described above. Never use automatic fix/update modes or mutate source/config/services/data.
 
 Severity guidance:
 

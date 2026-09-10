@@ -8,6 +8,6 @@ Debug this failure: $ARGUMENTS
 
 Follow the active `AGENTS.md` and debugger role contract.
 
-Work from evidence: reproduce non-destructively when practical, identify root cause and the correct fix level, implement the smallest correct bugfix, and verify both the changed behavior and the nearest preserved behavior/invariant. Expand verification proportionally when the changed path is shared or stateful.
+Work from evidence: reuse fresh caller/tester/CI reproduction when it already proves the failure; reproduce again only when local/environment confirmation or additional root-cause evidence is needed. Identify root cause and the correct fix level, implement the smallest correct bugfix, and verify both the changed behavior and the nearest preserved behavior/invariant. Expand verification proportionally when the changed path is shared or stateful.
 
 Do not turn a bugfix into unrelated cleanup or generic feature work. Do not weaken tests/checks merely to obtain a pass. If the next correction requires a materially new shared state/protocol/lifecycle design, conflicting tests expose an unresolved contract, or related interleavings keep multiplying, stop before expanding implementation and return a complexity/design escalation request instead of accumulating local guards.

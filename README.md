@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.28
+# OpenCode Agent Pack v28.29
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,20 +14,22 @@
 
 ---
 
-## What changed in v28.28
+## What changed in v28.29
 
-v28.28 keeps the routing, role separation, memory, review, and evidence rules from v28.27, but removes ambiguity in longer multi-agent workflows.
+v28.29 keeps the v28.28 orchestration and review-before-push PR lifecycle, but fixes **verification cadence** so independent tester work happens at meaningful boundaries instead of becoming a mechanical stage after every implementation package.
 
-- **Clearer multi-agent ownership** — orchestrators control scope and workflow stages; specialists remain free to choose implementation details inside their assigned task.
-- **Better handling of complex bugs** — related state/lifecycle/protocol problems are grouped and solved as one behavioral problem instead of becoming repeated review → patch loops.
-- **More complete PR review** — final readiness review covers the whole PR Candidate HEAD, not only the latest commit or fix.
-- **Draft → Candidate → Ready PR workflow** — owned PRs stay Draft during active fixes and move to Ready only after the stable candidate passes the final gate.
-- **Safer Draft iteration** — failing CI can still receive repair commits while Draft; failed required checks block Ready/merge/release, not the repair workflow itself.
-- **Stricter nested-agent boundaries** — UI and other nested orchestrators control child stages only when that authority was explicitly delegated.
+- **Fewer redundant tester calls** — implementers return their own focused local evidence; `@tester` is invoked when independent verification materially adds value or policy explicitly requires it.
+- **Verification is batched by behavioral boundary** — one tester assignment covers the already-applicable changed, preserved, representative-consumer, lint/build/smoke checks; it does not return after one small PASS or one independent FAIL when the rest can still add useful evidence.
+- **Work packages are no longer tester boundaries by default** — several packages may accumulate local evidence before one meaningful integration checkpoint.
+- **UI verification uses the same cadence** — runnable frontend checks existing does not automatically trigger `@tester`; `ui-implementer` supplies local evidence and the orchestrator decides whether an independent pass adds value.
+- **Reviewer no longer duplicates the tester stage** — it consumes fresh test/CI evidence and uses only narrow spot-checks when needed to judge a specific finding.
+- **Audit verification is grouped** — related executable questions are batched into one tester assignment per subsystem/invariant rather than one tester run per finding.
+- **Less ceremonial discovery** — `@explore` is reserved for materially broad/ambiguous mapping; debugger/implementer can locate exact files inside a bounded task.
+- **Better UI check ordering** — when both apply after implementation, functional/integration verification runs before the final accessibility pass so subsequent fixes do not immediately stale a11y evidence.
 
-Agent permissions/modes were not broadened in this release.
+The v28.28 Draft → local Candidate HEAD → whole-PR review → push exact reviewed SHA → remote checks → Ready model remains unchanged.
 
-**Details:** [CHANGELOG.md](CHANGELOG.md) · [v28.28 release notes](docs/releases/v28.28.md)
+**Details:** [CHANGELOG.md](CHANGELOG.md) · [v28.29 release notes](docs/releases/v28.29.md) · [verification strategy](docs/verification_strategy.md)
 
 ---
 
@@ -110,9 +112,11 @@ For confirmed **owned PRs**, active implementation and final readiness are separ
 
 ```text
 Draft
-  ↓ implementation / CI / repair batches
-Candidate HEAD
-  ↓ final applicable checks + whole-PR reviewer
+  ↓ implementation / repair / intermediate CI
+local Candidate HEAD
+  ↓ final local checks + whole-PR reviewer
+push exact reviewed SHA
+  ↓ remote SHA identity + CI/status
 Ready
 ```
 
@@ -120,9 +124,11 @@ Key points:
 
 - active owned PR work stays **Draft**;
 - intermediate Draft repair pushes do not require the expensive final review after every commit;
-- the final intended remote PR head becomes the **Candidate HEAD**;
-- final readiness evidence must refer to that same candidate;
-- final `@reviewer` coverage is the complete base-to-Candidate-HEAD PR, not only the latest patch;
+- once implementation is complete, the exact **local** final commit becomes the Candidate HEAD;
+- final local checks and whole-PR `@reviewer` run against that Candidate HEAD **before its final push**;
+- the exact reviewed SHA is then pushed unchanged and the remote PR head must match it;
+- push alone does not trigger another full review when the SHA is unchanged;
+- final `@reviewer` coverage is the complete base-to-local-Candidate-HEAD change, not only the latest patch or current older remote head;
 - required failing/blocked checks may coexist with repair work in Draft, but still block Ready/merge/release/completion;
 - OCR may assist the reviewer when useful or explicitly required; it is not a universal Ready gate;
 - unowned or ambiguous PRs are never automatically switched between Draft and Ready.
@@ -169,6 +175,21 @@ For bugfixes and existing/shared behavior changes, verify both:
 - the closest applicable behavior/invariant that must remain unchanged.
 
 Shared or stateful changes should receive proportionally broader verification. Do not weaken tests, snapshots, lint/type rules, or coverage merely to manufacture a PASS.
+
+### Verification cadence
+
+Verification is layered rather than a fixed agent chain:
+
+```text
+implementation role -> focused local evidence
+meaningful boundary -> @tester when independent verification adds value
+stable candidate -> applicable final local validation -> @reviewer
+published candidate -> remote CI/status
+```
+
+A work package ending does not automatically trigger `@tester`, and reviewer should not repeat a fresh broad test pass. When tester is used, one assignment should cover the complete already-applicable affected boundary.
+
+Policy: [`docs/verification_strategy.md`](docs/verification_strategy.md)
 
 ### OCR / Open Code Review
 
@@ -316,7 +337,7 @@ Installs under `~/.config/opencode/` (`AGENTS.md`, agents, commands, docs, skill
 From the target repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_28/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_29/install/install-project.sh
 ```
 
 Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` into the project.
@@ -329,7 +350,9 @@ Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` int
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release-by-release summary |
-| [`docs/releases/v28.28.md`](docs/releases/v28.28.md) | Human-readable v28.28 behavior changes |
+| [`docs/releases/v28.29.md`](docs/releases/v28.29.md) | Human-readable v28.29 behavior changes |
+| [`docs/releases/v28.28.md`](docs/releases/v28.28.md) | v28.28 orchestration / PR lifecycle changes |
+| [`docs/verification_strategy.md`](docs/verification_strategy.md) | Verification layers, tester cadence, and batching |
 | [`docs/pr_readiness.md`](docs/pr_readiness.md) | Draft / Candidate HEAD / Ready lifecycle |
 | [`docs/git_branch_provenance_policy.md`](docs/git_branch_provenance_policy.md) | Branch/base/head provenance |
 | [`docs/ocr_review_policy.md`](docs/ocr_review_policy.md) | Reviewer/OCR policy |
@@ -356,7 +379,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.28**  
+**OpenCode Agent Pack v28.29**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>

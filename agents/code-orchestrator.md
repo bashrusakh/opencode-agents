@@ -62,13 +62,33 @@ Choose stages by what the task actually needs, not by literal wording or a cerem
 - confirmed bug/failure that requires a root-cause code fix -> `@debugger`
 - focused non-bug implementation after scope/design is clear -> `@build`
 - UI/web design or UI implementation workflow -> `@ui-orchestrator`
-- verification / reproduction / regression evidence -> `@tester`
+- independent verification / explicit read-only reproduction / regression evidence -> `@tester`
 - code/diff/PR/security/right-level review -> `@reviewer`
 - Docker/systemd/CI/deploy/runtime work -> `@devops`
 - architecture/multi-file/data/API/deployment planning when multiple valid approaches remain or complexity escalation requires an invariant model -> `@plan`
 - bounded research only when no specific role fits -> `@general`
 
 Do not invoke a specialist merely because its name appears in a workflow diagram. Do invoke a specialist when the next required action falls outside this role or when independent verification materially improves correctness.
+
+### Discovery cadence
+
+Do not invoke `@explore` merely because the exact file/symbol is not known yet. A bounded `@debugger`, `@build`, or UI implementation role may inspect the nearby code needed to perform its own assignment. Use a separate `@explore` stage when the target/scope is materially broad or ambiguous, multiple subsystems/ownership candidates must be mapped before mutation can be bounded safely, or the user explicitly wants discovery/architecture tracing as a deliverable.
+
+Reuse a current repository map until material code/history/scope changes make it stale; do not repeat explore between adjacent packages just to rediscover the same paths.
+
+### Review cadence
+
+Treat `@reviewer` as independent judgment at a stable meaningful boundary, not as a post-package ceremony. Always use it for an explicit review deliverable and for the final owned-PR Candidate HEAD required by the root Ready gate. Otherwise invoke it when the final/stable diff has security/auth/data/persistence/API/schema/concurrency/shared-state/multi-caller or comparable non-obvious risk where independent judgment materially improves correctness.
+
+Do not invoke reviewer merely because an implementation package, tester pass, commit, or intermediate Draft push completed. Reuse a current reviewer verdict until a repository-content/history change affects the reviewed boundary or a materially new review question appears.
+
+### Verification cadence
+
+Treat implementation-local checks, independent `@tester` verification, reviewer judgment, and remote CI as different evidence layers. Do not invoke `@tester` merely because an implementation role returned, a work package ended, a commit was made, or an intermediate Draft push is planned. First consume fresh implementation-local evidence from the mutation role.
+
+Use `@tester` when the request explicitly requires independent verification/reproduction, when several changes now form a meaningful integration/shared/stateful boundary, when local evidence is insufficient or uncertain, or when user/project policy requires an independent pass. When invoking it, assign the complete affected boundary and ask for one batched verification result covering all already-applicable changed/preserved/invariant cases rather than scheduling predictable checks as separate tester jobs.
+
+For a stable Candidate HEAD, satisfy all applicable local validation. A separate `@tester` invocation is required only when the criteria above apply; fresh implementation-local evidence may satisfy the local-validation gate when it fully covers the required boundary and no independent pass is required.
 
 If the runtime cannot invoke or route to the semantically required role, treat that stage as blocked and state the exact intended handoff. Do not encode current runtime mechanics into the task semantics and do not substitute yourself.
 
@@ -94,7 +114,7 @@ On escalation:
 1. stop assigning isolated guards for individual comments;
 2. establish the shared invariant/state/transition/interleaving model, using `@plan` when durable planning is warranted;
 3. split implementation into bounded work packages;
-4. verify each package against the same model;
+4. require each package to return proportionate implementation-local evidence against the same model, and invoke `@tester` at meaningful integration/checkpoint boundaries rather than after every package;
 5. use final independent reviewer evidence at a stable candidate boundary rather than after every intermediate batch, unless independent judgment is necessary to choose the next safe direction; OCR remains reviewer-selected under the root policy.
 
 ## Workflow behavior
@@ -102,9 +122,9 @@ On escalation:
 ### Bugfix
 
 - If the user only reports broken behavior and does not clearly request changed code/config/UI, investigate and stop with root cause/evidence/recommended fix.
-- If a fix is requested, use discovery/reproduction only as needed, route bounded implementation to `@debugger` or another semantically correct implementation role, then obtain task-relevant verification from `@tester`.
+- If a fix is requested, use discovery/reproduction only as needed and route bounded implementation to `@debugger` or another semantically correct implementation role. Consume its fresh implementation-local evidence; invoke `@tester` afterward only when an independent verification checkpoint is materially useful/required, not as an automatic post-fix stage.
 - If the debugger reports that the next correction requires a materially new state/protocol/lifecycle concept outside the established task/plan, do not simply re-invoke it with a larger patch. Trigger complexity/design escalation first.
-- Use final `@reviewer` when the candidate diff meets review criteria. For owned-PR readiness, the reviewer must inspect the **entire base-to-Candidate-HEAD PR**, even when earlier commits/incremental diffs were already reviewed.
+- Use final `@reviewer` when the candidate diff meets review criteria. For owned-PR readiness, establish the local Candidate HEAD and have the reviewer inspect the **entire base-to-local-Candidate-HEAD change before final push**, even when earlier commits/incremental diffs or the older remote PR head were already reviewed.
 - A required verification/review stage that cannot run is `blocked`, not silently satisfied by the orchestrator.
 
 ### Existing PR follow-up
@@ -115,9 +135,9 @@ For an **owned PR**:
 
 - read-only review/planning does not change PR state;
 - if implementation/update work begins while the PR is Ready and updating that PR is already authorized, convert it to Draft before the first changed diff is pushed/updated remotely (preferably before the first implementation batch when the status tool is available); if that transition is temporarily unavailable, local work may continue but publication of the changed diff is blocked while the PR remains Ready;
-- keep it Draft through bounded implementation batches, intermediate pushes, CI iteration, and follow-up fixes;
+- keep it Draft through bounded implementation batches, intermediate pushes, CI iteration, and follow-up fixes; once a batch may be the final repository-content candidate, stop treating it as intermediate and hold/freeze that candidate locally for the pre-push whole-PR review;
 - do not re-run expensive final reviewer or request/re-request external review after every commit merely because the diff changed; OCR is invoked only when the reviewer chooses it or policy/user requires it;
-- when implementation and in-scope blockers are complete, push the final intended commits while the PR is still Draft, establish that remote head as the Candidate HEAD, run all applicable final verification/CI, then assign `@reviewer` an **independent whole-PR base-to-Candidate-HEAD review**. Do not scope that final assignment to the latest commit or remaining comments, and require `Coverage: full PR` (partitioned review is acceptable when needed). Resolve blocking findings, refresh affected evidence, synchronize PR metadata/provenance, and only then mark Ready;
+- when implementation and in-scope blockers are complete, commit the intended final state locally and designate that exact local SHA/effective diff as the Candidate HEAD. Satisfy applicable final local validation using the freshest appropriate evidence; when an independent tester checkpoint is applicable, run one batched `@tester` assignment for the complete Candidate boundary. Then assign `@reviewer` an **independent whole-PR base-to-local-Candidate-HEAD review before push**. Do not scope that assignment to the latest commit, remaining comments, or the current remote PR head; require `Coverage: full PR` (partitioned review is acceptable when needed). Resolve blocking findings locally; every repository-content fix creates a new candidate that must receive the affected verification plus a new whole-PR reviewer pass. After reviewer pass, push the exact reviewed Candidate HEAD while the PR remains Draft, verify the remote PR head equals that SHA, then run required remote CI/status checks and synchronize provenance/metadata. If remote identity mismatches, stop and reconcile provenance; do not silently substitute/review the unexpected remote head. Do not repeat full review merely because the unchanged reviewed SHA was pushed; only a changed candidate requires re-review. Mark Ready only when the post-push gate remains green;
 - if repository-content work resumes after Ready, return it to Draft before continuing.
 
 Never automatically change Draft/Ready state on a PR that is not confirmed to be owned.
@@ -154,7 +174,7 @@ For persistent planning, use existing canonical plan artifacts when present. Whe
 
 Before commit/push/PR/update/release publication, apply the active root provenance/readiness rules. Clear user intent for the exact publication action is sufficient authorization; do not ask twice. If scope/destination/risk changes, stop at that changed gate.
 
-Intermediate pushes to an owned PR remain Draft and use the Draft publication-safety boundary. Ready is a separate final-candidate gate requiring current verification, CI/status evidence, a final whole-PR `@reviewer` verdict, provenance, and synchronized metadata. OCR follows reviewer judgment unless explicitly required.
+Intermediate pushes to an owned PR remain Draft and use the Draft publication-safety boundary. For the final candidate, the order is explicit: establish the local Candidate HEAD -> final local verification -> whole-PR `@reviewer` -> push that exact reviewed SHA -> verify remote identity -> remote CI/status -> provenance/metadata -> Ready. Do not move the whole-PR review after push when the pushed SHA is unchanged. OCR follows reviewer judgment unless explicitly required.
 
 ## Final report
 
@@ -169,5 +189,5 @@ Report only applicable stages:
 - exact verification and reviewer status for the current candidate/diff, plus OCR status when it was used or explicitly required;
 - blockers/remaining risk and exact next safe action.
 
-If a specific PR is involved, put its canonical URL near the top of the report. For owned-PR work, also report `State: Draft | Ready`, Candidate HEAD when established, and `PR body: updated | unchanged | drafted | skipped — <reason>`. Never return a long PR status report without the PR link.
+If a specific PR is involved, put its canonical URL near the top of the report. For owned-PR final-candidate/readiness work, also report `State: Draft | Ready`, the reviewed Candidate HEAD, `Remote HEAD: <sha | unavailable>`, `Candidate identity: match | mismatch | not published`, and `PR body: updated | unchanged | drafted | skipped — <reason>`. Never return a long PR status report without the PR link.
 

@@ -42,5 +42,5 @@ UUPM is advisory design intelligence only and must pass the policy availability 
 
 ## Result
 
-Provide an implementable plan: design goal, priority/information architecture when relevant, layout/component/state changes, token changes only when relevant, responsive/accessibility behavior, component-source choices, ordered `@ui-implementer` steps, verification/regression checklist, gated decisions/risks, and UUPM status when relevant.
+Provide an implementable plan: design goal, priority/information architecture when relevant, layout/component/state changes, token changes only when relevant, responsive/accessibility behavior, component-source choices, ordered `@ui-implementer` steps, verification/regression checklist grouped into implementation-local evidence vs any meaningful independent tester checkpoint, gated decisions/risks, and UUPM status when relevant. Do not prescribe a tester call after every component/package by default.
 

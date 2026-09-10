@@ -86,7 +86,7 @@ git diff --stat <base_ref>...HEAD
 
 Use `<base_ref>..HEAD` as the primary commit list. The `--cherry-pick` comparison is secondary and must not hide unexpected history.
 
-If remote/head/base movement changes the effective diff or branch state, re-run affected validation/review/readiness. If the branch diverged or unrelated work appears, stop before publishing.
+If remote/head/base movement changes the effective diff, reviewed Candidate HEAD, or integration state, re-run affected validation/review/readiness. **Publishing the exact already-reviewed Candidate HEAD is not such an invalidation**: after push, verify that the remote PR head equals the reviewed SHA. If the remote head is unexpected/different, the branch diverged, or unrelated work appears, stop and reconcile provenance before any Ready/publication claim; do not trigger a new full review merely because the expected reviewed SHA was pushed unchanged.
 
 Published PR history must not be reset/rebased/replaced/force-pushed unless the root gate explicitly authorizes that exact action after the risk is stated.
 
@@ -128,5 +128,7 @@ Do not use recovery as a pretext for force-push/reset/rebase of published histor
 - Safe for next requested action: `yes | no`
 - PR: `<canonical URL | n/a | unavailable>`
 - PR ownership/state: `<owned Draft | owned Ready | not owned | ambiguous | n/a>`
-- Candidate HEAD: `<sha | not established | n/a>`
+- Candidate HEAD: `<reviewed local sha | not established | n/a>`
+- Remote HEAD: `<sha | unavailable | n/a>`
+- Candidate identity: `<match | mismatch | not published | n/a>`
 ```

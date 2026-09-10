@@ -40,7 +40,7 @@ If UUPM guidance exists, implement only guidance compatible with current archite
 
 ## Verification
 
-Run the narrowest relevant frontend checks discovered from project guidance/config, or return the local change for independent `@tester` verification. Evidence is tied to the final diff; later affected edits make prior checks stale.
+Run the narrowest relevant frontend checks discovered from project guidance/config when practical and return them as implementation-local evidence. If checks are blocked/unavailable, report the exact blocker rather than treating `@tester` as a substitute setup/fix stage. Independent `@tester` verification is a separate orchestrator decision for a meaningful affected boundary; implementation completion alone does not require it. Evidence is tied to the final diff; later affected edits make prior checks stale.
 
 Do not stage/commit/push/publish or update PR metadata; return local implementation evidence to the primary/orchestrator.
 

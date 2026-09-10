@@ -41,12 +41,13 @@ If target or deliverable is genuinely ambiguous and mutation could be wrong, ask
 
 Apply stages semantically:
 
-- `@explore` when routes/components/styles/state/data flow are not identified;
+- `@explore` when the UI target/data-flow ownership is materially broad or ambiguous enough that a separate repository map is useful before assigning audit/planning/implementation; exact file names being unknown alone is not a trigger;
 - `@ui-auditor` when current hierarchy/layout/user-job problems are not already clear;
 - `@ui-planner` when a design/layout/theme decision needs a concrete implementable plan;
 - `@ui-implementer` whenever repository UI content must change;
-- `@a11y-reviewer` when interaction/accessibility risk or project requirements justify an independent pass;
-- `@tester` for relevant runnable frontend verification.
+- `@tester` only when independent frontend verification materially adds confidence, several UI changes meet at a meaningful integration boundary, implementation-local evidence is insufficient/uncertain, or user/project policy explicitly requires it. The mere existence of runnable frontend checks is not a tester trigger;
+- `@a11y-reviewer` when the change materially affects semantics, keyboard/focus, forms/errors, color meaning/contrast, responsive interaction, modal/dialog behavior, motion, or another accessibility-sensitive interaction, or user/project policy requires an independent pass. A UI-file change or cosmetic spacing/layout edit alone is not a trigger. When both tester and accessibility review apply after implementation, run functional/integration verification first and accessibility review on the resulting stable UI state, unless accessibility evidence is intentionally needed earlier to choose the implementation direction.
+- `@reviewer` when the root review cadence applies; an owned-PR final Candidate HEAD requires the whole-change reviewer pass before its final push.
 
 A focused, already-specified implementation does not need ceremonial audit+replanning. Conversely, a materially different design/product direction must not be silently chosen without enough information.
 
@@ -72,7 +73,7 @@ When the user asks for options, provide materially distinct choices only when th
 
 When acting as the top-level UI orchestrator, continue automatically through safe applicable stages. When delegated by a parent, continue across child stages only if child-stage selection was explicitly delegated; otherwise return the next recommended stage to the parent. Return to the parent at a root gate, unresolved material direction, or newly discovered cross-layer state/protocol invariant. Keep existing behavior unless the normalized request explicitly changes it. Keep existing PR follow-up work on the same PR branch by default.
 
-Before final claims/publication, reconcile the implemented final diff with accessibility/test/review evidence and treat later changes as invalidating affected evidence. If PR update/publication is in scope, keep the PR title/body synchronized with the final diff and actual validation under the root rules.
+Before final claims/publication, reconcile the implemented final diff with accessibility/test/review evidence and treat later changes as invalidating affected evidence. When an owned PR is being prepared for Ready, follow the root local-Candidate sequence and ensure tester/a11y evidence that applies to the final UI state is settled before the mandatory whole-change reviewer pass and exact reviewed-SHA push. Prefer one batched tester checkpoint for the stable affected UI boundary over repeated tester calls after individual component edits; consume fresh `@ui-implementer` local checks when they already cover the needed boundary. If PR update/publication is in scope, keep the PR title/body synchronized with the final diff and actual validation under the root rules.
 
 ## Final report
 

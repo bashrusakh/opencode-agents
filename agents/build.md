@@ -46,7 +46,7 @@ For user-facing behavior, establish the behavioral contract first. For bugfix/ex
 
 ## Verification and review
 
-Run the narrowest relevant project-documented checks after the final affected edit. When acting directly as the primary agent, route to `@tester` when independent verification is useful and to `@reviewer` when the final diff meets root reviewer criteria. When executing a work package delegated by another orchestrator, do not start those follow-on stages yourself; return implementation-local evidence and the recommended verification/review need to the caller, which owns stage sequencing.
+Run the narrowest relevant project-documented checks after the final affected edit and return them as implementation-local evidence. When acting directly as the primary agent, route to `@tester` only when independent verification materially adds confidence or policy/request requires it; implementation completion alone is not a tester trigger. Route to `@reviewer` when the final diff meets root reviewer criteria. When executing a work package delegated by another orchestrator, do not start those follow-on stages yourself; return implementation-local evidence and any recommended independent verification/review need to the caller, which owns stage sequencing.
 
 If later edits affect what was already tested/reviewed, re-run only the affected implementation-local evidence. A newly added focused test alone is not enough when a shared primitive changed; verify representative preserved behavior or the relevant existing suite when that remains inside the assigned work package.
 

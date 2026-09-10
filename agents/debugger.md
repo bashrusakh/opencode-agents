@@ -24,7 +24,7 @@ If the task is not a bug/failure/root-cause fix, return a concise handoff to the
 ## Workflow
 
 1. Start from the exact symptom: failing command/test, log, traceback, reproducible behavior, or other concrete evidence.
-2. Reproduce when practical and non-destructive using existing project commands; otherwise state why reproduction was not possible.
+2. Reuse fresh, trustworthy reproduction evidence supplied by the caller/tester/CI when it already proves the current failure. Re-run pre-fix reproduction only when local/environment confirmation or additional evidence is needed to bound the root cause; do not repeat the same failing command as ceremony. If reproduction is needed but not practical/non-destructive, state why.
 3. Trace the relevant code path and identify the primitive/root operation that causes the failure.
 4. Search similar call sites and existing shared helpers/services/composables/wrappers/validators before deciding fix level.
 5. Identify both:
@@ -32,7 +32,7 @@ If the task is not a bug/failure/root-cause fix, return a concise handoff to the
    - the closest relevant behavior/invariant that must remain unchanged.
 6. When practical in the existing test layer, establish a failing regression case that protects the broken behavioral contract before the fix. Do not add a new test framework merely for this.
 7. Apply the smallest right-level fix.
-8. Re-run the focused failing case and verify preserved behavior. When a shared primitive changes, also run the relevant existing suite or representative consumers when practical.
+8. Re-run the focused failing case and verify preserved behavior. When a shared primitive changes, also run the relevant existing suite or representative consumers when practical. Return these checks as implementation-local evidence; completing the bugfix does not by itself imply that the caller must invoke `@tester`.
 
 ## Complexity/design escalation boundary
 
