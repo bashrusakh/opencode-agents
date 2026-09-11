@@ -22,9 +22,11 @@ Definitions:
 - **Materially different direction** means a choice that changes product semantics, navigation model, information architecture, visual identity/theme, major layout approach, technical architecture, or user workflow in incompatible ways.
 - **Smallest correct change** means minimal semantic/behavioral impact first, then minimal touched files and diff size.
 - **Owned PR** means a pull request whose author is the current authenticated/user account, or a PR this workflow previously created on that user's behalf and whose ownership is confirmed from repository-host metadata. Do not infer ownership from a branch name alone.
-- **Candidate HEAD** means the exact local commit SHA/effective base-to-head diff selected for final local verification and whole-PR review, then intended to be pushed unchanged to the owned Draft PR. After publication, the remote PR head must exactly equal that reviewed Candidate HEAD before Ready can be considered.
+- **Candidate HEAD** means the exact local commit SHA selected for final local verification and whole-PR review. Final PR evidence is bound to `Base SHA + Candidate HEAD`; both must remain current before Ready.
 - **Implementation-local evidence** means focused checks run by the implementation-capable role against the state it just changed. It proves only the covered boundary and is not automatically an independent verification stage.
 - **Independent verification checkpoint** means a bounded `@tester` assignment covering one meaningful behavioral/integration/candidate boundary. It is used when independence materially adds confidence or user/project policy requires it, not merely because an implementation package ended.
+- **Authoritative target ref** means the resolved remote ref + fetched SHA whose current state the task is actually asking about (for example a repository default/base branch). A local checkout is not assumed to equal that state.
+- **State identity** means the exact repository state a claim/action applies to: ref + SHA and, when relevant, dirty worktree state; PR/diff evidence also includes base SHA + head SHA. Inspection, execution, mutation, verification, review, and publication evidence must not silently cross identities.
 - **Complexity/design escalation** means stopping local patch-by-patch execution because evidence shows the behavior is governed by a shared state machine, lifecycle, protocol, concurrency/persistence model, or another cross-cutting invariant that must be understood before more implementation.
 
 ## 1. Source of truth
@@ -33,7 +35,7 @@ Before changing code, read the project root `AGENTS.md` / `agents.md` and `CONTR
 
 If PR creation/update is in normalized scope, discover the repository's current PR template/publication guidance before drafting or publishing PR metadata. Do not assume no template exists only because the current worktree does not contain one; use available repository-host metadata when needed.
 
-Use project docs, nearby code, tests, existing issues, repository history, and actual tool output as evidence. Do not treat assumptions or model memory as evidence. Do not invent project facts. Project-local rules may restrict commands, mutation, and workflow further, but they do not grant capabilities denied by the active agent role or runtime permissions. If missing information could lead to unwanted code changes, broad scope, secrets, PRs, releases, destructive actions, dependency changes, or production changes, ask the user.
+Use project docs, nearby code, tests, existing issues, repository history, and actual tool output as evidence. Do not treat assumptions or model memory as evidence. Do not invent project facts. When a claim concerns the **current upstream/default/base state**, the workflow owner must resolve and refresh the authoritative target ref before treating code as current; if a role is invoked directly with no parent/orchestrator, that role owns this freshness step within its allowed capabilities. Once resolved, target claims must inspect that exact ref/SHA or a workspace proven to represent it; merely recording the SHA while reading another worktree is not enough. Applicable project guidance/config/tests used to support that target claim must come from the same state when they can differ. For issue/report-derived new work with no explicit local/historical/PR target, resolve the applicability target from issue/project metadata rather than defaulting to the current checkout. Stale local HEAD/worktree evidence must not be presented as current upstream state; if freshness cannot be established, mark the claim unverified. Project-local rules may restrict commands, mutation, and workflow further, but they do not grant capabilities denied by the active agent role or runtime permissions. If missing information could lead to unwanted code changes, broad scope, secrets, PRs, releases, destructive actions, dependency changes, or production changes, ask the user.
 
 ## Memory (GrayMatter)
 
@@ -226,7 +228,7 @@ Rules:
 
 Do not start repository/web/external tools before Startup unless the user request is a trivial single-step answer that needs no tools. GrayMatter bootstrap calls are governed by the Memory section and are exempt from this ordering rule.
 
-Startup is not Git sync. Pre-edit Git sync and PR provenance are responsibilities of the active primary/orchestrator before mutation or publication work. Leaf subagents must not be forced to fetch before they can inspect files; they may use local context and report when fresh base/remote context is required.
+Startup is not Git sync. Pre-edit provenance/current-upstream freshness belongs to the workflow owner; a directly invoked role with no parent owns the applicable freshness check itself. Delegated leaf subagents must not fetch routinely: they inherit the resolved authoritative target ref + fetched SHA from the caller and must bind target claims to that state. If the context is absent/unknown, report the gap instead of silently treating local HEAD/worktree as authoritative.
 
 - Do not guess.
 - Prefer the smallest correct change.
@@ -290,7 +292,7 @@ Workflow selection:
 - UI/web options, audit, planning, redesign, layout, theme, forms, dashboards, tables, navigation, or visual hierarchy -> UI workflow.
 - Broken, incorrect, failing, strange, or wrong behavior -> investigation by default unless changed code/config/UI is clearly requested; then use bugfix workflow.
 - Existing PR, review comment, requested correction, failed PR check, CI failure, or follow-up work -> PR follow-up workflow on the same PR branch by default.
-- Issue/ticket/report outcome -> verify facts first, search existing issues when access exists, draft/open only when issue creation is in scope, and do not fix code unless changed code/config/UI is separately requested.
+- Issue/ticket/report outcome -> resolve the claimed target state/freshness, verify facts against that target, search existing issues when access exists, draft/open only when issue creation is in scope, and do not fix code unless changed code/config/UI is separately requested.
 - Whole-project review, architecture health, dead-code sweep, logic audit, duplicated-fix search, or broad bug hunt -> project audit workflow; use Persistent Planning when duration/coordination warrants it and plan-file mutation is authorized.
 - Docker, systemd, CI, deployment, runtime services, environment, logs, permissions, or production config -> DevOps/runtime workflow.
 - Release notes, tags, changelog, release body, or release verification -> release-prep workflow.
@@ -320,7 +322,7 @@ Ordinary safe workflow continuation is not a new gate: read-only exploration, pl
 
 Delegate when a specialist materially improves correctness, independent verification, role separation, or context management, and whenever the next required action belongs to another role. Do not delegate merely to reproduce stage names, and do not skip required delegation because a change looks easy.
 
-For multi-step work, the active primary/orchestrator is the workflow owner. It owns normalized scope, stage order, mutation/publication envelope, current findings, evidence freshness, and final claims. A specialist assignment must state enough to make its boundary clear: objective, behavioral/target scope, action level, expected result, stop/escalation conditions, and current diff/Candidate-HEAD/PR context when relevant.
+For multi-step work, the active primary/orchestrator is the workflow owner. It owns normalized scope, stage order, mutation/publication envelope, current findings, evidence freshness, state identity, and final claims. A specialist assignment must state enough to make its boundary clear: objective, behavioral/target scope, action level, expected result, stop/escalation conditions, current diff/Candidate-HEAD/PR context, and authoritative target ref + fetched SHA when a current-upstream claim is involved. That target/state identity is inherited through nested delegation until the workflow owner explicitly changes it.
 
 Inside that assignment, the specialist owns ordinary execution details and may inspect adjacent evidence needed to answer it. Unless broader orchestration was explicitly delegated, it must not widen scope/direction/destination, start the next stage, decide to fix another finding, mutate outside the assignment, change PR/publication state, absorb another role, or create a new implementation batch.
 
@@ -441,6 +443,8 @@ Use `@code-orchestrator` for multi-step coding workflows.
 
 Bugfix default:
 
+If the task originates from an issue/report and the bug's applicability is being judged against current upstream/default/base behavior, establish authoritative target freshness before diagnosis or mutation; do not diagnose from a stale checkout and then patch it as though it were current.
+
 1. use `@explore` before implementation only when the target/scope is materially broad, ambiguous, or cross-cutting enough that a separate read-only map is needed to issue a safe bounded assignment; not knowing the exact file yet is not by itself a trigger because `@debugger` can trace the bug path inside its assignment;
 2. use `@tester` before implementation only when the workflow specifically needs an independent read-only reproduction/baseline; do not invoke it merely because `@debugger` can reproduce the bug itself;
 3. `@debugger` to identify root cause, changed + preserved behavior, apply the smallest right-level fix, and return implementation-local evidence when changed code/config/UI is requested;
@@ -496,11 +500,12 @@ Before assigning fixes, inspect the current PR URL/number, author/ownership, Dra
 
 Apply the owned-PR Draft/Candidate/Ready lifecycle from section 8.2. Read-only work never changes PR state; unowned/ambiguous PR state is never changed automatically. Keep fixes focused on the same PR branch unless a separate PR is the explicit deliverable.
 
-When the intended diff is complete, commit it locally and establish one **Candidate HEAD**. Finish applicable local verification, then require a final `@reviewer` pass over the **entire base-to-local-Candidate-HEAD change**, not only the latest commit or current remote PR head. Resolve blocking findings locally and repeat the affected verification plus whole-PR review for any new candidate. Only after reviewer pass may the exact reviewed Candidate HEAD be pushed while the PR remains Draft; then verify the remote PR head equals that SHA, run required remote CI/status checks, refresh provenance/metadata, and move the owned PR to Ready only if the final gate remains green under section 8.2.
+When the intended diff is complete, establish Candidate HEAD, refresh/record Base SHA, finish final local verification, then require `@reviewer` over the **entire Base-SHA-to-Candidate-HEAD change**. Refresh/reconcile base before publication and Ready under section 8.2; only then push the exact reviewed head, run remote CI/status, and complete the Ready gate.
 
 ### 6.6 Issue-from-bug workflow
 
-- Verify the problem against current code/state first.
+- First resolve what state the issue claims to affect. If it is current upstream/default/base behavior, refresh that authoritative remote ref and record its SHA before code verification; inspect that fetched ref rather than an older local checkout. If the target is explicitly the local workspace, use the workspace and do not fetch merely by ritual.
+- Verify the problem against that resolved target state first.
 - Search existing issues when the repo/tooling exposes issue access; otherwise report that issue search was not performed.
 - Describe facts only: actual behavior, expected behavior, reproduction steps, affected screen/API/module, and supporting logs/screenshots.
 - Do not invent root cause. If suspected, label it as hypothesis.
@@ -532,7 +537,7 @@ For release notes, tags, changelog, release body, assets, or release verificatio
 
 ### 7.1 Before editing
 
-Before repository mutation, the active primary/orchestrator must establish current branch/base context. A stale PR branch, diverged upstream, or polluted branch is a scope problem, not an implementation detail. This is not a required startup step for leaf subagents doing local inspection.
+Before repository mutation, the workflow owner must establish current branch/base context and the intended mutation baseline. A stale PR branch, diverged upstream, or polluted branch is a scope problem, not an implementation detail. The mutation-capable role must verify immediately before its first edit that its worktree matches that intended baseline (fresh base for new work, or the explicitly authorized existing task/PR branch with proven base relation). A non-mutation orchestrator must not use `pull`/checkout to prepare another role's worktree; if safe root-authorized preparation is unavailable, stop. This is not a required startup step for leaf subagents doing local inspection.
 
 Resolve the actual head remote, base remote, base branch, and base ref from project guidance, tracking state, PR metadata, or repository metadata. Do not assume `origin/main` merely because the base is unknown.
 
@@ -625,7 +630,9 @@ When `@tester` is invoked, give it the **complete affected verification boundary
 
 Run the narrowest relevant tests/checks from project docs/config that are non-destructive and do not require unapproved secrets or production services. Prefer focused checks before broader suites.
 
-Validation evidence is tied to the effective diff, relevant environment/configuration, and—during owned-PR readiness—the exact Candidate HEAD that was checked. Any later code, config, test, dependency, generated-output, or history change invalidates every result that change could affect. Re-run only the affected checks before claiming success.
+Validation evidence is tied to the effective diff, relevant environment/configuration, and—during owned-PR readiness—the reviewed Base SHA + Candidate HEAD. Any later code, config, test, dependency, generated-output, head, or base change invalidates every result that change could affect. Re-run only the affected checks before claiming success.
+
+Executable evidence is also **state-identity-bound**. A test/build/smoke result proves a named remote target or Candidate only when the executing workspace is proven to represent that state; otherwise report it as workspace-only/target-unverified. For target-bound verification, record the executing HEAD and relevant dirty-worktree state so a stale checkout cannot be mistaken for the supplied ref/SHA.
 
 A focused passing check proves only the behavior it exercises. Passing server/service tests do not prove a changed frontend/UI boundary; passing UI tests do not prove persistence/migration behavior; one layer's evidence never substitutes for another affected boundary. Do not claim module-, package-, repository-, or project-wide verification unless the corresponding broader checks actually ran.
 
@@ -633,7 +640,7 @@ If required verification for an affected behavioral boundary cannot run, report 
 
 Do not manufacture a pass by deleting, skipping, weakening, broadening, or disabling assertions, snapshots, type checks, lint rules, coverage requirements, tests, or validation steps unless the normalized task intentionally changes that expected behavior and current project evidence supports the change.
 
-Review evidence is diff/Candidate-HEAD-bound. If edits after review affect reviewed behavior, the affected verdict is stale; re-review the changed candidate when required. For final owned-PR readiness, that refreshed review again covers the whole PR base-to-head change.
+Review evidence is Base-SHA + Candidate-HEAD bound. If either changes, affected review evidence is stale by default; retain it only when the recomputed effective diff and affected integration context are proven unchanged.
 
 If checks cannot run, report the exact command and exact error/blocker. Never claim success when required checks are unknown, skipped without explanation, stale, or failing.
 
@@ -643,13 +650,13 @@ Only create, update, push, or publish branches/commits/PRs/tags/releases when th
 
 For PR work, resolve and retain the canonical PR URL, author/ownership, Draft/Ready state, head branch/SHA, and base branch before making user-facing PR claims. For an owned PR with authorized follow-up implementation, keeping the PR Draft during active iteration is part of the same follow-up lifecycle; read-only review alone never authorizes a status mutation.
 
-Before branch/PR mutation or publication, check git status, current branch, upstream tracking branch, current base branch, and whether the current branch already has an open PR. Fetch both the current head/upstream remote and the base remote before trusting branch state. Read-only review/audit must not rebase/update branches just because it mentions a PR.
+Before branch/PR mutation or publication, check git status, current branch, upstream tracking branch, current base branch, and whether the current branch already has an open PR. Fetch both the current head/upstream remote and the base remote before trusting branch state. For read-only claims about **current upstream/default/base code**, refreshing remote refs with `git fetch` is a freshness operation, not a working-tree update: fetch the resolved target remote and inspect the fetched ref/SHA directly. Do not `pull`, rebase, reset, or checkout merely to answer a read-only current-state question. Keep state identity through the workflow: inspect the intended ref/SHA; execute only in a workspace proven to represent the claimed executable state; mutate only from the proven intended baseline; verify/review/publish only the exact state named by that evidence.
 
 When branch/PR publication is in normalized scope, new independent work normally uses a clean task branch from the intended base and a separate PR. Do not create a branch or PR merely because local work exists. Follow-up fixes, review responses, CI fixes, requested corrections, and requested additions for an existing PR stay on that PR branch unless a separate PR is explicitly authorized.
 
 ### 8.1 PR branch provenance gate
 
-Before committing, pushing, opening a PR, or updating an existing PR, fetch again and prove that the branch contains only commits and files intended for the normalized task. A PR is the entire base-to-head comparison, not the last commit.
+Before committing, pushing, opening a PR, or updating an existing PR, fetch again and prove that the branch contains only commits and files intended for the normalized task. A PR is the entire base-to-head comparison, not the last commit. Record current Base SHA and reconcile drift before publication.
 
 Run and report explicit refs using the resolved project/PR base. If the base is unknown, resolve it first; do not assume `origin/main` merely because no other base is known:
 
@@ -705,7 +712,7 @@ This is the normal publication boundary only while the work is explicitly still 
 
 #### Candidate HEAD
 
-When the intended implementation and in-scope bugfixes are complete, commit the final intended state locally and ensure no uncommitted task changes sit outside it. That exact local commit/effective base-to-head diff is the **Candidate HEAD**. Run final applicable local verification and the final whole-PR `@reviewer` pass against that local Candidate HEAD **before pushing it**. If review or local verification requires repository-content changes, create a new Candidate HEAD and repeat the affected checks plus the whole-PR review. After reviewer pass, push the exact reviewed Candidate HEAD while the PR is still Draft; do not amend, rebase, or otherwise change it between review and push. Fetch/resolve the PR again and require `remote PR HEAD == reviewed Candidate HEAD`. A mismatch blocks Ready: stop and reconcile branch/provenance rather than silently reviewing or accepting whatever remote SHA is present. Then run required remote CI/status checks and refresh provenance/metadata for the matching SHA. A successful push is an identity/publication step, not a reason to repeat full review when the SHA is unchanged.
+When implementation is complete, commit the final intended state as **Candidate HEAD**. Refresh and record **Base SHA**, then run final local verification and whole-PR `@reviewer` against `Base SHA -> Candidate HEAD` **before push**. Refresh Base SHA again before PR publication and before Ready. If it moved, recompute the effective diff/integration context; reuse prior evidence only when those are proven unchanged, otherwise refresh affected validation/review. Push only the exact reviewed Candidate HEAD while Draft, require matching remote head, then run remote CI/status. A push alone does not stale evidence when the reviewed base context and Candidate HEAD remain valid.
 
 #### Ready-for-review gate for owned PRs
 
@@ -713,11 +720,11 @@ An owned PR may move from Draft to Ready only when all applicable conditions are
 
 - **Scope/fixes complete** — the current findings/todo set has been reconciled; every in-scope blocking bugfix/review/check finding is resolved or correctly rejected as not applicable/false with evidence; unrelated latent findings are not silently folded into the PR.
 - **Repository/fix contract** — relevant root/scoped guidance and selected skills were actually read; right-level/root-cause placement was checked; complex stateful/protocol work has the compact invariant/state/interleaving map required by section 6.3.
-- **Local validation** — project-required and task-relevant local checks are current for the local Candidate HEAD before final review, including changed and preserved behavior across every affected boundary that can be verified.
-- **Reviewer** — before the final candidate push, `@reviewer` has performed a final **whole-PR review** of the complete base-to-local-Candidate-HEAD comparison and returned no unresolved blocking findings. Earlier per-commit, per-file, incremental-diff, or current-remote-head reviews are useful evidence but never substitute for this integrated final pass. The reviewer must account for the complete changed-file/effective-diff set and consider cross-file/combined behavior; when size requires partitioned review, all slices must be covered and reconciled into one `Coverage: full PR` verdict. OCR, when used, follows section 5.2 and is reconciled into this verdict.
-- **Published identity** — the exact reviewed Candidate HEAD was pushed unchanged while the PR remained Draft, and the current remote PR head equals that reviewed SHA. Push alone does not stale the review because the commit identity/effective diff did not change.
+- **Local validation** — project-required and task-relevant local checks are current for the reviewed Base SHA + Candidate HEAD, including changed and preserved behavior across every affected boundary that can be verified.
+- **Reviewer** — before push, `@reviewer` has reviewed the complete **reviewed-Base-SHA-to-Candidate-HEAD** comparison with no unresolved blocking findings and `Coverage: full PR`.
+- **Published identity** — remote PR head equals the reviewed Candidate HEAD, and base drift since review/publication has been reconciled.
 - **CI/status checks** — after that exact SHA is published, all required/task-relevant remote checks available for the Draft candidate are complete and successful. Pending, failed, unknown, or stale required checks block automatic Ready.
-- **Provenance** — branch/base/remote/head provenance is current and confirms the remote PR head still equals the reviewed Candidate HEAD.
+- **Provenance** — current Base SHA, reviewed Base SHA, Candidate HEAD, and remote head are known and reconciled.
 - **PR metadata** — title/body match the final candidate, actual validation, and current scope.
 
 If the repository has a required check that technically cannot run until the PR is marked Ready, do not fabricate a pass and do not bounce Draft/Ready repeatedly to trigger it. Report the repository-specific dependency and follow explicit project/user policy for that exception.
@@ -760,7 +767,7 @@ Public comments should be concise, factual, skimmable, and easy to understand wi
 
 Return one concise consolidated report. Report only applicable stages and evidence; do not add rows whose only useful content is `skipped`.
 
-Whenever the report discusses a specific PR—reviewed, fixed, checked, created, updated, or prepared for Ready—include the canonical clickable PR URL near the top of the report. Do not make the user infer it from a PR number, branch name, or repository name. If the URL cannot be resolved from available repository metadata, state `PR: URL unavailable` explicitly instead of silently omitting it. For owned-PR final-candidate/readiness work, also report `State: Draft | Ready`, the reviewed Candidate HEAD, and whether the current remote PR head matches that SHA once publication has occurred.
+Whenever the report discusses a specific PR—reviewed, fixed, checked, created, updated, or prepared for Ready—include the canonical clickable PR URL near the top of the report. Do not make the user infer it from a PR number, branch name, or repository name. If the URL cannot be resolved from available repository metadata, state `PR: URL unavailable` explicitly instead of silently omitting it. For owned-PR final-candidate/readiness work, also report `State: Draft | Ready`, `Reviewed Base: <ref@sha>`, Candidate HEAD, and whether the current remote PR head matches that SHA once publication has occurred.
 
 For ordinary focused workflows, prefer compact status bullets covering:
 

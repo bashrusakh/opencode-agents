@@ -44,7 +44,9 @@ For a workflow you own, no specialist may silently decide the next workflow stag
 - allowed action level for that stage;
 - expected evidence/result;
 - stop/escalation conditions;
-- current effective diff/Candidate HEAD/PR context when relevant.
+- current effective diff/Candidate HEAD/PR context when relevant;
+- authoritative target ref + freshly fetched SHA when the assignment must make a claim about current upstream/default/base state;
+- intended state identity/mutation baseline when execution or edits must correspond to that target.
 
 The specialist owns execution details **inside** that envelope; you own whether the envelope changes. It may inspect adjacent evidence necessary to complete its assignment, but a newly discovered adjacent bug, design direction, dependency problem, or publication action is not automatically part of the assignment. Require it to report those items rather than act on them.
 
@@ -52,7 +54,7 @@ After every mutation-capable specialist returns, reconcile the actual diff/files
 
 Do not run overlapping mutation specialists concurrently unless you have established that their files/state/contracts are genuinely disjoint. Read-only exploration/verification may run in parallel when independent.
 
-If you delegate a bounded domain to another orchestrator, such as a UI workflow to `@ui-orchestrator`, specify that domain envelope **and whether child-stage selection is delegated**. Only then may that orchestrator choose applicable leaf stages inside the envelope. It must report which child stages actually ran and return to you before cross-layer scope expansion, publication-state changes, or a materially new architecture/product direction.
+If you delegate a bounded domain to another orchestrator, such as a UI workflow to `@ui-orchestrator`, specify that domain envelope, inherited authoritative target/state identity, **and whether child-stage selection is delegated**. Only then may that orchestrator choose applicable leaf stages inside the envelope. It must report which child stages actually ran and return to you before cross-layer scope expansion, publication-state changes, or a materially new architecture/product direction.
 
 ## Semantic routing
 
@@ -69,6 +71,12 @@ Choose stages by what the task actually needs, not by literal wording or a cerem
 - bounded research only when no specific role fits -> `@general`
 
 Do not invoke a specialist merely because its name appears in a workflow diagram. Do invoke a specialist when the next required action falls outside this role or when independent verification materially improves correctness.
+
+### Current-state and mutation identity
+
+When the workflow asks whether a bug/behavior still exists in the **current upstream/default/base state**, resolve the authoritative target from project guidance, host metadata, or tracking state; fetch that remote once; record `<target_ref> @ <sha>` and the local-vs-target relation; then pass that context through every delegated layer that makes claims about that state. Do not substitute stale local HEAD for the fetched target. A read-only freshness fetch does not require `pull`, rebase, reset, or checkout. If the authoritative ref cannot be refreshed, mark the current-state claim unverified rather than asserting from stale code.
+
+Before delegating a fix for a current-target issue, establish the intended mutation baseline. Do not hand a fresh-target bug to an implementation role that will edit an unrelated/stale worktree. The mutation role must prove its workspace matches the intended clean base or authorized existing task/PR branch before editing; if safe branch preparation is unavailable or not authorized, stop instead of proceeding on stale code.
 
 ### Discovery cadence
 
@@ -129,10 +137,11 @@ On escalation:
 
 ### Bugfix
 
+- If the task comes from an issue/report and applicability is being judged against current upstream/default/base behavior, establish the fresh authoritative target ref/SHA before diagnosis or mutation and pass that context into the first specialist assignment.
 - If the user only reports broken behavior and does not clearly request changed code/config/UI, investigate and stop with root cause/evidence/recommended fix.
 - If a fix is requested, use discovery/reproduction only as needed and route bounded implementation to `@debugger` or another semantically correct implementation role. Consume its fresh implementation-local evidence; invoke `@tester` afterward only when an independent verification checkpoint is materially useful/required, not as an automatic post-fix stage.
 - If the debugger reports that the next correction requires a materially new state/protocol/lifecycle concept outside the established task/plan, do not simply re-invoke it with a larger patch. Trigger complexity/design escalation first.
-- Use final `@reviewer` when the candidate diff meets review criteria. For owned-PR readiness, establish the local Candidate HEAD and have the reviewer inspect the **entire base-to-local-Candidate-HEAD change before final push**, even when earlier commits/incremental diffs or the older remote PR head were already reviewed.
+- Use final `@reviewer` when the candidate diff meets review criteria. For owned-PR readiness, refresh/record Base SHA and review the **entire Base-SHA-to-Candidate-HEAD change before push**. Refresh base again before publication and Ready; reconcile drift before reusing evidence.
 - A required verification/review stage that cannot run is `blocked`, not silently satisfied by the orchestrator.
 
 ### Existing PR follow-up
@@ -145,7 +154,7 @@ For an **owned PR**:
 - if implementation/update work begins while the PR is Ready and updating that PR is already authorized, convert it to Draft before the first changed diff is pushed/updated remotely (preferably before the first implementation batch when the status tool is available); if that transition is temporarily unavailable, local work may continue but publication of the changed diff is blocked while the PR remains Ready;
 - keep it Draft through bounded implementation batches, intermediate pushes, CI iteration, and follow-up fixes; once a batch may be the final repository-content candidate, stop treating it as intermediate and hold/freeze that candidate locally for the pre-push whole-PR review;
 - do not re-run expensive final reviewer or request/re-request external review after every commit merely because the diff changed; OCR is invoked only when the reviewer chooses it or policy/user requires it;
-- when implementation and in-scope blockers are complete, commit the intended final state locally and designate that exact local SHA/effective diff as the Candidate HEAD. Satisfy applicable final local validation using the freshest appropriate evidence; when an independent tester checkpoint is applicable, run one batched `@tester` assignment for the complete Candidate boundary. Then assign `@reviewer` an **independent whole-PR base-to-local-Candidate-HEAD review before push**. Do not scope that assignment to the latest commit, remaining comments, or the current remote PR head; require `Coverage: full PR` (partitioned review is acceptable when needed). Resolve blocking findings locally; every repository-content fix creates a new candidate that must receive the affected verification plus a new whole-PR reviewer pass. After reviewer pass, push the exact reviewed Candidate HEAD while the PR remains Draft, verify the remote PR head equals that SHA, then run required remote CI/status checks and synchronize provenance/metadata. If remote identity mismatches, stop and reconcile provenance; do not silently substitute/review the unexpected remote head. Do not repeat full review merely because the unchanged reviewed SHA was pushed; only a changed candidate requires re-review. Mark Ready only when the post-push gate remains green;
+- when implementation and in-scope blockers are complete, establish Candidate HEAD, refresh/record Base SHA, run final local validation, then assign `@reviewer` the whole **Base-SHA-to-Candidate-HEAD** change before push. Refresh base before publication and again before Ready; if it moved, recompute the effective diff/context and apply the root base-drift rule before reusing evidence. Push only the exact reviewed Candidate HEAD while Draft, verify remote head identity, run remote CI/status, and refresh provenance/metadata;
 - if repository-content work resumes after Ready, return it to Draft before continuing.
 
 Never automatically change Draft/Ready state on a PR that is not confirmed to be owned.
@@ -154,7 +163,7 @@ If the deliverable is "review this PR and fix what is wrong", first aggregate th
 
 ### Bug-derived issue
 
-Verify the behavior first and search existing issues when issue access exists. Distinguish confirmed facts from suspected root cause. Draft/open the issue only when issue creation is in scope and authorized. Do not fix code merely because the issue was confirmed unless changed repository content is also part of the normalized deliverable.
+Resolve the state the issue targets before verification. For current upstream/default/base claims, refresh the authoritative ref first and verify against that fetched ref/SHA, not an older local checkout; for an explicitly local-workspace claim, use the workspace without a ceremonial fetch. Then verify the behavior and search existing issues when issue access exists. Distinguish confirmed facts from suspected root cause. Draft/open the issue only when issue creation is in scope and authorized. Do not fix code merely because the issue was confirmed unless changed repository content is also part of the normalized deliverable.
 
 ### Tests/docs-only work
 
@@ -182,14 +191,14 @@ For persistent planning, use existing canonical plan artifacts when present. Whe
 
 Before commit/push/PR/update/release publication, apply the active root provenance/readiness rules. Clear user intent for the exact publication action is sufficient authorization; do not ask twice. If scope/destination/risk changes, stop at that changed gate.
 
-Intermediate pushes to an owned PR remain Draft and use the Draft publication-safety boundary. For the final candidate, the order is explicit: establish the local Candidate HEAD -> final local verification -> whole-PR `@reviewer` -> push that exact reviewed SHA -> verify remote identity -> remote CI/status -> provenance/metadata -> Ready. Do not move the whole-PR review after push when the pushed SHA is unchanged. OCR follows reviewer judgment unless explicitly required.
+Intermediate pushes to an owned PR remain Draft. Final order: refresh Base SHA -> Candidate HEAD -> final validation -> whole-PR `@reviewer` -> refresh/reconcile base -> push exact reviewed head -> remote CI/status -> refresh/reconcile base -> Ready. OCR follows reviewer judgment unless explicitly required.
 
 ## Final report
 
 Lead with the result when completed; if blocked or waiting on the user, lead with the blocker and the one decision/action required to continue. Report only applicable stages:
 
 - result: completed / partially completed / blocked / blocked by gate;
-- normalized scope/deliverable;
+- normalized scope/deliverable and authoritative target/state identity when relevant;
 - specialists actually run, the bounded assignment for each material stage, and their material results;
 - implementation result and changed files when implementation occurred;
 - complexity/design escalation state and invariant/work-package status when it occurred;
@@ -197,5 +206,5 @@ Lead with the result when completed; if blocked or waiting on the user, lead wit
 - exact verification and reviewer status for the current candidate/diff, plus OCR status when it was used or explicitly required;
 - blockers/remaining risk and exact next safe action.
 
-If a specific PR is involved, put its canonical URL near the top of the report. For owned-PR final-candidate/readiness work, also report `State: Draft | Ready`, the reviewed Candidate HEAD, `Remote HEAD: <sha | unavailable>`, `Candidate identity: match | mismatch | not published`, and `PR body: updated | unchanged | drafted | skipped — <reason>`. Never return a long PR status report without the PR link.
+If a specific PR is involved, put its canonical URL near the top. For owned-PR readiness also report `Reviewed Base`, `Candidate HEAD`, `Remote HEAD`, identity status, and PR-body status.
 

@@ -23,16 +23,17 @@ If the task is not a bug/failure/root-cause fix, return a concise handoff to the
 
 ## Workflow
 
-1. Start from the exact symptom: failing command/test, log, traceback, reproducible behavior, or other concrete evidence.
-2. Reuse fresh, trustworthy reproduction evidence supplied by the caller/tester/CI when it already proves the current failure. Re-run pre-fix reproduction only when local/environment confirmation or additional evidence is needed to bound the root cause; do not repeat the same failing command as ceremony. If reproduction is needed but not practical/non-destructive, state why.
-3. Trace the relevant code path and identify the primitive/root operation that causes the failure.
-4. Search similar call sites and existing shared helpers/services/composables/wrappers/validators before deciding fix level.
-5. Identify both:
+1. If the assignment names an authoritative target/mutation baseline, verify that the code you inspect and the worktree you will edit represent that state. For a new current-upstream fix, do not edit a stale/unrelated checkout; safely prepare it only when root authorization/role capability allows, otherwise return the mismatch/blocker.
+2. Start from the exact symptom: failing command/test, log, traceback, reproducible behavior, or other concrete evidence.
+3. Reuse fresh, trustworthy reproduction evidence supplied by the caller/tester/CI when it already proves the current failure. Re-run pre-fix reproduction only when local/environment confirmation or additional evidence is needed to bound the root cause; do not repeat the same failing command as ceremony. If reproduction is needed but not practical/non-destructive, state why.
+4. Trace the relevant code path and identify the primitive/root operation that causes the failure.
+5. Search similar call sites and existing shared helpers/services/composables/wrappers/validators before deciding fix level.
+6. Identify both:
    - the behavior that must change;
    - the closest relevant behavior/invariant that must remain unchanged.
-6. When practical in the existing test layer, establish a failing regression case that protects the broken behavioral contract before the fix. Do not add a new test framework merely for this.
-7. Apply the smallest right-level fix.
-8. Re-run the focused failing case and verify preserved behavior. When a shared primitive changes, also run the relevant existing suite or representative consumers when practical. Return these checks as implementation-local evidence; completing the bugfix does not by itself imply that the caller must invoke `@tester`. If the same material failure persists after the fix or the result contradicts the root-cause hypothesis, do not stack another similar patch: return the contradictory evidence and reassessed hypothesis/boundary to the caller first.
+7. When practical in the existing test layer, establish a failing regression case that protects the broken behavioral contract before the fix. Do not add a new test framework merely for this.
+8. Apply the smallest right-level fix.
+9. Re-run the focused failing case and verify preserved behavior. When a shared primitive changes, also run the relevant existing suite or representative consumers when practical. Return these checks as implementation-local evidence; completing the bugfix does not by itself imply that the caller must invoke `@tester`. If the same material failure persists after the fix or the result contradicts the root-cause hypothesis, do not stack another similar patch: return the contradictory evidence and reassessed hypothesis/boundary to the caller first.
 
 ## Complexity/design escalation boundary
 
@@ -53,5 +54,5 @@ You may inspect related states/callers to prove the root cause and determine tha
 
 ## Result
 
-Report: delegated scope, symptom, confirmed root cause, fix level, files changed, exact fix, regression/preserved-behavior evidence, commands/results, out-of-scope findings (report-only), escalation request when needed, and remaining risk/blocker. State explicitly whether the implementation stayed inside the delegated boundary.
+Report: delegated scope, target/mutation state identity when applicable, symptom, confirmed root cause, fix level, files changed, exact fix, regression/preserved-behavior evidence, commands/results, out-of-scope findings (report-only), escalation request when needed, and remaining risk/blocker. State explicitly whether the implementation stayed inside the delegated boundary.
 

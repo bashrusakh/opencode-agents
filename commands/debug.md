@@ -6,7 +6,7 @@ subtask: false
 
 Debug this failure: $ARGUMENTS
 
-Follow the active `AGENTS.md` and debugger role contract.
+Follow the active `AGENTS.md` and debugger role contract. For issue/report-derived work, resolve the applicability target from issue/project metadata instead of assuming the local checkout; when that target is current upstream/default/base, establish the fresh authoritative ref and a matching mutation baseline before editing.
 
 Work from evidence: reuse fresh caller/tester/CI reproduction when it already proves the failure; reproduce again only when local/environment confirmation or additional root-cause evidence is needed. Identify root cause and the correct fix level, implement the smallest correct bugfix, and verify both the changed behavior and the nearest preserved behavior/invariant. Expand verification proportionally when the changed path is shared or stateful.
 

@@ -38,6 +38,10 @@ Do not hardcode a stale timeout. The surrounding shell/tool timeout must be at l
 
 If OCR is unavailable, not configured, or not approved, perform native read-only review and state why. Do not automatically apply OCR suggestions for review-only work.
 
+## Target identity
+
+Bind the verdict to the exact requested state. If an authoritative ref/SHA or Candidate is supplied, inspect that exact state/range or a workspace proven to represent it; do not substitute stale local files. When invoked directly for a current-upstream/default/base review, establish freshness under the root rule before returning a current-state verdict.
+
 ## Review focus
 
 Prioritize material findings:
@@ -89,7 +93,7 @@ Do not claim these checks were performed if the target/evidence did not allow th
 
 ## Final whole-PR review
 
-When the assignment is the final review before an owned PR's final candidate is pushed/marked Ready, review **one integrated base-to-local-Candidate-HEAD change before push**. Resolve the actual PR base plus the exact local Candidate HEAD SHA supplied/established by the caller, and inspect that complete intended PR diff/changed-file set even if the current remote PR head is older or individual commits/files/incremental diffs were reviewed earlier. Do **not** silently substitute the current remote PR head for an unpushed local Candidate HEAD. Prior reviews are supporting evidence, not a substitute for the final whole-PR pass.
+When the assignment is the final review before an owned PR's final candidate is pushed/marked Ready, review **one integrated Base-SHA-to-Candidate-HEAD change before push**. Consume the freshly recorded Base SHA plus exact local Candidate HEAD; do not substitute another base or an older remote head.
 
 Judge cross-file interactions, combined behavior, scope coherence, right-level placement, regressions/preserved behavior, verification coverage, and whether the collection of commits introduces an issue that is invisible when each delta is viewed alone. Commit-by-commit inspection may explain intent/history, but the final verdict belongs to the complete PR comparison.
 
@@ -103,13 +107,13 @@ Consume current implementation-local/tester/CI evidence instead of re-running a 
 
 ## Evidence freshness
 
-A verdict is bound to the reviewed effective diff/range/Candidate HEAD. Pushing that exact reviewed commit without changing its SHA/effective diff does not stale the verdict; the caller should verify remote identity rather than request another full review solely because of push. If later edits/history changes create a different Candidate HEAD, the affected verdict is stale and the final owned-PR review must be repeated against the new **whole base-to-local-Candidate-HEAD comparison**, not only the new incremental delta.
+A verdict is bound to the reviewed Base SHA + Candidate HEAD + effective diff. A changed head or base makes affected review evidence stale by default; retain it only when the recomputed diff and affected integration context are proven unchanged.
 
 For plan/result reviews, judge against the stated acceptance criteria/project constraints and clearly distinguish plan defects from implementation defects.
 
 ## Result
 
-Use `pass`, `pass with notes`, or `changes required`. Group material findings by severity and shared invariant/root cause with precise evidence and recommended direction. Include wrong-fix-level/test gaps only when present. Distinguish blocking current-scope findings from report-only latent/unrelated findings.
+Use `pass`, `pass with notes`, or `changes required`. State the exact reviewed target/state identity when a ref/SHA/Candidate governed the review. Group material findings by severity and shared invariant/root cause with precise evidence and recommended direction. Include wrong-fix-level/test gaps only when present. Distinguish blocking current-scope findings from report-only latent/unrelated findings.
 
-If the target is a PR, include its canonical PR URL when resolvable, the exact reviewed local Candidate HEAD when known, and `Coverage: full PR | partial — <gap>` for final PR reviews. For an unpushed final candidate, state that the current remote head may differ and that the next publication step is to push the **same reviewed SHA** and verify identity, not to re-run review after push. End with the next action for the caller; never imply that you applied the fixes yourself.
+If the target is a PR, include its canonical PR URL when resolvable, `Reviewed Base: <ref@sha>`, Candidate HEAD when known, and `Coverage: full PR | partial — <gap>`. End with the next action for the caller; never imply that you applied fixes yourself.
 

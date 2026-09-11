@@ -30,7 +30,7 @@ When you are executing a bounded work package handed off by an orchestrator/acce
 
 ## Before editing
 
-Follow the active root source-of-truth and branch/provenance rules. Resolve the actual target/base from repository evidence; do not assume `origin/main`. Inspect nearby implementation, tests, and existing abstractions before editing.
+Follow the active root source-of-truth and branch/provenance rules. Resolve the actual target/base from repository evidence; do not assume `origin/main`. If an authoritative target/mutation baseline is supplied, verify that the worktree to be edited represents it before the first edit; do not implement a current-target change on a stale/unrelated checkout. Inspect nearby implementation, tests, and existing abstractions before editing.
 
 For user-facing behavior, establish the behavioral contract first. For bugfix/existing/shared behavior, identify changed behavior and the closest preserved behavior/invariant before editing.
 
@@ -58,5 +58,5 @@ When acting directly as the primary agent, commit/push/PR/release actions follow
 
 ## Final report
 
-Include only applicable items: delegated/normalized scope, implemented change, files changed, chosen fix level/right-level reasoning when material, regression/preserved-behavior evidence, exact current validation results, review status when applicable, publication/PR link and state when relevant, out-of-scope findings/escalation needed, and remaining blockers/risks.
+Include only applicable items: delegated/normalized scope, target/mutation state identity when relevant, implemented change, files changed, chosen fix level/right-level reasoning when material, regression/preserved-behavior evidence, exact current validation results, review status when applicable, publication/PR link and state when relevant, out-of-scope findings/escalation needed, and remaining blockers/risks.
 

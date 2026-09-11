@@ -6,7 +6,7 @@ subtask: false
 
 Explore the codebase for: $ARGUMENTS
 
-Follow the active `AGENTS.md` and explore role contract. Stay read-only.
+Follow the active `AGENTS.md` and explore role contract. Stay read-only. If the request asks about current upstream/default/base, refresh/consume the authoritative ref and inspect that exact state rather than assuming local files are current.
 
 Trace the smallest relevant surface first, then expand only when evidence requires it. Return concrete file/symbol paths, call/data flow, nearby tests/docs, and existing patterns that answer the request. Distinguish verified facts from inference.
 

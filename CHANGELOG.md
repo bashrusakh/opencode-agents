@@ -2,6 +2,43 @@
 
 This changelog summarizes user-visible workflow changes. Detailed rationale and before/after behavior for major releases lives under `docs/releases/`.
 
+## v28.33
+
+v28.33 adds base-drift handling to PR state identity.
+
+- Final validation/review is bound to `Base SHA + Candidate HEAD`.
+- Base is refreshed before final review, before PR publication, and before Ready.
+- A moved base makes affected evidence stale by default; reuse requires proof that effective diff/integration context is unchanged.
+- Reviewer/provenance output records the reviewed Base SHA.
+
+See [`docs/releases/v28.33.md`](docs/releases/v28.33.md) and [`docs/pr_readiness.md`](docs/pr_readiness.md).
+
+## v28.32
+
+v28.32 extends current-upstream freshness into end-to-end repository state identity.
+
+- Directly invoked roles own applicable freshness when no parent/orchestrator exists; delegated leaves still consume caller-supplied fresh target context instead of fetching redundantly.
+- Authoritative target ref/SHA and intended mutation state survive nested delegation until explicitly changed.
+- Static inspection, executable workspace, mutation baseline, verification/review, and publication are distinct state-identity steps that must not be silently mixed.
+- Issue/report-derived work resolves its applicability target from issue/project metadata instead of assuming local checkout; publishing a current-state issue rechecks moved target evidence before publication.
+- Tester validates executing state for target-bound evidence; mismatched-worktree results are workspace-only/target-unverified.
+- Debugger/build/UI implementation refuse to edit a stale or unrelated worktree when the assignment is bound to a current authoritative target.
+- `/ui-options` now follows the existing materially-distinct-options policy instead of forcing 2–3 alternatives.
+
+See [`docs/releases/v28.32.md`](docs/releases/v28.32.md) and [`docs/git_branch_provenance_policy.md`](docs/git_branch_provenance_policy.md).
+
+## v28.31
+
+v28.31 fixes stale-code analysis when a workflow must decide whether an issue/behavior still exists in the current upstream/default/base state.
+
+- Current-upstream claims now require a freshly resolved authoritative remote ref + SHA before code is treated as current.
+- The primary/orchestrator performs the freshness fetch once and passes the target ref/SHA to specialists; leaf roles do not independently fetch by default.
+- A stale local checkout may be used only as comparison/history evidence when it differs from the authoritative target; it cannot silently stand in for current upstream.
+- Read-only `git fetch` is explicitly separated from `pull`/rebase/reset/checkout, so freshness checks do not mutate the working tree.
+- `/bug-issue` and issue-originated bugfix diagnosis now resolve the report target first and verify current-upstream applicability against the fetched authoritative ref; explicitly local-workspace reports remain local.
+
+See [`docs/releases/v28.31.md`](docs/releases/v28.31.md) and [`docs/git_branch_provenance_policy.md`](docs/git_branch_provenance_policy.md).
+
 ## v28.30
 
 v28.30 keeps the v28.29 role/verification cadence and adds four targeted workflow-hygiene rules without adding a new skill or mandatory stage.

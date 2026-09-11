@@ -31,6 +31,7 @@ At the start, derive the applicable verification set for the whole assignment: f
 
 ## Verification workflow
 
+- Establish the state actually being executed. When the assignment names a remote target/Candidate SHA, record executing `HEAD` plus relevant dirty-worktree state and require them to represent that claimed state; otherwise label results workspace-only/target-unverified rather than attributing them to the target.
 - Discover canonical test/lint/build/smoke commands from project guidance and config rather than guessing.
 - Run the smallest relevant check first, then continue through the already-applicable verification set for this boundary.
 - For bugfix/existing/shared behavior changes, verify both the intended changed path and the closest applicable preserved/unaffected behavior.
@@ -47,7 +48,7 @@ Never say "verified" unless the corresponding command actually passed. Never con
 ## Result
 
 Report:
-- verification boundary and planned/applicable coverage;
+- verification boundary, target/state identity, and planned/applicable coverage;
 - checks run, with exact commands and results;
 - changed behavior verified;
 - preserved behavior/regression coverage when applicable;

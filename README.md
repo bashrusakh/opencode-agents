@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.30
+# OpenCode Agent Pack v28.33
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,16 +14,16 @@
 
 ---
 
-## What changed in v28.30
+## What changed in v28.33
 
-v28.30 keeps the v28.29 verification cadence and adds four small workflow-hygiene rules aimed at avoiding unnecessary iteration and user friction.
+v28.33 makes the PR base part of final state identity.
 
-- **Failed-fix spiral reset** — if the same material failure survives a supposed root-cause fix, reassess the hypothesis/ownership/environment before another similar patch.
-- **Batched user decisions** — resolve safe uncertainty from evidence and ask compatible blocking decisions together instead of interrupting the workflow piecemeal; approval gates remain unchanged.
-- **Result/action-first reporting** — completed work leads with the result; blocked work leads with the blocker/required action; user-run procedures lead with the first executable step.
-- **Numbered steps only for ordered human actions** — findings, options, status, and internal workflow stages remain bullets/sections unless order is itself meaningful.
+- Final PR evidence is bound to `Base SHA + Candidate HEAD`.
+- Base is refreshed before final review, before PR publication, and again before Ready.
+- If base moved, effective diff/integration context is recomputed; stale evidence is reused only when proven unaffected.
+- Reviewer/provenance output records the reviewed Base SHA.
 
-**Details:** [CHANGELOG.md](CHANGELOG.md) · [v28.30 release notes](docs/releases/v28.30.md)
+**Details:** [CHANGELOG.md](CHANGELOG.md) · [v28.33 release notes](docs/releases/v28.33.md) · [PR readiness](docs/pr_readiness.md)
 
 ---
 
@@ -93,6 +93,8 @@ File count alone does not trigger this escalation.
 Tests and review verdicts apply to the actual diff/state they inspected. Later changes invalidate only the evidence they can affect.
 
 A narrow passing test proves only that narrow behavior. Server checks do not prove a changed UI boundary; UI checks do not prove persistence or migration behavior.
+
+State identity follows the work: a fresh remote `ref@SHA` must not silently turn into stale-worktree inspection, execution, mutation, testing, or review. Runtime evidence belongs to the workspace state that actually executed it.
 
 ### Authorization stays explicit
 
@@ -335,7 +337,7 @@ Installs under `~/.config/opencode/` (`AGENTS.md`, agents, commands, docs, skill
 From the target repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_30/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_32/install/install-project.sh
 ```
 
 Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` into the project.
@@ -348,12 +350,14 @@ Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` int
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release-by-release summary |
-| [`docs/releases/v28.30.md`](docs/releases/v28.30.md) | Human-readable v28.30 behavior changes |
+| [`docs/releases/v28.32.md`](docs/releases/v28.32.md) | v28.32 state-identity chain and direct-entry freshness |
+| [`docs/releases/v28.31.md`](docs/releases/v28.31.md) | v28.31 current-state freshness changes |
+| [`docs/releases/v28.30.md`](docs/releases/v28.30.md) | v28.30 workflow-hygiene changes |
 | [`docs/releases/v28.29.md`](docs/releases/v28.29.md) | v28.29 verification-cadence changes |
 | [`docs/releases/v28.28.md`](docs/releases/v28.28.md) | v28.28 orchestration / PR lifecycle changes |
 | [`docs/verification_strategy.md`](docs/verification_strategy.md) | Verification layers, tester cadence, and batching |
 | [`docs/pr_readiness.md`](docs/pr_readiness.md) | Draft / Candidate HEAD / Ready lifecycle |
-| [`docs/git_branch_provenance_policy.md`](docs/git_branch_provenance_policy.md) | Branch/base/head provenance |
+| [`docs/git_branch_provenance_policy.md`](docs/git_branch_provenance_policy.md) | Branch/base/head provenance and current-upstream freshness |
 | [`docs/ocr_review_policy.md`](docs/ocr_review_policy.md) | Reviewer/OCR policy |
 | [`docs/persistent_planning_policy.md`](docs/persistent_planning_policy.md) | Durable planning lifecycle |
 | [`docs/ui_component_policy.md`](docs/ui_component_policy.md) | UI component/source policy |
@@ -378,7 +382,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.30**  
+**OpenCode Agent Pack v28.32**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>

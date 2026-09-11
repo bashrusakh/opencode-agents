@@ -28,7 +28,7 @@ If OCR is unavailable, not configured, fails for a non-transient reason, or exte
 
 OCR remains optional review tooling unless the user/project explicitly requires it. `@reviewer` decides whether OCR materially improves the current code/diff/PR review under the normal availability/privacy rules; OCR availability by itself is not a Draft/Ready gate.
 
-Do not run OCR after every intermediate Draft batch merely because another commit was pushed. For a final whole-PR review, the reviewer may invoke OCR on the stable **local Candidate HEAD before its final push** when useful and must reconcile any OCR findings into its own verdict. Pushing that same reviewed SHA does not by itself require another OCR/reviewer pass.
+Do not run OCR after every intermediate Draft batch merely because another commit was pushed. For a final whole-PR review, OCR applies to the same reviewed **Base SHA + Candidate HEAD** as the reviewer verdict. Pushing that same reviewed head does not by itself require another OCR/reviewer pass; base drift follows the normal readiness rule.
 
 ## Invocation
 

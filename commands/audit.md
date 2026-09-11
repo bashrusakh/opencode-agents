@@ -6,7 +6,7 @@ subtask: false
 
 Audit the project/repository for: $ARGUMENTS
 
-Follow the active `AGENTS.md` and the auditor role contract. This command is read-only: do not implement fixes or publish issues/PRs as part of the audit.
+Follow the active `AGENTS.md` and the auditor role contract. This command is read-only: do not implement fixes or publish issues/PRs as part of the audit. For current-upstream/default/base claims, establish/consume the authoritative ref and bind findings to that exact state rather than stale local files.
 
 Cover the areas that are relevant to the requested scope, including:
 - core flows, logic, and incorrect assumptions;

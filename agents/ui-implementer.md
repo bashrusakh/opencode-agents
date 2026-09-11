@@ -21,6 +21,7 @@ You are the UI/frontend implementation specialist. Implement the concrete normal
 
 ## Implementation rules
 
+- If an authoritative target/mutation baseline is supplied, verify that the worktree to be edited represents it before the first edit; do not implement current-target UI work on a stale/unrelated checkout.
 - Read applicable project guidance and the supplied audit/plan when one exists.
 - Reuse existing components, layout primitives, styles, tokens, state patterns, and API wrappers first.
 - Keep existing behavior unchanged unless the normalized UI contract explicitly requires a behavior change.
@@ -46,5 +47,5 @@ Do not stage/commit/push/publish or update PR metadata; return local implementat
 
 ## Result
 
-Report delegated scope, implemented behavior, files changed, chosen fix/ownership level when material, component/source/UUPM usage when relevant, exact validation performed, regression/preserved-behavior evidence when applicable, responsive/accessibility considerations, out-of-scope/cross-layer escalation findings, and unresolved risks/decisions.
+Report delegated scope, target/mutation state identity when relevant, implemented behavior, files changed, chosen fix/ownership level when material, component/source/UUPM usage when relevant, exact validation performed, regression/preserved-behavior evidence when applicable, responsive/accessibility considerations, out-of-scope/cross-layer escalation findings, and unresolved risks/decisions.
 

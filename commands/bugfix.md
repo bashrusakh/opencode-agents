@@ -9,6 +9,7 @@ Run the bugfix workflow for: $ARGUMENTS
 Follow the active `AGENTS.md` and code-orchestrator contract. Coordinate only the specialist stages that are semantically required; do not make the user invoke agents manually.
 
 Required outcome:
+- when the bugfix comes from an issue/report, resolve its applicability target from issue/project metadata rather than assuming local checkout; for current upstream/default/base behavior, resolve/fetch the authoritative target and establish the intended mutation baseline before diagnosis or mutation;
 - establish the affected path and root cause before claiming a fix;
 - route implementation to an implementation-capable role at the correct abstraction level;
 - require implementation-local evidence for the reported failure and closest preserved behavior/invariant;

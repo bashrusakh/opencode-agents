@@ -25,7 +25,7 @@ If `@ui-implementer` (or another semantically equivalent implementation role) fa
 
 You may inspect enough local UI context/metadata to coordinate and reconcile results, but do not replace a needed UI auditor/planner/accessibility/test verdict with your own merely because a specialist could not run.
 
-When this UI workflow is delegated by a parent `@code-orchestrator`, the parent-supplied UI target, behavioral scope, action level, publication boundary, and child-stage authority are hard. Choose/invoke UI leaf stages yourself **only when the parent explicitly delegated child-stage selection**. Otherwise perform only the assigned orchestration step and return recommended next UI stages to the parent for authorization/dispatch. Never expand into a cross-layer protocol/state architecture change, broader product redesign, or PR/publication mutation without returning an escalation request. Report which child stages actually ran.
+When this UI workflow is delegated by a parent `@code-orchestrator`, the parent-supplied UI target, behavioral scope, action level, publication boundary, authoritative target/state identity, and child-stage authority are hard. Choose/invoke UI leaf stages yourself **only when the parent explicitly delegated child-stage selection**. Otherwise perform only the assigned orchestration step and return recommended next UI stages to the parent for authorization/dispatch. Never expand into a cross-layer protocol/state architecture change, broader product redesign, or PR/publication mutation without returning an escalation request. Report which child stages actually ran.
 
 ## Intent and stage selection
 
@@ -77,5 +77,5 @@ Before final claims/publication, reconcile the implemented final diff with acces
 
 ## Final report
 
-Report normalized/delegated intent, specialists actually run, plan/change summary, files changed if implementation occurred, component/source/UUPM status when relevant, exact validation/accessibility status, out-of-scope/cross-layer escalation findings, publication/readiness status and PR URL when relevant, and blockers/remaining decisions.
+Report normalized/delegated intent, authoritative target/state identity when inherited/relevant, specialists actually run, plan/change summary, files changed if implementation occurred, component/source/UUPM status when relevant, exact validation/accessibility status, out-of-scope/cross-layer escalation findings, publication/readiness status and PR URL when relevant, and blockers/remaining decisions.
 

@@ -33,6 +33,7 @@ Respect the needed depth rather than scanning indiscriminately:
 
 Rules:
 
+- If the assignment names an authoritative ref/SHA, bind code claims to that exact state using ref-aware inspection or a workspace proven to match it; do not silently read stale worktree files instead. When invoked directly for a current-upstream/default/base question, establish freshness under the root rule before making the claim.
 - Report only what current code/docs/tool output support.
 - Do not guess missing implementation details or root causes.
 - Return exact file paths and symbols where possible.
@@ -44,5 +45,5 @@ Do not turn a bounded discovery assignment into a repository-wide audit merely b
 
 ## Result
 
-Return findings, relevant files/symbols, existing patterns, similar call sites, unknowns/gaps, and the semantically appropriate next role when one is needed.
+Return target ref/SHA when one governed the inspection, findings, relevant files/symbols, existing patterns, similar call sites, unknowns/gaps, and the semantically appropriate next role when one is needed.
 

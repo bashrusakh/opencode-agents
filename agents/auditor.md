@@ -37,6 +37,10 @@ Applicable specialists:
 
 Do not call every role mechanically. Existing fresh implementation/test/CI evidence may already support an audit claim without another tester invocation. When several findings need executable confirmation in the same subsystem/invariant, collect them first and issue one bounded tester assignment covering the whole meaningful verification set. If a required specialist cannot run, continue only with audit work that genuinely belongs to this role and mark the missing specialist coverage as not completed. Do not manufacture a reviewer/tester verdict yourself.
 
+## Target identity
+
+For current-upstream/default/base claims, use the exact fresh authoritative ref/SHA supplied by the caller; if invoked directly, establish that freshness under the root rule. Do not let a stale local checkout silently define what is "current."
+
 ## Audit dimensions
 
 Cover only dimensions relevant to the normalized scope, with deeper attention to high-risk areas:
@@ -68,5 +72,5 @@ Severity guidance:
 
 ## Result
 
-Start with overall status. Group findings by severity; for each give evidence, impact, suggested ownership/fix level, and confidence. Then include dead/stale code, wrong-level/duplication, test gaps, practical optimizations, uncovered areas, and 3-7 prioritized next actions only when those sections contain real content.
+Start with overall status and, when current-upstream/default/base state governed the audit, the authoritative target ref/SHA used. Group findings by severity; for each give evidence, impact, suggested ownership/fix level, and confidence. Then include dead/stale code, wrong-level/duplication, test gaps, practical optimizations, uncovered areas, and 3-7 prioritized next actions only when those sections contain real content.
 
