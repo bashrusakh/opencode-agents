@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.33
+# OpenCode Agent Pack v28.34
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,16 +14,16 @@
 
 ---
 
-## What changed in v28.33
+## What changed in v28.34
 
-v28.33 makes the PR base part of final state identity.
+v28.34 keeps the v28.33 freshness/state-identity/PR-base rules and adds one general right-level-fix safeguard: choose the fix boundary from the required end-to-end outcome, not from the nearest editable component.
 
-- Final PR evidence is bound to `Base SHA + Candidate HEAD`.
-- Base is refreshed before final review, before PR publication, and again before Ready.
-- If base moved, effective diff/integration context is recomputed; stale evidence is reused only when proven unaffected.
-- Reviewer/provenance output records the reviewed Base SHA.
+- **Outcome-owned fix boundary** — before implementation, define the end-to-end acceptance condition and choose the smallest ownership boundary that can actually guarantee it across materially relevant paths, states, callers, partitions/instances, and lifecycle transitions.
+- **Composition check** — a local or per-partition guarantee is not treated as proof of a system-level invariant unless its aggregate/composed behavior is established.
+- **Escalate before coding** — if the proposed boundary cannot guarantee the required outcome, move the fix level outward or escalate before mutation rather than accumulating partial local patches.
+- **Existing resets and state identity retained** — the v28.30 failed-fix reset plus v28.31-v28.33 freshness, state-identity, and base-drift rules remain unchanged.
 
-**Details:** [CHANGELOG.md](CHANGELOG.md) · [v28.33 release notes](docs/releases/v28.33.md) · [PR readiness](docs/pr_readiness.md)
+**Details:** [CHANGELOG.md](CHANGELOG.md) · [v28.34 release notes](docs/releases/v28.34.md)
 
 ---
 
@@ -337,7 +337,7 @@ Installs under `~/.config/opencode/` (`AGENTS.md`, agents, commands, docs, skill
 From the target repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_32/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_34/install/install-project.sh
 ```
 
 Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` into the project.
@@ -350,6 +350,8 @@ Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` int
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release-by-release summary |
+| [`docs/releases/v28.34.md`](docs/releases/v28.34.md) | v28.34 outcome-owned fix-boundary safeguard |
+| [`docs/releases/v28.33.md`](docs/releases/v28.33.md) | v28.33 PR base-drift / `Base SHA + Candidate HEAD` handling |
 | [`docs/releases/v28.32.md`](docs/releases/v28.32.md) | v28.32 state-identity chain and direct-entry freshness |
 | [`docs/releases/v28.31.md`](docs/releases/v28.31.md) | v28.31 current-state freshness changes |
 | [`docs/releases/v28.30.md`](docs/releases/v28.30.md) | v28.30 workflow-hygiene changes |
@@ -382,7 +384,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.32**  
+**OpenCode Agent Pack v28.34**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>

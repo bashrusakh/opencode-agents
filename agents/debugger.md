@@ -29,11 +29,12 @@ If the task is not a bug/failure/root-cause fix, return a concise handoff to the
 4. Trace the relevant code path and identify the primitive/root operation that causes the failure.
 5. Search similar call sites and existing shared helpers/services/composables/wrappers/validators before deciding fix level.
 6. Identify both:
-   - the behavior that must change;
+   - the end-to-end acceptance condition/behavior that must change;
    - the closest relevant behavior/invariant that must remain unchanged.
-7. When practical in the existing test layer, establish a failing regression case that protects the broken behavioral contract before the fix. Do not add a new test framework merely for this.
-8. Apply the smallest right-level fix.
-9. Re-run the focused failing case and verify preserved behavior. When a shared primitive changes, also run the relevant existing suite or representative consumers when practical. Return these checks as implementation-local evidence; completing the bugfix does not by itself imply that the caller must invoke `@tester`. If the same material failure persists after the fix or the result contradicts the root-cause hypothesis, do not stack another similar patch: return the contradictory evidence and reassessed hypothesis/boundary to the caller first.
+7. Before editing, verify that the proposed ownership/fix level can guarantee that acceptance condition across the materially relevant paths, states, callers, partitions/instances, and lifecycle transitions. A local/per-partition guarantee is insufficient for a system-level outcome unless composition/aggregate behavior is established. If the boundary cannot guarantee the condition, move it outward or return an escalation before coding.
+8. When practical in the existing test layer, establish a failing regression case that protects the broken behavioral contract before the fix. Do not add a new test framework merely for this.
+9. Apply the smallest right-level fix.
+10. Re-run the focused failing case and verify preserved behavior. When a shared primitive changes, also run the relevant existing suite or representative consumers when practical. Return these checks as implementation-local evidence; completing the bugfix does not by itself imply that the caller must invoke `@tester`. If the same material failure persists after the fix or the result contradicts the root-cause hypothesis, do not stack another similar patch: return the contradictory evidence and reassessed hypothesis/boundary to the caller first.
 
 ## Complexity/design escalation boundary
 

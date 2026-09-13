@@ -84,6 +84,10 @@ Do not invoke `@explore` merely because the exact file/symbol is not known yet. 
 
 Reuse a current repository map until material code/history/scope changes make it stale; do not repeat explore between adjacent packages just to rediscover the same paths.
 
+### Fix-boundary check
+
+Before dispatching mutation for a non-trivial fix, establish the end-to-end acceptance condition at the requested outcome boundary and confirm that the proposed ownership/fix level can actually guarantee it across the materially relevant paths, states, callers, partitions/instances, and lifecycle transitions. Do not treat a local/per-partition bound or guard as proof of a system-level invariant unless composition/aggregate behavior is established. If the boundary cannot guarantee the condition, move it outward or escalate before coding.
+
 ### Iteration reset
 
 If the same material failure survives a mutation that was supposed to fix its root cause, or new evidence contradicts the current hypothesis, do not dispatch another substantially similar patch automatically. Reassess reproduction, assumptions, ownership/call path, environment, and fix level first; escalate to invariant/design work only when that evidence requires it.

@@ -81,6 +81,7 @@ A finding is evidence to reconcile with the behavioral model, not an instruction
 
 Before returning `pass` or `pass with notes` on code/diff-like work, establish from evidence:
 
+- what end-to-end acceptance condition the change is supposed to guarantee, and whether the chosen fix boundary can actually guarantee it across materially relevant paths, states, callers, partitions/instances, and lifecycle transitions;
 - whether an existing shared abstraction owns the changed behavior;
 - whether the same fix/logic is duplicated across callers;
 - whether the fix protects the unsafe primitive or only the reported caller;

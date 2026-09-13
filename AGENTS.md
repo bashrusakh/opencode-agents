@@ -578,6 +578,9 @@ When fixing an issue, bug, security finding, PR review comment, failing test, or
 
 Before editing:
 
+- define the end-to-end acceptance condition for the requested outcome and identify the smallest ownership boundary capable of guaranteeing it
+- test the proposed fix boundary against all materially relevant paths, states, callers, partitions/instances, and lifecycle transitions; a local guarantee is not an end-to-end guarantee unless its composition/aggregate behavior is established
+- if the proposed boundary cannot guarantee the acceptance condition, move the fix level outward or escalate before coding rather than accumulating local patches
 - identify the primitive/root operation that causes the problem
 - search existing patterns that solve similar problems
 - inspect similar call sites before deciding where the fix belongs

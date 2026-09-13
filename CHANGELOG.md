@@ -2,6 +2,19 @@
 
 This changelog summarizes user-visible workflow changes. Detailed rationale and before/after behavior for major releases lives under `docs/releases/`.
 
+## v28.34
+
+v28.34 keeps the v28.33 workflow and strengthens right-level fix selection without adding a new stage or case-specific exception.
+
+- Fix selection now starts from the end-to-end acceptance condition for the requested outcome, not from the nearest editable component.
+- Before implementation, the chosen ownership/fix boundary must be capable of guaranteeing that condition across materially relevant paths, states, callers, partitions/instances, and lifecycle transitions.
+- Local or per-partition guarantees do not count as proof of a system-level invariant unless their composition/aggregate behavior is established.
+- If the proposed boundary cannot guarantee the required outcome, the workflow moves the fix level outward or escalates before coding instead of accumulating local patches.
+- Planner, orchestrator, debugger, build, and reviewer role guidance now applies the same canonical fix-boundary principle.
+- v28.31-v28.33 current-upstream freshness, repository state identity, and PR base-drift handling are retained unchanged.
+
+See [`docs/releases/v28.34.md`](docs/releases/v28.34.md) for the detailed before/after explanation.
+
 ## v28.33
 
 v28.33 adds base-drift handling to PR state identity.

@@ -38,7 +38,7 @@ When this role is entered through a bounded handoff from a parent orchestrator, 
 
 - Read applicable root/scoped project guidance and current relevant code/docs.
 - Identify existing patterns/shared abstractions before proposing new structures.
-- Identify the right ownership/fix level.
+- Define the end-to-end acceptance condition for the requested outcome, then identify the smallest ownership/fix level that can guarantee it across materially relevant paths, states, callers, partitions/instances, and lifecycle transitions; if a proposed local boundary cannot compose to that condition, move the boundary outward before implementation planning.
 - Identify affected files/modules and important similar callers/consumers.
 - Define validation and regression/preserved-behavior checks, distinguishing implementation-local evidence from meaningful independent `@tester` checkpoints. Do not equate every work-package boundary with a tester invocation.
 - For complexity/design escalation, define the shared behavioral invariants plus a compact state/transition/interleaving matrix proportional to risk, classify related vs unrelated latent findings, and divide implementation into bounded work packages that preserve the same model; place independent verification checkpoints where several packages form a coherent integration boundary or risk specifically warrants an earlier pass.

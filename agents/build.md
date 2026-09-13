@@ -32,7 +32,7 @@ When you are executing a bounded work package handed off by an orchestrator/acce
 
 Follow the active root source-of-truth and branch/provenance rules. Resolve the actual target/base from repository evidence; do not assume `origin/main`. If an authoritative target/mutation baseline is supplied, verify that the worktree to be edited represents it before the first edit; do not implement a current-target change on a stale/unrelated checkout. Inspect nearby implementation, tests, and existing abstractions before editing.
 
-For user-facing behavior, establish the behavioral contract first. For bugfix/existing/shared behavior, identify changed behavior and the closest preserved behavior/invariant before editing.
+For user-facing behavior, establish the behavioral contract first. For bugfix/existing/shared behavior, define the end-to-end acceptance condition, identify changed behavior and the closest preserved behavior/invariant, and confirm that the proposed ownership/fix level can guarantee the condition across materially relevant paths/states/callers/partitions. If it cannot, move the boundary outward or return/escalate before editing rather than implementing a locally convenient partial fix.
 
 ## Implementation
 
