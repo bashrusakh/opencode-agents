@@ -30,6 +30,8 @@ A work-package boundary by itself is **not** a tester trigger.
 
 When invoked, tester receives the complete affected boundary and runs one verification batch: focused changed behavior, preserved behavior, representative consumers/shared suites, and applicable lint/build/smoke checks. The smallest test runs first, but a PASS does not end the assignment while other already-applicable checks remain.
 
+Focused tests count as production evidence only to the extent that the observed result justifies the production conclusion being drawn from it. If the same result could arise from test-only conditions while the claimed production property differs, the evidence remains test-scoped and the production claim is reported as a correspondence gap. Tester may read the necessary producer/consumer code only to establish that inference; this does not become a general code-review pass.
+
 The tester may stop early when a blocker or dependency failure makes later checks meaningless, unsafe, or outside scope. One failing check alone is not a stop condition when other independent applicable checks can still provide distinct useful evidence; collect the coherent failure set in the same invocation. A later repository-content change invalidates only affected evidence.
 
 ### 3. Remote CI/status evidence

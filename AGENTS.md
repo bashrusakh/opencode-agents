@@ -164,6 +164,26 @@ Check:
 
 Do not map schema/storage/API types directly to UI or workflow behavior. Preserve the existing affordance class unless the normalized request explicitly asks for a raw/manual/editor workflow.
 
+### 2.2.1 Claim authority, contract provenance, and semantic correspondence
+
+Authority attaches to a **claim**, not automatically to the artifact that contains it. A reference to an issue, ticket, PR, plan, comment, test, document, task assignment, or other artifact may establish scope and may contain normative requirements, but neither the container, heading, confidence, repetition, nor placement of a statement makes that statement authoritative by itself.
+
+Before using a material claim as an intended outcome, invariant, constraint, or acceptance condition, establish that authority from the current normalized user intent or applicable project-local authoritative rules. Merely referencing an artifact as the target or source of work does not silently adopt every statement inside it as the behavioral contract; an explicit current instruction or authoritative project rule may elevate the whole artifact or specified parts. If authority for a claim is not established, keep it as evidence or a hypothesis to verify rather than promoting it into the contract. Evidence may establish whether such a claim is factually or semantically supported, but evidence alone does not grant it authority to define the desired behavior.
+
+Do not let a workflow prove its own assumption by repeating it across an artifact, assignment, implementation comment, new test, and review summary. Only claims with established authority define intended outcomes/invariants. Established production behavior is evidence of current semantics and of preserved behavior only where the task does not intentionally change it. Proposed mechanisms, derived acceptance wording, comments/docs newly introduced by the same change, new tests, and the implementation's own description are evidence to inspect, not independent proof that the premise is true.
+
+Correctness claims must be stated in semantic terms before implementation details are used as evidence. Do not treat an implementation fact or mechanism as equivalent to the semantic property it is meant to represent unless the specific inference being used is established from actual system behavior.
+
+For every material correctness premise:
+
+- state the semantic proposition or outcome that must actually be true;
+- identify the concrete implementation facts being used as evidence and the semantic conclusion being inferred from them;
+- trace those facts far enough through actual system behavior to justify the specific direction of inference being used; unchanged adjacent code may be required evidence even when it is outside the changed-file set;
+- actively look for an ordinary valid system behavior in which the same implementation evidence would not justify that semantic conclusion; code tracing is sufficient when the result is statically decidable;
+- if the implementation or review also relies on the reverse inference, establish that direction separately rather than assuming equivalence;
+- if the required inference cannot be established from authoritative claims plus actual system behavior, keep it as an unresolved implementation hypothesis and revise the contract or implementation rather than declaring the premise satisfied.
+
+Changed-file coverage is not the same as semantic-proof coverage. A passing test likewise supports a production claim only to the extent that its fixtures, mocks, harness, and assertions preserve the semantic correspondence on which that claim depends; otherwise the result is evidence about the test setup, not proof of the real behavior.
 
 ### 2.3 Persistent Planning Mode
 
@@ -322,7 +342,7 @@ Ordinary safe workflow continuation is not a new gate: read-only exploration, pl
 
 Delegate when a specialist materially improves correctness, independent verification, role separation, or context management, and whenever the next required action belongs to another role. Do not delegate merely to reproduce stage names, and do not skip required delegation because a change looks easy.
 
-For multi-step work, the active primary/orchestrator is the workflow owner. It owns normalized scope, stage order, mutation/publication envelope, current findings, evidence freshness, state identity, and final claims. A specialist assignment must state enough to make its boundary clear: objective, behavioral/target scope, action level, expected result, stop/escalation conditions, current diff/Candidate-HEAD/PR context, and authoritative target ref + fetched SHA when a current-upstream claim is involved. That target/state identity is inherited through nested delegation until the workflow owner explicitly changes it.
+For multi-step work, the active primary/orchestrator is the workflow owner. It owns normalized scope, stage order, mutation/publication envelope, current findings, evidence freshness, state identity, and final claims. A specialist assignment must state enough to make its boundary clear: objective, behavioral/target scope, action level, expected result, stop/escalation conditions, current diff/Candidate-HEAD/PR context, and authoritative target ref + fetched SHA when a current-upstream claim is involved. When the assignment includes a behavioral contract, distinguish authoritative outcomes/invariants from caller-derived implementation hypotheses. State acceptance in semantic terms; do not substitute an implementation detail for the required outcome unless its correspondence to that outcome has been established from evidence, and do not present an unproven design assumption as an established requirement merely because an earlier stage proposed it. That target/state identity is inherited through nested delegation until the workflow owner explicitly changes it.
 
 Inside that assignment, the specialist owns ordinary execution details and may inspect adjacent evidence needed to answer it. Unless broader orchestration was explicitly delegated, it must not widen scope/direction/destination, start the next stage, decide to fix another finding, mutate outside the assignment, change PR/publication state, absorb another role, or create a new implementation batch.
 
@@ -374,17 +394,19 @@ Independent review cadence:
 - otherwise invoke `@reviewer` when independent judgment materially improves confidence for security/auth/data/persistence/API/schema/concurrency/shared-state/multi-caller or other non-obvious/high-risk changes;
 - do not invoke reviewer mechanically after every implementation package, tester pass, commit, or intermediate Draft push.
 
-### 5.2 Open Code Review backend
+### 5.2 Open Code Review review preflight and managed escalation
 
-For code, diff, commit, branch, workspace, or PR review, prefer OCR/open-code-review as the primary review backend when installed and allowed. `@reviewer` remains the policy/judgment layer: it normalizes scope, checks privacy/gates, runs OCR when appropriate, filters false positives, groups related findings by invariant/root cause, adds right-level/behavioral-contract/test-risk judgment, and formats the final review.
+For code, diff, commit, branch, workspace, or PR review, `@reviewer` owns the verdict and uses OCR delegation as a deterministic preflight when a compatible local `ocr` CLI is available. Delegation is LLM-free on the OCR side: use `ocr delegate preview` to obtain selection/exclusions/ref metadata and `ocr delegate rule` to resolve review rules, then let the reviewer perform the actual review with its own model/tools. Do not require `ocr llm test`, an OCR provider/API key, or external code-sharing approval merely to run delegation.
 
-OCR is locally read-only for the repository, but may send code, diffs, and context to its configured LLM provider. Section 4 controls external sharing. For ordinary review, if OCR is unavailable, not configured, or not approved, fall back to native read-only review and state why.
+The reviewer must first bind the exact target/state and establish the authoritative changed-file/effective-diff set. Delegate output is scaffolding, not scope authority: reconcile every `(path, status)` reviewable/excluded entry against that authoritative set, keep exclusions visible with reasons, and do not silently omit behaviorally relevant changed files because OCR filtered them. A full-coverage claim requires every authoritative changed entry to be accounted for as reviewed or explicitly skipped with a defensible reason. OCR-resolved rules supplement rather than override user requirements, root/scoped project policy, or explicit acceptance criteria.
 
-OCR is not a universal PR-readiness requirement. `@reviewer` decides whether OCR materially improves a review under the ordinary availability/privacy rules, unless the user or project explicitly requires OCR. When OCR is used, its findings are evidence for the reviewer to reconcile; OCR availability alone does not determine Draft/Ready state.
+If the CLI/delegate capability itself is unavailable, perform the equivalent native read-only scope/rule preflight and report why delegation was unavailable. A delegate preview failure caused by invalid refs, wrong repository, or target/scope mismatch is not an availability fallback: resolve the authoritative target before review continues. If trustworthy preview scope exists but delegate rule resolution fails, use root/scoped project rules and report the rule-resolution gap rather than fabricating OCR rules. Do not install/upgrade OCR as part of ordinary review unless separately authorized.
 
-When running OCR, follow the loaded OCR skill/current CLI semantics for `--timeout` and effort/review-round scaling. Set the surrounding shell/tool timeout to at least the effective OCR review-group budget with reasonable headroom when supported.
+Managed `ocr review` is a separate independent-model escalation after the host reviewer has completed its own coverage. It is not the universal first backend and is not a universal PR-readiness requirement. Invoke managed OCR when the user/project explicitly requires it or when the reviewer judges that an independent second model pass materially improves confidence for high-risk/complex/uncertain review. Managed OCR may send code/diffs/context to its configured LLM provider, so section 4 controls external sharing and OCR LLM availability for that step only. Follow the loaded `open-code-review` skill/current CLI semantics for output, timeout, effort, provider/model, and budget handling.
 
-Do not apply OCR suggestions automatically for review-only work. Fixes require a separately normalized implementation request and an implementation-capable role.
+If managed OCR fails because of quota/rate/provider availability, or an optional second pass would require OCR installation/upgrade/provider configuration, do not discard or block an already complete host review and do not create a new user gate merely to enable optional OCR. Report the managed escalation as unavailable and continue with the reviewer verdict. Ask for setup/upgrade only when managed OCR itself was explicitly requested/required; if required evidence cannot run, report it as blocked. Reconcile any managed OCR findings into reviewer judgment rather than treating OCR output as the verdict.
+
+Do not apply delegate/OCR suggestions automatically for review-only work. Fixes require a separately normalized implementation request and an implementation-capable role.
 
 ## 6. Workflow routing
 
@@ -478,7 +500,7 @@ When escalation occurs:
 4. distinguish intended changed behavior, preserved behavior, in-scope related defects, and out-of-scope findings;
 5. use `@plan` when durable architecture/sequencing is needed, then split implementation into bounded work packages;
 6. execute those batches through implementation-capable roles and require proportionate implementation-local evidence against the same invariant model; group independent `@tester` verification at meaningful integration/checkpoint boundaries rather than mechanically after every work package;
-7. reserve expensive independent final review for a stable candidate boundary rather than re-running it after every intermediate batch, unless independent judgment is specifically required to choose the next safe direction. OCR remains reviewer-selected under section 5.2.
+7. reserve expensive independent final review for a stable candidate boundary rather than re-running it after every intermediate batch, unless independent judgment is specifically required to choose the next safe direction. Managed OCR remains reviewer-selected under section 5.2; delegate preflight follows the code-review rule there.
 
 A review finding is evidence of a defect, not automatically an instruction to patch the commented line. Unrelated pre-existing findings do not silently expand the current task; report them for follow-up.
 
@@ -711,7 +733,7 @@ Before creating/updating/pushing an owned Draft PR during active work, establish
 - proportionate fresh verification evidence exists where practical (implementation-local, independent `@tester`, or remote CI as appropriate); an intermediate Draft push does not require a separate tester invocation merely because a batch ended, and failures/blockers are stated honestly;
 - the PR remains Draft and its current metadata is not misleading.
 
-This is the normal publication boundary only while the work is explicitly still in progress or publication is needed to obtain remote CI/status evidence. It does **not** require re-running final `@reviewer` after each batch; OCR follows the ordinary reviewer-selected policy. Once the orchestrator believes the current batch may be the final repository-content candidate, do **not** publish it as another intermediate batch: freeze/commit it locally and enter the Candidate HEAD sequence below so whole-PR review happens before that candidate's push.
+This is the normal publication boundary only while the work is explicitly still in progress or publication is needed to obtain remote CI/status evidence. It does **not** require re-running final `@reviewer` after each batch; Delegate preflight follows section 5.2; managed OCR follows the ordinary reviewer-selected escalation policy. Once the orchestrator believes the current batch may be the final repository-content candidate, do **not** publish it as another intermediate batch: freeze/commit it locally and enter the Candidate HEAD sequence below so whole-PR review happens before that candidate's push.
 
 #### Candidate HEAD
 
@@ -732,7 +754,7 @@ An owned PR may move from Draft to Ready only when all applicable conditions are
 
 If the repository has a required check that technically cannot run until the PR is marked Ready, do not fabricate a pass and do not bounce Draft/Ready repeatedly to trigger it. Report the repository-specific dependency and follow explicit project/user policy for that exception.
 
-A `changes required` reviewer verdict keeps the PR Draft. OCR findings, when OCR is used, are reconciled into that reviewer verdict. Resolve findings in bounded batches, re-run affected verification, establish the new local Candidate HEAD, and repeat the final whole-PR reviewer pass **before pushing that replacement candidate**.
+A `changes required` reviewer verdict keeps the PR Draft. Managed OCR findings, when that escalation is used, are reconciled into that reviewer verdict. Resolve findings in bounded batches, re-run affected verification, establish the new local Candidate HEAD, and repeat the final whole-PR reviewer pass **before pushing that replacement candidate**.
 
 Any code/config/test/generated-output/dependency/history change after final candidate verification/review invalidates the affected evidence and creates a new candidate. Pushing the already-reviewed commit without changing its SHA/effective diff does not invalidate review; verify remote identity instead of re-reviewing solely because a push occurred. If remote CI then requires a repository-content fix, make the fix locally, establish a new Candidate HEAD, and repeat final local verification plus whole-PR review before the next candidate push. If an owned PR had already been marked Ready and new repository-content work begins, convert it back to Draft before continuing the next update cycle.
 

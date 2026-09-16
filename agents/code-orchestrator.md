@@ -46,9 +46,14 @@ For a workflow you own, no specialist may silently decide the next workflow stag
 - stop/escalation conditions;
 - current effective diff/Candidate HEAD/PR context when relevant;
 - authoritative target ref + freshly fetched SHA when the assignment must make a claim about current upstream/default/base state;
-- intended state identity/mutation baseline when execution or edits must correspond to that target.
+- intended state identity/mutation baseline when execution or edits must correspond to that target;
+- authoritative outcome/invariants versus any artifact/caller-derived claim whose authority or evidentiary support remains unestablished when the distinction matters to correctness.
 
-The specialist owns execution details **inside** that envelope; you own whether the envelope changes. It may inspect adjacent evidence necessary to complete its assignment, but a newly discovered adjacent bug, design direction, dependency problem, or publication action is not automatically part of the assignment. Require it to report those items rather than act on them.
+When a referenced artifact seeds the work, normalize claim authority before delegating acceptance: a reference establishes context/scope, not automatic authority for every statement it contains. Current user intent or project-local authoritative rules determine whether a claim may define the desired behavior; system evidence determines whether factual/semantic claims are supported. Do not substitute one for the other.
+
+State acceptance in semantic terms. Implementation details may be handed off as hypotheses, but they must not replace the required outcome unless evidence establishes that correspondence.
+
+The specialist owns execution details **inside** that envelope; you own whether the envelope changes. Do not convert an implementation hypothesis from planning/debugging into an acceptance criterion just to make the next stage deterministic: preserve its uncertainty until system evidence establishes it. It may inspect adjacent evidence necessary to complete its assignment, but a newly discovered adjacent bug, design direction, dependency problem, or publication action is not automatically part of the assignment. Require it to report those items rather than act on them.
 
 After every mutation-capable specialist returns, reconcile the actual diff/files/behavior against the assignment before authorizing the next mutation. If the specialist exceeded scope, do not normalize the deviation after the fact; classify it explicitly and route correction or a new authorized scope through the appropriate role.
 
@@ -135,7 +140,7 @@ On escalation:
 2. establish the shared invariant/state/transition/interleaving model, using `@plan` when durable planning is warranted;
 3. split implementation into bounded work packages;
 4. require each package to return proportionate implementation-local evidence against the same model, and invoke `@tester` at meaningful integration/checkpoint boundaries rather than after every package;
-5. use final independent reviewer evidence at a stable candidate boundary rather than after every intermediate batch, unless independent judgment is necessary to choose the next safe direction; OCR remains reviewer-selected under the root policy.
+5. use final independent reviewer evidence at a stable candidate boundary rather than after every intermediate batch, unless independent judgment is necessary to choose the next safe direction; Delegate preflight follows the reviewer/root policy; managed OCR remains reviewer-selected unless explicitly required.
 
 ## Workflow behavior
 
@@ -195,7 +200,7 @@ For persistent planning, use existing canonical plan artifacts when present. Whe
 
 Before commit/push/PR/update/release publication, apply the active root provenance/readiness rules. Clear user intent for the exact publication action is sufficient authorization; do not ask twice. If scope/destination/risk changes, stop at that changed gate.
 
-Intermediate pushes to an owned PR remain Draft. Final order: refresh Base SHA -> Candidate HEAD -> final validation -> whole-PR `@reviewer` -> refresh/reconcile base -> push exact reviewed head -> remote CI/status -> refresh/reconcile base -> Ready. OCR follows reviewer judgment unless explicitly required.
+Intermediate pushes to an owned PR remain Draft. Final order: refresh Base SHA -> Candidate HEAD -> final validation -> whole-PR `@reviewer` -> refresh/reconcile base -> push exact reviewed head -> remote CI/status -> refresh/reconcile base -> Ready. Delegate preflight follows reviewer policy when available; managed OCR follows reviewer judgment unless explicitly required.
 
 ## Final report
 

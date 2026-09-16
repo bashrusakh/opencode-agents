@@ -26,7 +26,7 @@ Before an intermediate push/update to an owned Draft PR:
 - PR metadata describes work-in-progress truthfully;
 - the PR remains Draft.
 
-Do **not** require the final reviewer or a separate tester pass after every intermediate batch. Use implementation-local evidence by default during mutation batches; group independent `@tester` verification at meaningful integration/candidate boundaries when independence materially adds confidence or policy requires it. Remote CI is a separate evidence layer. Intermediate publication is only for work that is explicitly still in progress or needs remote CI/status evidence. Once the orchestrator believes the current batch may be final repository content, stop using the intermediate path and hold/freeze it locally for Candidate HEAD review before push. OCR remains reviewer-selected unless user/project policy explicitly requires it.
+Do **not** require the final reviewer or a separate tester pass after every intermediate batch. Use implementation-local evidence by default during mutation batches; group independent `@tester` verification at meaningful integration/candidate boundaries when independence materially adds confidence or policy requires it. Remote CI is a separate evidence layer. Intermediate publication is only for work that is explicitly still in progress or needs remote CI/status evidence. Once the orchestrator believes the current batch may be final repository content, stop using the intermediate path and hold/freeze it locally for Candidate HEAD review before push. Delegate preflight follows the code-review policy when compatible OCR is available; managed OCR remains reviewer-selected unless user/project policy explicitly requires it.
 
 ## Candidate HEAD
 

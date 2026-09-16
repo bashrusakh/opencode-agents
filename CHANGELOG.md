@@ -2,6 +2,59 @@
 
 This changelog summarizes user-visible workflow changes. Detailed rationale and before/after behavior for major releases lives under `docs/releases/`.
 
+## v28.38
+
+v28.38 fixes contract-authority inheritance from referenced artifacts.
+
+- Authority now attaches to individual claims, not automatically to the issue/PR/plan/comment/test/doc/task that contains them.
+- A referenced artifact may establish scope and may contain normative requirements, but container, heading, repetition, confidence, or placement alone do not elevate a statement into the behavioral contract.
+- Material acceptance claims must derive authority from current normalized user intent or project-local authoritative rules before implementation/planning/review treats them as requirements; an explicit current instruction may elevate a referenced artifact or selected parts.
+- Claim authority and evidentiary support are separate: system evidence can support or refute a claim but cannot by itself make that claim a requirement.
+- Issue/report-derived bugfixes explicitly keep unestablished claims as evidence/hypotheses instead of silently adopting proposed mechanisms or derived acceptance wording.
+- Reviewer normalizes claim authority before applying semantic correspondence, preventing a self-confirming loop where an artifact's own proposed mechanism becomes both requirement and proof.
+
+See [`docs/releases/v28.38.md`](docs/releases/v28.38.md).
+
+## v28.37
+
+v28.37 generalizes the v28.36 premise-validation rule around semantic correspondence instead of enumerating classes of mechanisms or bugs.
+
+- Correctness claims must state the semantic property/outcome first; implementation facts and mechanisms are evidence rather than the contract itself.
+- A proxy counts as proof only when its correspondence to the claimed semantic property is established from actual system behavior.
+- Review establishes the specific evidence-to-semantics inference being used and checks for ordinary valid behavior where the same technical evidence would not justify the claimed semantic conclusion; reverse inference is proved separately only when the change relies on it.
+- Reviewer, planner, and orchestrator keep implementation details as hypotheses until that correspondence is established.
+- Tester/verification policy now asks whether the observed test result actually justifies the production conclusion being claimed, instead of maintaining a taxonomy of special cases.
+- Existing v28.35 OCR delegation, v28.34 fix-boundary, and v28.31-v28.33 freshness/state/base-drift rules are unchanged.
+
+See [`docs/releases/v28.37.md`](docs/releases/v28.37.md).
+
+## v28.36
+
+v28.36 hardens review and verification against self-confirming implementation assumptions.
+
+- Adds one canonical contract-provenance/premise-validation rule instead of case-specific checks.
+- Caller-proposed mechanisms, comments/docs introduced by the same change, new tests, and implementation descriptions are not independent proof of the premise they repeat; current production behavior is evidence, not automatically the desired contract.
+- Material correctness guards/state transitions must have their semantic premises traced into production producers/owners/consumers, including unchanged adjacent code when needed.
+- Representation-to-semantic mappings such as reference identity versus value equivalence must be established rather than assumed, and reviewers reason through an ordinary valid production transition that could falsify the premise.
+- Changed-file coverage is explicitly separated from semantic-proof coverage.
+- Tester verifies harness/fixture/mock fidelity for lifecycle/identity/order/ownership/timing-sensitive claims before promoting focused results to production evidence.
+- Orchestrator and planner keep authoritative outcomes/invariants distinct from implementation hypotheses when handing work between stages.
+
+See [`docs/releases/v28.36.md`](docs/releases/v28.36.md).
+
+## v28.35
+
+v28.35 makes OCR delegation the deterministic preflight for code-like reviewer runs when compatible OCR is installed, while managed `ocr review` becomes an independent second-model escalation.
+
+- Reviewer binds the authoritative target/effective diff before delegate selection.
+- `ocr delegate preview` + `ocr delegate rule` provide LLM-free selection/exclusions/ref metadata and grouped rules.
+- Delegate output is reconciled against every authoritative `(path,status)` entry; exclusions cannot silently reduce coverage.
+- Host `@reviewer` performs the complete review with its own model and reports explicit coverage.
+- Managed OCR runs only when explicitly required or materially useful; quota/rate/provider failure preserves a complete host verdict unless managed OCR was mandatory.
+- Bundled `open-code-review` is replaced by the supplied current CLI skill and `open-code-review-delegate` is added.
+
+See [`docs/releases/v28.35.md`](docs/releases/v28.35.md) and [`docs/ocr_review_policy.md`](docs/ocr_review_policy.md).
+
 ## v28.34
 
 v28.34 keeps the v28.33 workflow and strengthens right-level fix selection without adding a new stage or case-specific exception.

@@ -40,6 +40,7 @@ At the start, derive the applicable verification set for the whole assignment: f
 - Capture the exact command, exit status/result, and the minimal useful failure output.
 - Distinguish product-code failures from environment/setup/tooling failures. Do not install/fix missing dependencies, rewrite test setup, start migrations, or mutate services merely to unlock verification unless that separate action was explicitly delegated.
 - When an invariant/state/interleaving matrix is supplied, map each executed check to the cases it actually covers and identify uncovered cases.
+- When a verification claim uses test behavior as evidence for a production property, inspect enough actual system behavior to justify the specific conclusion being drawn from that result. Ask whether the same observed test result could arise from the harness, fixture, mock, environment, or assertion while the claimed production property differs; if so, scope the evidence to the test setup and report the correspondence gap. Read adjacent production code only as needed for this verification question; do not turn this into a general code-review stage.
 - Evidence from one layer/boundary does not substitute for another affected boundary; e.g. server tests do not prove a changed React/UI boundary.
 - If a later edit affects a check you ran, your earlier result is stale; say so if the caller asks about a changed diff.
 
