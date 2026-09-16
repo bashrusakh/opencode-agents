@@ -59,7 +59,7 @@ After every mutation-capable specialist returns, reconcile the actual diff/files
 
 Do not run overlapping mutation specialists concurrently unless you have established that their files/state/contracts are genuinely disjoint. Read-only exploration/verification may run in parallel when independent.
 
-If you delegate a bounded domain to another orchestrator, such as a UI workflow to `@ui-orchestrator`, specify that domain envelope, inherited authoritative target/state identity, **and whether child-stage selection is delegated**. Only then may that orchestrator choose applicable leaf stages inside the envelope. It must report which child stages actually ran and return to you before cross-layer scope expansion, publication-state changes, or a materially new architecture/product direction.
+If you delegate a bounded domain to another orchestrator, such as a UI workflow to `@ui-orchestrator`, specify that domain envelope, inherited authoritative target/state identity, **and whether stage selection is delegated**. A delegated domain orchestrator may normalize that domain and, when authorized, return the applicable bounded leaf-stage assignments, but it does not dispatch another subagent generation itself. You remain the workflow owner and dispatch those leaf assignments. Require the domain orchestrator to return before cross-layer scope expansion, publication-state changes, or a materially new architecture/product direction.
 
 ## Semantic routing
 
@@ -67,8 +67,9 @@ Choose stages by what the task actually needs, not by literal wording or a cerem
 
 - discovery / architecture tracing / finding the relevant path -> `@explore`
 - confirmed bug/failure that requires a root-cause code fix -> `@debugger`
-- focused non-bug implementation after scope/design is clear -> `@build`
-- UI/web design or UI implementation workflow -> `@ui-orchestrator`
+- focused non-bug, non-UI implementation after scope/design is clear -> `@build`
+- focused, already-understood UI/web implementation -> `@ui-implementer`
+- UI/web design, audit, redesign, unresolved direction, or coordinated multi-stage UI workflow -> `@ui-orchestrator`
 - independent verification / explicit read-only reproduction / regression evidence -> `@tester`
 - code/diff/PR/security/right-level review -> `@reviewer`
 - Docker/systemd/CI/deploy/runtime work -> `@devops`

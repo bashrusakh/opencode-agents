@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.39
+# OpenCode Agent Pack v28.40
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,14 +14,13 @@
 
 ---
 
-## What changed in v28.39
+## What changed in v28.40
 
-v28.39 cleans the bundle documentation surface without changing agent behavior: README now describes only the current bundle and points to historical release information through the changelog instead of duplicating prior release indexes.
-
-- **Current release only** — README carries one `What changed` section for the installed bundle.
-- **Single history entry point** — `CHANGELOG.md` is linked once; older release notes remain under `docs/releases/` for history but are not duplicated in the README map.
-- **Stable documentation map** — the map lists the current release note plus durable policy/reference documents only.
-
+- `build` and `plan` now use `mode: all`, matching their existing direct-primary and delegated-leaf contracts.
+- `ui-orchestrator` now uses `mode: all`: as primary it may dispatch the UI workflow; when delegated by another orchestrator it selects/prepares leaf assignments and returns them to the workflow owner instead of launching grandchildren.
+- Focused, already-understood UI implementation routes directly to `ui-implementer`; UI design/audit/redesign or coordinated UI work routes to `ui-orchestrator`.
+- `debugger` remains a specialized `subagent` leaf for confirmed root-cause bugfix work.
+- The bundle keeps the default one-generation subagent architecture; no `subagent_depth` increase is introduced.
 
 ---
 
@@ -48,9 +47,10 @@ Routing follows the requested outcome, target, action level, and repository evid
 | “Where is this implemented?” | discovery / `explore` |
 | “Fix this runtime bug” | bugfix workflow / `debugger` |
 | “Change this known code/config path” | focused implementation / `build` |
+| “Implement this already-specified UI change” | focused UI implementation / `ui-implementer` |
 | “Review this PR” | `reviewer` |
 | “Audit the project” | `auditor` |
-| “Redesign these settings” | UI workflow |
+| “Redesign these settings” | UI workflow / `ui-orchestrator` |
 | “Why is this service failing?” | `devops` diagnostics |
 
 The same intent should route consistently even when phrased differently or in another language.
@@ -249,17 +249,17 @@ References: [`docs/ui_component_policy.md`](docs/ui_component_policy.md) · [`do
 
 | Agent | Role |
 |---|---|
-| `build` | Focused, clearly scoped implementation |
+| `build` | Focused implementation; direct primary or delegated leaf |
 | `code-orchestrator` | Multi-step coding/PR/bug/release coordination; never implements itself |
 | `debugger` | Root-cause bugfix implementation |
 | `explore` | Read-only codebase discovery/call-path tracing |
 | `tester` | Independent verification; never fixes failures |
 | `reviewer` | Independent code/diff/PR/plan review |
 | `auditor` | Broad read-only project audit orchestrator |
-| `plan` | Architecture/persistent planning artifacts; no source implementation |
+| `plan` | Architecture/persistent planning; direct primary or delegated leaf; no source implementation |
 | `devops` | Runtime/CI/deploy diagnostics and authorized operational changes |
 | `general` | Read-only bounded fallback research when no specialist fits |
-| `ui-orchestrator` | Coordinated UI workflow; never implements itself |
+| `ui-orchestrator` | UI workflow owner when primary; delegated UI stage normalizer when called by another orchestrator; never implements itself |
 | `ui-auditor` | Read-only UI/UX audit |
 | `ui-planner` | Concrete UI implementation planning |
 | `ui-implementer` | Focused UI implementation |
@@ -350,7 +350,7 @@ Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` int
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history |
-| [`docs/releases/v28.39.md`](docs/releases/v28.39.md) | Current release notes |
+| [`docs/releases/v28.40.md`](docs/releases/v28.40.md) | Current release notes |
 | [`docs/verification_strategy.md`](docs/verification_strategy.md) | Verification layers, tester cadence, and batching |
 | [`docs/pr_readiness.md`](docs/pr_readiness.md) | Draft / Candidate HEAD / Ready lifecycle |
 | [`docs/git_branch_provenance_policy.md`](docs/git_branch_provenance_policy.md) | Branch/base/head provenance and current-upstream freshness |

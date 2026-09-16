@@ -2,6 +2,16 @@
 
 This changelog summarizes user-visible workflow changes. Detailed rationale and before/after behavior for major releases lives under `docs/releases/`.
 
+## v28.40
+
+- `build` changes from `mode: primary` to `mode: all`, preserving direct focused implementation while making the documented orchestrator -> build route runtime-valid.
+- `plan` changes from `mode: primary` to `mode: all`; its existing `task: deny` keeps delegated planning leaf-only.
+- `ui-orchestrator` changes from `mode: primary` to `mode: all`. As primary it dispatches UI specialists; when delegated it may select and prepare leaf assignments but returns them to the workflow-owning parent for dispatch instead of creating grandchildren.
+- Focused, already-understood UI implementation routes directly to `ui-implementer`; UI design/audit/redesign or coordinated multi-stage UI work continues through `ui-orchestrator`.
+- `debugger` remains a specialized `mode: subagent`, `task: deny` root-cause/fix leaf; it is not a generic implementation substitute.
+- The packaged `auditor` remains primary-only and no longer describes an impossible nested-dispatch mode.
+- No `subagent_depth` increase or permission broadening is introduced.
+
 ## v28.39
 
 v28.39 cleans README release-history duplication; agent behavior is unchanged from v28.38.

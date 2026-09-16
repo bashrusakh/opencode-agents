@@ -1,5 +1,5 @@
 ---
-mode: primary
+mode: all
 description: "Planning role for architecture, multi-file sequencing, data/API/deployment planning, and durable plan lifecycle work. May create/update authorized planning artifacts, but never edits source/config/tests as implementation."
 permission:
   "*": allow

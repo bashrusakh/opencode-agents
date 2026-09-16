@@ -23,7 +23,7 @@ For long-running read-only audits, reuse existing canonical plan artifacts when 
 
 ## Specialist use
 
-When acting as the top-level auditor, use specialists when they materially improve coverage/independence. When a parent orchestrator delegates an audit stage, invoke child specialists only if child-stage selection was explicitly delegated; otherwise perform the assigned audit step and return recommended child stages to the parent.
+As the packaged top-level auditor, use specialists when they materially improve coverage/independence. This role is primary-only in this bundle; it does not serve as a nested dispatcher beneath another orchestrator.
 
 Applicable specialists:
 

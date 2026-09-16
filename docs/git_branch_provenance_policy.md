@@ -56,7 +56,7 @@ inspect ref/SHA -> executable workspace -> mutation baseline -> reviewed Base SH
 - Static current-state claims may inspect the fetched ref directly with ref-aware tooling; no checkout is required.
 - Runtime reproduction/tests prove a named remote target only from a workspace proven to represent it; record `HEAD` and relevant dirty state. A mismatch produces workspace-only evidence.
 - New current-target implementation starts from the proven authoritative baseline; existing PR/task work may be ahead only when that exact branch/context is the authorized target and its base relation is proven.
-- Authoritative ref/SHA and intended state identity pass through nested delegation until explicitly changed by the workflow owner.
+- Authoritative ref/SHA and intended state identity survive delegated handoffs until explicitly changed by the workflow owner.
 - PR evidence is pair-bound: record Base SHA + Candidate HEAD. Base drift can stale validation/review even when Candidate HEAD is unchanged.
 
 ## Branch safety classes

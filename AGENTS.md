@@ -342,7 +342,7 @@ Ordinary safe workflow continuation is not a new gate: read-only exploration, pl
 
 Delegate when a specialist materially improves correctness, independent verification, role separation, or context management, and whenever the next required action belongs to another role. Do not delegate merely to reproduce stage names, and do not skip required delegation because a change looks easy.
 
-For multi-step work, the active primary/orchestrator is the workflow owner. It owns normalized scope, stage order, mutation/publication envelope, current findings, evidence freshness, state identity, and final claims. A specialist assignment must state enough to make its boundary clear: objective, behavioral/target scope, action level, expected result, stop/escalation conditions, current diff/Candidate-HEAD/PR context, and authoritative target ref + fetched SHA when a current-upstream claim is involved. When the assignment includes a behavioral contract, distinguish authoritative outcomes/invariants from caller-derived implementation hypotheses. State acceptance in semantic terms; do not substitute an implementation detail for the required outcome unless its correspondence to that outcome has been established from evidence, and do not present an unproven design assumption as an established requirement merely because an earlier stage proposed it. That target/state identity is inherited through nested delegation until the workflow owner explicitly changes it.
+For multi-step work, the active primary/orchestrator is the workflow owner. It owns normalized scope, stage order, mutation/publication envelope, current findings, evidence freshness, state identity, and final claims. A specialist assignment must state enough to make its boundary clear: objective, behavioral/target scope, action level, expected result, stop/escalation conditions, current diff/Candidate-HEAD/PR context, and authoritative target ref + fetched SHA when a current-upstream claim is involved. When the assignment includes a behavioral contract, distinguish authoritative outcomes/invariants from caller-derived implementation hypotheses. State acceptance in semantic terms; do not substitute an implementation detail for the required outcome unless its correspondence to that outcome has been established from evidence, and do not present an unproven design assumption as an established requirement merely because an earlier stage proposed it. That target/state identity survives every delegated handoff and must be passed onward by the workflow owner until the workflow owner explicitly changes it.
 
 Inside that assignment, the specialist owns ordinary execution details and may inspect adjacent evidence needed to answer it. Unless broader orchestration was explicitly delegated, it must not widen scope/direction/destination, start the next stage, decide to fix another finding, mutate outside the assignment, change PR/publication state, absorb another role, or create a new implementation batch.
 
@@ -350,7 +350,7 @@ If new evidence requires material expansion, a new protocol/design concept, anot
 
 Specialist results must be auditable but compact: assignment/scope, material actions/evidence, boundary status, and any escalation/out-of-scope finding; mutation-capable roles also report files/behavior actually changed. A specialist result is evidence, not authority: after every mutation stage, the orchestrator reconciles the actual current diff/state against the assignment before authorizing more mutation.
 
-Nested orchestrators are allowed only inside the parent's delegated envelope. The parent must state whether child-stage selection is delegated; without that authority, the nested orchestrator returns recommended next stages rather than launching them. Prefer serialized mutation stages. Parallel read-only work is fine when independent; parallel mutation requires established disjoint files/state/contracts.
+An orchestrator acting as the active workflow-owning primary may dispatch its applicable specialist stages. An orchestrator invoked by another orchestrator may normalize only its delegated domain and, when explicitly authorized, select the required leaf stages and prepare bounded assignments for them; it returns those assignments to the workflow-owning parent for dispatch rather than launching another subagent generation itself. Delegating stage-selection authority does not transfer workflow ownership. Prefer serialized mutation stages. Parallel read-only work is fine when independent; parallel mutation requires established disjoint files/state/contracts.
 
 For multi-step work, the orchestrator loops: normalize scope -> establish the current task/findings set -> assign the next bounded stage -> reconcile actual result/state -> classify new findings/escalations -> continue through safe applicable stages -> return one consolidated report.
 
@@ -367,11 +367,12 @@ Default routing:
 
 - discovery, architecture tracing, file search, “where/how is this implemented?” -> `@explore`
 - architecture/multi-file sequencing/data model/API/deployment planning or multiple valid approaches -> `@plan`
-- UI/web design/redesign/layout/theme/settings/forms/dashboards/tables -> `@ui-orchestrator`
+- UI/web design/redesign/layout/theme/settings/forms/dashboards/tables or coordinated multi-stage UI work -> `@ui-orchestrator`
+- focused UI/web implementation after the UI direction/scope is already clear -> `@ui-implementer`
 - multi-step bugfix, PR follow-up, bug-issue, release-prep -> `@code-orchestrator`
 - full project audit, logic review, dead-code sweep, wrong-fix-level sweep -> `@auditor`
 - independent verification / explicit read-only reproduction / regression evidence -> `@tester`
-- focused implementation after scope/design is already clear -> `@build`
+- focused non-UI implementation after scope/design is already clear -> `@build`
 - root-cause bug fixing for confirmed failures/bugs -> `@debugger`
 - code/PR/security/abstraction-level/duplicated-fix review -> `@reviewer`
 - Docker/systemd/CI/deploy/runtime config -> `@devops`

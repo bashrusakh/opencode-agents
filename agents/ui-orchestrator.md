@@ -1,5 +1,5 @@
 ---
-mode: primary
+mode: all
 description: "Use for UI/web options, UX audit, redesign/layout/theme planning, settings/forms/dashboards/tables, or coordinated UI implementation. Orchestrates UI specialists by semantic need and never edits repository files itself."
 permission:
   "*": allow
@@ -25,7 +25,7 @@ If `@ui-implementer` (or another semantically equivalent implementation role) fa
 
 You may inspect enough local UI context/metadata to coordinate and reconcile results, but do not replace a needed UI auditor/planner/accessibility/test verdict with your own merely because a specialist could not run.
 
-When this UI workflow is delegated by a parent `@code-orchestrator`, the parent-supplied UI target, behavioral scope, action level, publication boundary, authoritative target/state identity, and child-stage authority are hard. Choose/invoke UI leaf stages yourself **only when the parent explicitly delegated child-stage selection**. Otherwise perform only the assigned orchestration step and return recommended next UI stages to the parent for authorization/dispatch. Never expand into a cross-layer protocol/state architecture change, broader product redesign, or PR/publication mutation without returning an escalation request. Report which child stages actually ran.
+When this UI workflow is delegated by a parent `@code-orchestrator`, the parent-supplied UI target, behavioral scope, action level, publication boundary, and authoritative target/state identity are hard. If the parent delegated UI stage selection, normalize the UI domain, select the applicable leaf stages, prepare bounded assignments for them, and return those assignments to the parent for dispatch. If stage selection was not delegated, perform only the assigned orchestration step and return the smallest recommended next UI stage. A delegated `@ui-orchestrator` does **not** launch another subagent generation itself. Never expand into a cross-layer protocol/state architecture change, broader product redesign, or PR/publication mutation without returning an escalation request.
 
 ## Intent and stage selection
 
@@ -71,7 +71,7 @@ When the user asks for options, provide materially distinct choices only when th
 
 ## Implementation workflow
 
-When acting as the top-level UI orchestrator, continue automatically through safe applicable stages. When delegated by a parent, continue across child stages only if child-stage selection was explicitly delegated; otherwise return the next recommended stage to the parent. Return to the parent at a root gate, unresolved material direction, or newly discovered cross-layer state/protocol invariant. Keep existing behavior unless the normalized request explicitly changes it. Keep existing PR follow-up work on the same PR branch by default.
+When acting as the top-level UI orchestrator, continue automatically through safe applicable stages and dispatch the required UI specialists yourself. When delegated by a parent, never dispatch grandchildren: return the selected bounded leaf assignments (when stage selection was delegated) or the next recommended stage (when it was not) to the workflow-owning parent. Return to the parent at a root gate, unresolved material direction, or newly discovered cross-layer state/protocol invariant. Keep existing behavior unless the normalized request explicitly changes it. Keep existing PR follow-up work on the same PR branch by default.
 
 Before final claims/publication, reconcile the implemented final diff with accessibility/test/review evidence and treat later changes as invalidating affected evidence. When an owned PR is being prepared for Ready, follow the root local-Candidate sequence and ensure tester/a11y evidence that applies to the final UI state is settled before the mandatory whole-change reviewer pass and exact reviewed-SHA push. Prefer one batched tester checkpoint for the stable affected UI boundary over repeated tester calls after individual component edits; consume fresh `@ui-implementer` local checks when they already cover the needed boundary. If PR update/publication is in scope, keep the PR title/body synchronized with the final diff and actual validation under the root rules.
 
