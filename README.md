@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.38
+# OpenCode Agent Pack v28.39
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,59 +14,14 @@
 
 ---
 
-## What changed in v28.38
+## What changed in v28.39
 
-v28.38 hardens **claim authority** before semantic correspondence. Referenced issues, PRs, plans, comments, tests, docs, and task assignments can contain real requirements, evidence, and hypotheses side by side; the container no longer grants every statement the same authority.
+v28.39 cleans the bundle documentation surface without changing agent behavior: README now describes only the current bundle and points to historical release information through the changelog instead of duplicating prior release indexes.
 
-- **Per-claim authority** — material requirements are normalized from current user intent and project-local authoritative rules, not inferred from the artifact or heading that contains them.
-- **Explicit elevation stays possible** — a current instruction or authoritative project rule may make an entire referenced artifact, or selected parts of it, normative.
-- **Authority is not truth** — system evidence can support or refute a claim, but cannot by itself make that claim a requirement; reviewer checks these questions separately.
-- **Issue/report safety** — issue-derived bugfixes use the report as context/evidence while independently establishing which claims actually define the desired outcome.
-- **Semantic correspondence remains downstream** — only after the contract is normalized does review ask whether implementation evidence justifies the semantic conclusion.
+- **Current release only** — README carries one `What changed` section for the installed bundle.
+- **Single history entry point** — `CHANGELOG.md` is linked once; older release notes remain under `docs/releases/` for history but are not duplicated in the README map.
+- **Stable documentation map** — the map lists the current release note plus durable policy/reference documents only.
 
-**Details:** [CHANGELOG.md](CHANGELOG.md) · [v28.38 release notes](docs/releases/v28.38.md)
-
----
-
-## What changed in v28.37
-
-v28.37 refines the v28.36 premise-validation work into one more general rule: **semantic correspondence**. The pack no longer enumerates classes of risky mechanisms; it asks whether the technical evidence being used actually represents the semantic property the workflow claims to prove.
-
-- **Semantic property first** — acceptance and review claims are stated as outcomes/invariants before implementation details are used as evidence.
-- **Evidence correspondence** — implementation facts and test evidence count only when their correspondence to the claimed semantics is established.
-- **Inference check** — reviewers prove the direction of inference actually being used and look for ordinary valid behavior where the same technical evidence would not justify the claimed semantic conclusion.
-- **Generic verification fidelity** — a test result proves only the production conclusion that its setup and observation actually support; no case taxonomy is required.
-- **Cleaner handoffs** — orchestrator/planner keep implementation proxies as hypotheses rather than silently promoting them into acceptance criteria.
-
-**Details:** [CHANGELOG.md](CHANGELOG.md) · [v28.37 release notes](docs/releases/v28.37.md)
-
----
-
-## What changed in v28.36
-
-v28.36 closes a semantic-review gap where one unproven implementation premise could be repeated by an assignment, implementation, comments, tests, and reviewer and thereby look independently validated.
-
-- **Contract provenance** — authoritative outcome/invariant evidence is separated from caller-derived implementation hypotheses.
-- **Premise tracing** — materially correctness-critical guards/state transitions must be traced into production producers/consumers and challenged by reasoning through an ordinary valid transition that could falsify the assumption.
-- **Semantic-proof coverage** — full changed-file coverage no longer substitutes for reading unchanged adjacent code when correctness depends on it.
-- **Harness fidelity** — lifecycle/identity/order/ownership/timing-sensitive tests prove production behavior only when their fixtures/mocks preserve the governing production semantic.
-- **Cleaner handoffs** — orchestrator/planner do not promote speculative mechanisms into acceptance criteria merely because an earlier stage proposed them.
-
-**Details:** [CHANGELOG.md](CHANGELOG.md) · [v28.36 release notes](docs/releases/v28.36.md)
-
----
-
-## What changed in v28.35
-
-v28.35 keeps v28.34 right-level fix-boundary safeguards and changes code-review execution so deterministic OCR delegation runs before reviewer reasoning when available, while expensive managed `ocr review` becomes an explicit confidence escalation rather than the default first backend.
-
-- **Delegate-first review preflight** — `ocr delegate preview` + `ocr delegate rule` provide file selection/exclusions/ref metadata and per-file review rules without an OCR-side LLM.
-- **Authoritative scope reconciliation** — delegate output is checked against the actual workspace/range or Base SHA + Candidate HEAD changed set; excluded files cannot disappear silently.
-- **Host reviewer owns the full pass** — `@reviewer` reviews every accounted changed entry with its own model and reports explicit coverage.
-- **Managed OCR is second opinion** — `ocr review` runs only when explicitly required or when an independent model pass materially improves confidence; quota/provider failure no longer destroys a complete host review unless managed OCR was mandatory.
-- **Current OCR skills** — the bundled normal OCR skill is updated from the supplied current CLI contract, and a separate `open-code-review-delegate` skill is added.
-
-**Details:** [CHANGELOG.md](CHANGELOG.md) · [v28.35 release notes](docs/releases/v28.35.md) · [OCR policy](docs/ocr_review_policy.md)
 
 ---
 
@@ -382,7 +337,7 @@ Installs under `~/.config/opencode/` (`AGENTS.md`, agents, commands, docs, skill
 From the target repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_38/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_39/install/install-project.sh
 ```
 
 Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` into the project.
@@ -394,18 +349,8 @@ Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` int
 | Document | Purpose |
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
-| [`CHANGELOG.md`](CHANGELOG.md) | Release-by-release summary |
-| [`docs/releases/v28.38.md`](docs/releases/v28.38.md) | v28.38 per-claim authority/provenance normalization |
-| [`docs/releases/v28.37.md`](docs/releases/v28.37.md) | v28.37 semantic-correspondence refinement |
-| [`docs/releases/v28.36.md`](docs/releases/v28.36.md) | v28.36 contract provenance / premise-validation hardening |
-| [`docs/releases/v28.35.md`](docs/releases/v28.35.md) | v28.35 delegate-first reviewer/OCR execution |
-| [`docs/releases/v28.34.md`](docs/releases/v28.34.md) | v28.34 outcome-owned fix-boundary safeguard |
-| [`docs/releases/v28.33.md`](docs/releases/v28.33.md) | v28.33 PR base-drift / `Base SHA + Candidate HEAD` handling |
-| [`docs/releases/v28.32.md`](docs/releases/v28.32.md) | v28.32 state-identity chain and direct-entry freshness |
-| [`docs/releases/v28.31.md`](docs/releases/v28.31.md) | v28.31 current-state freshness changes |
-| [`docs/releases/v28.30.md`](docs/releases/v28.30.md) | v28.30 workflow-hygiene changes |
-| [`docs/releases/v28.29.md`](docs/releases/v28.29.md) | v28.29 verification-cadence changes |
-| [`docs/releases/v28.28.md`](docs/releases/v28.28.md) | v28.28 orchestration / PR lifecycle changes |
+| [`CHANGELOG.md`](CHANGELOG.md) | Release history |
+| [`docs/releases/v28.39.md`](docs/releases/v28.39.md) | Current release notes |
 | [`docs/verification_strategy.md`](docs/verification_strategy.md) | Verification layers, tester cadence, and batching |
 | [`docs/pr_readiness.md`](docs/pr_readiness.md) | Draft / Candidate HEAD / Ready lifecycle |
 | [`docs/git_branch_provenance_policy.md`](docs/git_branch_provenance_policy.md) | Branch/base/head provenance and current-upstream freshness |
@@ -433,7 +378,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.38**  
+**OpenCode Agent Pack v28.39**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>

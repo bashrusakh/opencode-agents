@@ -2,6 +2,17 @@
 
 This changelog summarizes user-visible workflow changes. Detailed rationale and before/after behavior for major releases lives under `docs/releases/`.
 
+## v28.39
+
+v28.39 cleans README release-history duplication; agent behavior is unchanged from v28.38.
+
+- README now contains only the current bundle's release summary.
+- `CHANGELOG.md` is the single README entry point for release history.
+- The README documentation map lists only the current release note plus durable policy/reference docs.
+- Historical release notes remain available under `docs/releases/` but are no longer repeated in the README map.
+
+See [`docs/releases/v28.39.md`](docs/releases/v28.39.md).
+
 ## v28.38
 
 v28.38 fixes contract-authority inheritance from referenced artifacts.
