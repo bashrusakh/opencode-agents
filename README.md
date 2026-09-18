@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.40
+# OpenCode Agent Pack v28.42
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,15 +14,14 @@
 
 ---
 
-## What changed in v28.40
+## What changed in v28.42
 
-- `build` and `plan` now use `mode: all`, matching their existing direct-primary and delegated-leaf contracts.
-- `ui-orchestrator` now uses `mode: all`: as primary it may dispatch the UI workflow; when delegated by another orchestrator it selects/prepares leaf assignments and returns them to the workflow owner instead of launching grandchildren.
-- Focused, already-understood UI implementation routes directly to `ui-implementer`; UI design/audit/redesign or coordinated UI work routes to `ui-orchestrator`.
-- `debugger` remains a specialized `subagent` leaf for confirmed root-cause bugfix work.
-- The bundle keeps the default one-generation subagent architecture; no `subagent_depth` increase is introduced.
+- Adds one canonical mutation-mechanism rule to `AGENTS.md` instead of a tool blacklist or command taxonomy.
+- Bounded source edits prefer native edit/patch capabilities when suitable; scripted or bulk mutation remains valid when it is materially better suited or necessary.
+- Broad textual replacement may not substitute for understanding a semantic/structural change; scripted or bulk edits must constrain their target set first and inspect the resulting diff afterward.
+- Tool choice never widens the authorized scope or correctness contract. No agent permissions or role routing changed.
 
----
+See [`docs/releases/v28.42.md`](docs/releases/v28.42.md).
 
 ## What this pack is
 
@@ -337,7 +336,7 @@ Installs under `~/.config/opencode/` (`AGENTS.md`, agents, commands, docs, skill
 From the target repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_39/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v28_42/install/install-project.sh
 ```
 
 Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` into the project.
@@ -350,7 +349,7 @@ Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` int
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history |
-| [`docs/releases/v28.40.md`](docs/releases/v28.40.md) | Current release notes |
+| [`docs/releases/v28.42.md`](docs/releases/v28.42.md) | Current release notes |
 | [`docs/verification_strategy.md`](docs/verification_strategy.md) | Verification layers, tester cadence, and batching |
 | [`docs/pr_readiness.md`](docs/pr_readiness.md) | Draft / Candidate HEAD / Ready lifecycle |
 | [`docs/git_branch_provenance_policy.md`](docs/git_branch_provenance_policy.md) | Branch/base/head provenance and current-upstream freshness |
@@ -378,7 +377,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.39**  
+**OpenCode Agent Pack v28.42**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>

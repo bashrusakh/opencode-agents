@@ -14,7 +14,7 @@ compatibility: >
   @alibaba-group/open-code-review` or GitHub release binary). Review mode
   requires a configured supported LLM provider before first run.
 metadata:
-  author: alibaba
+  author: alibaba / package integration
   homepage: https://github.com/alibaba/open-code-review
   version: "1.0.0"
 ---
@@ -32,6 +32,8 @@ This Skill documents the normal `ocr review` workflow. OCR delegation mode is a 
 Analyze the review target (commits, branch, or changes) to extract concise business context. Pass this context via `--background` or `--background-file` to improve review quality.
 
 ### Step 2: Run Code Review
+
+**Do not pre-check OCR availability on the managed-review common path.** Skip probes such as `command -v ocr`, `which ocr`, or `ocr --version`; run the requested `ocr review` directly. Enter the installation path only if that invocation fails because `ocr` is not found.
 
 Run the OCR command with appropriate flags. **Always pass business context when available:**
 
@@ -94,14 +96,14 @@ Use these when the task or environment needs them:
 - `--no-filter` — keep all review comments instead of running OCR's LLM post-filter
 - `--concurrency <n>` — max concurrent review groups; default `8`
 - `--timeout <minutes>` — timeout per concurrent task; default `15`
-- `--max-tools <n>` — max tool-call rounds per subtask; `0` uses the template default, and positive values below `50` are raised to `50`
+- `--max-tools <n>` — max tool-call rounds per subtask; `0` uses the template default (`100`), values `1`-`49` are raised to `50`, and the resolved override only takes effect when it is greater than the template default (so this flag can raise the limit, not lower it)
 - `--max-git-procs <n>` — max concurrent Git subprocesses; default `16`
 - `--max-tokens <n>` — per-group prompt token ceiling; `0` uses configured or template default
 - `--max-tokens-budget <n>` — total input+output token budget for the review; `0` means unlimited
 - `--tools <path>` — override the embedded tools configuration with a JSON tools config
 - `--preview` / `-p` — show what would be reviewed without running the LLM
 
-When `--max-tokens-budget` is exceeded, OCR stops dispatching new work and reports skipped items as `failed(budget)`. Partial results are still published and the command exits successfully unless every selected item failed.
+`--max-tokens-budget` is checked before every LLM round, not only when dispatching a new group. A subtask already over budget gets one bounded final round to submit findings and is reported as `failed(budget)`; no further subtasks are dispatched, and partial results are still published.
 
 ### Timeout and Effort
 

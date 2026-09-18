@@ -2,6 +2,27 @@
 
 This changelog summarizes user-visible workflow changes. Detailed rationale and before/after behavior for major releases lives under `docs/releases/`.
 
+## v28.42
+
+- Adds one canonical mutation-mechanism rule under the implementation policy.
+- Bounded source changes prefer native file edit/patch capabilities when they safely express the intended mutation, while deterministic scripted/bulk transformations remain allowed when materially better suited or necessary.
+- Broad textual replacement is explicitly not a substitute for semantic/structural understanding. Scripted or bulk mutation must constrain its target set before execution and inspect the resulting diff afterward.
+- Tool choice cannot widen authorized scope or correctness obligations. No tool blacklist, mandatory edit pipeline, role routing change, or permission change is introduced.
+- README current-version/install-path/footer references are normalized to v28.42.
+
+See [`docs/releases/v28.42.md`](docs/releases/v28.42.md).
+
+## v28.41
+
+- Synchronizes the package-maintained `open-code-review` skill with current Alibaba OCR managed-review behavior while preserving the existing host-review/delegate architecture.
+- Managed review no longer spends a common-path tool call probing `ocr` availability/version before execution; installation handling is entered only after an actual command-not-found failure.
+- `--max-tokens-budget` now documents the current per-LLM-round enforcement, no-new-group behavior after exhaustion, and bounded final round for submitting pending findings.
+- `--max-tools` now documents the current template default of `100`, the `1`-`49` clamp to `50`, and that the resolved override only takes effect above the template default.
+- The normal OCR skill metadata now identifies Alibaba plus the package-maintained integration rather than implying the extended skill text is verbatim upstream.
+- Delegate capability probing, authoritative changed-set reconciliation, review-only mutation boundaries, and managed-OCR escalation policy are unchanged.
+
+See [`docs/releases/v28.41.md`](docs/releases/v28.41.md).
+
 ## v28.40
 
 - `build` changes from `mode: primary` to `mode: all`, preserving direct focused implementation while making the documented orchestrator -> build route runtime-valid.

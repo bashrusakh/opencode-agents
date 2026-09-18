@@ -595,6 +595,14 @@ Then:
 - keep the diff as small as correctness allows
 - do not introduce dependencies, generated files, broad rewrites, or unrelated cleanup unless authorized
 
+#### 7.1.1 Mutation mechanism
+
+Choose the narrowest reliable mutation mechanism for the intended change.
+
+For bounded source changes, prefer native file edit/patch capabilities when they can express the change safely because they keep the mutation explicit, scoped, and easy to inspect. Shell text-processing utilities or ad-hoc scripts may mutate repository files when they are materially better suited to the operation, such as a deterministic mechanical/bulk transformation, or when native edit/patch capabilities cannot safely express it. Do not use broad textual replacement as a substitute for understanding a semantic or structural code change.
+
+Before a scripted or bulk mutation, constrain the affected target set and transformation explicitly. After it, inspect the resulting diff before continuing. Tool choice does not change the authorized scope or correctness contract: a faster or broader mutation mechanism is not permission for a broader rewrite.
+
 ### 7.2 Right-level fixes
 
 When fixing an issue, bug, security finding, PR review comment, failing test, or broken UI behavior, do not stop at the first local call site.
