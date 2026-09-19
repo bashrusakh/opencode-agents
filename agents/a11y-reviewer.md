@@ -40,7 +40,7 @@ For settings/forms, evaluate whether primary and destructive actions are underst
 
 ## Registry/UUPM context
 
-If registry/MCP/UUPM guidance contributed to the implementation, verify the final installed result rather than trusting the source's claimed accessibility. Read the detailed UI policy when relevant. UUPM is advisory only; actual code/browser behavior/project requirements win.
+If registry/MCP/UUPM guidance contributed to the implementation, verify the final installed result rather than trusting the source's claimed accessibility. UUPM is advisory only; actual code/browser behavior/project requirements win.
 
 ## Result
 

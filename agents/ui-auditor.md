@@ -36,9 +36,9 @@ Do not impose a universal layout rule when the project already has a coherent pa
 
 ## Component/source audit
 
-When component-source guidance is relevant, read the detailed UI policy from the active AGENTS rules. Identify existing reusable components/tokens/layout primitives first. Treat external MCP/registry sources as available only when visible/configured; do not recommend a new library merely because it exists.
+Identify existing reusable components/tokens/layout primitives first. Treat external MCP/registry sources as available only when visible/configured; do not recommend a new library merely because it exists.
 
-UUPM is optional advisory design intelligence. Use it only after the policy availability check and never let it override project constraints or actual UI evidence.
+UUPM is optional advisory design intelligence. Use it only when current runtime/project evidence exposes it and never let it override project constraints or actual UI evidence.
 
 ## Result
 

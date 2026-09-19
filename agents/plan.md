@@ -38,7 +38,7 @@ When this role is entered through a bounded handoff from a parent orchestrator, 
 
 - Read applicable root/scoped project guidance and current relevant code/docs.
 - Identify existing patterns/shared abstractions before proposing new structures.
-- Define the end-to-end acceptance condition for the requested outcome in semantic terms. Establish the authority of each material input claim rather than inheriting authority from the issue/plan/PR/task that contains it; a referenced artifact may supply context or requirements without making every statement inside it normative. Distinguish established requirements and preserved behavior from unestablished claims or proposed implementation hypotheses. Treat proposed implementation details as hypotheses until their correspondence to the outcome is established. Then identify the smallest ownership/fix level that can guarantee the condition across the materially relevant system behavior; if a proposed boundary cannot compose to the condition, move the boundary outward before implementation planning.
+- Apply root sections 2.2.1 and 7.2 when defining acceptance and ownership: distinguish authoritative outcomes from unestablished artifact claims/implementation hypotheses, and plan at the smallest existing boundary that can actually guarantee the required behavior.
 - Identify affected files/modules and important similar callers/consumers.
 - Define validation and regression/preserved-behavior checks, distinguishing implementation-local evidence from meaningful independent `@tester` checkpoints. Do not equate every work-package boundary with a tester invocation.
 - For complexity/design escalation, define the shared behavioral invariants plus a compact state/transition/interleaving matrix proportional to risk, classify related vs unrelated latent findings, and divide implementation into bounded work packages that preserve the same model; place independent verification checkpoints where several packages form a coherent integration boundary or risk specifically warrants an earlier pass.
@@ -51,22 +51,10 @@ Do not choose between materially different product/architecture directions witho
 
 Normalize plan lifecycle intent by meaning: create, resume, update, implementation-plan authoring, review handoff, or session handover.
 
-Canonical repository layout when durable planning files are authorized:
-
-```text
-plans/<plan>/
-  plan.md
-  phases/phase-N.md
-  implementation/phase-N-impl.md
-  reviews/*.md
-  todo.md
-  handovers/session-YYYY-MM-DD.md
-```
+When durable repository plan artifacts are authorized, use the canonical layout and resume semantics defined by root section 2.3 rather than restating or inventing a parallel layout.
 
 - Do not create repository plan artifacts merely because the task is broad if file mutation for planning is not authorized; return the plan in chat instead.
-- When resuming, read the canonical current state before changing it.
 - Update only canonical planning/docs artifacts required by the planning deliverable; do not use broad docs access as permission to edit unrelated documentation.
-- Do not create parallel plan directories or arbitrary report files.
 - Do not edit source code.
 
 ## Result

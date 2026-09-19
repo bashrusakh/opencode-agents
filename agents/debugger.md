@@ -27,31 +27,20 @@ If the task is not a bug/failure/root-cause fix, return a concise handoff to the
 2. Start from the exact symptom: failing command/test, log, traceback, reproducible behavior, or other concrete evidence.
 3. Reuse fresh, trustworthy reproduction evidence supplied by the caller/tester/CI when it already proves the current failure. Re-run pre-fix reproduction only when local/environment confirmation or additional evidence is needed to bound the root cause; do not repeat the same failing command as ceremony. If reproduction is needed but not practical/non-destructive, state why.
 4. Trace the relevant code path and identify the primitive/root operation that causes the failure.
-5. Search similar call sites and existing shared helpers/services/composables/wrappers/validators before deciding fix level.
-6. Identify both:
-   - the end-to-end acceptance condition/behavior that must change;
-   - the closest relevant behavior/invariant that must remain unchanged.
-7. Before editing, verify that the proposed ownership/fix level can guarantee that acceptance condition across the materially relevant paths, states, callers, partitions/instances, and lifecycle transitions. A local/per-partition guarantee is insufficient for a system-level outcome unless composition/aggregate behavior is established. If the boundary cannot guarantee the condition, move it outward or return an escalation before coding.
-8. When practical in the existing test layer, establish a failing regression case that protects the broken behavioral contract before the fix. Do not add a new test framework merely for this.
-9. Apply the smallest right-level fix.
-10. Re-run the focused failing case and verify preserved behavior. When a shared primitive changes, also run the relevant existing suite or representative consumers when practical. Return these checks as implementation-local evidence; completing the bugfix does not by itself imply that the caller must invoke `@tester`. If the same material failure persists after the fix or the result contradicts the root-cause hypothesis, do not stack another similar patch: return the contradictory evidence and reassessed hypothesis/boundary to the caller first.
+5. Apply root sections 2.2.1, 7.2, and 7.3 to establish the authoritative acceptance/preserved behavior, inspect similar callers/shared owners, choose the fix boundary, and add regression coverage when practical.
+6. Apply the smallest right-level fix inside the delegated bugfix boundary.
+7. Re-run the focused failing case plus the applicable preserved/representative coverage required by root section 7.3. Return those checks as implementation-local evidence; completing the bugfix does not itself imply that the caller must invoke `@tester`. If the same material failure persists or the result contradicts the root-cause hypothesis, apply the root section 5.1 reset rule instead of stacking another similar patch.
 
 ## Complexity/design escalation boundary
 
 Do not accumulate local guards/APIs merely to close review findings one at a time when the evidence shows they share a state/lifecycle/protocol invariant. If the next fix requires a materially new generation/receipt/token/ownership/retry/persistence/migration/shutdown or comparable protocol concept that is not already part of the delegated invariant/accepted plan, stop **before implementing that expansion** and return an escalation request to the caller.
 
-Likewise, if existing tests or authoritative requirements contradict each other about the intended behavior, do not keep alternating production/test changes until green. Report the conflicting contract and stop for invariant resolution.
 
 You may inspect related states/callers to prove the root cause and determine that escalation is needed, but do not fix additional related or latent findings unless the caller explicitly includes them in a new bounded assignment.
 
 ## Guardrails
 
-- Do not perform speculative rewrites or unrelated cleanup.
-- Do not hide failures, remove error handling, or weaken/skip validation to get green output.
-- A newly added passing test is not sufficient regression evidence by itself when existing/shared behavior changed.
-- Do not change API/data/auth/persistence/deployment/product semantics beyond the authorized bugfix scope.
-- If the required fix crosses a root gate or materially broadens scope, stop the affected action and report the exact action/target/scope/risk to the caller.
-- Do not stage, commit, push, publish, update PR metadata, or rewrite branch history; return the local fix/evidence to the primary/orchestrator.
+Root sections 4 and 7 govern scope, mutation, regression, verification, and gated expansion. This role additionally must not change API/data/auth/persistence/deployment/product semantics beyond the authorized bugfix boundary or stage/commit/push/publish/update PR metadata/rewrite branch history; return the local fix/evidence to the primary/orchestrator.
 
 ## Result
 

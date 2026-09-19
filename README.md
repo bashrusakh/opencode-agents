@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v28.42
+# OpenCode Agent Pack v30.00-beta11
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,14 +14,15 @@
 
 ---
 
-## What changed in v28.42
+## What changed in v30.00-beta11
 
-- Adds one canonical mutation-mechanism rule to `AGENTS.md` instead of a tool blacklist or command taxonomy.
-- Bounded source edits prefer native edit/patch capabilities when suitable; scripted or bulk mutation remains valid when it is materially better suited or necessary.
-- Broad textual replacement may not substitute for understanding a semantic/structural change; scripted or bulk edits must constrain their target set first and inspect the resulting diff afterward.
-- Tool choice never widens the authorized scope or correctness contract. No agent permissions or role routing changed.
+- Restores `agents/code-orchestrator.md` **byte-for-byte from stable v28.42** instead of continuing the beta9/beta10 deduplication experiment inside that role.
+- This restores the complete proven-stable local orchestration model together: semantic routing, current-target/state identity, discovery cadence, fix-boundary/reset rules, reviewer/tester cadence, workflow-specific behavior, evidence freshness, publication sequencing, and final-report contract.
+- The rest of beta10 remains unchanged: root `AGENTS.md`, the other 14 agents, all skills, installers, zero-command/zero-snippet runtime, setup docs, and package architecture stay as-is.
+- Treats the #3512 issue-analysis behavior as a regression test: an explicit repository discovery/architecture-tracing deliverable routes evidence gathering to `@explore`; the orchestrator owns target identity, bounded assignment, reconciliation, and the final conclusion.
+- Future deduplication must preserve proven role-local enforcement when removing text changes model behavior, even if an equivalent rule also exists in root.
 
-See [`docs/releases/v28.42.md`](docs/releases/v28.42.md).
+See [`docs/releases/v30.00-beta11.md`](docs/releases/v30.00-beta11.md). Stable reference remains v28.42.
 
 ## What this pack is
 
@@ -128,8 +129,6 @@ Key points:
 - OCR delegate preflight prepares deterministic scope/rules when available; managed OCR may add a second-model pass when useful/required and is not a universal Ready gate;
 - unowned or ambiguous PRs are never automatically switched between Draft and Ready.
 
-Detailed policy: [`docs/pr_readiness.md`](docs/pr_readiness.md) · [`docs/git_branch_provenance_policy.md`](docs/git_branch_provenance_policy.md)
-
 ---
 
 ## Startup and resumability
@@ -186,8 +185,6 @@ published candidate -> remote CI/status
 
 A work package ending does not automatically trigger `@tester`, and reviewer should not repeat a fresh broad test pass. When tester is used, one assignment should cover the complete already-applicable affected boundary.
 
-Policy: [`docs/verification_strategy.md`](docs/verification_strategy.md)
-
 ### OCR / Open Code Review
 
 Alibaba `open-code-review` is integrated in two layers for code-like review:
@@ -199,8 +196,6 @@ OCR managed  = optional or required independent second-model escalation
 ```
 
 When compatible delegation is installed, reviewer uses it before reasoning and reconciles its output against the authoritative changed set. Managed `ocr review` is not the default first step; it runs only when explicitly required or when it materially improves confidence. Review-only requests never auto-apply OCR suggestions.
-
-Policy: [`docs/ocr_review_policy.md`](docs/ocr_review_policy.md)
 
 ---
 
@@ -222,8 +217,6 @@ plans/<plan>/
 
 Read-only audits do not create repository plan files merely to maintain agent state.
 
-Policy: [`docs/persistent_planning_policy.md`](docs/persistent_planning_policy.md)
-
 ---
 
 ## UI workflow and component intelligence
@@ -240,7 +233,7 @@ When relevant and available, the stack can use:
 
 UI UX Pro Max (UUPM) is optional design intelligence, **not** a component source and not permission to introduce a new design system.
 
-References: [`docs/ui_component_policy.md`](docs/ui_component_policy.md) · [`docs/ui_mcp_install_for_agent.md`](docs/ui_mcp_install_for_agent.md) · [`docs/uupm_install_for_agent.md`](docs/uupm_install_for_agent.md)
+Manual environment setup is documented separately in [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) and [`docs/uupm_setup.md`](docs/uupm_setup.md). These are human-facing instructions only; normal UI roles do not load or depend on them.
 
 ---
 
@@ -268,35 +261,11 @@ No agent file contains a provider-specific `model:` override.
 
 ---
 
-## Commands included
+## Custom commands
 
-Commands are **intent entry points**, not copies of the root policy.
+This pack ships **no custom slash commands**. Review, verification, debugging, planning, UI work, PR follow-up, release preparation, audits, code exploration, provenance inspection, and persistent-plan execution are routed from natural-language intent by `AGENTS.md` and the owning agent contracts.
 
-| Command | Purpose |
-|---|---|
-| `/audit` | Broad read-only project/repository audit |
-| `/bug-issue` | Verify a bug and draft/open a factual non-duplicate issue |
-| `/bugfix` | Multi-step bugfix coordination |
-| `/code-explore` | Read-only codebase exploration |
-| `/debug` | Root-cause and fix a confirmed failure |
-| `/devops-check` | Runtime/CI/deploy/config diagnostics |
-| `/execute-plan` | Execute the current persistent-plan work package |
-| `/plan` | Create/resume/update persistent plan state |
-| `/pr-followup` | Existing PR comments/checks/fixes/verification/publication follow-up |
-| `/pr-provenance` | Read-only base-to-head branch provenance proof |
-| `/release-prep` | Grounded release-note/release-state preparation or verification |
-| `/review` | Independent review; delegate preflight when available, managed OCR when useful/required |
-| `/ui-a11y-check` | Accessibility/interaction review |
-| `/ui-audit` | UI/UX audit |
-| `/ui-implement` | Implement an understood UI change/accepted plan |
-| `/ui-mcp-setup` | Configure supported UI MCP stack |
-| `/ui-options` | Produce grounded UI directions without implementation |
-| `/ui-plan` | Concrete implementable UI plan |
-| `/ui-redesign` | Coordinate a complete UI redesign workflow by semantic need |
-| `/ui-uupm-setup` | Configure UUPM for OpenCode |
-| `/verify` | Independent tests/lint/build/smoke verification |
-
----
+If you intentionally want a specific agent rather than semantic routing, use OpenCode's explicit agent selection. UI MCP/UUPM environment setup is documented as ordinary manual instructions rather than coding commands.
 
 ## Bundled skills and external integrations
 
@@ -329,17 +298,17 @@ Upstream / external sources:
 ./install/install-global.sh
 ```
 
-Installs under `~/.config/opencode/` (`AGENTS.md`, agents, commands, docs, skills, snippets).
+Installs runtime configuration under `~/.config/opencode/` (`AGENTS.md`, `agents/`, and `skills/`). The package installs no custom commands or snippets. Documentation remains in the package and is not copied into OpenCode runtime.
 
 ### Project-local
 
 From the target repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v28_42/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v30_00_beta11/install/install-project.sh
 ```
 
-Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` into the project.
+Installs `AGENTS.md` plus `.opencode/{agents,skills}/` into the project. The package installs no custom commands, snippets, or docs into the project runtime.
 
 ---
 
@@ -348,28 +317,26 @@ Installs `AGENTS.md` plus `.opencode/{agents,commands,docs,skills,snippet}/` int
 | Document | Purpose |
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
-| [`CHANGELOG.md`](CHANGELOG.md) | Release history |
-| [`docs/releases/v28.42.md`](docs/releases/v28.42.md) | Current release notes |
-| [`docs/verification_strategy.md`](docs/verification_strategy.md) | Verification layers, tester cadence, and batching |
-| [`docs/pr_readiness.md`](docs/pr_readiness.md) | Draft / Candidate HEAD / Ready lifecycle |
-| [`docs/git_branch_provenance_policy.md`](docs/git_branch_provenance_policy.md) | Branch/base/head provenance and current-upstream freshness |
-| [`docs/ocr_review_policy.md`](docs/ocr_review_policy.md) | Reviewer/OCR policy |
-| [`docs/persistent_planning_policy.md`](docs/persistent_planning_policy.md) | Durable planning lifecycle |
-| [`docs/ui_component_policy.md`](docs/ui_component_policy.md) | UI component/source policy |
-| [`docs/output_formatting_policy.md`](docs/output_formatting_policy.md) | User-facing output formatting |
+| [`CHANGELOG.md`](CHANGELOG.md) | Release history index |
+| [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Manual UI component MCP setup reference |
+| [`docs/uupm_setup.md`](docs/uupm_setup.md) | Manual UI UX Pro Max setup reference |
+| [`docs/releases/v30.00-beta11.md`](docs/releases/v30.00-beta11.md) | Current beta release notes |
 
----
+The two setup documents are human-facing references, not runtime policy. No root/agent/skill behavior depends on them, and installers do not copy them into OpenCode configuration.
 
 ## Release validation
 
 A release archive should verify at least:
 
-- 15 agents and 21 commands;
-- valid YAML frontmatter for every agent/command;
-- no provider-specific agent or command model overrides;
-- all commands keep `subtask: false` and no command-level permission overrides;
+- 15 agents and zero package custom commands;
+- valid YAML frontmatter for every agent;
+- no provider-specific agent model overrides;
+- every historical command intent remains covered by resident natural-language routing plus an owning role contract;
+- the two non-release setup docs are human-facing references only, are not copied into runtime, and are not required by root/agents/skills;
+- every installed runtime file has a known OpenCode discovery/activation mechanism or deterministic resident consumer; no dead runtime surfaces are shipped;
+- no package `snippet/` directory is installed or required; historical package-owned snippets are backed up/pruned on upgrade without touching unrelated files;
 - no stale universal `origin/main`, outdated OCR timeout contract, or obsolete version-path references;
-- install scripts pass `bash -n` and copy complete skill directories;
+- install scripts pass `bash -n`, copy complete skill directories, and back up/prune exact obsolete package-owned command/doc filenames without touching unrelated entries;
 - vendored/upstream skill content is not silently replaced by package-authored wrappers;
 - archive roundtrip manifest matches the working tree.
 
@@ -377,7 +344,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v28.42**  
+**OpenCode Agent Pack v30.00-beta11**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>

@@ -19,7 +19,6 @@ You are the broad repository audit orchestrator. Produce an evidence-based healt
 
 If the user wants fixes or a public issue after the audit, return the verified findings and route that separate deliverable to the appropriate workflow; do not silently expand the audit role.
 
-For long-running read-only audits, reuse existing canonical plan artifacts when present and use checkpoint/runtime state otherwise. Do not create repository plan files merely to persist the audit.
 
 ## Specialist use
 

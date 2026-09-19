@@ -69,18 +69,9 @@ De-emphasize cosmetic style, subjective naming, and low-value refactoring prefer
 
 ## Claim authority and semantic correspondence
 
-Apply root section 2.2.1 to every material correctness claim or design choice. Before judging implementation against stated acceptance criteria, answer two separate questions: (1) does this claim have authority to define the desired behavior, and (2) is the claim factually/semantically supported? An issue/PR/plan/task heading or wording is not self-authenticating, and evidence for truth does not grant normative authority. Do not treat the caller's wording, an artifact's proposed mechanism, a comment introduced/modified by the same change, a new test, or the implementation's own stated intent as independent confirmation of the same assumption.
+Apply root section 2.2.1 to every material verdict claim. Establish authority to define the desired behavior separately from factual/semantic support, and test implementation evidence against the actual semantic outcome rather than accepting the change's own comments, tests, proposed mechanism, or repeated wording as independent confirmation.
 
-For each claim that materially affects the verdict:
-
-- state the semantic property or outcome the change claims to protect;
-- identify the concrete implementation facts and the semantic conclusion being inferred from them;
-- trace enough actual system behavior, including unchanged adjacent code when needed, to justify that inference;
-- look for an ordinary valid system behavior in which the same evidence would not justify the claimed semantic conclusion; do not require manual/visual execution when the relationship is decidable from code;
-- if correctness relies on inference in both directions, establish each direction separately rather than assuming equivalence;
-- check whether supplied tests support the semantic conclusion or merely assert/reproduce the same implementation assumption.
-
-If the correspondence cannot be established, report the resulting correctness or verification gap; do not return `pass` merely because implementation, comments, and tests all agree with one another. Full changed-file coverage does not waive semantic proof.
+If the required correspondence cannot be established from authoritative claims plus actual system behavior, report the correctness/verification gap; changed-file coverage and internally consistent comments/tests do not waive semantic proof.
 
 ## Bounded-complete invariant review
 
@@ -103,19 +94,9 @@ A finding is evidence to reconcile with the behavioral model, not an instruction
 
 ## Right-level and regression checklist
 
-Before returning `pass` or `pass with notes` on code/diff-like work, establish from evidence:
+For code/diff-like work, apply root sections 7.2 and 7.3 before returning `pass` / `pass with notes`: verify that the chosen owner can guarantee the established outcome, inspect relevant same-owner callers/states, and require current preserved-behavior/regression evidence proportional to what the change can affect. Treat conflicting requirements/tests or correctness-critical premises supported only by new comments/tests/harness assumptions as unresolved contract/correspondence gaps rather than implementation proof.
 
-- what end-to-end acceptance condition the change is supposed to guarantee, and whether the chosen fix boundary can actually guarantee it across materially relevant paths, states, callers, partitions/instances, and lifecycle transitions;
-- whether an existing shared abstraction owns the changed behavior;
-- whether the same fix/logic is duplicated across callers;
-- whether the fix protects the unsafe primitive or only the reported caller;
-- whether relevant similar call sites/states under the same invariant are covered;
-- what behavior besides the reported case can be affected;
-- what current test/verification evidence protects applicable preserved behavior;
-- whether conflicting tests/requirements indicate an unresolved contract rather than an implementation detail;
-- whether each materially correctness-critical premise used by the changed behavior was established from production semantics rather than inferred only from caller wording/new comments/new tests, including fixture/harness fidelity when that evidence matters.
-
-Do not claim these checks were performed if the target/evidence did not allow them; report the gap instead.
+Report any evidence limitation instead of claiming a check you could not establish.
 
 ## Final whole-PR review
 
@@ -133,9 +114,7 @@ Consume current implementation-local/tester/CI evidence instead of re-running a 
 
 ## Evidence freshness
 
-A verdict is bound to the reviewed Base SHA + Candidate HEAD + effective diff. A changed head or base makes affected review evidence stale by default; retain it only when the recomputed diff and affected integration context are proven unchanged.
-
-For plan/result reviews, first establish which stated acceptance criteria/project constraints are actually authoritative under the root claim-authority rule; then judge against that normalized contract and clearly distinguish contract/plan defects from implementation defects.
+Bind the verdict to the exact reviewed target/state under root section 7.4. For plan/result reviews, normalize authoritative acceptance criteria under section 2.2.1 and distinguish contract/plan defects from implementation defects.
 
 ## Result
 

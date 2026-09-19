@@ -34,6 +34,7 @@ Normalize by deliverable and target, not literal wording:
 - options/plan only -> no code edits;
 - audit/critique only -> read-only findings;
 - focused implementation -> a concrete requested UI change with no unresolved product/design direction;
+- focused/quick redesign -> narrow layout/density/action-placement/section-reordering cleanup; reuse existing project primitives and do not inflate it into a broad redesign;
 - redesign -> layout/theme/information-architecture direction still needs planning;
 - broad/full redesign -> multiple screens or materially different product/visual direction.
 
@@ -53,7 +54,7 @@ A focused, already-specified implementation does not need ceremonial audit+repla
 
 ## Component/design-intelligence policy
 
-Follow the detailed UI component policy from the active AGENTS rules when present. Core source order remains:
+Core source order:
 
 1. existing project components/tokens/styles/layout primitives;
 2. official shadcn MCP/standard registry;
@@ -63,7 +64,7 @@ Follow the detailed UI component policy from the active AGENTS rules when presen
 
 External sources are usable only when visible/configured. Existing project components win. Skip unavailable source levels without asking; stop only when the next source requires a secret/private registry/new dependency/config/generated asset/design-system change or another root gate.
 
-UUPM is advisory design intelligence, not a component source. Use it only after the detailed-policy availability check; if unavailable/not checked, continue without it and report that status.
+UUPM is advisory design intelligence, not a component source. Treat it as available only when current runtime/project evidence exposes the skill/tool or documented integration; otherwise continue without it and report that status when relevant.
 
 ## Options/audit output
 
@@ -71,9 +72,9 @@ When the user asks for options, provide materially distinct choices only when th
 
 ## Implementation workflow
 
-When acting as the top-level UI orchestrator, continue automatically through safe applicable stages and dispatch the required UI specialists yourself. When delegated by a parent, never dispatch grandchildren: return the selected bounded leaf assignments (when stage selection was delegated) or the next recommended stage (when it was not) to the workflow-owning parent. Return to the parent at a root gate, unresolved material direction, or newly discovered cross-layer state/protocol invariant. Keep existing behavior unless the normalized request explicitly changes it. Keep existing PR follow-up work on the same PR branch by default.
+When acting as the top-level UI orchestrator, continue automatically through safe applicable stages and dispatch the required UI specialists yourself. When delegated, use the bounded handoff behavior defined in the Hard boundary above. Return to the parent at a root gate, unresolved material direction, or newly discovered cross-layer state/protocol invariant. Keep existing behavior unless the normalized request explicitly changes it. Keep existing PR follow-up work on the same PR branch by default.
 
-Before final claims/publication, reconcile the implemented final diff with accessibility/test/review evidence and treat later changes as invalidating affected evidence. When an owned PR is being prepared for Ready, follow the root local-Candidate sequence and ensure tester/a11y evidence that applies to the final UI state is settled before the mandatory whole-change reviewer pass and exact reviewed-SHA push. Prefer one batched tester checkpoint for the stable affected UI boundary over repeated tester calls after individual component edits; consume fresh `@ui-implementer` local checks when they already cover the needed boundary. If PR update/publication is in scope, keep the PR title/body synchronized with the final diff and actual validation under the root rules.
+Before final claims/publication, reconcile the implemented final diff with current accessibility/test/review evidence under root section 7.4. For owned-PR readiness, follow root section 8.2; settle any applicable tester/a11y evidence for the final UI state before the mandatory whole-change reviewer pass. Prefer one meaningful tester checkpoint for a stable affected UI boundary over repeated calls after individual component edits. PR metadata/publication follows the root rules.
 
 ## Final report
 

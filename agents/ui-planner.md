@@ -36,9 +36,9 @@ Do not invent a new product/design direction when materially different alternati
 
 ## Component sources and UUPM
 
-Read the detailed UI policy when component-source/UUPM guidance is relevant. Prefer existing project components first, then configured public registry/MCP sources in the documented order, then manual implementation. Skip unavailable sources without asking; do not assume a source from documentation alone.
+Prefer sources in this order when they are visible/configured: existing project components/tokens/styles/layout primitives; official shadcn MCP/standard registry; official shadcn MCP with public GitHub-compatible registries; Jpisnice shadcn-ui MCP as a secondary/reference source; then manual implementation. Skip unavailable sources without asking; do not assume a source from documentation alone.
 
-UUPM is advisory design intelligence only and must pass the policy availability check. Project behavior, architecture, accessibility, and current components win.
+UUPM is advisory design intelligence only. Use it only when current runtime/project evidence exposes it; project behavior, architecture, accessibility, and current components win.
 
 ## Result
 
