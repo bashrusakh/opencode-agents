@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.00-beta11
+# OpenCode Agent Pack v30.00
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,15 +14,15 @@
 
 ---
 
-## What changed in v30.00-beta11
+## What changed in v30.00
 
-- Restores `agents/code-orchestrator.md` **byte-for-byte from stable v28.42** instead of continuing the beta9/beta10 deduplication experiment inside that role.
-- This restores the complete proven-stable local orchestration model together: semantic routing, current-target/state identity, discovery cadence, fix-boundary/reset rules, reviewer/tester cadence, workflow-specific behavior, evidence freshness, publication sequencing, and final-report contract.
-- The rest of beta10 remains unchanged: root `AGENTS.md`, the other 14 agents, all skills, installers, zero-command/zero-snippet runtime, setup docs, and package architecture stay as-is.
-- Treats the #3512 issue-analysis behavior as a regression test: an explicit repository discovery/architecture-tracing deliverable routes evidence gathering to `@explore`; the orchestrator owns target identity, bounded assignment, reconciliation, and the final conclusion.
-- Future deduplication must preserve proven role-local enforcement when removing text changes model behavior, even if an equivalent rule also exists in root.
+- Reduces the package to deterministic OpenCode runtime surfaces: `AGENTS.md`, `agents/`, and `skills/`.
+- Removes package slash-command and snippet layers that duplicated semantic routing or had no runtime activation path.
+- Consolidates cross-role policy in root while keeping execution details in their owning roles.
+- Keeps `agents/code-orchestrator.md` exactly from v28.42 after testing showed that further role-local deduplication changed routing behavior.
+- Preserves upgrade safety: installers prune only known package-owned legacy files and leave unrelated user/project files alone.
 
-See [`docs/releases/v30.00-beta11.md`](docs/releases/v30.00-beta11.md). Stable reference remains v28.42.
+See [`docs/releases/v30.00.md`](docs/releases/v30.00.md).
 
 ## What this pack is
 
@@ -305,7 +305,7 @@ Installs runtime configuration under `~/.config/opencode/` (`AGENTS.md`, `agents
 From the target repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v30_00_beta11/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v30_00/install/install-project.sh
 ```
 
 Installs `AGENTS.md` plus `.opencode/{agents,skills}/` into the project. The package installs no custom commands, snippets, or docs into the project runtime.
@@ -320,7 +320,7 @@ Installs `AGENTS.md` plus `.opencode/{agents,skills}/` into the project. The pac
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history index |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Manual UI component MCP setup reference |
 | [`docs/uupm_setup.md`](docs/uupm_setup.md) | Manual UI UX Pro Max setup reference |
-| [`docs/releases/v30.00-beta11.md`](docs/releases/v30.00-beta11.md) | Current beta release notes |
+| [`docs/releases/v30.00.md`](docs/releases/v30.00.md) | Current stable release notes |
 
 The two setup documents are human-facing references, not runtime policy. No root/agent/skill behavior depends on them, and installers do not copy them into OpenCode configuration.
 
@@ -344,7 +344,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.00-beta11**  
+**OpenCode Agent Pack v30.00**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>
