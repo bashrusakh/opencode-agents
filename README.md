@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.00
+# OpenCode Agent Pack v30.8 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,25 +14,14 @@
 
 ---
 
-## What changed in v30.00
+## What changed in v30.8 beta
 
-- Reduces the package to deterministic OpenCode runtime surfaces: `AGENTS.md`, `agents/`, and `skills/`.
-- Removes package slash-command and snippet layers that duplicated semantic routing or had no runtime activation path.
-- Consolidates cross-role policy in root while keeping execution details in their owning roles.
-- Keeps `agents/code-orchestrator.md` exactly from v28.42 after testing showed that further role-local deduplication changed routing behavior.
-- Preserves upgrade safety: installers prune only known package-owned legacy files and leave unrelated user/project files alone.
+- Clarifies that `git-provenance` is the canonical detailed provenance policy while root §8 binds it to the applicable workflow.
+- Replaces the ambiguous `~45 KB` root-size note with a stable `<50 KiB` compact-root target.
+- Normalizes extracted policy-skill Markdown headings from H4 to H2 in `git-provenance` and `pr-readiness`.
+- No runtime behavior, routing, permissions, policy semantics, skill inventory, cleanup behavior, or installer behavior changes.
 
-See [`docs/releases/v30.00.md`](docs/releases/v30.00.md).
-
-## What this pack is
-
-An opinionated OpenCode/OpenChamber agent configuration for real project work: focused implementation, bugfixes, UI changes, PR follow-up, review, release preparation, audits, DevOps diagnostics, and resumable multi-agent workflows.
-
-The pack is intentionally **model-agnostic**. It describes behavior, roles, evidence, and workflow boundaries instead of binding agents to a provider-specific model.
-
-> Normalize the requested outcome → route it to the right role → keep work inside the agreed scope → verify the actual result → report only what current evidence proves.
-
-The canonical behavioral contract is [`AGENTS.md`](AGENTS.md). README explains the system; it does not replace that policy.
+See [`docs/releases/v30.8-beta.md`](docs/releases/v30.8-beta.md).
 
 ---
 
@@ -53,7 +42,7 @@ Routing follows the requested outcome, target, action level, and repository evid
 | “Redesign these settings” | UI workflow / `ui-orchestrator` |
 | “Why is this service failing?” | `devops` diagnostics |
 
-The same intent should route consistently even when phrased differently or in another language.
+The same normalized intent should route consistently under the same execution context even when phrased differently or in another language. The table names the semantic stage/role; entry ownership and subagent invokability still follow the agent execution topology.
 
 ### Role boundaries
 
@@ -69,7 +58,7 @@ specialist
 
 A specialist may choose the commands, files, tests, and implementation details needed inside its assignment. It may not silently widen scope, fix unrelated findings, start the next workflow stage, change PR state, or negotiate a new gate unless that authority was explicitly delegated.
 
-If a specialist is unavailable or fails, its capabilities do **not** transfer to the caller. The workflow either routes to another genuinely capable role or reports the stage as blocked.
+If a specialist is unavailable or fails, its capabilities do **not** transfer to the caller. A substitution is allowed only when routing policy explicitly declares an executable, authority-preserving fallback for that stage; otherwise the stage is blocked.
 
 ### Complexity escalation
 
@@ -97,6 +86,12 @@ State identity follows the work: a fresh remote `ref@SHA` must not silently turn
 ### Authorization stays explicit
 
 Public/external, destructive, scope-expanding, and other gated actions still follow the canonical rules in `AGENTS.md`. Already-authorized actions do not require a duplicate confirmation; a materially changed target, scope, destination, or risk does.
+
+### Temporary resources have owners
+
+A workflow-created temporary worktree, branch, temp file, process, or hosting resource remains owned until it is cleaned, intentionally retained, blocked from cleanup, or explicitly transferred. Local disposable teardown is allowed when ownership and safety are clear; remote/published destructive cleanup still follows its normal gate.
+
+For visual evidence, the screenshot or other evidence artifact may be durable while the worktree/server/temp file used to produce it usually is not. The pack does not bundle a GitHub binary-upload transport: publication uses only a mechanism already available and authorized in the current environment. If none exists, preserve the local evidence and report publication as blocked rather than inventing a gist/branch/ref/commit/tag hosting workaround.
 
 ---
 
@@ -272,11 +267,12 @@ If you intentionally want a specific agent rather than semantic routing, use Ope
 Bundled skills:
 
 ```text
-api-designer        cpp-pro              golang-pro
-open-code-review    open-code-review-delegate
-playwright-expert    python-pro
-react-expert        rust-engineer        secure-code-guardian
-typescript-pro      ui-ux-pro-max        vue-expert
+api-designer          cpp-pro               git-provenance
+golang-pro            open-code-review       open-code-review-delegate
+output-formatting     playwright-expert      pr-readiness
+python-pro            react-expert            resource-lifecycle
+rust-engineer         secure-code-guardian    typescript-pro
+ui-ux-pro-max         verification-strategy   vue-expert
 ```
 
 Skills are advisory and selected from actual project context. A matching skill must be loaded/read before claiming it was used.
@@ -305,7 +301,7 @@ Installs runtime configuration under `~/.config/opencode/` (`AGENTS.md`, `agents
 From the target repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v30_00/install/install-project.sh
+/path/to/opencode_model_agnostic_persistent_v30_7_beta/install/install-project.sh
 ```
 
 Installs `AGENTS.md` plus `.opencode/{agents,skills}/` into the project. The package installs no custom commands, snippets, or docs into the project runtime.
@@ -320,7 +316,7 @@ Installs `AGENTS.md` plus `.opencode/{agents,skills}/` into the project. The pac
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history index |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Manual UI component MCP setup reference |
 | [`docs/uupm_setup.md`](docs/uupm_setup.md) | Manual UI UX Pro Max setup reference |
-| [`docs/releases/v30.00.md`](docs/releases/v30.00.md) | Current stable release notes |
+| [`docs/releases/v30.8-beta.md`](docs/releases/v30.8-beta.md) | Current beta release notes |
 
 The two setup documents are human-facing references, not runtime policy. No root/agent/skill behavior depends on them, and installers do not copy them into OpenCode configuration.
 
@@ -332,19 +328,21 @@ A release archive should verify at least:
 - valid YAML frontmatter for every agent;
 - no provider-specific agent model overrides;
 - every historical command intent remains covered by resident natural-language routing plus an owning role contract;
-- the two non-release setup docs are human-facing references only, are not copied into runtime, and are not required by root/agents/skills;
-- every installed runtime file has a known OpenCode discovery/activation mechanism or deterministic resident consumer; no dead runtime surfaces are shipped;
+- the two non-release setup docs are human-facing references only and are not copied into runtime; conditional runtime policy lives in bundled skills;
+- root remains compact (<50 KiB target), while every conditional policy skill has an explicit root activation condition and native skill discovery path;
 - no package `snippet/` directory is installed or required; historical package-owned snippets are backed up/pruned on upgrade without touching unrelated files;
 - no stale universal `origin/main`, outdated OCR timeout contract, or obsolete version-path references;
+- workflow-created temporary resources have one canonical lifecycle/reconciliation rule rather than duplicated role-local cleanup rules;
+- visual evidence publication uses only an already-available authorized transport; no bundled GitHub binary uploader or implicit gist/branch/ref hosting fallback is provided;
 - install scripts pass `bash -n`, copy complete skill directories, and back up/prune exact obsolete package-owned command/doc filenames without touching unrelated entries;
-- vendored/upstream skill content is not silently replaced by package-authored wrappers;
+- vendored/adapted skill content retains source/license attribution and does not silently claim to be verbatim upstream;
 - archive roundtrip manifest matches the working tree.
 
 ---
 
 <div align="center">
 
-**OpenCode Agent Pack v30.00**  
+**OpenCode Agent Pack v30.8 beta**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>

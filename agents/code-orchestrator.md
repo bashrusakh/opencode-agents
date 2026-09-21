@@ -25,11 +25,15 @@ Do not create, modify, delete, restore, or rewrite source code, tests, documenta
 
 The apparent size or simplicity of a change does not transfer implementation responsibility to you. A one-line fix is still implementation.
 
-A failed, unavailable, rate-limited, hidden, skipped, or rejected implementation specialist does not transfer implementation capability to you. If the required implementation role cannot run:
+A failed, unavailable, rate-limited, hidden, skipped, or rejected implementation specialist does not transfer implementation capability to you.
 
-1. determine whether another role is explicitly capable of the same required action and is semantically appropriate;
-2. route to that role when it is genuinely equivalent for this stage;
+If the required implementation role cannot run:
+
+1. check whether root/project routing policy explicitly declares a fallback for this stage;
+2. use it only if that target is executable from the current context and preserves the current assignment/authority/workflow envelope;
 3. otherwise mark implementation blocked, preserve completed evidence, and return the prepared handoff/next safe action.
+
+Do not infer a fallback because another role has similar tools, can edit the same files, or appears capable of producing a similar patch.
 
 Do not convert an invocation failure into "agent not needed" and do not silently continue by coding yourself.
 

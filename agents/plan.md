@@ -9,8 +9,6 @@ permission:
     "*": deny
     ".opencode/plans/**/*.md": allow
     "plans/**/*.md": allow
-    "docs/**/*.md": allow
-    "/home/bash/.local/share/opencode/plans/**/*.md": allow
   apply_patch: deny
 ---
 
@@ -54,7 +52,7 @@ Normalize plan lifecycle intent by meaning: create, resume, update, implementati
 When durable repository plan artifacts are authorized, use the canonical layout and resume semantics defined by root section 2.3 rather than restating or inventing a parallel layout.
 
 - Do not create repository plan artifacts merely because the task is broad if file mutation for planning is not authorized; return the plan in chat instead.
-- Update only canonical planning/docs artifacts required by the planning deliverable; do not use broad docs access as permission to edit unrelated documentation.
+- Update only canonical planning artifacts within the permitted planning paths. Product/project documentation outside those paths is a separate persistent-file mutation and requires an implementation-capable role or another policy path that explicitly authorizes that documentation change.
 - Do not edit source code.
 
 ## Result

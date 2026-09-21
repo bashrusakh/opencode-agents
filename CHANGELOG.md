@@ -2,6 +2,79 @@
 
 This changelog summarizes user-visible workflow changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.8 beta
+
+- Clarifies the root provenance pointer: `git-provenance` owns the canonical detailed policy, while root §8 binds it to repository-state workflows.
+- Replaces the approximate `~45 KB` validation note with a stable `<50 KiB` compact-root target.
+- Normalizes `git-provenance` and `pr-readiness` extracted subsection headings from H4 to H2.
+- No runtime behavior, routing, permissions, policy semantics, cleanup behavior, skill inventory, or installer behavior changes.
+
+See [`docs/releases/v30.8-beta.md`](docs/releases/v30.8-beta.md).
+
+## v30.7 beta
+
+- Adds an explicit `Pack version: v30.7 beta` marker inside root `AGENTS.md` so installed rule files can be identified directly.
+- Renumbers the remaining visual-evidence subsection from `§8.3` to `§8.1` after earlier subsection compaction.
+- Moves the changelog summary directly under the changelog title and removes the stray extra blank line around the v30.4/v30.2 boundary.
+- No agent behavior, routing, permissions, policy semantics, skill inventory, or installer behavior changes.
+
+See [`docs/releases/v30.7-beta.md`](docs/releases/v30.7-beta.md).
+
+## v30.6 beta
+
+- Removes the bundled server-incompatible GitHub binary-upload integration and all associated package references and runtime policy hooks.
+- Removes the integration's skill directory and the dedicated historical beta note that documented it.
+- Bundled skill inventory is now 18 skills: 13 specialist/advisory and 5 workflow/policy skills.
+- Keeps visual-evidence publication transport-agnostic: use only an already-available authorized mechanism; otherwise preserve local evidence and report publication blocked.
+- Keeps resource cleanup, gated remote deletion, v30.5 policy linkage, routing topology, and role permissions unchanged.
+
+See [`docs/releases/v30.6-beta.md`](docs/releases/v30.6-beta.md).
+
+## v30.5 beta
+
+- Completes §2.1.1 with the full bundled skill inventory, separating specialist/advisory routing from conditional workflow/policy skills.
+- States that all roles inherit the root skill catalog and that triggered policy skills must actually be loaded for the applicable stage without widening authority.
+- Restores explicit entry-routing vs delegation-routing defaults after v30.4 compaction and keeps `@code-orchestrator` / `@auditor` out of delegation targets.
+- Makes current-upstream provenance and owned-PR provenance/readiness skill dependencies explicit.
+- Repairs stale v30.4 role references to removed root subsections in `build` and `ui-orchestrator`.
+- Keeps agent set, plan permissions, fallback semantics, cleanup policy, and installer behavior unchanged.
+
+See [`docs/releases/v30.5-beta.md`](docs/releases/v30.5-beta.md).
+
+## v30.4 beta
+
+- Compacts root `AGENTS.md` from 75,493 bytes to ~45 KB while preserving resident authority/gate/routing invariants.
+- Moves detailed Git provenance, PR readiness, verification cadence, resource lifecycle, and output formatting mechanics into bundled conditional policy skills.
+- Keeps role files and execution topology unchanged from the preceding beta.
+
+See [`docs/releases/v30.4-beta.md`](docs/releases/v30.4-beta.md).
+
+## v30.2 beta
+
+Beta resource-lifecycle and visual-evidence release built on v30.1 beta.
+
+- Adds one canonical workflow-created resource lifecycle: creation creates cleanup ownership, and final completion requires reconciliation to `cleaned`, `intentionally retained`, `cleanup blocked`, or `ownership transferred`.
+- Tracks related resources independently so removing a worktree does not silently imply its local branch, remote ref, process, or hosted evidence resource is also reconciled.
+- Allows ordinary cleanup of current-workflow-owned local disposable resources when safe, while remote/published/shared destructive cleanup remains subject to the applicable gate unless that teardown was already authorized.
+- Keeps visual-evidence publication separate from repository-hosting state; gist/temporary branch/ref hosting is not an implicit fallback.
+- Requires post-publication attachment verification and resource reconciliation for local screenshots, temporary execution workspaces/processes, and any fallback hosting resources.
+- Keeps v30.1 routing, execution-topology, fallback, authorization, and plan-path semantics unchanged.
+
+See [`docs/releases/v30.2-beta.md`](docs/releases/v30.2-beta.md).
+
+## v30.1 beta
+
+Beta semantic-policy alignment release built on v30.00.
+
+- Splits routing into entry routing and delegation routing so top-level ownership is not confused with invokable subagent edges.
+- Uses agent frontmatter `mode` as the canonical execution-topology source for the OpenCode-specific pack.
+- Removes inferred similarity fallback: fallback must be explicitly declared, executable from the current context, and no broader than the current authority/workflow envelope.
+- Separates hard/mandatory preconditions from user-authorizable gates and prevents evidence/state/tool availability from becoming implicit authorization.
+- Clarifies primary-role reroute behavior in `build`, fallback failure behavior in `code-orchestrator` / `ui-orchestrator`, and keeps delegated UI orchestration leaf-dispatch with the workflow-owning parent.
+- Narrows `plan` write permissions to portable canonical planning paths; removes the developer-specific absolute plan path and broad `docs/**` write scope.
+
+See [`docs/releases/v30.1-beta.md`](docs/releases/v30.1-beta.md).
+
 ## v30.00
 
 Stable successor to v28.42 focused on a smaller, deterministic runtime surface without changing the package's core correctness model.

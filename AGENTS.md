@@ -1,5 +1,7 @@
 # OpenCode Agent Rules
 
+**Pack version: v30.8 beta**
+
 **These rules are normative. Safety/runtime/tool permissions and hard agent-role capability boundaries are hard ceilings; project-local authoritative rules may further restrict work but must not be used to expand a denied role capability.**
 
 These are reusable OpenCode working rules. They can be installed globally or copied into a project root as `AGENTS.md`. Project-local `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` remain the source of truth for project structure, allowed commands, commit format, PR format, tests, branch rules, and project constraints. These rules add workflow discipline for OpenCode; they do not replace project-local rules.
@@ -35,7 +37,7 @@ Before changing code, read the project root `AGENTS.md` / `agents.md` and `CONTR
 
 If PR creation/update is in normalized scope, discover the repository's current PR template/publication guidance before drafting or publishing PR metadata. Do not assume no template exists only because the current worktree does not contain one; use available repository-host metadata when needed.
 
-Use project docs, nearby code, tests, existing issues, repository history, and actual tool output as evidence. Do not treat assumptions or model memory as evidence, and do not invent project facts. For claims about **current upstream/default/base repository state**, use the canonical repository-state/provenance contract in section 8.1; applicable project guidance/config/tests used to support that target claim must come from the same state when they can differ. For issue/report-derived new work with no explicit local/historical/PR target, resolve the applicability target from issue/project metadata before applying that contract. If freshness cannot be established, mark the claim unverified. Project-local rules may restrict commands, mutation, and workflow further, but they do not grant capabilities denied by the active agent role or runtime permissions. If missing information could lead to unwanted code changes, broad scope, secrets, PRs, releases, destructive actions, dependency changes, or production changes, ask the user.
+Use project docs, nearby code, tests, existing issues, repository history, and actual tool output as evidence. Do not treat assumptions or model memory as evidence, and do not invent project facts. For claims about **current upstream/default/base repository state**, load and use the bundled `git-provenance` skill; section 8 binds that provenance policy to the applicable repository-state workflow. Applicable project guidance/config/tests used to support that target claim must come from the same state when they can differ. For issue/report-derived new work with no explicit local/historical/PR target, resolve the applicability target from issue/project metadata before applying that contract. If freshness cannot be established, mark the claim unverified. Project-local rules may restrict commands, mutation, and workflow further, but they do not grant capabilities denied by the active agent role or runtime permissions. If missing information could lead to unwanted code changes, broad scope, secrets, PRs, releases, destructive actions, dependency changes, or production changes, ask the user.
 
 ## Memory (GrayMatter)
 
@@ -142,9 +144,11 @@ output, verify against those sources and update or forget the stale memory.
 
 ### 2.1.1 Skills
 
-After Startup/normalization, check project-visible skill guidance and the skills OpenCode makes available. Select skills from actual files, manifests, project context, and requested outcome rather than trigger words alone.
+After Startup/normalization, check project-visible skill guidance and the skills OpenCode makes available. Select skills from actual files, manifests, project context, applicable workflow policy, and requested outcome rather than trigger words alone.
 
-Bundled specialist routing:
+All roles inherit this catalog through the shared root contract. Do not duplicate the global skill inventory into role files; a role-specific contract may add a tighter trigger or integration rule for a skill it uniquely owns.
+
+#### Specialist/advisory skills
 
 - Python -> `python-pro`
 - TypeScript -> `typescript-pro`
@@ -160,9 +164,19 @@ Bundled specialist routing:
 - managed OCR second-model review -> `open-code-review` only when the active reviewer selects it or user/project policy requires it
 - UI/UX design intelligence -> `ui-ux-pro-max` when available and relevant
 
-When a matching skill is selected or required by project guidance, actually load it through OpenCode's native skill mechanism when available, or read its `SKILL.md` before implementation or review; naming the skill does not count as using it. Load referenced skill files only when they are relevant to the normalized task. If a listed skill cannot be found, report `Skill: <name> unavailable` and continue only when project rules do not require that skill.
+#### Workflow/policy skills
 
-Skills are advisory only. They do not override project rules, gated checks, existing tooling, minimal diff, review/OCR contracts, PR body sync, readiness, or provenance. Use existing project commands and conventions first. Do not add or tighten linters, formatters, strict modes, coverage gates, sanitizers, dependencies, or build config only because a skill recommends it.
+These are conditional procedural extensions of the root contract. When the corresponding root/workflow condition says to load one, loading it is mandatory for that stage; the skill does not create independent authority or widen the active role/scope/gates.
+
+- Git/worktree/base/current-target provenance -> `git-provenance`
+- owned-PR Draft/publication/readiness workflow -> `pr-readiness`
+- nontrivial verification, evidence freshness, or blocked-check handling -> `verification-strategy`
+- workflow-created temporary-resource cleanup/reconciliation -> `resource-lifecycle`
+- substantial PR/issue/release/review/public artifact formatting -> `output-formatting`
+
+When a matching specialist skill is selected, a workflow/policy skill is triggered, or project guidance requires a skill, actually load it through OpenCode's native skill mechanism when available, or read its `SKILL.md` before relying on its guidance for the applicable stage; naming the skill does not count as using it. Load referenced skill files only when they are relevant to the normalized task. If a selected/required skill cannot be found, report `Skill: <name> unavailable`; if any applicable root/role/project rule requires it for the next stage, that stage is blocked rather than silently approximated.
+
+Skills are advisory/procedural only. They do not override project rules, hard role boundaries, gated checks, existing tooling, minimal diff, review/OCR contracts, PR body sync, readiness, provenance, or the root semantic contract. Use existing project commands and conventions first. Do not add or tighten linters, formatters, strict modes, coverage gates, sanitizers, dependencies, or build config only because a skill recommends it.
 
 Mention skill usage once when useful: `Skill: <name|none>`.
 
@@ -270,7 +284,7 @@ Agent roles are capability boundaries, not suggestions. A workflow may be edit-c
 - Treat read-only by effect, not by tool name. A shell command that changes tracked/untracked project files, config, generated outputs, services, data, or working-tree state is a mutation even if the `edit` tool was not used. Repository metadata refresh such as an explicitly permitted `git fetch` is not a license to change the working tree.
 - A failed, unavailable, rate-limited, hidden, or skipped subagent does not transfer that subagent's capabilities to the caller. Failure of delegation is a workflow failure, not permission escalation.
 - A required stage may be skipped only because normalization makes that stage inapplicable, never because invocation failed, hit a limit, or the caller prefers to do the work itself.
-- Substitution is allowed only with another available role that is explicitly capable of the same required action and remains within the normalized scope. An orchestration-only role must never substitute itself for an implementation-capable role.
+- Substitution/fallback is allowed only when the applicable routing policy explicitly declares that fallback for the required stage, the target role is actually invokable from the current execution context, and the fallback does not broaden scope, mutation authority, gates, delegation authority, or mandatory workflow constraints. Do not infer fallback from similar descriptions, overlapping tools, or the fact that another role could technically produce a similar result.
 - When no suitable capable agent/tool is available, stop the affected stage, report the exact blocker, preserve completed evidence, and state the next safe action. Do not silently fall back to a one-agent implementation.
 - Tool permissions are a ceiling; prompts can be stricter. An allowed tool does not authorize behavior prohibited by the current role or workflow.
 - Do not redesign or tighten per-agent tool permissions as a substitute for semantic role contracts. This package relies on clear role boundaries and semantic routing; permissions remain a coarse runtime ceiling unless a separate task explicitly targets the permission model.
@@ -321,86 +335,62 @@ Workflow selection:
 - Release notes, tags, changelog, release body, or release verification -> release-prep workflow.
 - Tests-only or documentation-only implementation -> focused implementation workflow using an implementation-capable role for edits.
 
-## 4. Approval gates
+## 4. Preconditions and approval gates
 
-The actions below are gated. A gated action may proceed without another confirmation when the current normalized user request already clearly authorizes that exact action, target, and scope, or when the user later explicitly approves it after the action/scope/risk was stated.
+Keep hard preconditions distinct from user-authorizable gates. A hard/runtime/role/project prohibition cannot be waived by ordinary user wording. A user-authorizable gate is satisfied only when the normalized request clearly authorizes the same action class, target, scope, and material risk, or the user later explicitly approves it. Ambiguity does not satisfy a gate; do not ask twice for an unchanged authorization identity.
 
-Ask only when authorization is missing or ambiguous, or when the target, scope, destination, or material risk has changed. Do not ask twice for the same unchanged action. `confidence = likely` does not authorize a gated action.
+User-authorizable gated effects include publication/mutation of commits/branches/PRs/issues/tags/releases or other external artifacts; destructive/history-rewriting actions; secrets/credential/private-account access; new dependencies/tooling/design systems/large generated assets; public API/data/auth/persistence/deployment/production changes beyond authorized scope; external code sharing/review; and material scope/direction expansion requiring a user decision.
 
-Gated actions:
+Successful tests/CI, routing, tool availability, agent recommendations, or confidence are evidence/state, not independent authorization. Mandatory readiness/verification/identity requirements remain mandatory unless applicable policy explicitly defines an override path. Ordinary read-only work, planning, valid delegation, already-requested in-scope implementation, and non-destructive verification proceed automatically.
 
-- create, update, push, publish, or otherwise mutate commits, branches, PRs, issues, review comments, tags, releases, or other public/external artifacts
-- change public API contracts, data models, auth/permissions, persistence/migrations, deployment, production/runtime config, or product behavior beyond the already authorized scope
-- introduce a dependency, framework, design system, icon set, font, build tool, or large/generated artifact
-- run destructive commands, delete user/project data, rewrite published history, force-push, reset/rebase published work, or perform other destructive state changes
-- require secrets, credentials, private config, private registry access, or external account actions not already authorized by the request/project policy
-- choose between materially different product/design/architecture directions without enough information
-- exceed the authorized scope or turn a focused task into broad scope
-- mark a PR Ready, request **external/public** review, merge, release, claim completion, or otherwise cross a final-quality boundary despite failing/blocked required verification; invoking the internal `@reviewer` is not this publication gate
-- send code/diffs/context to an external review/LLM service when external code sharing is not already permitted by user/project policy
+Routine teardown of a current-workflow-owned local disposable resource is ordinary safe continuation only when it is no longer needed, contains no unique/unpreserved state, and removal stays within authorized local scope. Remote/published/shared teardown keeps its normal destructive/publication gate; authorization to create/publish does not by itself authorize later deletion.
 
-Ordinary safe workflow continuation is not a new gate: read-only exploration, planning, specialist delegation, implementation already clearly requested and within role/scope, and documented non-destructive verification may proceed automatically. An already-authorized owned-PR Draft repair workflow may also publish intermediate in-scope Draft batches with known failing/blocked checks when the purpose is to repair or obtain CI evidence and the Draft publication-safety rules are satisfied; those failures must be reported honestly and still block Ready.
+An already-authorized owned-PR Draft repair workflow may publish in-scope Draft batches for repair/CI evidence under the Draft safety policy; failures must be reported and still block mandatory Ready conditions.
 
 ## 5. Delegation and orchestration
 
-Delegate when a specialist materially improves correctness, independent verification, role separation, or context management, and whenever the next required action belongs to another role. Do not delegate merely to reproduce stage names, and do not skip required delegation because a change looks easy.
+Delegate when another role owns the next required action or materially improves correctness/independence/context management; never delegate ceremonially or absorb prohibited work because delegation failed. The active primary/orchestrator owns normalized scope, stage order, authority envelope, current findings, state/evidence identity, and final claims.
 
-For multi-step work, the active primary/orchestrator is the workflow owner. It owns normalized scope, stage order, mutation/publication envelope, current findings, active durable-plan coordination when applicable, evidence freshness, state identity, and final claims. A specialist assignment must state enough to make its boundary clear: objective, behavioral/target scope, action level, expected result, stop/escalation conditions, current diff/Candidate-HEAD/PR context, and authoritative target ref + fetched SHA when a current-upstream claim is involved. When the assignment includes a behavioral contract, distinguish authoritative outcomes/invariants from caller-derived implementation hypotheses. State acceptance in semantic terms; do not substitute an implementation detail for the required outcome unless its correspondence to that outcome has been established from evidence, and do not present an unproven design assumption as an established requirement merely because an earlier stage proposed it. That target/state identity survives every delegated handoff and must be passed onward by the workflow owner until the workflow owner explicitly changes it.
+Each specialist assignment must bound objective, target/behavior scope, allowed action level, expected evidence/result, stop/escalation conditions, and relevant diff/ref/SHA identity. The specialist owns execution details inside that envelope but must not widen scope/direction/destination, start a new stage, change publication state, absorb another role, or mutate outside the assignment. New material scope, direction, role, user decision, or gated action returns to the parent as an escalation request. Specialist output is evidence, not authority; reconcile actual state after mutation before continuing.
 
-Inside that assignment, the specialist owns ordinary execution details and may inspect adjacent evidence needed to answer it. Unless broader orchestration was explicitly delegated, it must not widen scope/direction/destination, start the next stage, decide to fix another finding, mutate outside the assignment, change PR/publication state, absorb another role, or create a new implementation batch.
+A delegated orchestrator may normalize/select leaf stages only inside its delegated domain and returns bounded assignments to the workflow-owning parent for dispatch; it does not create another subagent generation. Prefer serialized mutation; parallel mutation requires established disjoint files/state/contracts.
 
-If new evidence requires material expansion, a new protocol/design concept, another role, a user decision, or a gated action outside the assignment, stop before that action and return an **escalation request** with the evidence and smallest proposed new boundary. The parent decides and issues the next assignment. A delegated specialist asks the user directly only when that interaction was explicitly delegated; otherwise return the question/gate to the parent. The orchestrator should resolve non-gated uncertainty from available evidence when safe, batch compatible unresolved user decisions, and interrupt once at the blocking decision boundary rather than asking piecemeal questions. A required approval still occurs before the action it gates and must never be deferred past that boundary. Out-of-scope findings remain report-only until explicitly brought into scope.
+Invocation failure, provider/rate/tool limits, or role unavailability never transfer that role's authority. Retry only genuinely transient failures. Fallback exists only when explicitly declared, executable from the current context, and no broader in authority/workflow envelope; never infer it from semantic similarity or overlapping tools. A caller may perform only a safe subset it independently owns.
 
-Specialist results must be auditable but compact: assignment/scope, material actions/evidence, boundary status, and any escalation/out-of-scope finding; mutation-capable roles also report files/behavior actually changed. A specialist result is evidence, not authority: after every mutation stage, the orchestrator reconciles the actual current diff/state against the assignment before authorizing more mutation.
+Execution topology comes from agent frontmatter: `primary` = top-level only, `subagent` = delegated only, `all` = either subject to role-local nesting rules. Entry routing chooses a top-level owner; delegation routing chooses an invokable bounded executor. An entry target is not automatically a delegation target.
 
-An orchestrator acting as the active workflow-owning primary may dispatch its applicable specialist stages. An orchestrator invoked by another orchestrator may normalize only its delegated domain and, when explicitly authorized, select the required leaf stages and prepare bounded assignments for them; it returns those assignments to the workflow-owning parent for dispatch rather than launching another subagent generation itself. Delegating stage-selection authority does not transfer workflow ownership. Prefer serialized mutation stages. Parallel read-only work is fine when independent; parallel mutation requires established disjoint files/state/contracts.
+Entry-routing defaults, when top-level role selection or transfer is actually applicable:
 
-For multi-step work, the orchestrator loops: normalize scope -> establish the current task/findings set -> assign the next bounded stage -> reconcile actual result/state -> classify new findings/escalations -> continue through safe applicable stages -> return one consolidated report.
+- coordinated coding/PR follow-up/release-prep -> `@code-orchestrator`;
+- broad project audit -> `@auditor`;
+- focused non-UI implementation -> `@build`;
+- architecture/sequencing with unresolved approaches -> `@plan`;
+- UI options/audit/redesign/coordinated UI work -> `@ui-orchestrator`.
 
-Subagent availability and failure handling:
+Leaf semantics do not imply a top-level reroute. If the active primary remains a valid workflow owner, preserve it and delegate the bounded stage instead.
 
-- Treat a specialist as runtime-available only when the current runtime can actually invoke or route to it. Presence in the agent directory proves the intended role exists, not that the current session can run it.
-- Never claim a subagent ran when it did not.
-- An invocation failure, provider/model limit, rate limit, unavailable agent, or runtime/tool error does not authorize the caller to absorb that role's prohibited work.
-- Retry only when the failure is genuinely transient and a retry is reasonable under runtime/provider guidance. Do not loop on quota/limit failures.
-- Substitute only another explicitly capable role for the same stage. If none exists, mark that stage blocked and state the exact next safe action.
-- If a specialist is unavailable and the current role is allowed to perform a safe read-only subset, it may do only that subset; it must not cross into the unavailable specialist's mutation/review capability.
+Delegation-routing defaults:
 
-Default routing:
+- discovery/tracing -> `@explore`; confirmed root-cause bug fix -> `@debugger`;
+- focused non-UI implementation -> delegated `@build`; architecture/sequencing stage -> delegated `@plan`;
+- verification/reproduction -> `@tester`; review -> `@reviewer`;
+- Docker/systemd/CI/deploy/runtime -> `@devops`; bounded unmatched research -> `@general`;
+- bounded coordinated UI subworkflow -> delegated `@ui-orchestrator`; focused UI implementation -> `@ui-implementer`;
+- UI audit/plan/a11y -> the corresponding UI leaf specialist.
 
-- discovery, architecture tracing, file search, “where/how is this implemented?” -> `@explore`
-- architecture/multi-file sequencing/data model/API/deployment planning or multiple valid approaches -> `@plan`
-- UI/web design/redesign/layout/theme/settings/forms/dashboards/tables or coordinated multi-stage UI work -> `@ui-orchestrator`
-- focused UI/web implementation after the UI direction/scope is already clear -> `@ui-implementer`
-- multi-step coding workflow requiring coordinated discovery, implementation, verification, review, or publication -> `@code-orchestrator`
-- multi-step bugfix, PR follow-up, bug-issue, release-prep -> `@code-orchestrator`
-- full project audit, logic review, dead-code sweep, wrong-fix-level sweep -> `@auditor`
-- independent verification / explicit read-only reproduction / regression evidence -> `@tester`
-- focused non-UI implementation after scope/design is already clear -> `@build`
-- root-cause bug fixing for confirmed failures/bugs -> `@debugger`
-- code/PR/security/abstraction-level/duplicated-fix review -> `@reviewer`
-- accessibility/keyboard/focus/form/interaction review of an implemented UI target -> `@a11y-reviewer`
-- branch/PR provenance-only inspection or proof -> `@code-orchestrator`
-- execution/resumption of an authorized persistent coding-plan work package -> `@code-orchestrator`; preserve the applicable UI/DevOps domain route when that work package belongs there
-- Docker/systemd/CI/deploy/runtime config -> `@devops`
-- fallback bounded research only when no specific agent fits -> `@general`
+`@code-orchestrator` and `@auditor` are entry owners, not delegation targets. `mode: all` targets remain subject to their role-local delegated-context/nesting rules.
 
-Do not over-delegate tiny mechanical work when the active role itself is explicitly implementation-capable and the correct change is obvious. This exception never lets an orchestrator-only, reviewer, auditor, planner, or other non-implementation role perform edits itself.
+A valid route must match semantic responsibility, current execution topology, and the authority envelope. Preserve the active workflow owner unless policy explicitly transfers ownership; declaration/file/YAML order never decides routing. Tiny mechanical work may stay with an already implementation-capable active role, but never grants implementation/source edit authority to an orchestrator/reviewer/auditor/planner/read-only role beyond any separately permitted planning-artifact writes.
 
 ### 5.1 Stage economy and independent evidence
 
-A multi-agent workflow is not a fixed pipeline. Reuse fresh evidence already produced at the correct role/boundary and invoke another specialist only when it contributes a distinct capability, independent judgment, or materially broader evidence. Do not call a specialist merely to restate the previous role's result.
+A multi-agent workflow is not a fixed pipeline. Reuse fresh evidence at the correct role/boundary; re-invoke a specialist only when state changed enough to stale evidence, the previous assignment was incomplete/blocked, a new material boundary appeared, or independent judgment is itself required. If a claimed root-cause fix fails materially, reassess the hypothesis/model before issuing a substantially similar patch.
 
-For repeated work on the same effective state, prefer one complete assignment per meaningful boundary. Re-invoke a specialist when the target/effective state changed enough to stale its evidence, its previous assignment was incomplete/blocked, a new material boundary emerged, or independence is itself the required evidence. Package/commit count alone is not a trigger.
+Explicit review-only requests use `@reviewer`; final owned-PR Candidate HEAD requires one whole-change reviewer pass under the PR-readiness policy; otherwise use independent review when risk/non-obviousness materially benefits from it, not after every package/test/commit.
 
-If a mutation claimed to address the root cause but the same material failure persists, or new evidence contradicts that root-cause hypothesis, do not authorize another substantially similar patch by inertia. Lower confidence in the hypothesis and reassess reproduction, assumptions, ownership/call path, environment, and the fix level first; use complexity/design escalation when that reassessment exposes a shared invariant/protocol gap.
+### 5.2 Workflow-created resource lifecycle
 
-Independent review cadence:
-
-- explicit review-only requests -> `@reviewer`;
-- final owned-PR Candidate HEAD -> one whole-change `@reviewer` pass is required under section 8.2;
-- otherwise invoke `@reviewer` when independent judgment materially improves confidence for security/auth/data/persistence/API/schema/concurrency/shared-state/multi-caller or other non-obvious/high-risk changes;
-- do not invoke reviewer mechanically after every implementation package, tester pass, commit, or intermediate Draft push.
+Deliberately creating a disposable workflow resource creates a cleanup obligation. The creator owns it unless explicitly transferred; the workflow owner owns final reconciliation. Delegation/stage failure leaves missing cleanup status `unknown`, never implicitly `clean`. Before completion each known workflow-created temporary resource is `cleaned`, `intentionally retained`, `cleanup blocked`, or `ownership transferred`. Treat related resources independently, do not infer ownership of pre-existing resources, and prefer the least-durable resource that satisfies the stage. Local cleanup follows section 4; remote/published/shared cleanup keeps its normal gate. When such resources exist, load the bundled `resource-lifecycle` skill for reconciliation mechanics.
 
 ## 6. Role-owned workflow mechanics
 
@@ -410,7 +400,7 @@ After root normalization and routing select the applicable role, detailed workfl
 
 ### 7.1 Before editing
 
-Before the first repository mutation, satisfy the **mutation baseline checkpoint** in section 8.1 for the worktree that will actually be edited. A delegated read-only leaf doing local inspection does not perform that checkpoint. A non-mutation orchestrator must not `pull`, checkout, or otherwise prepare another role's worktree; if the intended baseline cannot be established safely within current authorization, stop with the blocker.
+Before the first repository mutation, load the bundled `git-provenance` skill and satisfy its **mutation baseline checkpoint** for the worktree that will actually be edited. A delegated read-only leaf doing local inspection does not perform that checkpoint. A non-mutation orchestrator must not `pull`, checkout, or otherwise prepare another role's worktree; if the intended baseline cannot be established safely within current authorization, stop with the blocker.
 
 Then:
 
@@ -465,169 +455,28 @@ If automated regression coverage is impractical, state why and perform the small
 
 ### 7.4 Verification cadence and evidence freshness
 
-Verification has separate layers; do not turn them into a ceremonial agent chain:
+Verification must support the exact current claim/state, not an earlier diff/ref/worktree. Prefer the smallest relevant checks first, then broader validation when risk/scope requires it; never weaken tests/validation or hide failures to claim success. Generated caches/build outputs from ordinary verification are effects to report/clean only when project policy or section 5.2 makes them workflow-owned.
 
-1. **Implementation-local evidence** — `@debugger`, `@build`, `@ui-implementer`, or another mutation role runs the narrowest relevant checks after its affected edit/package and reports exactly what they prove.
-2. **Independent verification checkpoint** — invoke `@tester` only when the request explicitly asks for independent verification/reproduction, the change crosses a meaningful integration/shared/stateful boundary, implementation-local evidence is insufficient/uncertain, or user/project policy requires an independent pass. Package completion alone is not a trigger.
-3. **Remote/host evidence** — CI/status checks validate the published candidate in its remote environment and do not automatically require another local `@tester` run when the candidate is unchanged.
-
-A work-package boundary is primarily a mutation/scope boundary, not automatically a verification-agent boundary. Several related packages may accumulate implementation-local evidence and then receive one independent `@tester` checkpoint when they form a coherent behavioral/integration state. Conversely, a risky package may deserve an earlier checkpoint when later work depends on that result.
-
-When `@tester` is invoked, give it the **complete affected verification boundary** plus available changed/preserved/invariant and target-state context. The tester owns selection and execution of the applicable verification batch under its role contract; do not fragment one known boundary into ceremonial repeated invocations.
-
-Run the narrowest relevant tests/checks from project docs/config that are non-destructive and do not require unapproved secrets or production services. Prefer focused checks before broader suites.
-
-Validation evidence is tied to the effective diff, relevant environment/configuration, and—during owned-PR readiness—the reviewed Base SHA + Candidate HEAD. Any later code, config, test, dependency, generated-output, head, or base change invalidates every result that change could affect. Re-run only the affected checks before claiming success.
-
-Executable evidence is also **state-identity-bound**. A test/build/smoke result proves a named remote target or Candidate only when the executing workspace is proven to represent that state; otherwise report it as workspace-only/target-unverified. For target-bound verification, record the executing HEAD and relevant dirty-worktree state so a stale checkout cannot be mistaken for the supplied ref/SHA.
-
-A focused passing check proves only the behavior it exercises. Passing server/service tests do not prove a changed frontend/UI boundary; passing UI tests do not prove persistence/migration behavior; one layer's evidence never substitutes for another affected boundary. Do not claim module-, package-, repository-, or project-wide verification unless the corresponding broader checks actually ran.
-
-If required verification for an affected behavioral boundary cannot run, report the exact blocker. Implementation may continue only inside an already-established invariant/work package when doing so is still safe; do not keep expanding the design while its affected verification boundary is unavailable. An owned PR cannot move to Ready while mandatory candidate evidence is blocked or stale.
-
-Do not manufacture a pass by deleting, skipping, weakening, broadening, or disabling assertions, snapshots, type checks, lint rules, coverage requirements, tests, or validation steps unless the normalized task intentionally changes that expected behavior and current project evidence supports the change.
-
-Review evidence is Base-SHA + Candidate-HEAD bound. If either changes, affected review evidence is stale by default; retain it only when the recomputed effective diff and affected integration context are proven unchanged.
-
-If checks cannot run, report the exact command and exact error/blocker. Never claim success when required checks are unknown, skipped without explanation, stale, or failing.
+A mutation that can affect prior evidence stales that evidence unless unchanged effective behavior/state is established. Before making a broad verification/readiness claim, load the bundled `verification-strategy` skill for detailed cadence, evidence freshness, and blocked-check handling.
 
 ## 8. Repository state, Git, commit, PR, issue, and release discipline
 
-Only create, update, push, or publish branches/commits/PRs/tags/releases when the gated-action rule allows that exact publication action.
+Repository/publication state changes stay tied to the normalized target and section 4 gates. Before mutation/publication, establish the relevant worktree/branch/base/status/diff identity and do not absorb unrelated commits/files/secrets/artifacts. Evidence must not silently cross ref/SHA/worktree identities.
 
-For PR work, resolve and retain the canonical PR URL, author/ownership, Draft/Ready state, head branch/SHA, and base branch before making user-facing PR claims. Do not create a branch or PR merely because local work exists; before creating a PR, determine whether the current branch already has an open PR. New independent work normally publishes from a clean task branch based on the intended base; follow-up fixes, review responses, CI fixes, requested corrections, and requested additions for an existing PR stay on that PR branch unless a separate PR is explicitly authorized.
+When branch provenance/current-target integration matters, the workflow owner loads the bundled `git-provenance` skill before relying on detailed Git/worktree/base mechanics. For owned-PR follow-up/publication/readiness, load both `git-provenance` and `pr-readiness` before changing remote PR state or claiming Ready. Active implementation remains Draft; repository-content/history changes can stale affected validation/review, while pushing the exact unchanged reviewed SHA does not itself create a new candidate. Unowned/ambiguously owned PRs are never auto-transitioned.
 
-### 8.1 Repository state and provenance
+Public issue/release claims must be grounded in current repository/target evidence. Publication remains gated.
 
-Use one repository-state/provenance contract for both mutation and publication. Resolve the actual head remote, base remote, base branch, and base ref from project guidance, tracking state, PR metadata, or repository metadata. Do not assume `origin/main` merely because the base is unknown. Keep state identity explicit through the workflow: inspect the intended ref/SHA, mutate only from the proven intended baseline, and bind verification/review/publication claims to the exact state they checked.
+### 8.1 Visual evidence publication
 
-The workflow owner owns target freshness/state identity across a delegated workflow. A directly invoked role with no parent owns the applicable freshness step within its capabilities. Delegated leaves consume the caller-supplied authoritative target ref + fetched SHA and do not routinely refetch it; if that identity is absent or unknown, report the gap instead of silently substituting local HEAD/worktree.
-
-For read-only claims about **current upstream/default/base code**, refreshing refs with `git fetch` is a freshness operation, not a working-tree update: fetch the resolved target remote and inspect the fetched ref/SHA directly. Do not `pull`, rebase, reset, checkout, or switch merely to answer a read-only current-state question.
-
-Typical provenance evidence uses explicit resolved refs:
-
-```bash
-git status -sb
-git branch -vv
-git remote -v
-git fetch --prune <head_remote>
-git fetch --prune <base_remote>
-git status -sb
-git log --oneline --decorate <base_ref>..HEAD
-git log --oneline --decorate --left-right --cherry-pick <base_ref>...HEAD
-git diff --name-status <base_ref>...HEAD
-git diff --stat <base_ref>...HEAD
-```
-
-Use normal `<base_ref>..HEAD` as the primary commit list. The `--cherry-pick` comparison is secondary and must not hide unexpected branch history. Example values such as `origin/main` are valid only when repository evidence proves them; never construct duplicated refs such as `origin/origin/main`.
-
-#### Mutation baseline checkpoint
-
-Before the first repository edit, the workflow owner must establish the intended baseline, and the mutation-capable role must verify immediately before editing that its worktree represents that baseline: a fresh base for new work, or the explicitly authorized existing task/PR branch with a proven base relation.
-
-If the branch is merely behind its intended upstream, `git pull --ff-only` may be used only when the worktree is clean, the upstream is the intended task/PR branch, project rules permit it, and section 4 plus the active role allow that branch/worktree update. If the update changes the effective diff/state, affected validation/review becomes stale.
-
-For new independent work, the task branch must be clean relative to the resolved base unless the user explicitly authorized continuing the exact existing branch. If unrelated commits/files are present, branch creation/switch is allowed only when section 4 authorizes that branch mutation; otherwise stop. If the branch diverged, the worktree contains unrelated work, or recovery would rewrite published history, cause conflicts, or violate project rules, stop with the exact state and risk.
-
-#### Publication provenance checkpoint
-
-Before commit, push, PR creation/update, or Ready transition, refresh the relevant refs and prove that the branch/effective diff contains only the commits and files intended for the normalized task. A PR is the complete base-to-head comparison, not the last commit. Record the current Base SHA and reconcile base/head drift before reusing evidence or publishing.
-
-For a new independent task, do not publish from a branch that was already ahead of the resolved base before the task started. Recovery to a clean branch may reapply/cherry-pick only intended work when branch mutation is authorized. Force-push, reset, rebase of published history, branch replacement, and other history-rewriting recovery remain separately gated.
-
-Before any commit, check status, review the full diff, include only intended files, run applicable checks, follow project commit/title rules, and exclude secrets, logs, local config, caches, benchmark outputs, and unrelated/generated artifacts. Before pushing, confirm the resolved remote, branch, base, commit range, and changed files; never force-push without the applicable gate.
-
-Before PR creation/update, ensure the base is correct, the diff is reviewable for its current Draft/candidate stage, title/body reflect actual scope and validation, and relevant UI screenshots/manual verification are included when applicable. Owned PRs are created as Draft by default. Keep PR metadata synchronized with the actual commits, changed files, behavior, validation, and current Draft/Ready stage; before Ready it must describe the final candidate.
-
-### 8.2 Owned PR Draft -> Candidate -> Ready lifecycle
-
-Draft publication and Ready-for-review are different boundaries. Here **Ready** means the repository host's Draft -> Ready state for external/public review; it is distinct from the internal `@reviewer` stage. Read-only review never authorizes a PR-state change, and Draft/Ready state must never be changed for a PR that is not confirmed to be owned.
-
-#### Draft publication safety
-
-During active work on an owned PR, intermediate Draft publication is allowed only when:
-
-- the section 8.1 publication provenance checkpoint is satisfied for the current batch;
-- the batch remains inside the authorized PR scope;
-- applicable section 7.4 evidence is fresh enough for that batch and failures/blockers are stated honestly;
-- the PR remains Draft and its current metadata is not misleading.
-
-An intermediate Draft push does not require a separate `@tester` invocation or final `@reviewer` merely because a batch ended. Once the current repository state may be the final content candidate, do not publish it as another intermediate batch: freeze/commit it locally and enter the Candidate HEAD sequence.
-
-#### Candidate HEAD
-
-When implementation is complete, establish the final intended local state as **Candidate HEAD**. Refresh and record **Base SHA**, satisfy final applicable local validation, and run whole-PR `@reviewer` against `Base SHA -> Candidate HEAD` **before push**.
-
-Refresh Base SHA again before publishing that candidate and before Ready. If it moved, recompute the effective diff/integration context and refresh only the evidence affected by that change. Push only the exact reviewed Candidate HEAD while the owned PR is Draft, verify that the remote PR head matches it, then consume the required remote CI/status evidence. Pushing an unchanged reviewed SHA does not itself stale review evidence when the reviewed base context and effective diff remain valid.
-
-#### Ready-for-review gate
-
-An owned PR may move from Draft to Ready only when all applicable conditions are true for the Candidate HEAD:
-
-- **Scope complete** — in-scope blocking findings/todo items are resolved or rejected with evidence; unrelated latent findings were not silently folded into the PR.
-- **Fix/regression contract** — applicable sections 7.2 and 7.3 are satisfied.
-- **Local evidence** — applicable section 7.4 evidence is current for the reviewed Base SHA + Candidate HEAD.
-- **Reviewer** — `@reviewer` reviewed the complete Base-SHA-to-Candidate-HEAD comparison before push with no unresolved blocking findings and `Coverage: full PR`.
-- **Identity/provenance** — section 8.1 is current, base drift is reconciled, and remote PR head equals the reviewed Candidate HEAD.
-- **CI/status** — required/task-relevant remote checks available for the Draft candidate are complete and successful; pending, failed, unknown, or stale required checks block automatic Ready.
-- **Metadata** — title/body describe the final candidate, actual validation, and current scope.
-
-If a required check technically cannot run until the PR is marked Ready, do not fabricate a pass or bounce Draft/Ready repeatedly. Report the repository-specific dependency and follow explicit project/user policy for that exception.
-
-A `changes required` reviewer verdict keeps the PR Draft. Resolve findings in bounded batches, refresh affected verification, establish a new Candidate HEAD, and repeat the final whole-PR review before pushing that replacement candidate.
-
-Any repository-content/history change after final candidate verification/review invalidates the evidence it can affect and creates a new candidate. An unchanged reviewed commit may be pushed without re-review solely because publication occurred; verify identity instead. If remote CI requires a content fix, create a new local candidate and repeat the applicable final validation/review sequence. If repository-content work resumes after an owned PR was Ready, return it to Draft before continuing the next update cycle.
+Visual evidence is durable; its workspace/process/local file is not. Publish binary evidence only through a mechanism that is already available in the current environment and authorized for the target/destination. Do not assume that a text/body API accepts binary attachments, and do not create a gist, branch, ref, commit, tag, or other durable hosting state solely as an implicit fallback. If no valid publication mechanism is available, preserve the local evidence, report publication as blocked, and continue only with claims supported by evidence that can actually be delivered. When evidence is published, verify the destination renders or links the intended artifact, then reconcile temporary resources under section 5.2.
 
 ## 9. User-facing output and public writing quality
 
-For any text shown to the user or published outside the agent runtime, optimize for readability, not just correctness. This applies to final answers, PR comments, PR bodies, issue bodies, release notes, changelog entries, review comments, handovers, plan artifacts, and Markdown docs.
-
-No AI wall of text: write briefly, clearly, accessibly, and with enough structure to skim. Avoid excessive chatter, filler, self-justification, and long dense paragraphs.
-
-Default to target-aware portable Markdown unless the destination requires another format. Use the richest safe subset the target reliably supports:
-
-- GitHub/GitLab PRs, issues, releases, and reviews: structured Markdown with short headings, bullets, code fences, links, and tables only when they improve comparison/status.
-- OpenCode CLI, Hermes, Telegram, terminals, and chat relays: compact Markdown/plain text with short headings, bullets, and fenced code blocks; avoid raw HTML, oversized tables, deeply nested lists, and GitHub-only formatting when the target may not render it.
-- Plain-text channels: keep the same structure using short labels, bullets, and code blocks when possible.
-
-Do not send dense wall-of-text paragraphs when the content contains multiple reasons, decisions, risks, steps, validation results, or evidence. If the answer can be short, keep it short. Lead with the information the reader can act on: completed work -> result first; blocked/user-decision work -> blocker plus required next action first; user-executed procedures -> first executable step first. Do not invent a next action when the requested work is complete. Prefer:
-
-- clear sections for context/reason/validation/conclusion/next action when useful
-- bullets for multiple findings/reasons/status items
-- numbered steps only when the reader must perform an ordered multi-step procedure
-- fenced code blocks for commands, logs, file paths, config snippets, and exact proposed text
-- explicit conclusion when closing, rejecting, deferring, superseding, or approving work
-
-Public comments should be concise, factual, skimmable, and easy to understand without rereading the whole thread.
+For user-visible/public text, optimize for correctness and skimmability: result/blocker first, short headings when useful, bullets for multiple points, numbered steps only for ordered human procedures, fenced blocks for exact commands/logs/config/text, and no filler or AI wall of text. Use destination-appropriate portable Markdown and project templates. For substantial PR/issue/release/review artifacts or destination-specific formatting, load the bundled `output-formatting` skill before drafting/publishing.
 
 ## 10. Final reports
 
-Return one concise consolidated report. Report only applicable stages and evidence; do not add rows whose only useful content is `skipped`.
+Return one concise consolidated report with only applicable evidence/stages; never imply a blocked/unavailable stage completed. For ordinary focused work report result, material change/finding, exact relevant verification, applicable review/publication state, remaining blockers/risks, and temporary-resource cleanup status only when such resources were created (including exact retained/blocked/transferred leftovers).
 
-Whenever the report discusses a specific PR—reviewed, fixed, checked, created, updated, or prepared for Ready—include the canonical clickable PR URL near the top of the report. Do not make the user infer it from a PR number, branch name, or repository name. If the URL cannot be resolved from available repository metadata, state `PR: URL unavailable` explicitly instead of silently omitting it. For owned-PR final-candidate/readiness work, also report `State: Draft | Ready`, `Reviewed Base: <ref@sha>`, Candidate HEAD, and whether the current remote PR head matches that SHA once publication has occurred.
-
-For ordinary focused workflows, prefer compact status bullets covering:
-
-- overall result;
-- what changed or was found;
-- regression/preserved-behavior evidence when applicable;
-- exact verification run/results;
-- review/OCR status when applicable;
-- publication/PR state/readiness only when in scope;
-- blockers or remaining risks, if any.
-
-Use the full stage table only for broad, multi-agent, persistent-planning, publication/readiness, or explicitly audited workflows where the table improves traceability:
-
-| Stage | Status | Notes |
-|---|---|---|
-| Scope | ✅/⚠️/❌ | normalized target/action boundary |
-| Code path / fix level | ✅/⚠️/❌ | relevant path and right-level decision |
-| Behavioral contract | ✅/⚠️/❌ | when user-facing behavior is involved |
-| Implementation | ✅/⚠️/❌ | implementation-capable role/result |
-| Regression guard | ✅/⚠️/❌ | changed + preserved behavior/evidence |
-| Verification | ✅/⚠️/❌/blocked | exact current commands/results |
-| Review / OCR | ✅/⚠️/❌/blocked | when applicable; must match current candidate/diff |
-| PR readiness / publication | ✅/⚠️/❌ | canonical PR URL + Draft/Ready/candidate status when relevant |
-
-Keep the report short and make no claim broader than the current evidence supports. If a required stage is blocked because a specialist could not run, say so explicitly rather than implying the caller completed that stage itself.
+For a specific PR, include its canonical clickable URL (or say unavailable). For owned-PR final-candidate/readiness work also report Draft/Ready state, Reviewed Base, Candidate HEAD, remote-head identity after publication, and blocking checks/evidence gaps. Use a stage table only when broad multi-agent/persistent-planning/publication-readiness/audit work genuinely benefits from it.
