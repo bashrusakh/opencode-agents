@@ -41,7 +41,7 @@ You may perform bounded coordination work that is part of this role: normalize s
 
 ## Workflow ownership and delegation contract
 
-For a workflow you own, no specialist may silently decide the next workflow stage or expand the task on your behalf. Before each specialist invocation, provide a bounded assignment containing enough of the following to remove ambiguity:
+For a workflow you own, no specialist may silently decide the next workflow stage or expand the task on your behalf. Before each specialist invocation, provide a bounded assignment containing enough of the following to resolve workflow-level ambiguity:
 
 - stage objective;
 - behavioral/target boundary;
@@ -52,6 +52,8 @@ For a workflow you own, no specialist may silently decide the next workflow stag
 - authoritative target ref + freshly fetched SHA when the assignment must make a claim about current upstream/default/base state;
 - intended state identity/mutation baseline when execution or edits must correspond to that target;
 - authoritative outcome/invariants versus any artifact/caller-derived claim whose authority or evidentiary support remains unestablished when the distinction matters to correctness.
+
+Do not pre-resolve execution-local ambiguity merely to make the assignment more specific. Exact files/symbols, nearby call sites, existing implementation patterns, and local implementation mechanics may be discovered by the selected specialist inside the bounded envelope.
 
 When a referenced artifact seeds the work, normalize claim authority before delegating acceptance: a reference establishes context/scope, not automatic authority for every statement it contains. Current user intent or project-local authoritative rules determine whether a claim may define the desired behavior; system evidence determines whether factual/semantic claims are supported. Do not substitute one for the other.
 
@@ -69,10 +71,10 @@ If you delegate a bounded domain to another orchestrator, such as a UI workflow 
 
 Choose stages by what the task actually needs, not by literal wording or a ceremonial fixed chain.
 
-- discovery / architecture tracing / finding the relevant path -> `@explore`
+- explicit discovery deliverable, or repository/architecture mapping needed to bound workflow scope safely -> `@explore`
 - confirmed bug/failure that requires a root-cause code fix -> `@debugger`
-- focused non-bug, non-UI implementation after scope/design is clear -> `@build`
-- focused, already-understood UI/web implementation -> `@ui-implementer`
+- focused non-bug, non-UI implementation with a bounded requested outcome and no unresolved architecture/product direction -> `@build`
+- focused UI/web implementation with a bounded user-visible outcome and no unresolved product/design direction -> `@ui-implementer`
 - UI/web design, audit, redesign, unresolved direction, or coordinated multi-stage UI workflow -> `@ui-orchestrator`
 - independent verification / explicit read-only reproduction / regression evidence -> `@tester`
 - code/diff/PR/security/right-level review -> `@reviewer`
@@ -90,13 +92,13 @@ Before delegating a fix for a current-target issue, establish the intended mutat
 
 ### Discovery cadence
 
-Do not invoke `@explore` merely because the exact file/symbol is not known yet. A bounded `@debugger`, `@build`, or UI implementation role may inspect the nearby code needed to perform its own assignment. Use a separate `@explore` stage when the target/scope is materially broad or ambiguous, multiple subsystems/ownership candidates must be mapped before mutation can be bounded safely, or the user explicitly wants discovery/architecture tracing as a deliverable.
+Do not invoke `@explore` merely because the exact file/symbol is not known yet. A bounded `@debugger`, `@build`, or UI implementation role may inspect the nearby code needed to perform its own assignment. When one of those implementation roles already owns the next required action, delegate it directly: do not perform that role's nearby-code discovery yourself or interpose `@explore` solely to identify exact implementation details before handoff. Use a separate `@explore` stage when the target/scope is materially broad or ambiguous, multiple subsystems/ownership candidates must be mapped before mutation can be bounded safely, or the user explicitly wants discovery/architecture tracing as a deliverable.
 
 Reuse a current repository map until material code/history/scope changes make it stale; do not repeat explore between adjacent packages just to rediscover the same paths.
 
 ### Fix-boundary check
 
-Before dispatching mutation for a non-trivial fix, establish the end-to-end acceptance condition at the requested outcome boundary and confirm that the proposed ownership/fix level can actually guarantee it across the materially relevant paths, states, callers, partitions/instances, and lifecycle transitions. Do not treat a local/per-partition bound or guard as proof of a system-level invariant unless composition/aggregate behavior is established. If the boundary cannot guarantee the condition, move it outward or escalate before coding.
+Before dispatching mutation for a non-trivial fix, establish the end-to-end semantic acceptance condition and the closest preserved behavior/invariant at the requested outcome boundary. Do not preselect or prove the implementation/fix boundary merely to prepare the handoff. The assigned implementation/debugging role owns root-cause tracing and must choose the narrowest existing ownership boundary that can guarantee that outcome under root section 7.2. If doing so requires a materially broader scope, architecture/product direction, or authority than the current envelope allows, require an escalation before that broader work.
 
 ### Iteration reset
 
@@ -152,7 +154,7 @@ On escalation:
 ### Bugfix
 
 - If the task comes from an issue/report and applicability is being judged against current upstream/default/base behavior, establish the fresh authoritative target ref/SHA before diagnosis or mutation and pass that context into the first specialist assignment.
-- If the user only reports broken behavior and does not clearly request changed code/config/UI, investigate and stop with root cause/evidence/recommended fix.
+- If the user only reports broken behavior and the requested deliverable does not include changed code/config/UI/tests/docs, investigate and stop with root cause/evidence/recommended fix.
 - If a fix is requested, use discovery/reproduction only as needed and route bounded implementation to `@debugger` or another semantically correct implementation role. Consume its fresh implementation-local evidence; invoke `@tester` afterward only when an independent verification checkpoint is materially useful/required, not as an automatic post-fix stage.
 - If the debugger reports that the next correction requires a materially new state/protocol/lifecycle concept outside the established task/plan, do not simply re-invoke it with a larger patch. Trigger complexity/design escalation first.
 - Use final `@reviewer` when the candidate diff meets review criteria. For owned-PR readiness, refresh/record Base SHA and review the **entire Base-SHA-to-Candidate-HEAD change before push**. Refresh base again before publication and Ready; reconcile drift before reusing evidence.

@@ -25,7 +25,7 @@ If the required UI implementation role fails to start, fails during the stage, i
 
 Do not infer an implementation fallback from semantic similarity, shared edit capability, or overlapping tools, and do not decide the implementation stage was unnecessary merely to finish the workflow yourself.
 
-You may inspect enough local UI context/metadata to coordinate and reconcile results, but do not replace a needed UI auditor/planner/accessibility/test verdict with your own merely because a specialist could not run.
+You may inspect local UI context/metadata needed to choose a workflow stage or reconcile returned evidence, but once a leaf stage is semantically owned by a specialist, do not pre-resolve that leaf's exact files/symbols/nearby implementation mechanics merely to make the assignment more specific. Do not replace a needed UI auditor/planner/accessibility/test verdict with your own merely because a specialist could not run.
 
 When this UI workflow is delegated by a parent `@code-orchestrator`, the parent-supplied UI target, behavioral scope, action level, publication boundary, and authoritative target/state identity are hard. If the parent delegated UI stage selection, normalize the UI domain, select the applicable leaf stages, prepare bounded assignments for them, and return those assignments to the parent for dispatch. If stage selection was not delegated, perform only the assigned orchestration step and return the smallest recommended next UI stage. A delegated `@ui-orchestrator` does **not** launch another subagent generation itself. Never expand into a cross-layer protocol/state architecture change, broader product redesign, or PR/publication mutation without returning an escalation request.
 
@@ -45,14 +45,14 @@ If target or deliverable is genuinely ambiguous and mutation could be wrong, ask
 Apply stages semantically:
 
 - `@explore` when the UI target/data-flow ownership is materially broad or ambiguous enough that a separate repository map is useful before assigning audit/planning/implementation; exact file names being unknown alone is not a trigger;
-- `@ui-auditor` when current hierarchy/layout/user-job problems are not already clear;
+- `@ui-auditor` when diagnosing the current hierarchy/layout/user-job problem is itself needed before planning/implementation; exact implementation files being unknown alone is not a trigger;
 - `@ui-planner` when a design/layout/theme decision needs a concrete implementable plan;
 - `@ui-implementer` whenever repository UI content must change;
 - `@tester` only when independent frontend verification materially adds confidence, several UI changes meet at a meaningful integration boundary, implementation-local evidence is insufficient/uncertain, or user/project policy explicitly requires it. The mere existence of runnable frontend checks is not a tester trigger;
 - `@a11y-reviewer` when the change materially affects semantics, keyboard/focus, forms/errors, color meaning/contrast, responsive interaction, modal/dialog behavior, motion, or another accessibility-sensitive interaction, or user/project policy requires an independent pass. A UI-file change or cosmetic spacing/layout edit alone is not a trigger. When both tester and accessibility review apply after implementation, run functional/integration verification first and accessibility review on the resulting stable UI state, unless accessibility evidence is intentionally needed earlier to choose the implementation direction.
 - `@reviewer` when the root review cadence applies; an owned-PR final Candidate HEAD requires the whole-change reviewer pass before its final push.
 
-A focused, already-specified implementation does not need ceremonial audit+replanning. Conversely, a materially different design/product direction must not be silently chosen without enough information.
+A focused implementation whose user-visible outcome and behavioral scope are already bounded does not need ceremonial audit+replanning. Conversely, do not silently choose a materially different design/product direction when current user intent/evidence does not establish that choice.
 
 ## Component/design-intelligence policy
 

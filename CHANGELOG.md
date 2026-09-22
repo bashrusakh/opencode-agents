@@ -2,6 +2,31 @@
 
 This changelog summarizes user-visible workflow changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.11 beta
+
+- Makes the orchestration goal/path split explicit: parent owns semantic outcome/envelope/stage ownership; the selected leaf owns execution-local path/root-cause discovery.
+- Narrows `@explore` routing so unknown implementation details do not create an intermediate discovery stage when a bounded implementation/debugging leaf already owns the next action.
+- Moves fix-boundary proof from pre-handoff orchestration into the assigned implementation/debugging role under root §7.2; orchestrator keeps acceptance and preserved-behavior ownership.
+- No role capability, permission, gate, topology, installer, or skill-inventory changes.
+
+See [`docs/releases/v30.11-beta.md`](docs/releases/v30.11-beta.md).
+
+## v30.10 beta
+
+- Distinguishes workflow-level ambiguity from execution-local ambiguity at delegation boundaries.
+- Clarifies that focused implementation can be delegated from a bounded semantic outcome without the orchestrator first discovering exact files/symbols/local mechanics.
+- Removes several routing-sensitive undefined qualifiers (`already-understood`, `scope/design is clear`, `obvious`) while retaining semantic judgment for materiality, risk, stage economy, and escalation.
+- No role capability, permission, gate, execution-topology, installer, or skill-inventory changes.
+
+See [`docs/releases/v30.10-beta.md`](docs/releases/v30.10-beta.md).
+
+## v30.9 beta
+
+- Makes the project-local README install example version-agnostic instead of embedding a beta directory name that becomes stale on release rename.
+- No runtime behavior, routing, permissions, skills, agents, cleanup behavior, or installer behavior changes.
+
+See [`docs/releases/v30.9-beta.md`](docs/releases/v30.9-beta.md).
+
 ## v30.8 beta
 
 - Clarifies the root provenance pointer: `git-provenance` owns the canonical detailed policy, while root §8 binds it to repository-state workflows.

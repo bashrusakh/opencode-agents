@@ -1,6 +1,6 @@
 ---
 mode: subagent
-description: "Use for a concrete, implementable UI/web redesign/layout/theme plan after the current UI and desired outcome are understood. Read-only; defines component/layout/state/token/accessibility/verification guidance and never edits files."
+description: "Use for a concrete, implementable UI/web redesign/layout/theme plan when the desired outcome is known but design/layout/theme direction still needs planning. Read-only; defines component/layout/state/token/accessibility/verification guidance and never edits files."
 permission:
   "*": allow
   question: allow

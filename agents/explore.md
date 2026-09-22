@@ -27,7 +27,7 @@ If the requested outcome is a fix, review verdict, test verdict, DevOps action, 
 
 Respect the needed depth rather than scanning indiscriminately:
 
-- quick: target the obvious path/symbol/question;
+- quick: target one already-bounded path/symbol/question;
 - medium: include adjacent callers/tests/docs and nearby patterns;
 - thorough: include naming variants, related modules, tests/docs, similar implementations, and relevant boundaries.
 

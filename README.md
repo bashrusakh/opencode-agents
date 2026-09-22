@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.8 beta
+# OpenCode Agent Pack v30.11 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,14 +14,14 @@
 
 ---
 
-## What changed in v30.8 beta
+## What changed in v30.11 beta
 
-- Clarifies that `git-provenance` is the canonical detailed provenance policy while root §8 binds it to the applicable workflow.
-- Replaces the ambiguous `~45 KB` root-size note with a stable `<50 KiB` compact-root target.
-- Normalizes extracted policy-skill Markdown headings from H4 to H2 in `git-provenance` and `pr-readiness`.
-- No runtime behavior, routing, permissions, policy semantics, skill inventory, cleanup behavior, or installer behavior changes.
+- Makes the goal/path split explicit at orchestration boundaries: the parent owns the semantic outcome/envelope and stage owner; the leaf owns root-cause/implementation-path discovery inside that envelope.
+- Narrows `@explore` to explicit discovery/mapping work or mapping needed to bound workflow scope safely; unknown implementation details alone are not an explore stage.
+- Moves fix-boundary proof back to the implementation/debugging leaf while the orchestrator retains acceptance and preserved-behavior ownership.
+- Keeps semantic judgment for materiality, risk, stage economy, and escalation; this remains a semantic routing model, not a fixed pipeline.
 
-See [`docs/releases/v30.8-beta.md`](docs/releases/v30.8-beta.md).
+See [`docs/releases/v30.11-beta.md`](docs/releases/v30.11-beta.md).
 
 ---
 
@@ -35,8 +35,8 @@ Routing follows the requested outcome, target, action level, and repository evid
 |---|---|
 | “Where is this implemented?” | discovery / `explore` |
 | “Fix this runtime bug” | bugfix workflow / `debugger` |
-| “Change this known code/config path” | focused implementation / `build` |
-| “Implement this already-specified UI change” | focused UI implementation / `ui-implementer` |
+| “Implement this bounded code/config outcome” | focused implementation / `build` |
+| “Add this bounded UI behavior” | focused UI implementation / `ui-implementer` |
 | “Review this PR” | `reviewer` |
 | “Audit the project” | `auditor` |
 | “Redesign these settings” | UI workflow / `ui-orchestrator` |
@@ -301,7 +301,7 @@ Installs runtime configuration under `~/.config/opencode/` (`AGENTS.md`, `agents
 From the target repository root:
 
 ```bash
-/path/to/opencode_model_agnostic_persistent_v30_7_beta/install/install-project.sh
+/path/to/opencode-agent-pack/install/install-project.sh
 ```
 
 Installs `AGENTS.md` plus `.opencode/{agents,skills}/` into the project. The package installs no custom commands, snippets, or docs into the project runtime.
@@ -316,7 +316,7 @@ Installs `AGENTS.md` plus `.opencode/{agents,skills}/` into the project. The pac
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history index |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Manual UI component MCP setup reference |
 | [`docs/uupm_setup.md`](docs/uupm_setup.md) | Manual UI UX Pro Max setup reference |
-| [`docs/releases/v30.8-beta.md`](docs/releases/v30.8-beta.md) | Current beta release notes |
+| [`docs/releases/v30.11-beta.md`](docs/releases/v30.11-beta.md) | Current beta release notes |
 
 The two setup documents are human-facing references, not runtime policy. No root/agent/skill behavior depends on them, and installers do not copy them into OpenCode configuration.
 
@@ -342,7 +342,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.8 beta**  
+**OpenCode Agent Pack v30.11 beta**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>

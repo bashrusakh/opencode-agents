@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.8 beta**
+**Pack version: v30.11 beta**
 
 **These rules are normative. Safety/runtime/tool permissions and hard agent-role capability boundaries are hard ceilings; project-local authoritative rules may further restrict work but must not be used to expand a denied role capability.**
 
@@ -20,7 +20,7 @@ These are reusable OpenCode working rules. They can be installed globally or cop
 Definitions:
 
 - **Broad scope** means the task affects multiple unrelated modules/screens, changes shared architecture or public contracts, requires sweeping refactors, or cannot be verified with focused checks. File count is only a signal, never the definition by itself.
-- **Focused UI request** means one known screen/component/flow, one known UX problem or requested outcome, a solution possible within existing project style/components, and no unresolved product/design direction decision.
+- **Focused UI request** means one identifiable UI surface/component/flow, one known UX problem or requested outcome, a solution possible within existing project style/components, and no unresolved product/design direction decision. The UI target may be identified semantically; an exact source file/symbol is not required.
 - **Materially different direction** means a choice that changes product semantics, navigation model, information architecture, visual identity/theme, major layout approach, technical architecture, or user workflow in incompatible ways.
 - **Smallest correct change** means minimal semantic/behavioral impact first, then minimal touched files and diff size.
 - **Owned PR** means a pull request whose author is the current authenticated/user account, or a PR this workflow previously created on that user's behalf and whose ownership is confirmed from repository-host metadata. Do not infer ownership from a branch name alone.
@@ -30,6 +30,8 @@ Definitions:
 - **Authoritative target ref** means the resolved remote ref + fetched SHA whose current state the task is actually asking about (for example a repository default/base branch). A local checkout is not assumed to equal that state.
 - **State identity** means the exact repository state a claim/action applies to: ref + SHA and, when relevant, dirty worktree state; PR/diff evidence also includes base SHA + head SHA. Inspection, execution, mutation, verification, review, and publication evidence must not silently cross identities.
 - **Complexity/design escalation** means stopping local patch-by-patch execution because evidence shows the behavior is governed by a shared state machine, lifecycle, protocol, concurrency/persistence model, or another cross-cutting invariant that must be understood before more implementation.
+- **Workflow-level ambiguity** means uncertainty about the requested outcome/behavioral scope or direction, allowed action level, target/state identity, stage/role ownership, required user decision, or gated effect. The workflow owner resolves or escalates this before delegating the affected stage.
+- **Execution-local ambiguity** means uncertainty about exact files/symbols/call sites, nearby project patterns, or implementation mechanics inside an already-bounded specialist envelope. The owning specialist normally resolves this during execution; it is not by itself a reason for the parent to pre-discover implementation details or insert another discovery stage.
 
 ## 1. Source of truth
 
@@ -317,9 +319,9 @@ Fallback:
 
 - If `unclassified`, do not mutate, publish, install, or change config. Ask one concise clarification question and include likely interpretations when useful.
 - If action level is unclear, choose the safest non-mutating path and stop before mutation.
-- If target is unclear, ask for it; do not scan the entire repository unless the request is clearly a broad audit.
+- If target is unclear, ask for it; do not scan the entire repository unless a broad audit is itself the requested deliverable.
 - If a request could mean investigation or fixing, treat it as investigation-only unless the deliverable is changed code/config/UI/tests/docs.
-- If a UI request could mean options or implementation, treat it as options-only unless implementation is clear.
+- If a UI request could mean options or implementation, treat it as options-only unless the requested deliverable is changed UI/repository content rather than advice/options.
 - If a gated action is needed but not already authorized, stop at the gate and ask once with action, target, scope, and material risk.
 
 The internal classification must not add fields to Startup. Startup exposes only the fixed fields from section 2.4.
@@ -327,7 +329,7 @@ The internal classification must not add fields to Startup. Startup exposes only
 Workflow selection:
 
 - UI/web options, audit, planning, redesign, layout, theme, forms, dashboards, tables, navigation, or visual hierarchy -> UI workflow.
-- Broken, incorrect, failing, strange, or wrong behavior -> investigation by default unless changed code/config/UI is clearly requested; then use bugfix workflow.
+- Broken, incorrect, failing, strange, or wrong behavior -> investigation by default unless the requested deliverable includes changed code/config/UI/tests/docs; then use bugfix workflow.
 - Existing PR, review comment, requested correction, failed PR check, CI failure, or follow-up work -> PR follow-up workflow on the same PR branch by default.
 - Issue/ticket/report outcome -> resolve the claimed target state/freshness, verify facts against that target, search existing issues when access exists, draft/open only when issue creation is in scope, and do not fix code unless changed code/config/UI is separately requested.
 - Whole-project review, architecture health, dead-code sweep, logic audit, duplicated-fix search, or broad bug hunt -> project audit workflow; use Persistent Planning when duration/coordination warrants it and plan-file mutation is authorized.
@@ -351,7 +353,7 @@ An already-authorized owned-PR Draft repair workflow may publish in-scope Draft 
 
 Delegate when another role owns the next required action or materially improves correctness/independence/context management; never delegate ceremonially or absorb prohibited work because delegation failed. The active primary/orchestrator owns normalized scope, stage order, authority envelope, current findings, state/evidence identity, and final claims.
 
-Each specialist assignment must bound objective, target/behavior scope, allowed action level, expected evidence/result, stop/escalation conditions, and relevant diff/ref/SHA identity. The specialist owns execution details inside that envelope but must not widen scope/direction/destination, start a new stage, change publication state, absorb another role, or mutate outside the assignment. New material scope, direction, role, user decision, or gated action returns to the parent as an escalation request. Specialist output is evidence, not authority; reconcile actual state after mutation before continuing.
+Each specialist assignment must bound objective, target/behavior scope, allowed action level, expected evidence/result, stop/escalation conditions, and relevant diff/ref/SHA identity. Resolve workflow-level ambiguity needed to define that envelope, but do not pre-resolve execution-local ambiguity merely to make the handoff more specific. The specialist owns execution details inside that envelope but must not widen scope/direction/destination, start a new stage, change publication state, absorb another role, or mutate outside the assignment. New material scope, direction, role, user decision, or gated action returns to the parent as an escalation request. Specialist output is evidence, not authority; reconcile actual state after mutation before continuing.
 
 A delegated orchestrator may normalize/select leaf stages only inside its delegated domain and returns bounded assignments to the workflow-owning parent for dispatch; it does not create another subagent generation. Prefer serialized mutation; parallel mutation requires established disjoint files/state/contracts.
 
