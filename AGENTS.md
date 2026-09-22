@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.11 beta**
+**Pack version: v30.13 beta**
 
 **These rules are normative. Safety/runtime/tool permissions and hard agent-role capability boundaries are hard ceilings; project-local authoritative rules may further restrict work but must not be used to expand a denied role capability.**
 
@@ -32,6 +32,7 @@ Definitions:
 - **Complexity/design escalation** means stopping local patch-by-patch execution because evidence shows the behavior is governed by a shared state machine, lifecycle, protocol, concurrency/persistence model, or another cross-cutting invariant that must be understood before more implementation.
 - **Workflow-level ambiguity** means uncertainty about the requested outcome/behavioral scope or direction, allowed action level, target/state identity, stage/role ownership, required user decision, or gated effect. The workflow owner resolves or escalates this before delegating the affected stage.
 - **Execution-local ambiguity** means uncertainty about exact files/symbols/call sites, nearby project patterns, or implementation mechanics inside an already-bounded specialist envelope. The owning specialist normally resolves this during execution; it is not by itself a reason for the parent to pre-discover implementation details or insert another discovery stage.
+- **Context-pressure condition** means observable evidence that retained session history is materially competing with the current task for usable working context: for example, the runtime reports approaching context exhaustion/compaction, or substantial completed tool I/O / settled-stage history remains visible but is no longer needed verbatim for the active stage. Conversation age, elapsed time, or turn count alone is not evidence. Detecting pressure selects a context-hygiene goal, not a specific command; the owning role chooses the least-destructive available path. Evaluate opportunistically at natural semantic boundaries or runtime warnings; do not create extra probing work merely to measure context.
 
 ## 1. Source of truth
 
@@ -175,6 +176,7 @@ These are conditional procedural extensions of the root contract. When the corre
 - nontrivial verification, evidence freshness, or blocked-check handling -> `verification-strategy`
 - workflow-created temporary-resource cleanup/reconciliation -> `resource-lifecycle`
 - substantial PR/issue/release/review/public artifact formatting -> `output-formatting`
+- root-defined context-pressure condition or explicit Magic Compact setup/usage request -> `magic-compact` when available
 
 When a matching specialist skill is selected, a workflow/policy skill is triggered, or project guidance requires a skill, actually load it through OpenCode's native skill mechanism when available, or read its `SKILL.md` before relying on its guidance for the applicable stage; naming the skill does not count as using it. Load referenced skill files only when they are relevant to the normalized task. If a selected/required skill cannot be found, report `Skill: <name> unavailable`; if any applicable root/role/project rule requires it for the next stage, that stage is blocked rather than silently approximated.
 

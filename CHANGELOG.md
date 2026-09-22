@@ -2,6 +2,24 @@
 
 This changelog summarizes user-visible workflow changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.13 beta
+
+- Adds a generic repository-prerequisite gate to owned-PR Ready transitions.
+- Treats the unresolved required decision/approval as the blocker rather than the open/closed/linked state of a discussion, issue, RFC, forum, mailing list, or similar external artifact.
+- Grounds prerequisite applicability/resolution in authoritative repository policy, maintainer decisions, and current repository/review/status signals; PR metadata may not claim agreement absent authoritative support.
+- Keeps v30.12 Magic Compact/context-hygiene semantics, role topology, permissions, installers, and skill inventory unchanged.
+
+See [`docs/releases/v30.13-beta.md`](docs/releases/v30.13-beta.md).
+
+## v30.12 beta
+
+- Adds bundled `magic-compact` context-hygiene skill and a separate setup reference for the external Magic Compact OpenCode plugin.
+- Defines a semantic context-pressure trigger: use observable pressure at natural stage boundaries/runtime warnings, never a fixed turn/time cadence.
+- Separates the compaction goal from the mechanism: prefer `magic-trim` for bulky historical tool I/O, reserve `magic-compact` for broader historical conversation pressure, and preserve unresolved exact reasoning/evidence.
+- Keeps plugin installation explicit and gated; the agent pack installer does not silently add external plugins or mutate OpenCode plugin configuration.
+
+See [`docs/releases/v30.12-beta.md`](docs/releases/v30.12-beta.md).
+
 ## v30.11 beta
 
 - Makes the orchestration goal/path split explicit: parent owns semantic outcome/envelope/stage ownership; the selected leaf owns execution-local path/root-cause discovery.

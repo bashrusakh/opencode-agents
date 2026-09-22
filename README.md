@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.11 beta
+# OpenCode Agent Pack v30.13 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,14 +14,14 @@
 
 ---
 
-## What changed in v30.11 beta
+## What changed in v30.13 beta
 
-- Makes the goal/path split explicit at orchestration boundaries: the parent owns the semantic outcome/envelope and stage owner; the leaf owns root-cause/implementation-path discovery inside that envelope.
-- Narrows `@explore` to explicit discovery/mapping work or mapping needed to bound workflow scope safely; unknown implementation details alone are not an explore stage.
-- Moves fix-boundary proof back to the implementation/debugging leaf while the orchestrator retains acceptance and preserved-behavior ownership.
-- Keeps semantic judgment for materiality, risk, stage economy, and escalation; this remains a semantic routing model, not a fixed pipeline.
+- Adds a repository-prerequisite Ready gate for repo-defined product/design decisions, approvals, RFCs, discussions, forums, mailing lists, or equivalent processes.
+- Blocks Ready on the **unresolved required decision/approval**, not on the mere existence or open/closed state of the external artifact.
+- Uses authoritative repository policy, maintainer decisions, and current repository/review/status signals to determine whether the prerequisite is actually satisfied.
+- Keeps v30.12 context-hygiene/Magic Compact behavior unchanged.
 
-See [`docs/releases/v30.11-beta.md`](docs/releases/v30.11-beta.md).
+See [`docs/releases/v30.13-beta.md`](docs/releases/v30.13-beta.md).
 
 ---
 
@@ -121,6 +121,7 @@ Key points:
 - push alone does not trigger another full review when the SHA is unchanged;
 - final `@reviewer` coverage is the complete base-to-local-Candidate-HEAD change, not only the latest patch or current older remote head;
 - required failing/blocked checks may coexist with repair work in Draft, but still block Ready/merge/release/completion;
+- repository-defined prerequisites block Ready only while the required decision/approval is actually unresolved; an open/closed/linked discussion, issue, RFC, forum, or similar artifact is not itself the gate unless repository policy explicitly makes that state a requirement;
 - OCR delegate preflight prepares deterministic scope/rules when available; managed OCR may add a second-model pass when useful/required and is not a universal Ready gate;
 - unowned or ambiguous PRs are never automatically switched between Draft and Ready.
 
@@ -268,7 +269,8 @@ Bundled skills:
 
 ```text
 api-designer          cpp-pro               git-provenance
-golang-pro            open-code-review       open-code-review-delegate
+golang-pro            magic-compact          open-code-review
+open-code-review-delegate
 output-formatting     playwright-expert      pr-readiness
 python-pro            react-expert            resource-lifecycle
 rust-engineer         secure-code-guardian    typescript-pro
@@ -280,6 +282,7 @@ Skills are advisory and selected from actual project context. A matching skill m
 Upstream / external sources:
 
 - GrayMatter persistent memory: https://github.com/angelnicolasc/graymatter
+- Magic Compact: https://github.com/aerovato/magic-compact
 - Alibaba `open-code-review`: https://github.com/alibaba/open-code-review
 - Jeffallan `claude-skills`: https://github.com/Jeffallan/claude-skills
 - UI UX Pro Max: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
@@ -316,9 +319,10 @@ Installs `AGENTS.md` plus `.opencode/{agents,skills}/` into the project. The pac
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history index |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Manual UI component MCP setup reference |
 | [`docs/uupm_setup.md`](docs/uupm_setup.md) | Manual UI UX Pro Max setup reference |
-| [`docs/releases/v30.11-beta.md`](docs/releases/v30.11-beta.md) | Current beta release notes |
+| [`docs/magic_compact_setup.md`](docs/magic_compact_setup.md) | Manual Magic Compact installation/verification reference |
+| [`docs/releases/v30.13-beta.md`](docs/releases/v30.13-beta.md) | Current beta release notes |
 
-The two setup documents are human-facing references, not runtime policy. No root/agent/skill behavior depends on them, and installers do not copy them into OpenCode configuration.
+The setup documents are human-facing references, not runtime policy. No root/agent/skill behavior depends on them, and installers do not copy them into OpenCode configuration.
 
 ## Release validation
 
@@ -328,7 +332,7 @@ A release archive should verify at least:
 - valid YAML frontmatter for every agent;
 - no provider-specific agent model overrides;
 - every historical command intent remains covered by resident natural-language routing plus an owning role contract;
-- the two non-release setup docs are human-facing references only and are not copied into runtime; conditional runtime policy lives in bundled skills;
+- non-release setup docs are human-facing references only and are not copied into runtime; conditional runtime policy lives in bundled skills;
 - root remains compact (<50 KiB target), while every conditional policy skill has an explicit root activation condition and native skill discovery path;
 - no package `snippet/` directory is installed or required; historical package-owned snippets are backed up/pruned on upgrade without touching unrelated files;
 - no stale universal `origin/main`, outdated OCR timeout contract, or obsolete version-path references;
@@ -342,7 +346,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.11 beta**  
+**OpenCode Agent Pack v30.13 beta**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>
