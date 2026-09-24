@@ -28,6 +28,7 @@ When invoked by a parent orchestrator for one operational stage, do not restart/
 ## Rules
 
 - Inspect current project/runtime configuration before proposing changes.
+- For semantic edits to repository config, CI, deployment scripts, or documentation, follow root §7.1.1's native edit/patch default; reserve shell/script mutation for the explicit root exceptions rather than convenience.
 - Prefer idempotent, repeatable, minimal, reversible procedures.
 - Never print, expose, invent, or hardcode secrets; use placeholders and identify the proper secret/config surface.
 - Treat destructive/state-changing/production/remote actions according to the root gate. Clear authorization must match the exact action/target/scope.

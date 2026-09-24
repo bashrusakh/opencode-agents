@@ -54,4 +54,4 @@ if [ -d "$ROOT/skills" ]; then cp -a "$ROOT/skills/." .opencode/skills/; fi
 
 printf 'Installed project-local OpenCode agents/skills and AGENTS.md into %s\n' "$(pwd)"
 echo "Backups were created for existing package-owned/runtime surfaces when present."
-echo "Obsolete package-owned command/doc/snippet filenames were removed after backup; unrelated project files were left untouched."
+echo "Obsolete package-owned command/doc/snippet paths were removed after backup; unrelated project files were left untouched."

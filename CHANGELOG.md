@@ -2,23 +2,41 @@
 
 This changelog summarizes user-visible workflow changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.16 beta
+
+- Removes the retired-skill migration special case from both installers; installers no longer carry knowledge of previously removed skill directories.
+- Keeps installer cleanup limited to the existing exact obsolete command/doc/snippet filenames.
+- Leaves v30.15 runtime semantics, all 15 agents, all 18 bundled skills, and unrelated installer behavior unchanged.
+
+See [`docs/releases/v30.16-beta.md`](docs/releases/v30.16-beta.md).
+
+## v30.15 beta
+
+- Removes the experimental external context-compaction integration from the runtime pack after unacceptable latency in real use.
+- Removes its bundled skill, setup/reference document, root activation/trigger semantics, and historical beta release note rather than retaining dead optional policy.
+- Adds exact legacy-skill migration cleanup so global/project installs over older betas back up and remove the retired package-owned skill directory without touching unrelated skills.
+- Keeps v30.14 mutation-mechanism semantics and all other routing, role, PR-readiness, provenance, verification, and installer behavior unchanged.
+
+See [`docs/releases/v30.15-beta.md`](docs/releases/v30.15-beta.md).
+
+## v30.14 beta
+
+- Makes native edit/patch the explicit default for bounded semantic repository edits when available and safe.
+- Narrows scripted mutation to genuinely programmatic/mechanical bounded transformations, cases native edit/patch cannot safely express within the intended target set, or runtimes where native edit/patch is unavailable.
+- Explicitly rejects convenience rationales such as shorter syntax, line-number targeting, avoiding exact-match friction, or a small number of textual replacements.
+- Reinforces the rule in the mutation-capable `build`, `debugger`, `ui-implementer`, and `devops` roles while keeping orchestration handoffs semantic rather than tool-prescriptive.
+- Keeps canonical planning/workflow artifacts and external scratch files under their existing role/path mechanics rather than treating them as implementation-source edits.
+
+See [`docs/releases/v30.14-beta.md`](docs/releases/v30.14-beta.md).
+
 ## v30.13 beta
 
 - Adds a generic repository-prerequisite gate to owned-PR Ready transitions.
 - Treats the unresolved required decision/approval as the blocker rather than the open/closed/linked state of a discussion, issue, RFC, forum, mailing list, or similar external artifact.
 - Grounds prerequisite applicability/resolution in authoritative repository policy, maintainer decisions, and current repository/review/status signals; PR metadata may not claim agreement absent authoritative support.
-- Keeps v30.12 Magic Compact/context-hygiene semantics, role topology, permissions, installers, and skill inventory unchanged.
+- Keeps role topology, permissions, and unrelated workflow semantics unchanged.
 
 See [`docs/releases/v30.13-beta.md`](docs/releases/v30.13-beta.md).
-
-## v30.12 beta
-
-- Adds bundled `magic-compact` context-hygiene skill and a separate setup reference for the external Magic Compact OpenCode plugin.
-- Defines a semantic context-pressure trigger: use observable pressure at natural stage boundaries/runtime warnings, never a fixed turn/time cadence.
-- Separates the compaction goal from the mechanism: prefer `magic-trim` for bulky historical tool I/O, reserve `magic-compact` for broader historical conversation pressure, and preserve unresolved exact reasoning/evidence.
-- Keeps plugin installation explicit and gated; the agent pack installer does not silently add external plugins or mutate OpenCode plugin configuration.
-
-See [`docs/releases/v30.12-beta.md`](docs/releases/v30.12-beta.md).
 
 ## v30.11 beta
 

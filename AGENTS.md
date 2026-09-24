@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.13 beta**
+**Pack version: v30.16 beta**
 
 **These rules are normative. Safety/runtime/tool permissions and hard agent-role capability boundaries are hard ceilings; project-local authoritative rules may further restrict work but must not be used to expand a denied role capability.**
 
@@ -32,7 +32,6 @@ Definitions:
 - **Complexity/design escalation** means stopping local patch-by-patch execution because evidence shows the behavior is governed by a shared state machine, lifecycle, protocol, concurrency/persistence model, or another cross-cutting invariant that must be understood before more implementation.
 - **Workflow-level ambiguity** means uncertainty about the requested outcome/behavioral scope or direction, allowed action level, target/state identity, stage/role ownership, required user decision, or gated effect. The workflow owner resolves or escalates this before delegating the affected stage.
 - **Execution-local ambiguity** means uncertainty about exact files/symbols/call sites, nearby project patterns, or implementation mechanics inside an already-bounded specialist envelope. The owning specialist normally resolves this during execution; it is not by itself a reason for the parent to pre-discover implementation details or insert another discovery stage.
-- **Context-pressure condition** means observable evidence that retained session history is materially competing with the current task for usable working context: for example, the runtime reports approaching context exhaustion/compaction, or substantial completed tool I/O / settled-stage history remains visible but is no longer needed verbatim for the active stage. Conversation age, elapsed time, or turn count alone is not evidence. Detecting pressure selects a context-hygiene goal, not a specific command; the owning role chooses the least-destructive available path. Evaluate opportunistically at natural semantic boundaries or runtime warnings; do not create extra probing work merely to measure context.
 
 ## 1. Source of truth
 
@@ -176,7 +175,6 @@ These are conditional procedural extensions of the root contract. When the corre
 - nontrivial verification, evidence freshness, or blocked-check handling -> `verification-strategy`
 - workflow-created temporary-resource cleanup/reconciliation -> `resource-lifecycle`
 - substantial PR/issue/release/review/public artifact formatting -> `output-formatting`
-- root-defined context-pressure condition or explicit Magic Compact setup/usage request -> `magic-compact` when available
 
 When a matching specialist skill is selected, a workflow/policy skill is triggered, or project guidance requires a skill, actually load it through OpenCode's native skill mechanism when available, or read its `SKILL.md` before relying on its guidance for the applicable stage; naming the skill does not count as using it. Load referenced skill files only when they are relevant to the normalized task. If a selected/required skill cannot be found, report `Skill: <name> unavailable`; if any applicable root/role/project rule requires it for the next stage, that stage is blocked rather than silently approximated.
 
@@ -420,7 +418,11 @@ Then:
 
 Choose the narrowest reliable mutation mechanism for the intended change.
 
-For bounded source changes, prefer native file edit/patch capabilities when they can express the change safely because they keep the mutation explicit, scoped, and easy to inspect. Shell text-processing utilities or ad-hoc scripts may mutate repository files when they are materially better suited to the operation, such as a deterministic mechanical/bulk transformation, or when native edit/patch capabilities cannot safely express it. Do not use broad textual replacement as a substitute for understanding a semantic or structural code change.
+For bounded semantic changes to repository source, tests, configuration, or documentation, use native file edit/patch capabilities when they are available and can express the change safely. Treat shell text-processing utilities and ad-hoc scripts as transformation mechanisms, not alternate editors. Convenience, shorter syntax, line-number targeting, avoiding exact-match friction, or a small number of textual replacements do not make `sed`/`awk`/`perl`/`python`/`node` or similar scripted mutation preferable to native edit/patch.
+
+Use scripted mutation only when the transformation itself is materially programmatic/mechanical across an explicitly bounded target set, when native edit/patch cannot safely express the operation within the intended target set, or when native edit/patch is unavailable. A script may automate an already-understood transformation; it must not substitute for understanding a semantic or structural code change.
+
+This default governs durable implementation content. Canonical planning/workflow artifacts and external scratch files remain governed by their own role/path contract; using an appropriate append/serialization mechanism for such an artifact is not permission to use the same mechanism as an alternate editor for repository implementation content.
 
 Before a scripted or bulk mutation, constrain the affected target set and transformation explicitly. After it, inspect the resulting diff before continuing. Tool choice does not change the authorized scope or correctness contract: a faster or broader mutation mechanism is not permission for a broader rewrite.
 

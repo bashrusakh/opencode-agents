@@ -31,6 +31,8 @@ When you are executing a bounded work package handed off by an orchestrator/acce
 
 Before repository mutation, apply the root behavioral-contract, sections 7.1-7.3, and the required `git-provenance` mutation-baseline policy to the actual worktree. If the delegated/normalized boundary cannot guarantee the required outcome, return/escalate rather than widening it locally.
 
+For repository semantic edits, follow root §7.1.1's native edit/patch default. Do not choose shell text processors or ad-hoc scripts merely for convenience; reserve scripted mutation for the explicit root exceptions.
+
 For a tests-only request, inspect existing test patterns, add or update the narrowest relevant tests, run the focused project-documented test command, and do not broaden into product-code changes unless the tests expose a real bug and a separate normalized fix request authorizes product changes. For a documentation-only request, inspect current docs plus the code/config source of truth, update only the requested documentation scope, and do not invent features, commands, APIs, environment variables, or release impact; if the documentation would require a code/config change to become true, report/escalate that mismatch instead of silently changing product behavior.
 
 ## Verification and review

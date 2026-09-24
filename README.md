@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.13 beta
+# OpenCode Agent Pack v30.16 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,14 +14,13 @@
 
 ---
 
-## What changed in v30.13 beta
+## What changed in v30.16 beta
 
-- Adds a repository-prerequisite Ready gate for repo-defined product/design decisions, approvals, RFCs, discussions, forums, mailing lists, or equivalent processes.
-- Blocks Ready on the **unresolved required decision/approval**, not on the mere existence or open/closed state of the external artifact.
-- Uses authoritative repository policy, maintainer decisions, and current repository/review/status signals to determine whether the prerequisite is actually satisfied.
-- Keeps v30.12 context-hygiene/Magic Compact behavior unchanged.
+- Removes the retired-skill migration special case from both installers; installers no longer know about or mutate any previously removed skill directory.
+- Keeps installer cleanup limited to the existing exact obsolete command/doc/snippet filenames.
+- Leaves v30.15 runtime surface, v30.14 mutation-mechanism semantics, routing, role boundaries, PR readiness, verification, provenance, and all 18 bundled skills unchanged.
 
-See [`docs/releases/v30.13-beta.md`](docs/releases/v30.13-beta.md).
+See [`docs/releases/v30.16-beta.md`](docs/releases/v30.16-beta.md).
 
 ---
 
@@ -59,6 +58,10 @@ specialist
 A specialist may choose the commands, files, tests, and implementation details needed inside its assignment. It may not silently widen scope, fix unrelated findings, start the next workflow stage, change PR state, or negotiate a new gate unless that authority was explicitly delegated.
 
 If a specialist is unavailable or fails, its capabilities do **not** transfer to the caller. A substitution is allowed only when routing policy explicitly declares an executable, authority-preserving fallback for that stage; otherwise the stage is blocked.
+
+### Mutation mechanism
+
+For bounded semantic repository edits, native edit/patch is the default when available and safe. Shell text processors and ad-hoc scripts are transformation tools, not convenience editors: shorter syntax, line-number targeting, avoiding exact-match friction, or a few replacements are not reasons to prefer them. Scripted mutation is reserved for genuinely programmatic/mechanical bounded transformations, cases native edit/patch cannot safely express within the intended target set, or runtimes where native edit/patch is unavailable; scripted/bulk changes still require an explicitly bounded target set and resulting-diff inspection. Planning/workflow artifacts and external scratch files keep their own role/path mechanics and do not create a shell-editor exception for implementation content.
 
 ### Complexity escalation
 
@@ -269,7 +272,7 @@ Bundled skills:
 
 ```text
 api-designer          cpp-pro               git-provenance
-golang-pro            magic-compact          open-code-review
+golang-pro            open-code-review
 open-code-review-delegate
 output-formatting     playwright-expert      pr-readiness
 python-pro            react-expert            resource-lifecycle
@@ -282,7 +285,6 @@ Skills are advisory and selected from actual project context. A matching skill m
 Upstream / external sources:
 
 - GrayMatter persistent memory: https://github.com/angelnicolasc/graymatter
-- Magic Compact: https://github.com/aerovato/magic-compact
 - Alibaba `open-code-review`: https://github.com/alibaba/open-code-review
 - Jeffallan `claude-skills`: https://github.com/Jeffallan/claude-skills
 - UI UX Pro Max: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
@@ -319,8 +321,9 @@ Installs `AGENTS.md` plus `.opencode/{agents,skills}/` into the project. The pac
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history index |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Manual UI component MCP setup reference |
 | [`docs/uupm_setup.md`](docs/uupm_setup.md) | Manual UI UX Pro Max setup reference |
-| [`docs/magic_compact_setup.md`](docs/magic_compact_setup.md) | Manual Magic Compact installation/verification reference |
-| [`docs/releases/v30.13-beta.md`](docs/releases/v30.13-beta.md) | Current beta release notes |
+| [`docs/releases/v30.16-beta.md`](docs/releases/v30.16-beta.md) | Current beta release notes |
+| [`docs/releases/v30.14-beta.md`](docs/releases/v30.14-beta.md) | Previous mutation-mechanism beta |
+| [`docs/releases/v30.13-beta.md`](docs/releases/v30.13-beta.md) | Repository-prerequisite readiness beta |
 
 The setup documents are human-facing references, not runtime policy. No root/agent/skill behavior depends on them, and installers do not copy them into OpenCode configuration.
 
@@ -338,7 +341,7 @@ A release archive should verify at least:
 - no stale universal `origin/main`, outdated OCR timeout contract, or obsolete version-path references;
 - workflow-created temporary resources have one canonical lifecycle/reconciliation rule rather than duplicated role-local cleanup rules;
 - visual evidence publication uses only an already-available authorized transport; no bundled GitHub binary uploader or implicit gist/branch/ref hosting fallback is provided;
-- install scripts pass `bash -n`, copy complete skill directories, and back up/prune exact obsolete package-owned command/doc filenames without touching unrelated entries;
+- install scripts pass `bash -n`, copy complete skill directories, and back up/prune exact obsolete package-owned command/doc/skill paths without touching unrelated entries;
 - vendored/adapted skill content retains source/license attribution and does not silently claim to be verbatim upstream;
 - archive roundtrip manifest matches the working tree.
 
@@ -346,7 +349,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.13 beta**  
+**OpenCode Agent Pack v30.16 beta**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>

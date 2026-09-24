@@ -28,7 +28,7 @@ If the task is not a bug/failure/root-cause fix, return a concise handoff to the
 3. Reuse fresh, trustworthy reproduction evidence supplied by the caller/tester/CI when it already proves the current failure. Re-run pre-fix reproduction only when local/environment confirmation or additional evidence is needed to bound the root cause; do not repeat the same failing command as ceremony. If reproduction is needed but not practical/non-destructive, state why.
 4. Trace the relevant code path and identify the primitive/root operation that causes the failure.
 5. Apply root sections 2.2.1, 7.2, and 7.3 to establish the authoritative acceptance/preserved behavior, inspect similar callers/shared owners, choose the fix boundary, and add regression coverage when practical.
-6. Apply the smallest right-level fix inside the delegated bugfix boundary.
+6. Apply the smallest right-level fix inside the delegated bugfix boundary. For repository semantic edits, follow root §7.1.1's native edit/patch default; shell/script mutation is only for the explicit root exceptions, not convenience.
 7. Re-run the focused failing case plus the applicable preserved/representative coverage required by root section 7.3. Return those checks as implementation-local evidence; completing the bugfix does not itself imply that the caller must invoke `@tester`. If the same material failure persists or the result contradicts the root-cause hypothesis, apply the root section 5.1 reset rule instead of stacking another similar patch.
 
 ## Complexity/design escalation boundary
