@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.16 beta**
+**Pack version: v30.17 beta**
 
 **These rules are normative. Safety/runtime/tool permissions and hard agent-role capability boundaries are hard ceilings; project-local authoritative rules may further restrict work but must not be used to expand a denied role capability.**
 
@@ -343,11 +343,13 @@ Keep hard preconditions distinct from user-authorizable gates. A hard/runtime/ro
 
 User-authorizable gated effects include publication/mutation of commits/branches/PRs/issues/tags/releases or other external artifacts; destructive/history-rewriting actions; secrets/credential/private-account access; new dependencies/tooling/design systems/large generated assets; public API/data/auth/persistence/deployment/production changes beyond authorized scope; external code sharing/review; and material scope/direction expansion requiring a user decision.
 
-Successful tests/CI, routing, tool availability, agent recommendations, or confidence are evidence/state, not independent authorization. Mandatory readiness/verification/identity requirements remain mandatory unless applicable policy explicitly defines an override path. Ordinary read-only work, planning, valid delegation, already-requested in-scope implementation, and non-destructive verification proceed automatically.
+Tests/CI, routing, tool availability, agent recommendations, and confidence are evidence/state, not authority. Pack readiness/verification evidence conditions retain section 0 priority; calling one mandatory does not elevate it above explicit user intent unless it instantiates a higher-priority safety/runtime/tool, hard role-capability, or project-local rule. Missing/stale evidence limits claims and blocks the default pack workflow, but not a conflicting higher-priority instruction. If a surfaced pack-level evidence gap is known and the user explicitly directs the same already-authorized action anyway, proceed unless a higher-priority constraint forbids it; report the gap honestly rather than claiming the default evidence contract passed, and do not require special `override`/`waive` wording. Separate ownership, capability, destructive-action, scope, and publication-authorization rules are unchanged. Ordinary read-only work, planning, valid delegation, already-requested in-scope implementation, and non-destructive verification proceed automatically.
+
+A workflow condition is a precondition only when it can legitimately be satisfied before the gated action. Evidence/state available only after crossing that boundary is not a failed, pending, unknown, or self-blocking precondition merely because a default lists it earlier. Resolve the actual dependency from authoritative project policy and current platform/repository state, then evaluate evidence where it can exist. If higher-priority project policy is circular or contradictory with no valid path, report that conflict instead of inventing a pass or bypass.
 
 Routine teardown of a current-workflow-owned local disposable resource is ordinary safe continuation only when it is no longer needed, contains no unique/unpreserved state, and removal stays within authorized local scope. Remote/published/shared teardown keeps its normal destructive/publication gate; authorization to create/publish does not by itself authorize later deletion.
 
-An already-authorized owned-PR Draft repair workflow may publish in-scope Draft batches for repair/CI evidence under the Draft safety policy; failures must be reported and still block mandatory Ready conditions.
+An already-authorized owned-PR Draft repair workflow may publish in-scope Draft batches under the Draft safety policy; failures remain unsatisfied readiness evidence and block Ready in the default pack workflow. Reconcile any conflicting higher-priority instruction under sections 0/4; never treat it as a pass.
 
 ## 5. Delegation and orchestration
 

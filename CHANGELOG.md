@@ -2,6 +2,15 @@
 
 This changelog summarizes user-visible workflow changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.17 beta
+
+- Aligns readiness authority with the root priority hierarchy: pack readiness/verification evidence conditions do not self-elevate above explicit user intent unless they instantiate a higher-priority runtime/role/project constraint.
+- Adds semantic non-circular gate handling for evidence whose availability depends on crossing the same lifecycle boundary.
+- Replaces the code-orchestrator fixed `remote CI/status -> Ready` sequence with dependency-driven readiness and updates `pr-readiness` to classify host status/evidence by actual availability and authority.
+- Keeps role topology, permissions, Candidate/whole-PR review identity, base-drift semantics, installers, and skill inventory unchanged.
+
+See [`docs/releases/v30.17-beta.md`](docs/releases/v30.17-beta.md).
+
 ## v30.16 beta
 
 - Removes the retired-skill migration special case from both installers; installers no longer carry knowledge of previously removed skill directories.

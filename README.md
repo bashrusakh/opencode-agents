@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.16 beta
+# OpenCode Agent Pack v30.17 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,13 +14,13 @@
 
 ---
 
-## What changed in v30.16 beta
+## What changed in v30.17 beta
 
-- Removes the retired-skill migration special case from both installers; installers no longer know about or mutate any previously removed skill directory.
-- Keeps installer cleanup limited to the existing exact obsolete command/doc/snippet filenames.
-- Leaves v30.15 runtime surface, v30.14 mutation-mechanism semantics, routing, role boundaries, PR readiness, verification, provenance, and all 18 bundled skills unchanged.
+- Keeps the authority hierarchy semantic: pack readiness/verification evidence conditions do not become hard prohibitions merely because they are called mandatory; explicit user intent remains above those pack-level evidence conditions unless a higher-priority runtime/role/project constraint applies.
+- Adds a non-circular gate invariant: evidence that can exist only after a state transition is not automatically a failed precondition of that same transition.
+- Replaces the owned-PR fixed `remote CI/status -> Ready` recipe with dependency-driven readiness while preserving Candidate identity, whole-PR review, provenance, and repository-defined prerequisites.
 
-See [`docs/releases/v30.16-beta.md`](docs/releases/v30.16-beta.md).
+See [`docs/releases/v30.17-beta.md`](docs/releases/v30.17-beta.md).
 
 ---
 
@@ -110,8 +110,9 @@ local Candidate HEAD
   ↓ @tester if independent verification is useful/required
   ↓ whole-PR reviewer
 push exact reviewed SHA
-  ↓ remote SHA identity + CI/status
-Ready
+  ↓ reconcile remote identity + applicable evidence/dependencies
+Ready transition when authorized and its actual preconditions hold
+  ↓ consume lifecycle-dependent evidence that becomes available only afterward
 ```
 
 Key points:
@@ -123,7 +124,7 @@ Key points:
 - the exact reviewed SHA is then pushed unchanged and the remote PR head must match it;
 - push alone does not trigger another full review when the SHA is unchanged;
 - final `@reviewer` coverage is the complete base-to-local-Candidate-HEAD change, not only the latest patch or current older remote head;
-- required failing/blocked checks may coexist with repair work in Draft, but still block Ready/merge/release/completion;
+- required failing/blocked checks remain evidence gaps and block Ready under the default pack workflow; a higher-priority authorized deviation does not turn them into passes, and evidence whose availability depends on the transition itself is evaluated at the state where it can exist;
 - repository-defined prerequisites block Ready only while the required decision/approval is actually unresolved; an open/closed/linked discussion, issue, RFC, forum, or similar artifact is not itself the gate unless repository policy explicitly makes that state a requirement;
 - OCR delegate preflight prepares deterministic scope/rules when available; managed OCR may add a second-model pass when useful/required and is not a universal Ready gate;
 - unowned or ambiguous PRs are never automatically switched between Draft and Ready.
