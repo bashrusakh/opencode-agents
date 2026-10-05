@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.17 beta**
+**Pack version: v30.21 beta**
 
 **These rules are normative. Safety/runtime/tool permissions and hard agent-role capability boundaries are hard ceilings; project-local authoritative rules may further restrict work but must not be used to expand a denied role capability.**
 
@@ -8,14 +8,10 @@ These are reusable OpenCode working rules. They can be installed globally or cop
 
 ## 0. Philosophy and interpretation principles
 
-- Route by normalized intent, not literal trigger phrases. Use the user's wording together with repository state, project guidance, logs/screenshots, paths, and actual tool output.
+- Infer the user's intended outcome and task scope from the instructions, prior conversation context, repository state, project guidance, and actual tool output. For an action request, carry authorized in-scope work through the intended outcome instead of stopping at acknowledgement or an avoidable partial result.
 - Normalization determines the requested deliverable, target, workflow action ceiling, confidence, and route. It does not grant a capability that the current agent role does not have.
-- A gated action is an action listed in section 4. It may proceed only when that exact action, target, and scope are already covered by clear user intent or by later explicit approval. Do not ask twice for the same already-authorized action.
-- If the requested scope, target, publication destination, or material risk changes after authorization, treat the changed part as not yet authorized and ask once before that changed action.
-- `confidence = likely` is enough only for safe read-only work or narrow local work already permitted by the current role. It never authorizes a gated action.
 - Rule priority when instructions conflict: safety/runtime/tool permission constraints > hard agent-role capability boundaries > project-local authoritative rules > current normalized user intent and explicit approvals > task-specific workflow rules > general workflow defaults > minimal diff preference. Project-local rules may tighten a role but cannot grant a capability denied by that role or the runtime.
-- Within the authorized scope, correctness beats smaller diff size. Prefer the right-level fix with the smallest semantic impact that preserves required behavior.
-- When information is insufficient and acting could cause unwanted mutation, publication, broad scope, secrets exposure, destructive work, or a role-capability violation, choose the safer non-mutating path and ask one concise question.
+- Within authorized scope, correctness beats diff size. For non-trivial work, treat the first plausible framing/solution level as a hypothesis and challenge it internally with one materially different plausible interpretation or solution level when that could change the outcome. Choose by authoritative outcome, evidence, preserved invariants, blast radius, and ownership, not implementation convenience; do not manufacture user-facing alternatives when the boundary is clear.
 
 Definitions:
 
@@ -29,7 +25,7 @@ Definitions:
 - **Independent verification checkpoint** means a bounded `@tester` assignment covering one meaningful behavioral/integration/candidate boundary. It is used when independence materially adds confidence or user/project policy requires it, not merely because an implementation package ended.
 - **Authoritative target ref** means the resolved remote ref + fetched SHA whose current state the task is actually asking about (for example a repository default/base branch). A local checkout is not assumed to equal that state.
 - **State identity** means the exact repository state a claim/action applies to: ref + SHA and, when relevant, dirty worktree state; PR/diff evidence also includes base SHA + head SHA. Inspection, execution, mutation, verification, review, and publication evidence must not silently cross identities.
-- **Complexity/design escalation** means stopping local patch-by-patch execution because evidence shows the behavior is governed by a shared state machine, lifecycle, protocol, concurrency/persistence model, or another cross-cutting invariant that must be understood before more implementation.
+- **Complexity/design escalation** means stopping local execution and re-checking framing when unexpected complexity or evidence reveals a shared state/lifecycle/protocol/concurrency/persistence/ownership invariant. New selectors, identities, persistence, coordination, ownership rules, or accumulating guards are signals to reassess, not permission to expand design.
 - **Workflow-level ambiguity** means uncertainty about the requested outcome/behavioral scope or direction, allowed action level, target/state identity, stage/role ownership, required user decision, or gated effect. The workflow owner resolves or escalates this before delegating the affected stage.
 - **Execution-local ambiguity** means uncertainty about exact files/symbols/call sites, nearby project patterns, or implementation mechanics inside an already-bounded specialist envelope. The owning specialist normally resolves this during execution; it is not by itself a reason for the parent to pre-discover implementation details or insert another discovery stage.
 
@@ -39,7 +35,7 @@ Before changing code, read the project root `AGENTS.md` / `agents.md` and `CONTR
 
 If PR creation/update is in normalized scope, discover the repository's current PR template/publication guidance before drafting or publishing PR metadata. Do not assume no template exists only because the current worktree does not contain one; use available repository-host metadata when needed.
 
-Use project docs, nearby code, tests, existing issues, repository history, and actual tool output as evidence. Do not treat assumptions or model memory as evidence, and do not invent project facts. For claims about **current upstream/default/base repository state**, load and use the bundled `git-provenance` skill; section 8 binds that provenance policy to the applicable repository-state workflow. Applicable project guidance/config/tests used to support that target claim must come from the same state when they can differ. For issue/report-derived new work with no explicit local/historical/PR target, resolve the applicability target from issue/project metadata before applying that contract. If freshness cannot be established, mark the claim unverified. Project-local rules may restrict commands, mutation, and workflow further, but they do not grant capabilities denied by the active agent role or runtime permissions. If missing information could lead to unwanted code changes, broad scope, secrets, PRs, releases, destructive actions, dependency changes, or production changes, ask the user.
+Use project docs, nearby code, tests, existing issues, repository history, and actual tool output as evidence. Do not treat assumptions or model memory as evidence, and do not invent project facts. For claims about **current upstream/default/base repository state**, load and use the bundled `git-provenance` skill; section 8 binds that provenance policy to the applicable repository-state workflow. Applicable project guidance/config/tests used to support that target claim must come from the same state when they can differ. For issue/report-derived new work with no explicit local/historical/PR target, resolve the applicability target from issue/project metadata before applying that contract. If freshness cannot be established, mark the claim unverified.
 
 ## Memory (GrayMatter)
 
@@ -178,7 +174,7 @@ These are conditional procedural extensions of the root contract. When the corre
 
 When a matching specialist skill is selected, a workflow/policy skill is triggered, or project guidance requires a skill, actually load it through OpenCode's native skill mechanism when available, or read its `SKILL.md` before relying on its guidance for the applicable stage; naming the skill does not count as using it. Load referenced skill files only when they are relevant to the normalized task. If a selected/required skill cannot be found, report `Skill: <name> unavailable`; if any applicable root/role/project rule requires it for the next stage, that stage is blocked rather than silently approximated.
 
-Skills are advisory/procedural only. They do not override project rules, hard role boundaries, gated checks, existing tooling, minimal diff, review/OCR contracts, PR body sync, readiness, provenance, or the root semantic contract. Use existing project commands and conventions first. Do not add or tighten linters, formatters, strict modes, coverage gates, sanitizers, dependencies, or build config only because a skill recommends it.
+Skills are advisory/procedural and remain subordinate to the authority, role, gate, and project-policy hierarchy in this root contract. Use existing project commands and conventions first. Do not add or tighten linters, formatters, strict modes, coverage gates, sanitizers, dependencies, or build config only because a skill recommends it.
 
 Mention skill usage once when useful: `Skill: <name|none>`.
 
@@ -200,7 +196,7 @@ Do not map schema/storage/API types directly to UI or workflow behavior. Preserv
 
 Authority attaches to a **claim**, not automatically to the artifact that contains it. A reference to an issue, ticket, PR, plan, comment, test, document, task assignment, or other artifact may establish scope and may contain normative requirements, but neither the container, heading, confidence, repetition, nor placement of a statement makes that statement authoritative by itself.
 
-Before using a material claim as an intended outcome, invariant, constraint, or acceptance condition, establish that authority from the current normalized user intent or applicable project-local authoritative rules. Merely referencing an artifact as the target or source of work does not silently adopt every statement inside it as the behavioral contract; an explicit current instruction or authoritative project rule may elevate the whole artifact or specified parts. If authority for a claim is not established, keep it as evidence or a hypothesis to verify rather than promoting it into the contract. Evidence may establish whether such a claim is factually or semantically supported, but evidence alone does not grant it authority to define the desired behavior.
+Before using a material claim as an intended outcome, invariant, constraint, or acceptance condition, establish that authority from the current normalized user intent or applicable project-local authoritative rules. Merely referencing an artifact as the target or source of work does not silently adopt every statement inside it as the behavioral contract; an explicit current instruction or authoritative project rule may elevate the whole artifact or specified parts. If authority for a claim is not established, keep it as evidence or a hypothesis to verify rather than promoting it into the contract. Evidence may establish whether such a claim is factually or semantically supported, but evidence alone does not grant it authority to define the desired behavior. Implementation freedom does not authorize new product/domain semantics; new user-visible contracts, identities, ownership/source-of-truth rules, destructive boundaries, or material semantic expansion must already be authoritative or return to the workflow owner before coding.
 
 Do not let a workflow prove its own assumption by repeating it across an artifact, assignment, implementation comment, new test, and review summary. Only claims with established authority define intended outcomes/invariants. Established production behavior is evidence of current semantics and of preserved behavior only where the task does not intentionally change it. Proposed mechanisms, derived acceptance wording, comments/docs newly introduced by the same change, new tests, and the implementation's own description are evidence to inspect, not independent proof that the premise is true.
 
@@ -260,7 +256,6 @@ Use exactly this shape:
 `Mode` describes the normalized workflow action ceiling, not the current agent's capabilities. `edit-capable` never authorizes an orchestrator/reviewer/read-only role to edit, and `publication-capable` never bypasses section 4.
 
 Rules:
-- Emit Startup once per user-request workflow or agent invocation, after GrayMatter bootstrap and before the first non-memory tool call only.
 - Do not repeat it before every tool call, command, or substep.
 - Required GrayMatter bootstrap calls (`checkpoint_resume` first when resuming unfinished work, then project and `__shared__` `memory_search`) are the only tool calls allowed before Startup when the Memory section applies.
 - Keep it to the heading plus six bullets. Keep field names in English.
@@ -320,7 +315,6 @@ Fallback:
 - If `unclassified`, do not mutate, publish, install, or change config. Ask one concise clarification question and include likely interpretations when useful.
 - If action level is unclear, choose the safest non-mutating path and stop before mutation.
 - If target is unclear, ask for it; do not scan the entire repository unless a broad audit is itself the requested deliverable.
-- If a request could mean investigation or fixing, treat it as investigation-only unless the deliverable is changed code/config/UI/tests/docs.
 - If a UI request could mean options or implementation, treat it as options-only unless the requested deliverable is changed UI/repository content rather than advice/options.
 - If a gated action is needed but not already authorized, stop at the gate and ask once with action, target, scope, and material risk.
 
@@ -343,7 +337,7 @@ Keep hard preconditions distinct from user-authorizable gates. A hard/runtime/ro
 
 User-authorizable gated effects include publication/mutation of commits/branches/PRs/issues/tags/releases or other external artifacts; destructive/history-rewriting actions; secrets/credential/private-account access; new dependencies/tooling/design systems/large generated assets; public API/data/auth/persistence/deployment/production changes beyond authorized scope; external code sharing/review; and material scope/direction expansion requiring a user decision.
 
-Tests/CI, routing, tool availability, agent recommendations, and confidence are evidence/state, not authority. Pack readiness/verification evidence conditions retain section 0 priority; calling one mandatory does not elevate it above explicit user intent unless it instantiates a higher-priority safety/runtime/tool, hard role-capability, or project-local rule. Missing/stale evidence limits claims and blocks the default pack workflow, but not a conflicting higher-priority instruction. If a surfaced pack-level evidence gap is known and the user explicitly directs the same already-authorized action anyway, proceed unless a higher-priority constraint forbids it; report the gap honestly rather than claiming the default evidence contract passed, and do not require special `override`/`waive` wording. Separate ownership, capability, destructive-action, scope, and publication-authorization rules are unchanged. Ordinary read-only work, planning, valid delegation, already-requested in-scope implementation, and non-destructive verification proceed automatically.
+Tests/CI, routing, tool availability, agent recommendations, and confidence are evidence/state, not authority. Pack readiness/verification evidence conditions retain section 0 priority; calling one mandatory does not elevate it above explicit user intent unless it instantiates a higher-priority safety/runtime/tool, hard role-capability, or project-local rule. Missing/stale evidence limits claims and blocks the default pack workflow, but not a conflicting higher-priority instruction. If a surfaced pack-level evidence gap is known and the user explicitly directs the same already-authorized action anyway, proceed unless a higher-priority constraint forbids it; report the gap honestly rather than claiming the default evidence contract passed, and do not require special `override`/`waive` wording. Ownership, capability, destructive-action, scope, and publication authorization remain independently applicable. Ordinary read-only work, planning, valid delegation, already-requested in-scope implementation, and non-destructive verification proceed automatically.
 
 A workflow condition is a precondition only when it can legitimately be satisfied before the gated action. Evidence/state available only after crossing that boundary is not a failed, pending, unknown, or self-blocking precondition merely because a default lists it earlier. Resolve the actual dependency from authoritative project policy and current platform/repository state, then evaluate evidence where it can exist. If higher-priority project policy is circular or contradictory with no valid path, report that conflict instead of inventing a pass or bypass.
 
@@ -359,7 +353,7 @@ Each specialist assignment must bound objective, target/behavior scope, allowed 
 
 A delegated orchestrator may normalize/select leaf stages only inside its delegated domain and returns bounded assignments to the workflow-owning parent for dispatch; it does not create another subagent generation. Prefer serialized mutation; parallel mutation requires established disjoint files/state/contracts.
 
-Invocation failure, provider/rate/tool limits, or role unavailability never transfer that role's authority. Retry only genuinely transient failures. Fallback exists only when explicitly declared, executable from the current context, and no broader in authority/workflow envelope; never infer it from semantic similarity or overlapping tools. A caller may perform only a safe subset it independently owns.
+Delegation failure and fallback follow section 2.5; failure never transfers authority. Retry only genuinely transient failures.
 
 Execution topology comes from agent frontmatter: `primary` = top-level only, `subagent` = delegated only, `all` = either subject to role-local nesting rules. Entry routing chooses a top-level owner; delegation routing chooses an invokable bounded executor. An entry target is not automatically a delegation target.
 
@@ -428,13 +422,11 @@ This default governs durable implementation content. Canonical planning/workflow
 
 Before a scripted or bulk mutation, constrain the affected target set and transformation explicitly. After it, inspect the resulting diff before continuing. Tool choice does not change the authorized scope or correctness contract: a faster or broader mutation mechanism is not permission for a broader rewrite.
 
-### 7.2 Right-level fixes
+### 7.2 Right-level implementation boundary
 
-For a correction to existing behavior, use the acceptance condition established under section 2.2.1 and choose the narrowest existing ownership boundary that can guarantee it across the materially affected paths, states, callers, boundaries, and lifecycle transitions.
+For any non-trivial implementation or fix, choose the narrowest existing ownership boundary that can guarantee the established outcome across materially affected paths, states, callers, boundaries, and lifecycle transitions. Trace the primitive/root operation and existing owners first; if a local boundary cannot guarantee the outcome, move outward or escalate before accumulating patches. If the behavior is truly local, keep the fix local.
 
-Inspect the primitive/root operation, similar call sites, and existing shared owners before deciding where the fix belongs. If a local boundary cannot guarantee the required outcome, move the fix outward to the owning abstraction or escalate before coding instead of accumulating local patches. Prefer an existing shared owner when it governs the behavior; do not create a new abstraction merely because several files look similar.
-
-If the defect is truly local and no broader owner is required, use the smallest correct local fix. Before marking done, state the chosen fix level and the relevant ownership/caller evidence when that materially supports correctness.
+Production-grade means correct and maintainable at that boundary: reuse existing semantics/primitives, keep responsibilities and dependencies coherent, and handle relevant failure, security, concurrency, and recovery behavior proportionally to the actual contract and risk. Do not create a new abstraction merely because several files look similar, and do not substitute test-specific fixes, duplicated rules, compatibility tricks, temporary workarounds, or speculative frameworks for the correct design. Report the chosen fix level when it materially supports correctness.
 
 ### 7.3 Regression guard
 
@@ -481,7 +473,7 @@ Visual evidence is durable; its workspace/process/local file is not. Publish bin
 
 ## 9. User-facing output and public writing quality
 
-For user-visible/public text, optimize for correctness and skimmability: result/blocker first, short headings when useful, bullets for multiple points, numbered steps only for ordered human procedures, fenced blocks for exact commands/logs/config/text, and no filler or AI wall of text. Use destination-appropriate portable Markdown and project templates. For substantial PR/issue/release/review artifacts or destination-specific formatting, load the bundled `output-formatting` skill before drafting/publishing.
+For user-visible/public text, state the result or requested action directly and early. Use plain language and precise verbs; use short headings when useful, bullets for genuinely parallel points, numbered steps only for ordered human procedures, fenced blocks for exact commands/logs/config/text, and no filler. Use destination-appropriate portable Markdown and project templates. Changelog entries list actual changes. Put preservation/regression assurances and unchanged-invariant evidence in validation or release-audit material. For substantial PR/issue/release/review artifacts or destination-specific formatting, load the bundled `output-formatting` skill before drafting/publishing.
 
 ## 10. Final reports
 

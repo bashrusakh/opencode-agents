@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.17 beta
+# OpenCode Agent Pack v30.21 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,13 +14,15 @@
 
 ---
 
-## What changed in v30.17 beta
+## What changed in v30.21 beta
 
-- Keeps the authority hierarchy semantic: pack readiness/verification evidence conditions do not become hard prohibitions merely because they are called mandatory; explicit user intent remains above those pack-level evidence conditions unless a higher-priority runtime/role/project constraint applies.
-- Adds a non-circular gate invariant: evidence that can exist only after a state transition is not automatically a failed precondition of that same transition.
-- Replaces the owned-PR fixed `remote CI/status -> Ready` recipe with dependency-driven readiness while preserving Candidate identity, whole-PR review, provenance, and repository-defined prerequisites.
+- Tightens root intent/follow-through wording and makes framing counter-checks explicitly internal.
+- Renames root §7.2 to `Right-level implementation boundary` so feature work and bugfixes use the same solution-level discipline.
+- Consolidates repeated root gate, ambiguity, skill-authority, and delegation-fallback wording.
+- Makes changelog writing changes-only and cleans historical non-change bullets.
+- Corrects the README installer-validation path label to `command/doc/snippet`.
 
-See [`docs/releases/v30.17-beta.md`](docs/releases/v30.17-beta.md).
+See [`docs/releases/v30.21-beta.md`](docs/releases/v30.21-beta.md).
 
 ---
 
@@ -157,9 +159,9 @@ Upstream: https://github.com/angelnicolasc/graymatter
 
 ## Review and correctness
 
-### Right-level fixes
+### Right-level implementation boundary
 
-Fix behavior at the abstraction that owns it. Do not patch only the first caller when the real fault belongs to a shared helper, service, composable, parser, API wrapper, or stateful primitive.
+Choose the narrowest existing abstraction that owns the requested behavior across affected paths and states. Do not patch only the first caller when the real behavior belongs to a shared helper, service, composable, parser, API wrapper, or stateful primitive.
 
 ### Regression guard
 
@@ -289,6 +291,7 @@ Upstream / external sources:
 - Alibaba `open-code-review`: https://github.com/alibaba/open-code-review
 - Jeffallan `claude-skills`: https://github.com/Jeffallan/claude-skills
 - UI UX Pro Max: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
+- OpenAI current-model prompting guidance (used to review the pack's prompt/agent policy): https://developers.openai.com/api/docs/guides/latest-model
 
 ---
 
@@ -322,8 +325,8 @@ Installs `AGENTS.md` plus `.opencode/{agents,skills}/` into the project. The pac
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history index |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Manual UI component MCP setup reference |
 | [`docs/uupm_setup.md`](docs/uupm_setup.md) | Manual UI UX Pro Max setup reference |
-| [`docs/releases/v30.16-beta.md`](docs/releases/v30.16-beta.md) | Current beta release notes |
-| [`docs/releases/v30.14-beta.md`](docs/releases/v30.14-beta.md) | Previous mutation-mechanism beta |
+| [`docs/releases/v30.21-beta.md`](docs/releases/v30.21-beta.md) | Current beta release notes |
+| [`docs/releases/v30.20-beta.md`](docs/releases/v30.20-beta.md) | Previous beta release notes |
 | [`docs/releases/v30.13-beta.md`](docs/releases/v30.13-beta.md) | Repository-prerequisite readiness beta |
 
 The setup documents are human-facing references, not runtime policy. No root/agent/skill behavior depends on them, and installers do not copy them into OpenCode configuration.
@@ -342,7 +345,7 @@ A release archive should verify at least:
 - no stale universal `origin/main`, outdated OCR timeout contract, or obsolete version-path references;
 - workflow-created temporary resources have one canonical lifecycle/reconciliation rule rather than duplicated role-local cleanup rules;
 - visual evidence publication uses only an already-available authorized transport; no bundled GitHub binary uploader or implicit gist/branch/ref hosting fallback is provided;
-- install scripts pass `bash -n`, copy complete skill directories, and back up/prune exact obsolete package-owned command/doc/skill paths without touching unrelated entries;
+- install scripts pass `bash -n`, copy complete skill directories, and back up/prune exact obsolete package-owned command/doc/snippet paths without touching unrelated entries;
 - vendored/adapted skill content retains source/license attribution and does not silently claim to be verbatim upstream;
 - archive roundtrip manifest matches the working tree.
 
@@ -350,7 +353,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.16 beta**  
+**OpenCode Agent Pack v30.21 beta**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>
