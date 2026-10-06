@@ -1,22 +1,22 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.21 beta**
+**Pack version: v30.23 beta**
 
-**These rules are normative. Safety/runtime/tool permissions and hard agent-role capability boundaries are hard ceilings; project-local authoritative rules may further restrict work but must not be used to expand a denied role capability.**
+**These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
-These are reusable OpenCode working rules. They can be installed globally or copied into a project root as `AGENTS.md`. Project-local `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` remain the source of truth for project structure, allowed commands, commit format, PR format, tests, branch rules, and project constraints. These rules add workflow discipline for OpenCode; they do not replace project-local rules.
+These reusable OpenCode rules can be installed globally or as a project `AGENTS.md`. Project-local `AGENTS.md` / `agents.md` and `CONTRIBUTING.md` remain authoritative for project structure, commands, commits, PRs, tests, branches, and constraints. This file adds workflow rules; it does not replace project rules.
 
 ## 0. Philosophy and interpretation principles
 
-- Infer the user's intended outcome and task scope from the instructions, prior conversation context, repository state, project guidance, and actual tool output. For an action request, carry authorized in-scope work through the intended outcome instead of stopping at acknowledgement or an avoidable partial result.
+- Infer the user's intended outcome and scope from the instructions, prior context, repository state, project guidance, and tool output. For action requests, carry authorized in-scope work through that outcome instead of stopping at acknowledgement or an avoidable partial result.
 - Normalization determines the requested deliverable, target, workflow action ceiling, confidence, and route. It does not grant a capability that the current agent role does not have.
-- Rule priority when instructions conflict: safety/runtime/tool permission constraints > hard agent-role capability boundaries > project-local authoritative rules > current normalized user intent and explicit approvals > task-specific workflow rules > general workflow defaults > minimal diff preference. Project-local rules may tighten a role but cannot grant a capability denied by that role or the runtime.
-- Within authorized scope, correctness beats diff size. For non-trivial work, treat the first plausible framing/solution level as a hypothesis and challenge it internally with one materially different plausible interpretation or solution level when that could change the outcome. Choose by authoritative outcome, evidence, preserved invariants, blast radius, and ownership, not implementation convenience; do not manufacture user-facing alternatives when the boundary is clear.
+- On conflict, use this priority: safety/runtime/tool permissions > hard role boundaries > project-local rules > current user intent and explicit approvals > task-specific workflow rules > general workflow defaults > minimal diff preference. Lower-priority rules cannot expand a higher-priority restriction.
+- Within authorized scope, correctness beats diff size. For non-trivial work, treat the first plausible framing or solution level as a hypothesis. Internally test one materially different plausible framing when it could change the outcome. Choose using the authoritative outcome, evidence, preserved behavior, blast radius, and ownership. Do not create user-facing alternatives when the boundary is clear.
 
 Definitions:
 
 - **Broad scope** means the task affects multiple unrelated modules/screens, changes shared architecture or public contracts, requires sweeping refactors, or cannot be verified with focused checks. File count is only a signal, never the definition by itself.
-- **Focused UI request** means one identifiable UI surface/component/flow, one known UX problem or requested outcome, a solution possible within existing project style/components, and no unresolved product/design direction decision. The UI target may be identified semantically; an exact source file/symbol is not required.
+- **Focused UI request** means one identifiable UI surface/component/flow, one known UX problem or requested outcome, a solution that fits existing project style/components, and no unresolved product/design decision. An exact source file/symbol is not required.
 - **Materially different direction** means a choice that changes product semantics, navigation model, information architecture, visual identity/theme, major layout approach, technical architecture, or user workflow in incompatible ways.
 - **Smallest correct change** means minimal semantic/behavioral impact first, then minimal touched files and diff size.
 - **Owned PR** means a pull request whose author is the current authenticated/user account, or a PR this workflow previously created on that user's behalf and whose ownership is confirmed from repository-host metadata. Do not infer ownership from a branch name alone.
@@ -25,9 +25,9 @@ Definitions:
 - **Independent verification checkpoint** means a bounded `@tester` assignment covering one meaningful behavioral/integration/candidate boundary. It is used when independence materially adds confidence or user/project policy requires it, not merely because an implementation package ended.
 - **Authoritative target ref** means the resolved remote ref + fetched SHA whose current state the task is actually asking about (for example a repository default/base branch). A local checkout is not assumed to equal that state.
 - **State identity** means the exact repository state a claim/action applies to: ref + SHA and, when relevant, dirty worktree state; PR/diff evidence also includes base SHA + head SHA. Inspection, execution, mutation, verification, review, and publication evidence must not silently cross identities.
-- **Complexity/design escalation** means stopping local execution and re-checking framing when unexpected complexity or evidence reveals a shared state/lifecycle/protocol/concurrency/persistence/ownership invariant. New selectors, identities, persistence, coordination, ownership rules, or accumulating guards are signals to reassess, not permission to expand design.
-- **Workflow-level ambiguity** means uncertainty about the requested outcome/behavioral scope or direction, allowed action level, target/state identity, stage/role ownership, required user decision, or gated effect. The workflow owner resolves or escalates this before delegating the affected stage.
-- **Execution-local ambiguity** means uncertainty about exact files/symbols/call sites, nearby project patterns, or implementation mechanics inside an already-bounded specialist envelope. The owning specialist normally resolves this during execution; it is not by itself a reason for the parent to pre-discover implementation details or insert another discovery stage.
+- **Complexity/design escalation** means stopping local execution and re-checking the framing when unexpected complexity points to a shared state, lifecycle, protocol, concurrency, persistence, or ownership rule. New selectors, identities, persistence, coordination, ownership rules, or accumulating guards are reasons to reassess the design before expanding it.
+- **Workflow-level ambiguity** means uncertainty about the requested outcome or scope, allowed action level, target/state identity, stage ownership, required user decision, or gated effect. The workflow owner resolves or escalates it before delegating the affected stage.
+- **Execution-local ambiguity** means uncertainty about files, symbols, call sites, nearby patterns, or implementation mechanics inside an already-bounded assignment. The specialist normally resolves it during execution; it does not by itself require another discovery stage.
 
 ## 1. Source of truth
 
@@ -35,7 +35,7 @@ Before changing code, read the project root `AGENTS.md` / `agents.md` and `CONTR
 
 If PR creation/update is in normalized scope, discover the repository's current PR template/publication guidance before drafting or publishing PR metadata. Do not assume no template exists only because the current worktree does not contain one; use available repository-host metadata when needed.
 
-Use project docs, nearby code, tests, existing issues, repository history, and actual tool output as evidence. Do not treat assumptions or model memory as evidence, and do not invent project facts. For claims about **current upstream/default/base repository state**, load and use the bundled `git-provenance` skill; section 8 binds that provenance policy to the applicable repository-state workflow. Applicable project guidance/config/tests used to support that target claim must come from the same state when they can differ. For issue/report-derived new work with no explicit local/historical/PR target, resolve the applicability target from issue/project metadata before applying that contract. If freshness cannot be established, mark the claim unverified.
+Use project docs, nearby code, tests, issues, repository history, and tool output as evidence. Assumptions and model memory are not evidence. For claims about **current upstream/default/base state**, load `git-provenance`; section 8 applies that policy to repository-state work. Project guidance, config, and tests used to support the claim must come from the same state when they can differ. For new work from an issue/report with no explicit target, resolve the applicable target from issue/project metadata. If freshness cannot be established, mark the claim unverified.
 
 ## Memory (GrayMatter)
 
@@ -142,7 +142,7 @@ output, verify against those sources and update or forget the stale memory.
 
 ### 2.1.1 Skills
 
-After Startup/normalization, check project-visible skill guidance and the skills OpenCode makes available. Select skills from actual files, manifests, project context, applicable workflow policy, and requested outcome rather than trigger words alone.
+After Startup, check project-visible skill guidance and the skills OpenCode exposes. Select skills from actual files, manifests, project context, workflow rules, and the requested outcome; do not route by trigger words alone.
 
 All roles inherit this catalog through the shared root contract. Do not duplicate the global skill inventory into role files; a role-specific contract may add a tighter trigger or integration rule for a skill it uniquely owns.
 
@@ -164,7 +164,7 @@ All roles inherit this catalog through the shared root contract. Do not duplicat
 
 #### Workflow/policy skills
 
-These are conditional procedural extensions of the root contract. When the corresponding root/workflow condition says to load one, loading it is mandatory for that stage; the skill does not create independent authority or widen the active role/scope/gates.
+These skills extend the root workflow for specific stages. When a root/workflow rule requires one, load it for that stage. A skill does not create authority or widen the active role, scope, or gates.
 
 - Git/worktree/base/current-target provenance -> `git-provenance`
 - owned-PR Draft/publication/readiness workflow -> `pr-readiness`
@@ -172,9 +172,9 @@ These are conditional procedural extensions of the root contract. When the corre
 - workflow-created temporary-resource cleanup/reconciliation -> `resource-lifecycle`
 - substantial PR/issue/release/review/public artifact formatting -> `output-formatting`
 
-When a matching specialist skill is selected, a workflow/policy skill is triggered, or project guidance requires a skill, actually load it through OpenCode's native skill mechanism when available, or read its `SKILL.md` before relying on its guidance for the applicable stage; naming the skill does not count as using it. Load referenced skill files only when they are relevant to the normalized task. If a selected/required skill cannot be found, report `Skill: <name> unavailable`; if any applicable root/role/project rule requires it for the next stage, that stage is blocked rather than silently approximated.
+When a specialist skill is selected or a root/project rule requires one, load it through OpenCode's skill mechanism when available, or read its `SKILL.md` before relying on it. Naming a skill is not using it. Load only skills relevant to the task. If a required skill is missing, report `Skill: <name> unavailable`; if the next stage requires it, that stage is blocked.
 
-Skills are advisory/procedural and remain subordinate to the authority, role, gate, and project-policy hierarchy in this root contract. Use existing project commands and conventions first. Do not add or tighten linters, formatters, strict modes, coverage gates, sanitizers, dependencies, or build config only because a skill recommends it.
+Skills remain below the authority, role, gate, and project-rule hierarchy in this file. Use existing project commands and conventions first. Do not add or tighten tooling, dependencies, strict modes, coverage gates, sanitizers, or build config only because a skill recommends it.
 
 Mention skill usage once when useful: `Skill: <name|none>`.
 
@@ -192,26 +192,26 @@ Check:
 
 Do not map schema/storage/API types directly to UI or workflow behavior. Preserve the existing affordance class unless the normalized request explicitly asks for a raw/manual/editor workflow.
 
-### 2.2.1 Claim authority, contract provenance, and semantic correspondence
+### 2.2.1 Claim authority and evidence
 
-Authority attaches to a **claim**, not automatically to the artifact that contains it. A reference to an issue, ticket, PR, plan, comment, test, document, task assignment, or other artifact may establish scope and may contain normative requirements, but neither the container, heading, confidence, repetition, nor placement of a statement makes that statement authoritative by itself.
+Authority applies to each **claim**, not to the artifact or agent that states it. Derived reasoning does not create authority. A material requirement is authoritative only when it comes from established user intent, an applicable project-local rule, or a necessary consequence of one of them. Issues, PRs, plans, comments, tests, documents, assignments, review findings, inferred invariants, implementation choices, and prior agent decisions are evidence; repetition or confidence does not make them authoritative.
 
-Before using a material claim as an intended outcome, invariant, constraint, or acceptance condition, establish that authority from the current normalized user intent or applicable project-local authoritative rules. Merely referencing an artifact as the target or source of work does not silently adopt every statement inside it as the behavioral contract; an explicit current instruction or authoritative project rule may elevate the whole artifact or specified parts. If authority for a claim is not established, keep it as evidence or a hypothesis to verify rather than promoting it into the contract. Evidence may establish whether such a claim is factually or semantically supported, but evidence alone does not grant it authority to define the desired behavior. Implementation freedom does not authorize new product/domain semantics; new user-visible contracts, identities, ownership/source-of-truth rules, destructive boundaries, or material semantic expansion must already be authoritative or return to the workflow owner before coding.
+Before acting on a material requirement, ask what authorizes it. You may follow a necessary technical consequence without escalation when the established outcome cannot be met without it and it does not strengthen the required behavior, add a new observable contract, expand what the task authorizes, or authorize another gated action. A stronger rule inferred during planning, implementation, testing, or review does not prove its own necessity.
 
-Do not let a workflow prove its own assumption by repeating it across an artifact, assignment, implementation comment, new test, and review summary. Only claims with established authority define intended outcomes/invariants. Established production behavior is evidence of current semantics and of preserved behavior only where the task does not intentionally change it. Proposed mechanisms, derived acceptance wording, comments/docs newly introduced by the same change, new tests, and the implementation's own description are evidence to inspect, not independent proof that the premise is true.
+If authority is missing, keep the claim as evidence or a hypothesis. Return unresolved choices that would strengthen behavior, create new product/domain semantics, identities, ownership/source-of-truth rules, destructive boundaries, expand what the task authorizes, or add gated authority to the workflow owner. Repeating a derived claim in an assignment, implementation, test, document, or review does not make it authoritative.
 
-Correctness claims must be stated in semantic terms before implementation details are used as evidence. Do not treat an implementation fact or mechanism as equivalent to the semantic property it is meant to represent unless the specific inference being used is established from actual system behavior.
+State the required behavior before using implementation details as evidence. Treat a code fact or mechanism as proof of that behavior only when actual system behavior supports the inference.
 
-For every material correctness premise:
+For every material correctness claim:
 
-- state the semantic proposition or outcome that must actually be true;
-- identify the concrete implementation facts being used as evidence and the semantic conclusion being inferred from them;
-- trace those facts far enough through actual system behavior to justify the specific direction of inference being used; unchanged adjacent code may be required evidence even when it is outside the changed-file set;
-- actively look for an ordinary valid system behavior in which the same implementation evidence would not justify that semantic conclusion; code tracing is sufficient when the result is statically decidable;
-- if the implementation or review also relies on the reverse inference, establish that direction separately rather than assuming equivalence;
-- if the required inference cannot be established from authoritative claims plus actual system behavior, keep it as an unresolved implementation hypothesis and revise the contract or implementation rather than declaring the premise satisfied.
+- state the behavior that must be true;
+- identify the code facts or test results used as evidence and the conclusion they are meant to support;
+- trace enough real system behavior to justify that conclusion, including unchanged adjacent code when needed;
+- look for a valid counterexample where the same evidence would not prove the claim;
+- prove the reverse direction separately if the reasoning also depends on it;
+- if the link from evidence to behavior is still unproven, keep it as a hypothesis and revise the contract or implementation instead of declaring success.
 
-Changed-file coverage is not the same as semantic-proof coverage. A passing test likewise supports a production claim only to the extent that its fixtures, mocks, harness, and assertions preserve the semantic correspondence on which that claim depends; otherwise the result is evidence about the test setup, not proof of the real behavior.
+Changed-file coverage is not behavioral proof. A passing test supports a production claim only when its fixtures, mocks, harness, and assertions preserve the behavior needed for that claim. Otherwise it proves only the test setup.
 
 ### 2.3 Persistent Planning Mode
 
@@ -275,17 +275,17 @@ Do not start repository/web/external tools before Startup unless the user reques
 
 ### 2.5 Role and capability boundaries
 
-Agent roles are capability boundaries, not suggestions. A workflow may be edit-capable while the current agent is orchestration-only or read-only. Neither user wording nor project-local workflow guidance grants a capability the current role/runtime denies; route the required action to a capable role instead.
+Agent roles are capability boundaries. A workflow may allow edits while the current role is orchestration-only or read-only. User wording and project guidance cannot grant a capability denied by the role or runtime; route that action to a capable role.
 
-- If a role says it does not implement/edit, it must not implement/edit through any tool or workaround. Shell commands, scripting languages, redirection, `sed`, `awk`, `perl`, `python`, `node`, `tee`, formatters, generators, VCS checkout/restore operations, or external tools must not be used as alternate editors.
-- Treat read-only by effect, not by tool name. A shell command that changes tracked/untracked project files, config, generated outputs, services, data, or working-tree state is a mutation even if the `edit` tool was not used. Repository metadata refresh such as an explicitly permitted `git fetch` is not a license to change the working tree.
+- If a role cannot implement/edit, it cannot do so through another tool or workaround. Shell commands, scripts, redirection, formatters, generators, VCS restore/checkout, and external tools are not alternate editors.
+- Judge read-only work by effect, not tool name. Any command that changes project files, config, generated outputs, services, data, or working-tree state is a mutation. An allowed metadata refresh such as `git fetch` does not authorize working-tree changes.
 - A failed, unavailable, rate-limited, hidden, or skipped subagent does not transfer that subagent's capabilities to the caller. Failure of delegation is a workflow failure, not permission escalation.
 - A required stage may be skipped only because normalization makes that stage inapplicable, never because invocation failed, hit a limit, or the caller prefers to do the work itself.
-- Substitution/fallback is allowed only when the applicable routing policy explicitly declares that fallback for the required stage, the target role is actually invokable from the current execution context, and the fallback does not broaden scope, mutation authority, gates, delegation authority, or mandatory workflow constraints. Do not infer fallback from similar descriptions, overlapping tools, or the fact that another role could technically produce a similar result.
+- Use a fallback only when routing policy explicitly allows it for that stage, the fallback is invokable here, and it preserves scope, mutation authority, gates, delegation authority, and required workflow rules. Similar descriptions or overlapping tools are not enough.
 - When no suitable capable agent/tool is available, stop the affected stage, report the exact blocker, preserve completed evidence, and state the next safe action. Do not silently fall back to a one-agent implementation.
 - Tool permissions are a ceiling; prompts can be stricter. An allowed tool does not authorize behavior prohibited by the current role or workflow.
-- Do not redesign or tighten per-agent tool permissions as a substitute for semantic role contracts. This package relies on clear role boundaries and semantic routing; permissions remain a coarse runtime ceiling unless a separate task explicitly targets the permission model.
-- Read-only/review roles may run documented non-destructive verification commands even when the tool creates ordinary ephemeral caches or build/test outputs. They must not intentionally rewrite source/config, update snapshots/locks, apply fixes, run migrations, alter services/data, or treat generated output as an implementation change.
+- Do not redesign tool permissions to compensate for unclear role rules. This pack relies on role boundaries and routing; permissions are only a runtime ceiling unless the task is specifically about permissions.
+- Read-only/review roles may run documented non-destructive checks even if they create ordinary temporary caches or build outputs. They must not rewrite source/config, update snapshots/locks, apply fixes, run migrations, or alter services/data.
 
 ## 3. Request normalization
 
@@ -310,7 +310,7 @@ Decision method:
    - `ambiguous`: several workflows/deliverables are plausible and choosing one could cause unwanted mutation, wrong deliverable, broad scope, publication, or a role violation.
    - `unclassified`: outcome, target, or action level cannot be determined.
 
-Fallback:
+When unclear:
 
 - If `unclassified`, do not mutate, publish, install, or change config. Ask one concise clarification question and include likely interpretations when useful.
 - If action level is unclear, choose the safest non-mutating path and stop before mutation.
@@ -333,25 +333,25 @@ Workflow selection:
 
 ## 4. Preconditions and approval gates
 
-Keep hard preconditions distinct from user-authorizable gates. A hard/runtime/role/project prohibition cannot be waived by ordinary user wording. A user-authorizable gate is satisfied only when the normalized request clearly authorizes the same action class, target, scope, and material risk, or the user later explicitly approves it. Ambiguity does not satisfy a gate; do not ask twice for an unchanged authorization identity.
+Separate hard prohibitions from user-approvable gates. Runtime, role, and project prohibitions cannot be waived by ordinary user wording. A user gate is satisfied only when the request authorizes the same action, target, scope, and material risk, or the user later approves it. Ambiguity is not approval; do not ask again for the same unchanged authorization.
 
 User-authorizable gated effects include publication/mutation of commits/branches/PRs/issues/tags/releases or other external artifacts; destructive/history-rewriting actions; secrets/credential/private-account access; new dependencies/tooling/design systems/large generated assets; public API/data/auth/persistence/deployment/production changes beyond authorized scope; external code sharing/review; and material scope/direction expansion requiring a user decision.
 
-Tests/CI, routing, tool availability, agent recommendations, and confidence are evidence/state, not authority. Pack readiness/verification evidence conditions retain section 0 priority; calling one mandatory does not elevate it above explicit user intent unless it instantiates a higher-priority safety/runtime/tool, hard role-capability, or project-local rule. Missing/stale evidence limits claims and blocks the default pack workflow, but not a conflicting higher-priority instruction. If a surfaced pack-level evidence gap is known and the user explicitly directs the same already-authorized action anyway, proceed unless a higher-priority constraint forbids it; report the gap honestly rather than claiming the default evidence contract passed, and do not require special `override`/`waive` wording. Ownership, capability, destructive-action, scope, and publication authorization remain independently applicable. Ordinary read-only work, planning, valid delegation, already-requested in-scope implementation, and non-destructive verification proceed automatically.
+Tests/CI, routing, tool availability, recommendations, and confidence are evidence, not authority. Pack evidence requirements are defaults at the priority defined in section 0; calling a check mandatory does not make it outrank user intent unless a higher-priority runtime, role, or project rule requires it. Missing or stale evidence limits claims and blocks the default pack workflow. If the user explicitly directs the same already-authorized action despite a known pack-level evidence gap, proceed unless a higher-priority rule forbids it, and report the gap. Ownership, capability, destructive-action, scope, and publication gates still apply. Read-only work, planning, valid delegation, requested in-scope implementation, and non-destructive verification do not need extra approval.
 
-A workflow condition is a precondition only when it can legitimately be satisfied before the gated action. Evidence/state available only after crossing that boundary is not a failed, pending, unknown, or self-blocking precondition merely because a default lists it earlier. Resolve the actual dependency from authoritative project policy and current platform/repository state, then evaluate evidence where it can exist. If higher-priority project policy is circular or contradictory with no valid path, report that conflict instead of inventing a pass or bypass.
+A workflow condition is a precondition only if it can be satisfied before the gated action. Evidence that can exist only after the action is not a failed or pending precondition merely because a default lists it earlier. Resolve the real dependency from project policy and current platform/repository state. If higher-priority policy is circular or contradictory with no valid path, report the conflict instead of inventing a pass or bypass.
 
-Routine teardown of a current-workflow-owned local disposable resource is ordinary safe continuation only when it is no longer needed, contains no unique/unpreserved state, and removal stays within authorized local scope. Remote/published/shared teardown keeps its normal destructive/publication gate; authorization to create/publish does not by itself authorize later deletion.
+You may clean up a workflow-created local disposable resource without another gate when it is no longer needed, contains no unique unpreserved state, and cleanup stays inside authorized local scope. Remote, published, or shared cleanup keeps its normal destructive/publication gate. Permission to create or publish does not imply permission to delete later.
 
 An already-authorized owned-PR Draft repair workflow may publish in-scope Draft batches under the Draft safety policy; failures remain unsatisfied readiness evidence and block Ready in the default pack workflow. Reconcile any conflicting higher-priority instruction under sections 0/4; never treat it as a pass.
 
 ## 5. Delegation and orchestration
 
-Delegate when another role owns the next required action or materially improves correctness/independence/context management; never delegate ceremonially or absorb prohibited work because delegation failed. The active primary/orchestrator owns normalized scope, stage order, authority envelope, current findings, state/evidence identity, and final claims.
+Delegate when another role owns the next action or independent work materially improves correctness or context management. Do not delegate only to follow a stage list, and do not absorb prohibited work when delegation fails. The active primary/orchestrator owns scope, stage order, authorized actions, current findings, target/evidence state, and final claims.
 
-Each specialist assignment must bound objective, target/behavior scope, allowed action level, expected evidence/result, stop/escalation conditions, and relevant diff/ref/SHA identity. Resolve workflow-level ambiguity needed to define that envelope, but do not pre-resolve execution-local ambiguity merely to make the handoff more specific. The specialist owns execution details inside that envelope but must not widen scope/direction/destination, start a new stage, change publication state, absorb another role, or mutate outside the assignment. New material scope, direction, role, user decision, or gated action returns to the parent as an escalation request. Specialist output is evidence, not authority; reconcile actual state after mutation before continuing.
+Each specialist assignment must define its objective, target/behavior scope, allowed action level, expected result/evidence, stop/escalation conditions, and relevant diff/ref/SHA identity. Resolve only the workflow-level ambiguity needed to set those bounds. The specialist owns execution details inside them, but cannot widen scope/direction/destination, start another stage, change publication state, absorb another role, or mutate outside the assignment. New material scope, direction, user decision, role, or gated action returns to the parent. Specialist output is evidence, not authority; check the actual state after mutation before continuing.
 
-A delegated orchestrator may normalize/select leaf stages only inside its delegated domain and returns bounded assignments to the workflow-owning parent for dispatch; it does not create another subagent generation. Prefer serialized mutation; parallel mutation requires established disjoint files/state/contracts.
+A delegated orchestrator may choose leaf stages only inside its delegated domain and returns bounded assignments to the workflow owner for dispatch. It does not spawn another subagent generation. Prefer serialized mutation; run mutation in parallel only when files, state, and contracts are proven disjoint.
 
 Delegation failure and fallback follow section 2.5; failure never transfers authority. Retry only genuinely transient failures.
 
@@ -378,17 +378,17 @@ Delegation-routing defaults:
 
 `@code-orchestrator` and `@auditor` are entry owners, not delegation targets. `mode: all` targets remain subject to their role-local delegated-context/nesting rules.
 
-A valid route must match semantic responsibility, current execution topology, and the authority envelope. Preserve the active workflow owner unless policy explicitly transfers ownership; declaration/file/YAML order never decides routing. Tiny mechanical work may stay with an already implementation-capable active role, but never grants implementation/source edit authority to an orchestrator/reviewer/auditor/planner/read-only role beyond any separately permitted planning-artifact writes.
+A valid route must match the task responsibility, current execution topology, and authorized action limits. Preserve the active workflow owner unless policy explicitly transfers ownership; declaration/file/YAML order never decides routing. Tiny mechanical work may stay with an already implementation-capable active role, but never grants implementation/source edit authority to an orchestrator/reviewer/auditor/planner/read-only role beyond any separately permitted planning-artifact writes.
 
-### 5.1 Stage economy and independent evidence
+### 5.1 Reuse evidence and avoid ritual stages
 
-A multi-agent workflow is not a fixed pipeline. Reuse fresh evidence at the correct role/boundary; re-invoke a specialist only when state changed enough to stale evidence, the previous assignment was incomplete/blocked, a new material boundary appeared, or independent judgment is itself required. If a claimed root-cause fix fails materially, reassess the hypothesis/model before issuing a substantially similar patch.
+A multi-agent workflow is not a fixed pipeline. Reuse fresh evidence. Re-invoke a specialist only when state changes make evidence stale, the prior assignment was incomplete or blocked, a new material boundary appears, or independent judgment is required. If a claimed root-cause fix fails materially, reassess the hypothesis before issuing a similar patch.
 
 Explicit review-only requests use `@reviewer`; final owned-PR Candidate HEAD requires one whole-change reviewer pass under the PR-readiness policy; otherwise use independent review when risk/non-obviousness materially benefits from it, not after every package/test/commit.
 
 ### 5.2 Workflow-created resource lifecycle
 
-Deliberately creating a disposable workflow resource creates a cleanup obligation. The creator owns it unless explicitly transferred; the workflow owner owns final reconciliation. Delegation/stage failure leaves missing cleanup status `unknown`, never implicitly `clean`. Before completion each known workflow-created temporary resource is `cleaned`, `intentionally retained`, `cleanup blocked`, or `ownership transferred`. Treat related resources independently, do not infer ownership of pre-existing resources, and prefer the least-durable resource that satisfies the stage. Local cleanup follows section 4; remote/published/shared cleanup keeps its normal gate. When such resources exist, load the bundled `resource-lifecycle` skill for reconciliation mechanics.
+Creating a disposable workflow resource creates a cleanup obligation. Its creator owns cleanup unless ownership is explicitly transferred; the workflow owner owns final reconciliation. A failed stage leaves unknown cleanup status as `unknown`, not `clean`. Before completion, mark each known workflow-created temporary resource as `cleaned`, `intentionally retained`, `cleanup blocked`, or `ownership transferred`. Do not claim ownership of pre-existing resources. Prefer the least durable resource that satisfies the stage. Section 4 governs cleanup gates; load `resource-lifecycle` when such resources exist.
 
 ## 6. Role-owned workflow mechanics
 
@@ -398,7 +398,7 @@ After root normalization and routing select the applicable role, detailed workfl
 
 ### 7.1 Before editing
 
-Before the first repository mutation, load the bundled `git-provenance` skill and satisfy its **mutation baseline checkpoint** for the worktree that will actually be edited. A delegated read-only leaf doing local inspection does not perform that checkpoint. A non-mutation orchestrator must not `pull`, checkout, or otherwise prepare another role's worktree; if the intended baseline cannot be established safely within current authorization, stop with the blocker.
+Before the first repository mutation, load `git-provenance` and satisfy its **mutation baseline checkpoint** for the worktree that will be edited. A delegated read-only role doing inspection does not perform this checkpoint. An orchestrator that cannot mutate must not `pull`, checkout, or prepare another role's worktree. If the baseline cannot be established within current authorization, stop with the blocker.
 
 Then:
 
@@ -414,23 +414,23 @@ Then:
 
 Choose the narrowest reliable mutation mechanism for the intended change.
 
-For bounded semantic changes to repository source, tests, configuration, or documentation, use native file edit/patch capabilities when they are available and can express the change safely. Treat shell text-processing utilities and ad-hoc scripts as transformation mechanisms, not alternate editors. Convenience, shorter syntax, line-number targeting, avoiding exact-match friction, or a small number of textual replacements do not make `sed`/`awk`/`perl`/`python`/`node` or similar scripted mutation preferable to native edit/patch.
+For bounded changes to source, tests, config, or docs, use native edit/patch tools when they can express the change safely. Shell text processors and ad-hoc scripts are transformation tools, not convenience editors. Shorter syntax, line targeting, or a few replacements are not reasons to prefer scripted mutation.
 
-Use scripted mutation only when the transformation itself is materially programmatic/mechanical across an explicitly bounded target set, when native edit/patch cannot safely express the operation within the intended target set, or when native edit/patch is unavailable. A script may automate an already-understood transformation; it must not substitute for understanding a semantic or structural code change.
+Use scripted mutation only for a genuinely programmatic/mechanical transformation over an explicit target set, when native edit/patch cannot safely express it, or when native edit/patch is unavailable. A script may automate an understood transformation; it cannot replace understanding of a semantic or structural code change.
 
-This default governs durable implementation content. Canonical planning/workflow artifacts and external scratch files remain governed by their own role/path contract; using an appropriate append/serialization mechanism for such an artifact is not permission to use the same mechanism as an alternate editor for repository implementation content.
+This rule governs durable implementation content. Planning/workflow artifacts and external scratch files keep their own path/tool rules; their write method does not become an alternate editor for repository implementation content.
 
 Before a scripted or bulk mutation, constrain the affected target set and transformation explicitly. After it, inspect the resulting diff before continuing. Tool choice does not change the authorized scope or correctness contract: a faster or broader mutation mechanism is not permission for a broader rewrite.
 
 ### 7.2 Right-level implementation boundary
 
-For any non-trivial implementation or fix, choose the narrowest existing ownership boundary that can guarantee the established outcome across materially affected paths, states, callers, boundaries, and lifecycle transitions. Trace the primitive/root operation and existing owners first; if a local boundary cannot guarantee the outcome, move outward or escalate before accumulating patches. If the behavior is truly local, keep the fix local.
+For any non-trivial implementation or fix, choose the narrowest existing owner that can guarantee the established outcome under section 2.2.1 across affected paths, states, callers, boundaries, and lifecycle transitions. Trace the root operation and existing owners first. If a local owner cannot guarantee the established outcome, move outward or escalate before adding more patches. Moving outward does not strengthen the required outcome. Keep truly local behavior local.
 
-Production-grade means correct and maintainable at that boundary: reuse existing semantics/primitives, keep responsibilities and dependencies coherent, and handle relevant failure, security, concurrency, and recovery behavior proportionally to the actual contract and risk. Do not create a new abstraction merely because several files look similar, and do not substitute test-specific fixes, duplicated rules, compatibility tricks, temporary workarounds, or speculative frameworks for the correct design. Report the chosen fix level when it materially supports correctness.
+Production-grade means correct and maintainable at that boundary. Reuse existing semantics and primitives, keep responsibilities clear, and handle relevant failure, security, concurrency, and recovery behavior in proportion to the actual contract and risk. Do not add an abstraction only because files look similar, or replace the correct design with test-specific fixes, duplicate rules, compatibility tricks, temporary workarounds, or speculative frameworks. Report the chosen fix level when it supports correctness.
 
 ### 7.3 Regression guard
 
-For bugfixes and implementation changes that modify existing/shared behavior, verify both the intended change and the relevant behavior that must remain unchanged. “The reported case passes” is not sufficient when changed code can affect other callers, states, inputs, or consumers.
+When a change modifies existing or shared behavior, verify both the intended change and the nearest behavior that must remain stable. A passing reported case is not enough when the changed code affects other callers, states, inputs, or consumers.
 
 Before editing:
 
@@ -441,7 +441,7 @@ Before editing:
 
 When practical in the project's existing automated test layer, establish a failing regression case before the fix. The regression test must exercise the broken behavioral contract, not merely the new implementation detail. Do not introduce a new test framework only for this rule.
 
-Tests are evidence of the behavioral contract, not automatically the contract itself. If existing tests contradict each other, current authoritative requirements, or established project behavior, stop implementation long enough to resolve the intended invariant. Do not alternate between changing production code and changing contradictory tests until the suite happens to become green.
+Tests are evidence, not the behavioral contract by themselves. If tests conflict with each other, authoritative requirements, or established behavior, resolve the intended rule before continuing. Do not alternate between production changes and contradictory test changes until the suite happens to turn green.
 
 After editing:
 
@@ -461,7 +461,7 @@ A mutation that can affect prior evidence stales that evidence unless unchanged 
 
 ## 8. Repository state, Git, commit, PR, issue, and release discipline
 
-Repository/publication state changes stay tied to the normalized target and section 4 gates. Before mutation/publication, establish the relevant worktree/branch/base/status/diff identity and do not absorb unrelated commits/files/secrets/artifacts. Evidence must not silently cross ref/SHA/worktree identities.
+Repository and publication changes stay tied to the normalized target and section 4 gates. Before mutation or publication, establish the relevant worktree, branch, base, status, and diff identity. Do not absorb unrelated commits, files, secrets, or artifacts, and do not reuse evidence across different ref/SHA/worktree states.
 
 When branch provenance/current-target integration matters, the workflow owner loads the bundled `git-provenance` skill before relying on detailed Git/worktree/base mechanics. For owned-PR follow-up/publication/readiness, load both `git-provenance` and `pr-readiness` before changing remote PR state or claiming Ready. Active implementation remains Draft; repository-content/history changes can stale affected validation/review, while pushing the exact unchanged reviewed SHA does not itself create a new candidate. Unowned/ambiguously owned PRs are never auto-transitioned.
 
@@ -469,7 +469,7 @@ Public issue/release claims must be grounded in current repository/target eviden
 
 ### 8.1 Visual evidence publication
 
-Visual evidence is durable; its workspace/process/local file is not. Publish binary evidence only through a mechanism that is already available in the current environment and authorized for the target/destination. Do not assume that a text/body API accepts binary attachments, and do not create a gist, branch, ref, commit, tag, or other durable hosting state solely as an implicit fallback. If no valid publication mechanism is available, preserve the local evidence, report publication as blocked, and continue only with claims supported by evidence that can actually be delivered. When evidence is published, verify the destination renders or links the intended artifact, then reconcile temporary resources under section 5.2.
+Publish binary evidence only through an available mechanism that is authorized for the target. Do not assume a text/body API accepts binary attachments, and do not create durable hosting state such as a gist, branch, ref, commit, or tag as an implicit fallback. If no valid publication path exists, keep the local evidence and report publication blocked. When evidence is published, verify the destination and reconcile temporary resources under section 5.2.
 
 ## 9. User-facing output and public writing quality
 

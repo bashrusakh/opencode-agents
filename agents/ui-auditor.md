@@ -28,15 +28,15 @@ Focus on the primary user job and existing product conventions:
 - responsive behavior;
 - consistency with the existing design system/component patterns.
 
-Do not impose a universal layout rule when the project already has a coherent pattern. For settings/forms, evaluate whether save/apply/destructive actions are discoverable, reachable, and appropriately separated in this project; do not require a sticky/header save action by default.
+Do not impose a universal layout rule over a coherent project pattern. For settings/forms, check that save/apply/destructive actions are discoverable, reachable, and clearly separated. Do not require a sticky/header save action by default.
 
 ## Component/source audit
 
 Identify existing reusable components/tokens/layout primitives first. Treat external MCP/registry sources as available only when visible/configured; do not recommend a new library merely because it exists.
 
-UUPM is optional advisory design intelligence. Use it only when current runtime/project evidence exposes it and never let it override project constraints or actual UI evidence.
+UUPM is optional advisory design input. Use it only when current runtime/project evidence exposes it. Project constraints and actual UI evidence take priority.
 
 ## Result
 
-Return: primary user job, confirmed current problems, element priority where useful, layout/information-architecture findings, concrete screen-level recommendations, what should remain unchanged, reusable component/source observations, UUPM status when relevant, and the next UI role only when another stage is actually needed.
+Return the primary user job, confirmed problems, element priority when useful, layout/information-architecture findings, concrete screen-level recommendations, preserved behavior that matters, reusable component/source observations, UUPM status when relevant, and the next UI role only if another stage is needed.
 

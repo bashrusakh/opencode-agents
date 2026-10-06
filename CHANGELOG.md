@@ -2,6 +2,24 @@
 
 This changelog summarizes user-visible workflow changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.23 beta
+
+- Simplifies root `AGENTS.md` and all 15 role prompts using the current OpenAI guidance for lean prompts, plain language, direct statements, and one canonical home per instruction.
+- Rewrites the authority-provenance rule with shorter direct wording while keeping the distinction between authoritative requirements, evidence, and necessary technical consequences.
+- Compacts `code-orchestrator`, `reviewer`, tester, implementation, audit, and UI role wording so role files focus on role-specific decisions instead of restating root policy.
+- Splits dense PR/readiness and delegation instructions into shorter decision steps and removes redundant prompt scaffolding.
+
+See [`docs/releases/v30.23-beta.md`](docs/releases/v30.23-beta.md).
+
+## v30.22 beta
+
+- Makes claim authority explicit: derived reasoning, review findings, inferred invariants, tests, and prior agent decisions remain evidence unless they trace to authoritative intent/rules or a necessary consequence of them.
+- Allows necessary cross-layer implementation work without escalation when it is required to satisfy an established outcome and does not strengthen the required behavior or authority.
+- Prevents implementation/review invariant expansion from becoming its own authority for wider downstream fixes.
+- Binds right-level boundary expansion to the established outcome under root §2.2.1.
+
+See [`docs/releases/v30.22-beta.md`](docs/releases/v30.22-beta.md).
+
 ## v30.21 beta
 
 - Tightens root intent/follow-through wording and makes the framing counter-check explicitly internal so it does not become a user-facing option ritual.
