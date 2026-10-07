@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.23 beta
+# OpenCode Agent Pack v30.24 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,14 +14,13 @@
 
 ---
 
-## What changed in v30.23 beta
+## What changed in v30.24 beta
 
-- Simplifies root and role prompts using OpenAI's current lean-prompt and plain-language guidance.
-- Keeps each universal rule in one canonical place and leaves role files with role-specific decisions and handoff triggers.
-- Rewrites dense authority, delegation, review, verification, and PR-readiness wording into shorter direct instructions.
-- Audits all 15 agents individually for semantic loss after the language cleanup.
+- Makes the `necessary consequence` test explicit against the established outcome so inferred broader rules cannot prove their own necessity.
+- Keeps legitimate cross-layer implementation work in scope when omitting it would make the established outcome fail.
+- Makes `code-orchestrator` handoffs explicitly keep evidence/hypotheses out of acceptance until authority is established.
 
-See [`docs/releases/v30.23-beta.md`](docs/releases/v30.23-beta.md).
+See [`docs/releases/v30.24-beta.md`](docs/releases/v30.24-beta.md).
 
 ---
 
@@ -324,8 +323,9 @@ Installs `AGENTS.md` plus `.opencode/{agents,skills}/` into the project. The pac
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history index |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Manual UI component MCP setup reference |
 | [`docs/uupm_setup.md`](docs/uupm_setup.md) | Manual UI UX Pro Max setup reference |
-| [`docs/releases/v30.23-beta.md`](docs/releases/v30.23-beta.md) | Current beta release notes |
-| [`docs/releases/v30.22-beta.md`](docs/releases/v30.22-beta.md) | Previous beta release notes |
+| [`docs/releases/v30.24-beta.md`](docs/releases/v30.24-beta.md) | Current beta release notes |
+| [`docs/releases/v30.23-beta.md`](docs/releases/v30.23-beta.md) | Previous beta release notes |
+| [`docs/releases/v30.22-beta.md`](docs/releases/v30.22-beta.md) | Earlier beta release notes |
 | [`docs/releases/v30.21-beta.md`](docs/releases/v30.21-beta.md) | Earlier beta release notes |
 | [`docs/releases/v30.20-beta.md`](docs/releases/v30.20-beta.md) | Earlier beta release notes |
 | [`docs/releases/v30.13-beta.md`](docs/releases/v30.13-beta.md) | Repository-prerequisite readiness beta |
@@ -354,7 +354,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.23 beta**  
+**OpenCode Agent Pack v30.24 beta**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>

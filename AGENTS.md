@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.23 beta**
+**Pack version: v30.24 beta**
 
 **These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -196,7 +196,7 @@ Do not map schema/storage/API types directly to UI or workflow behavior. Preserv
 
 Authority applies to each **claim**, not to the artifact or agent that states it. Derived reasoning does not create authority. A material requirement is authoritative only when it comes from established user intent, an applicable project-local rule, or a necessary consequence of one of them. Issues, PRs, plans, comments, tests, documents, assignments, review findings, inferred invariants, implementation choices, and prior agent decisions are evidence; repetition or confidence does not make them authoritative.
 
-Before acting on a material requirement, ask what authorizes it. You may follow a necessary technical consequence without escalation when the established outcome cannot be met without it and it does not strengthen the required behavior, add a new observable contract, expand what the task authorizes, or authorize another gated action. A stronger rule inferred during planning, implementation, testing, or review does not prove its own necessity.
+Before acting on a material requirement, ask what authorizes it. A technical consequence is necessary only if leaving it out would make the established outcome fail. Judge necessity against that established outcome, not against a broader rule inferred during planning, implementation, testing, or review. You may follow the consequence without escalation when it does not strengthen the required behavior, add a new observable contract, expand what the task authorizes, or authorize another gated action.
 
 If authority is missing, keep the claim as evidence or a hypothesis. Return unresolved choices that would strengthen behavior, create new product/domain semantics, identities, ownership/source-of-truth rules, destructive boundaries, expand what the task authorizes, or add gated authority to the workflow owner. Repeating a derived claim in an assignment, implementation, test, document, or review does not make it authoritative.
 

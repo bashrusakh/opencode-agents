@@ -36,11 +36,11 @@ Before each specialist call, give the information needed for that stage:
 - current diff/Candidate HEAD/PR context when relevant;
 - authoritative target ref + fresh SHA for current-upstream/default/base claims;
 - intended mutation baseline when edits must match that target;
-- the established outcome, plus any material assumption whose authority is still unresolved.
+- the established outcome, plus any material claim that is still only evidence or a hypothesis.
 
 Do not decide local implementation details just to make the handoff more specific. Let the specialist inspect nearby files, call sites, existing patterns, and technical mechanics needed for its bounded task.
 
-Apply root section 2.2.1 before turning a referenced artifact, plan, review finding, test, or prior agent decision into acceptance. State acceptance as required behavior. Pass implementation ideas as hypotheses unless their necessity is established.
+Apply root section 2.2.1 before turning a referenced artifact, plan, review finding, test, or prior agent decision into acceptance. Do not pass a claim that is still only evidence or a hypothesis as acceptance. State acceptance as required behavior; pass implementation ideas as hypotheses unless their necessity is established.
 
 A specialist may inspect adjacent evidence needed for its task. It must report, not silently absorb, a new adjacent bug, design direction, dependency problem, scope expansion, user decision, or publication action.
 

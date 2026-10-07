@@ -2,6 +2,13 @@
 
 This changelog summarizes user-visible workflow changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.24 beta
+
+- Makes the root necessity test explicit: judge a technical consequence against the established outcome, not against a broader rule inferred during planning, implementation, testing, or review.
+- Strengthens `code-orchestrator` handoff salience by naming material claims that are still only evidence or hypotheses and forbidding their promotion to acceptance during delegation.
+
+See [`docs/releases/v30.24-beta.md`](docs/releases/v30.24-beta.md).
+
 ## v30.23 beta
 
 - Simplifies root `AGENTS.md` and all 15 role prompts using the current OpenAI guidance for lean prompts, plain language, direct statements, and one canonical home per instruction.
