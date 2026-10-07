@@ -1,5 +1,7 @@
 # Changelog
 
+This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
+
 ## v30.28 beta
 
 - Audits and rewrites `README.md` against the shipped runtime/package surface, including the correct 16-agent / 18-skill / diagnostic-tool topology.
@@ -8,8 +10,6 @@
 - Rechecks README claims about install surfaces, persistent planning, PR/review flow, skills, and `session-evaluator` against the actual archive.
 
 See [`docs/releases/v30.28-beta.md`](docs/releases/v30.28-beta.md).
-
-This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
 ## v30.27 beta
 
