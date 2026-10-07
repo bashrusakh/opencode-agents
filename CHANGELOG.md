@@ -1,6 +1,33 @@
 # Changelog
 
-This changelog summarizes user-visible workflow changes. Detailed notes for retained releases live under `docs/releases/`.
+## v30.28 beta
+
+- Audits and rewrites `README.md` against the shipped runtime/package surface, including the correct 16-agent / 18-skill / diagnostic-tool topology.
+- Adds official OpenAI, Anthropic, DeepSeek, and Z.ai/GLM prompt/evaluation methodology references and separates them from OpenCode runtime/API references.
+- Removes duplicated README upstream links, trims release/documentation listings that duplicated `CHANGELOG.md`, and keeps the changelog overview text in one canonical location.
+- Rechecks README claims about install surfaces, persistent planning, PR/review flow, skills, and `session-evaluator` against the actual archive.
+
+See [`docs/releases/v30.28-beta.md`](docs/releases/v30.28-beta.md).
+
+This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
+
+## v30.27 beta
+
+- Adds experimental `session-evaluator` for post-hoc semantic compliance audits of completed `code-orchestrator` sessions and their child-agent calls.
+- Adds read-only `session_trace` access to the parent/child session tree and projected message timelines so the evaluator uses the observable trace instead of an orchestrator-authored summary.
+- Adds one temporary post-completion trigger; evaluator findings are diagnostic evidence only and cannot reopen, modify, or gate completed work.
+- Classifies findings as instruction violation, ambiguity, gap, execution error, or justified decision, with `unverified` reserved for evidence limits; prompt changes are proposed only for confirmed reusable instruction weaknesses.
+- Uses time-local instruction provenance for the audit: current instruction text is not applied retroactively when the historical governing rule cannot be established.
+- Excludes `session-evaluator` diagnostic sessions from the audited workflow tree so retries do not contaminate the trace.
+
+See [`docs/releases/v30.27-beta.md`](docs/releases/v30.27-beta.md).
+
+## v30.26 beta
+
+- Treats material decisions about framing, required behavior, scope, ownership, invariants, and fix level as claims subject to the existing root authority/evidence checks.
+- Reuses the existing counterexample and hypothesis rules for those decisions instead of adding a second self-review loop.
+
+See [`docs/releases/v30.26-beta.md`](docs/releases/v30.26-beta.md).
 
 ## v30.25 beta
 

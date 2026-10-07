@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.25 beta**
+**Pack version: v30.28 beta**
 
 **These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -202,6 +202,8 @@ If authority is missing, keep the claim as evidence or a hypothesis. Return unre
 
 State the required behavior before using implementation details as evidence. Treat a code fact or mechanism as proof of that behavior only when actual system behavior supports the inference.
 
+A material decision about framing, required behavior, scope, ownership, invariant, or fix level is also a claim for this section.
+
 For every material correctness claim:
 
 - state the behavior that must be true;
@@ -385,6 +387,8 @@ A valid route must match the task responsibility, current execution topology, an
 A multi-agent workflow is not a fixed pipeline. Reuse fresh evidence. Re-invoke a specialist only when state changes make evidence stale, the prior assignment was incomplete or blocked, a new material boundary appears, or independent judgment is required. If a claimed root-cause fix fails materially, reassess the hypothesis before issuing a similar patch.
 
 Explicit review-only requests use `@reviewer`; final owned-PR Candidate HEAD requires one whole-change reviewer pass under the PR-readiness policy; otherwise use independent review when risk/non-obviousness materially benefits from it, not after every package/test/commit.
+
+Temporary semantic-eval harness: after `@code-orchestrator` completes non-trivial work, including a final PR state, run `@session-evaluator` once before the final report. Its post-hoc audit is diagnostic only and does not reopen, modify, or gate the completed work; surface the evaluator report separately in the final response.
 
 ### 5.2 Workflow-created resource lifecycle
 

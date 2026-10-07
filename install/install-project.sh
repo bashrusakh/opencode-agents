@@ -2,7 +2,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 STAMP="$(date +%Y%m%d-%H%M%S)"
-mkdir -p .opencode/agents .opencode/skills
+mkdir -p .opencode/agents .opencode/skills .opencode/tools
 
 OLD_AGENTS=(
   plan.md
@@ -27,7 +27,7 @@ OLD_SNIPPETS=(
 if [ -f ./AGENTS.md ]; then
   cp ./AGENTS.md "./AGENTS.md.bak.$STAMP"
 fi
-for d in agents skills; do
+for d in agents skills tools; do
   if [ -d ".opencode/$d" ]; then
     mkdir -p ".opencode/$d.bak.$STAMP"
     cp -a ".opencode/$d/." ".opencode/$d.bak.$STAMP/" 2>/dev/null || true
@@ -56,7 +56,8 @@ rmdir ".opencode/snippet" 2>/dev/null || true
 cp "$ROOT/AGENTS.md" ./AGENTS.md
 cp "$ROOT/agents/"*.md .opencode/agents/
 if [ -d "$ROOT/skills" ]; then cp -a "$ROOT/skills/." .opencode/skills/; fi
+if [ -d "$ROOT/tools" ]; then cp -a "$ROOT/tools/." .opencode/tools/; fi
 
-printf 'Installed project-local OpenCode agents/skills and AGENTS.md into %s\n' "$(pwd)"
+printf 'Installed project-local OpenCode agents/skills/tools and AGENTS.md into %s\n' "$(pwd)"
 echo "Backups were created for existing package-owned/runtime surfaces when present."
 echo "Obsolete package-owned agent/command/doc/snippet paths were removed after backup; unrelated project files were left untouched."
