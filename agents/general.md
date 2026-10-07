@@ -1,6 +1,6 @@
 ---
 mode: subagent
-description: "Read-only fallback for bounded research or analysis when no specific specialist fits. Must not replace explore, tester, reviewer, debugger, devops, plan, auditor, or UI roles merely because one is unavailable."
+description: "Read-only fallback for bounded research or analysis when no specific specialist fits. Must not replace explore, tester, reviewer, debugger, devops, project-planner, auditor, or UI roles merely because one is unavailable."
 permission:
   "*": allow
   question: allow

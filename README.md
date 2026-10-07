@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.24 beta
+# OpenCode Agent Pack v30.25 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · fresh evidence · clean PR lifecycle
 
@@ -14,13 +14,13 @@
 
 ---
 
-## What changed in v30.24 beta
+## What changed in v30.25 beta
 
-- Makes the `necessary consequence` test explicit against the established outcome so inferred broader rules cannot prove their own necessity.
-- Keeps legitimate cross-layer implementation work in scope when omitting it would make the established outcome fail.
-- Makes `code-orchestrator` handoffs explicitly keep evidence/hypotheses out of acceptance until authority is established.
+- Renames the package planning role from `plan` to `project-planner` so it no longer collides with OpenCode's shipped `plan` agent, whose built-in policy restricts normal project-file edits.
+- Routes architecture/sequencing and durable repository planning to `@project-planner`; the role keeps the existing narrow write permission for authorized `.opencode/plans/**/*.md` and `plans/**/*.md` artifacts only.
+- Installers back up and remove the obsolete package-owned `agents/plan.md` during upgrade so the conflicting old agent definition cannot survive beside `project-planner.md`.
 
-See [`docs/releases/v30.24-beta.md`](docs/releases/v30.24-beta.md).
+See [`docs/releases/v30.25-beta.md`](docs/releases/v30.25-beta.md).
 
 ---
 
@@ -248,7 +248,7 @@ Manual environment setup is documented separately in [`docs/ui_mcp_setup.md`](do
 | `tester` | Independent verification; never fixes failures |
 | `reviewer` | Independent code/diff/PR/plan review |
 | `auditor` | Broad read-only project audit orchestrator |
-| `plan` | Architecture/persistent planning; direct primary or delegated leaf; no source implementation |
+| `project-planner` | Architecture/persistent planning; direct primary or delegated leaf; may write authorized repository plan artifacts but never source implementation |
 | `devops` | Runtime/CI/deploy diagnostics and authorized operational changes |
 | `general` | Read-only bounded fallback research when no specialist fits |
 | `ui-orchestrator` | UI workflow owner when primary; delegated UI stage normalizer when called by another orchestrator; never implements itself |
@@ -323,8 +323,9 @@ Installs `AGENTS.md` plus `.opencode/{agents,skills}/` into the project. The pac
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history index |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Manual UI component MCP setup reference |
 | [`docs/uupm_setup.md`](docs/uupm_setup.md) | Manual UI UX Pro Max setup reference |
-| [`docs/releases/v30.24-beta.md`](docs/releases/v30.24-beta.md) | Current beta release notes |
-| [`docs/releases/v30.23-beta.md`](docs/releases/v30.23-beta.md) | Previous beta release notes |
+| [`docs/releases/v30.25-beta.md`](docs/releases/v30.25-beta.md) | Current beta release notes |
+| [`docs/releases/v30.24-beta.md`](docs/releases/v30.24-beta.md) | Previous beta release notes |
+| [`docs/releases/v30.23-beta.md`](docs/releases/v30.23-beta.md) | Earlier beta release notes |
 | [`docs/releases/v30.22-beta.md`](docs/releases/v30.22-beta.md) | Earlier beta release notes |
 | [`docs/releases/v30.21-beta.md`](docs/releases/v30.21-beta.md) | Earlier beta release notes |
 | [`docs/releases/v30.20-beta.md`](docs/releases/v30.20-beta.md) | Earlier beta release notes |
@@ -346,7 +347,7 @@ A release archive should verify at least:
 - no stale universal `origin/main`, outdated OCR timeout contract, or obsolete version-path references;
 - workflow-created temporary resources have one canonical lifecycle/reconciliation rule rather than duplicated role-local cleanup rules;
 - visual evidence publication uses only an already-available authorized transport; no bundled GitHub binary uploader or implicit gist/branch/ref hosting fallback is provided;
-- install scripts pass `bash -n`, copy complete skill directories, and back up/prune exact obsolete package-owned command/doc/snippet paths without touching unrelated entries;
+- install scripts pass `bash -n`, copy complete skill directories, and back up/prune exact obsolete package-owned agent/command/doc/snippet paths without touching unrelated entries;
 - vendored/adapted skill content retains source/license attribution and does not silently claim to be verbatim upstream;
 - archive roundtrip manifest matches the working tree.
 
@@ -354,7 +355,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.24 beta**  
+**OpenCode Agent Pack v30.25 beta**  
 Semantic routing · bounded orchestration · fresh evidence · clean PRs
 
 </div>

@@ -4,6 +4,10 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 mkdir -p .opencode/agents .opencode/skills
 
+OLD_AGENTS=(
+  plan.md
+)
+
 OLD_COMMANDS=(
   audit.md bug-issue.md bugfix.md code-explore.md debug.md devops-check.md execute-plan.md plan.md
   pr-followup.md pr-provenance.md release-prep.md review.md ui-a11y-check.md ui-audit.md ui-implement.md
@@ -43,6 +47,7 @@ backup_and_remove() {
   done
 }
 
+backup_and_remove ".opencode/agents" ".opencode/agents.bak.$STAMP" "${OLD_AGENTS[@]}"
 backup_and_remove ".opencode/commands" ".opencode/commands.bak.$STAMP" "${OLD_COMMANDS[@]}"
 backup_and_remove ".opencode/docs" ".opencode/docs.bak.$STAMP" "${OLD_DOCS[@]}"
 backup_and_remove ".opencode/snippet" ".opencode/snippet.bak.$STAMP" "${OLD_SNIPPETS[@]}"
@@ -54,4 +59,4 @@ if [ -d "$ROOT/skills" ]; then cp -a "$ROOT/skills/." .opencode/skills/; fi
 
 printf 'Installed project-local OpenCode agents/skills and AGENTS.md into %s\n' "$(pwd)"
 echo "Backups were created for existing package-owned/runtime surfaces when present."
-echo "Obsolete package-owned command/doc/snippet paths were removed after backup; unrelated project files were left untouched."
+echo "Obsolete package-owned agent/command/doc/snippet paths were removed after backup; unrelated project files were left untouched."

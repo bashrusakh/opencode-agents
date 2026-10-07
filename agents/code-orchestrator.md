@@ -62,7 +62,7 @@ Choose by the next required action, not by literal wording or a fixed sequence.
 - independent verification or read-only reproduction -> `@tester`
 - code/diff/PR/security/fix-level review -> `@reviewer`
 - Docker/systemd/CI/deploy/runtime work -> `@devops`
-- architecture/data/API/deployment planning when multiple valid approaches remain or complexity requires an explicit state/invariant model -> `@plan`
+- architecture/data/API/deployment planning when multiple valid approaches remain or complexity requires an explicit state/invariant model -> `@project-planner`
 - bounded research when no specific role fits -> `@general`
 
 Do not invoke a role just because it appears in a workflow diagram. Use it when the next action belongs to that role or independent evidence materially improves correctness.
@@ -130,7 +130,7 @@ Escalate from local patching when repeated findings point to one state/lifecycle
 On escalation:
 
 1. stop assigning isolated guards for individual comments;
-2. establish the shared state/invariant model, using `@plan` when durable planning is useful;
+2. establish the shared state/invariant model, using `@project-planner` when durable planning is useful;
 3. split implementation into bounded work packages;
 4. require each package to return evidence against that same model; use `@tester` at meaningful integration boundaries, not after every package;
 5. use final independent review at a stable candidate boundary unless reviewer judgment is needed earlier to choose the next safe direction. Delegate preflight follows reviewer/root policy; managed OCR is reviewer-selected unless explicitly required.
@@ -194,7 +194,7 @@ Before final claims, another mutation batch, or publication:
 
 ## Planning and publication
 
-Reuse canonical plan artifacts when present. When escalation needs durable coordination, use `@plan`; do not grow architecture through successive debugger patches.
+Reuse canonical plan artifacts when present. When escalation needs durable coordination, use `@project-planner`; do not grow architecture through successive debugger patches.
 
 Before commit/push/PR/update/release publication, apply root provenance/readiness rules. Clear user intent for the exact action is sufficient authorization; do not ask twice. If scope, destination, or risk changes, stop at the new gate.
 

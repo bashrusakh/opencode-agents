@@ -2,6 +2,14 @@
 
 This changelog summarizes user-visible workflow changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.25 beta
+
+- Renames the package planning agent from `plan` to `project-planner` to avoid collision with OpenCode's shipped `plan` agent and its restricted project-edit policy.
+- Updates current routing/handoff references to `@project-planner` while keeping repository planning writes limited to the existing authorized plan-artifact paths.
+- Adds installer migration cleanup that backs up and removes the obsolete package-owned `agents/plan.md` on upgrade before installing `project-planner.md`.
+
+See [`docs/releases/v30.25-beta.md`](docs/releases/v30.25-beta.md).
+
 ## v30.24 beta
 
 - Makes the root necessity test explicit: judge a technical consequence against the established outcome, not against a broader rule inferred during planning, implementation, testing, or review.

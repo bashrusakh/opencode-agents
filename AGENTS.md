@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.24 beta**
+**Pack version: v30.25 beta**
 
 **These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -362,7 +362,7 @@ Entry-routing defaults, when top-level role selection or transfer is actually ap
 - coordinated coding/PR follow-up/release-prep -> `@code-orchestrator`;
 - broad project audit -> `@auditor`;
 - focused non-UI implementation -> `@build`;
-- architecture/sequencing with unresolved approaches -> `@plan`;
+- architecture/sequencing with unresolved approaches -> `@project-planner`;
 - UI options/audit/redesign/coordinated UI work -> `@ui-orchestrator`.
 
 Leaf semantics do not imply a top-level reroute. If the active primary remains a valid workflow owner, preserve it and delegate the bounded stage instead.
@@ -370,7 +370,7 @@ Leaf semantics do not imply a top-level reroute. If the active primary remains a
 Delegation-routing defaults:
 
 - discovery/tracing -> `@explore`; confirmed root-cause bug fix -> `@debugger`;
-- focused non-UI implementation -> delegated `@build`; architecture/sequencing stage -> delegated `@plan`;
+- focused non-UI implementation -> delegated `@build`; architecture/sequencing stage -> delegated `@project-planner`;
 - verification/reproduction -> `@tester`; review -> `@reviewer`;
 - Docker/systemd/CI/deploy/runtime -> `@devops`; bounded unmatched research -> `@general`;
 - bounded coordinated UI subworkflow -> delegated `@ui-orchestrator`; focused UI implementation -> `@ui-implementer`;

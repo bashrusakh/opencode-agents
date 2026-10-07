@@ -5,6 +5,10 @@ STAMP="$(date +%Y%m%d-%H%M%S)"
 BASE="$HOME/.config/opencode"
 mkdir -p "$BASE/agents" "$BASE/skills"
 
+OLD_AGENTS=(
+  plan.md
+)
+
 OLD_COMMANDS=(
   audit.md bug-issue.md bugfix.md code-explore.md debug.md devops-check.md execute-plan.md plan.md
   pr-followup.md pr-provenance.md release-prep.md review.md ui-a11y-check.md ui-audit.md ui-implement.md
@@ -33,6 +37,7 @@ backup_and_remove() {
   done
 }
 
+backup_and_remove "$BASE/agents" "$BASE/agents.bak.$STAMP" "${OLD_AGENTS[@]}"
 backup_and_remove "$BASE/commands" "$BASE/commands.bak.$STAMP" "${OLD_COMMANDS[@]}"
 backup_and_remove "$BASE/docs" "$BASE/docs.bak.$STAMP" "${OLD_DOCS[@]}"
 backup_and_remove "$BASE/snippet" "$BASE/snippet.bak.$STAMP" "${OLD_SNIPPETS[@]}"
@@ -48,5 +53,5 @@ cp "$ROOT/AGENTS.md" "$BASE/AGENTS.md"
 echo "Installed agents to ~/.config/opencode/agents"
 echo "Installed skills to ~/.config/opencode/skills"
 echo "Installed root AGENTS.md to ~/.config/opencode/AGENTS.md"
-echo "Obsolete package-owned command/doc/snippet paths were backed up and removed when present."
+echo "Obsolete package-owned agent/command/doc/snippet paths were backed up and removed when present."
 echo "Agents are model-agnostic: use the active OpenCode/OpenChamber model/provider from your current config/UI."
