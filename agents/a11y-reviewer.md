@@ -32,7 +32,7 @@ Proportionally to the changed UI, inspect:
 
 Do not claim quantitative contrast/accessibility conformance unless it was actually measured or verified with an appropriate project/browser/tool check.
 
-For settings/forms, check that primary and destructive actions are understandable, reachable, and clearly separated. Do not require a universal sticky/header save layout.
+For settings/forms, check that primary and destructive actions are understandable, reachable, and clearly separated.
 
 ## Registry/UUPM context
 

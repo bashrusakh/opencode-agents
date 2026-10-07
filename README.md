@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.28 beta
+# OpenCode Agent Pack v30.30 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
 
@@ -13,17 +13,13 @@
 
 ---
 
-## What changed in v30.28 beta
+## What changed in v30.30 beta
 
-- Audits and rewrites this README against the actual v30.27 runtime/package surface.
-- Fixes stale release-validation topology (`16` agents, `18` skills, `1` diagnostic tool).
-- Adds the official vendor references used when shaping the pack's prompt, scope, verification, and evaluation rules.
-- Separates prompt/evaluation methodology references from OpenCode runtime/API references.
-- Removes duplicated upstream links and trims release/documentation listings that duplicated `CHANGELOG.md`.
+- Replaces the package-owned `session_trace` wrapper with OpenChamber's native session history tools for `session-evaluator`.
+- Keeps session evaluation focused on semantic decision boundaries, delegation, authority propagation, and instruction compliance rather than raw tool-call traces.
+- Removes the obsolete diagnostic tool from installers and cleans it up on upgrade.
 
-No agent-role semantics, permissions, skills, installers, or `session-evaluator` behavior change in this release.
-
-See [`docs/releases/v30.28-beta.md`](docs/releases/v30.28-beta.md).
+See [`docs/releases/v30.30-beta.md`](docs/releases/v30.30-beta.md).
 
 ---
 
@@ -180,7 +176,7 @@ Read-only audits do not create repository plan files merely to maintain agent st
 
 v30.27 introduced a temporary diagnostic harness for developing the pack itself.
 
-After non-trivial `code-orchestrator` work completes, the temporary root harness runs `session-evaluator` once as a **post-hoc, read-only diagnostic**. It audits the completed parent/child session tree against the instructions and authority that governed the workflow. It does not reopen, repair, publish, or gate completed work.
+After non-trivial `code-orchestrator` work completes, the temporary root harness runs `session-evaluator` once as a **post-hoc diagnostic**. It audits the completed parent/child session tree against the instructions and authority that governed the workflow. It does not reopen, repair, publish, or gate completed work.
 
 Its finding classes are:
 
@@ -192,9 +188,9 @@ Its finding classes are:
 
 `unverified` is an evidence status when the trace or historical instruction provenance is insufficient.
 
-The bundled `tools/session_trace.js` lets the evaluator inspect the parent session tree and projected message timelines directly. Diagnostic evaluator sessions are excluded from the audited workflow tree so repeated eval runs do not contaminate the trace.
+`session-evaluator` uses OpenChamber's native `session.list` and `session.messages` actions to reconstruct the actual parent/child workflow from session metadata and histories. It excludes diagnostic evaluator sessions and prefers each child's own history over an orchestrator summary. If the relevant workflow cannot be identified or read with enough confidence, the affected conclusion is `unverified`.
 
-This surface depends on the current experimental OpenCode V2 session API. If the API/CLI is unavailable, the evaluator reports the trace as unavailable instead of reconstructing it from an orchestrator summary.
+The evaluator intentionally audits semantic decisions and instruction boundaries from the message/session record; raw tool-call traces are not required unless they are the only evidence that could establish a material decision.
 
 ---
 
@@ -322,17 +318,15 @@ These references change as models and harnesses evolve. Re-evaluate inherited pr
 
 ---
 
-## OpenCode runtime references
+## Runtime references
 
-These links document the runtime surfaces used by this pack; they are separate from the prompt-design references above.
+These links document runtime surfaces used by the pack; they are separate from the prompt-design references above.
 
-- Agent definitions, modes, permissions, built-ins, and child-session behavior: https://opencode.ai/v2/docs/agents
-- V2 session metadata (`parentID`): https://dev.opencode.ai/v2/docs/api/session/v2-session-get/
-- V2 child-session listing (`parentID` filter): https://dev.opencode.ai/v2/docs/api/session/v2-session-list/
-- V2 projected session messages and pagination: https://dev.opencode.ai/v2/docs/api/session/v2-message-list/
-- Custom tool surface: https://docs.opencode.ai/docs/custom-tools/
+- OpenCode agent definitions, modes, permissions, and child-session behavior: https://opencode.ai/v2/docs/agents
+- OpenChamber agent-tool control surface, including `session.list` and `session.messages`: https://github.com/openchamber/openchamber/blob/main/packages/web/server/lib/openchamber-control/actions.js
+- OpenChamber control-service/runtime documentation: https://github.com/openchamber/openchamber/blob/main/packages/web/server/lib/openchamber-control/DOCUMENTATION.md
 
-`session_trace` uses these experimental session/tool surfaces and should be rechecked when OpenCode V2 changes them.
+The experimental `session-evaluator` depends on those OpenChamber read-only session actions being exposed to the active agent environment.
 
 ---
 
@@ -349,9 +343,8 @@ Installs under `~/.config/opencode/`:
 - `AGENTS.md`
 - `agents/`
 - `skills/`
-- `tools/session_trace.js`
 
-The global installer backs up the existing root `AGENTS.md`, an existing bundled `session_trace.js`, and obsolete package-owned paths before removing them. Current agent/skill files are copied in place; use the project-local installer or your own config backup when you need a full pre-install snapshot. Package documentation is not copied into OpenCode runtime.
+The global installer backs up the existing root `AGENTS.md` and obsolete package-owned paths before removing them. It also backs up and removes the obsolete package-owned `tools/session_trace.js` when upgrading from v30.27-v30.29. Current agent/skill files are copied in place; use the project-local installer or your own config backup when you need a full pre-install snapshot. Package documentation is not copied into OpenCode runtime.
 
 ### Project-local
 
@@ -366,9 +359,8 @@ Installs:
 - `./AGENTS.md`
 - `.opencode/agents/`
 - `.opencode/skills/`
-- `.opencode/tools/`
 
-The installer backs up existing runtime surfaces before copying the pack and removes only explicitly listed obsolete package-owned paths. It does not install custom commands, snippets, or docs.
+The installer backs up existing runtime surfaces before copying the pack and removes only explicitly listed obsolete package-owned paths, including the old `.opencode/tools/session_trace.js` when present. It does not install custom commands, tools, snippets, or docs.
 
 ---
 
@@ -378,7 +370,7 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.28-beta.md`](docs/releases/v30.28-beta.md) | Current release notes |
+| [`docs/releases/v30.30-beta.md`](docs/releases/v30.30-beta.md) | Current release notes |
 | [`docs/releases/v30.27-beta.md`](docs/releases/v30.27-beta.md) | `session-evaluator` introduction and compatibility notes |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Human-facing UI component MCP setup |
 | [`docs/uupm_setup.md`](docs/uupm_setup.md) | Human-facing UI UX Pro Max setup |
@@ -389,12 +381,17 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 
 A release archive should verify at least:
 
-- exactly **16 agents**, **18 skills**, zero package custom commands, and the expected diagnostic tool surface;
+- exactly **16 agents**, **18 skills**, zero package custom commands, and zero package custom tools;
 - valid agent frontmatter and no provider-specific `model:` overrides;
 - every current role reference resolves and obsolete package-owned `plan.md` does not remain active after upgrade;
 - root stays below the pack's `<50 KiB` target;
-- agent/skill/tool/install surfaces match the release manifest and unexpected runtime files are not introduced;
-- `session-evaluator` remains read-only/diagnostic and `session_trace` stays limited to its parent workflow tree;
+- run a **fresh semantic prompt audit** over root `AGENTS.md` and every agent file as one corpus:
+  - each standing instruction must still prevent a concrete failure mode or encode a current product/workflow requirement;
+  - remove semantic duplicates, stale model-era scaffolding, unnecessary verification/subagent rituals, role↔root restatements, release-validation or “what did not change” narration in runtime prompts, and workaround rules whose cause no longer exists;
+  - retain a local reminder only when salience at that decision point materially reduces a known failure mode;
+  - after any prompt change, rerun the same semantic regression fixtures;
+- agent/skill/install surfaces match the release manifest and unexpected runtime files are not introduced;
+- `session-evaluator` remains diagnostic, uses only OpenChamber `session.list`/`session.messages`, excludes evaluator sessions, and audits the identified parent workflow tree;
 - installer scripts pass `bash -n`, preserve unrelated user/project files, and match their documented backup/overwrite behavior;
 - external/setup docs remain documentation only and are not required runtime policy;
 - vendored/adapted skill content retains source/license attribution;
@@ -404,7 +401,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.28 beta**  
+**OpenCode Agent Pack v30.30 beta**  
 Semantic routing · bounded orchestration · evidence-grounded verification
 
 </div>

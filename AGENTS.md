@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.28 beta**
+**Pack version: v30.30 beta**
 
 **These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -180,7 +180,7 @@ Mention skill usage once when useful: `Skill: <name|none>`.
 
 ### 2.2 Behavioral contract check
 
-Before implementing any user-facing UI, config, API, or workflow change, summarize the behavioral contract. A technically valid schema/storage write is not sufficient if it changes the normal user action into raw/manual/internal input.
+Before implementing any user-facing UI, config, API, or workflow change, establish the behavioral contract. A technically valid schema/storage write is not sufficient if it changes the normal user action into raw/manual/internal input.
 
 Check:
 

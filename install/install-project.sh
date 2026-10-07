@@ -2,7 +2,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 STAMP="$(date +%Y%m%d-%H%M%S)"
-mkdir -p .opencode/agents .opencode/skills .opencode/tools
+mkdir -p .opencode/agents .opencode/skills
 
 OLD_AGENTS=(
   plan.md
@@ -22,6 +22,10 @@ OLD_DOCS=(
 OLD_SNIPPETS=(
   audit-long-running-prompt.md components-json-default-registry-note.md git-branch-provenance-checklist.md
   open-code-review-usage.md opencode-ui-mcp.example.jsonc plan-layout.md ui-uupm-usage.md
+)
+
+OLD_TOOLS=(
+  session_trace.js
 )
 
 if [ -f ./AGENTS.md ]; then
@@ -51,13 +55,13 @@ backup_and_remove ".opencode/agents" ".opencode/agents.bak.$STAMP" "${OLD_AGENTS
 backup_and_remove ".opencode/commands" ".opencode/commands.bak.$STAMP" "${OLD_COMMANDS[@]}"
 backup_and_remove ".opencode/docs" ".opencode/docs.bak.$STAMP" "${OLD_DOCS[@]}"
 backup_and_remove ".opencode/snippet" ".opencode/snippet.bak.$STAMP" "${OLD_SNIPPETS[@]}"
+backup_and_remove ".opencode/tools" ".opencode/tools.bak.$STAMP" "${OLD_TOOLS[@]}"
 rmdir ".opencode/snippet" 2>/dev/null || true
 
 cp "$ROOT/AGENTS.md" ./AGENTS.md
 cp "$ROOT/agents/"*.md .opencode/agents/
 if [ -d "$ROOT/skills" ]; then cp -a "$ROOT/skills/." .opencode/skills/; fi
-if [ -d "$ROOT/tools" ]; then cp -a "$ROOT/tools/." .opencode/tools/; fi
 
-printf 'Installed project-local OpenCode agents/skills/tools and AGENTS.md into %s\n' "$(pwd)"
+printf 'Installed project-local OpenCode agents/skills and AGENTS.md into %s\n' "$(pwd)"
 echo "Backups were created for existing package-owned/runtime surfaces when present."
-echo "Obsolete package-owned agent/command/doc/snippet paths were removed after backup; unrelated project files were left untouched."
+echo "Obsolete package-owned agent/command/doc/snippet/tool paths were removed after backup; unrelated project files were left untouched."

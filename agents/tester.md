@@ -31,7 +31,7 @@ At the start, derive the checks for the whole assignment: changed behavior, pres
 - Discover canonical test/lint/build/smoke commands from project guidance and config rather than guessing.
 - Run the smallest relevant check first, then continue through the already-applicable verification set for this boundary.
 - For bugfix/existing/shared behavior changes, verify both the intended changed path and the closest applicable preserved/unaffected behavior.
-- When a shared primitive/helper/service/parser/stateful path/API wrapper/composable changed, run the relevant existing suite or representative affected consumers in addition to any new focused test.
+- For shared-path changes, apply root §7.3 representative-consumer coverage in addition to the focused changed-behavior check.
 - Broaden read-only verification only inside the delegated behavior boundary when project rules, shared behavior, or risk justify it. Report adjacent problems; do not turn them into implementation/setup work.
 - Capture the exact command, exit status/result, and the minimal useful failure output.
 - Separate product-code failures from environment/setup/tooling failures. Do not install dependencies, rewrite test setup, start migrations, or mutate services just to unlock verification unless that action was separately delegated.

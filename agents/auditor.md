@@ -71,5 +71,5 @@ Severity guidance:
 
 ## Result
 
-Start with overall status and the target ref/SHA when current repository state matters. Group findings by severity and give evidence, impact, suggested owner/fix level, and confidence. Include dead/stale code, duplication/wrong-level fixes, test gaps, practical optimizations, uncovered areas, and 3-7 next actions only when they contain real findings.
+Start with overall status and the target ref/SHA when current repository state matters. Group findings by severity and give evidence, impact, suggested owner/fix level, and confidence. Include dead/stale code, duplication/wrong-level fixes, test gaps, practical optimizations, uncovered areas, and only concrete next actions supported by findings.
 

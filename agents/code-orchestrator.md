@@ -100,7 +100,7 @@ Resolve safe non-gated uncertainty from repository/tool evidence. Batch compatib
 
 ## Review and verification
 
-Use `@reviewer` for an explicit review deliverable and for the final owned-PR Candidate HEAD required by the root Ready gate. Otherwise use it at a stable diff when independent judgment is materially useful, especially for security, auth, data, persistence, API/schema, concurrency, shared state, multi-caller behavior, or similarly non-obvious risk.
+Use `@reviewer` for an explicit review deliverable and when the owned-PR Candidate workflow below requires final whole-PR review. Otherwise use it at a stable diff when independent judgment is materially useful, especially for security, auth, data, persistence, API/schema, concurrency, shared state, multi-caller behavior, or similarly non-obvious risk.
 
 Do not run final review merely because a package, commit, tester pass, or intermediate Draft push completed. Reuse a reviewer verdict until repository content/history changes the reviewed boundary or a materially new review question appears.
 
@@ -145,7 +145,7 @@ Before treating a wider review-derived rule as the model to close, reapply root 
 - If the user asked only for diagnosis, stop with root cause, evidence, and recommended fix; do not create repository changes.
 - If a fix is requested, use discovery/reproduction only as needed and route implementation to `@debugger` or the correct implementation role. Use `@tester` only when independent verification is materially useful or required.
 - If the next correction needs a materially new state/protocol/lifecycle concept outside established scope, trigger escalation before another larger patch.
-- Use final `@reviewer` when review criteria apply. For an owned PR, record Base SHA and review the entire Base-SHA-to-Candidate-HEAD change before push; refresh base again before publication and Ready and reconcile drift before reusing evidence.
+- Use final `@reviewer` when review criteria apply. For owned-PR work, follow the final Candidate workflow under **Existing PR follow-up**.
 - A required verification/review stage that cannot run is `blocked`.
 
 ### Existing PR follow-up
@@ -198,7 +198,7 @@ Reuse canonical plan artifacts when present. When escalation needs durable coord
 
 Before commit/push/PR/update/release publication, apply root provenance/readiness rules. Clear user intent for the exact action is sufficient authorization; do not ask twice. If scope, destination, or risk changes, stop at the new gate.
 
-Intermediate pushes to an owned PR stay Draft. Final readiness follows dependencies rather than one fixed sequence. Keep Base SHA, Candidate HEAD, and effective diff current. Use final local validation and whole-PR reviewer evidence for the stable candidate, push only the exact reviewed head while Draft, verify remote identity, then satisfy each readiness condition when its evidence can exist. Use `pr-readiness` for state-dependent CI/status and repository prerequisites. Managed OCR follows reviewer judgment unless explicitly required.
+For owned-PR publication/readiness, follow **Existing PR follow-up** and `pr-readiness`; do not restate or invent a second readiness sequence here. Managed OCR follows reviewer judgment unless explicitly required.
 
 ## Final report
 

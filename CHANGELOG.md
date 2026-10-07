@@ -2,6 +2,28 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.30 beta
+
+- Replaces the package-owned `session_trace` wrapper with OpenChamber-native `session.list` and `session.messages` evidence collection in `session-evaluator`.
+- Keeps the evaluator focused on semantic decision boundaries and instruction compliance without requiring raw tool-call traces.
+- Removes `tools/session_trace.js` from the package and adds installer cleanup for that obsolete package-owned tool on upgrade.
+- Updates README runtime/install/validation documentation for the OpenChamber-native evaluation path.
+
+See [`docs/releases/v30.30-beta.md`](docs/releases/v30.30-beta.md).
+
+## v30.29 beta
+
+- Adds a fresh semantic prompt audit of root `AGENTS.md` and every agent file to mandatory release validation.
+- Rewords the root behavioral-contract check to establish the contract without requiring a separate summary artifact.
+- Consolidates repeated fallback wording in `general` and removes a redundant implementation prohibition in `project-planner`.
+- Removes an arbitrary `3–7` next-action quota from `auditor` and a non-accessibility sticky-save-layout reminder from `a11y-reviewer`.
+- Replaces a near-verbatim `tester` copy of root shared-path regression coverage with a direct root §7.3 reference.
+- Makes `session-evaluator` neutral about whether a violation exists while preserving its evidence/classification requirements.
+- Consolidates the owned-PR final-candidate lifecycle in `code-orchestrator` so the detailed sequence has one canonical home.
+- Cleans README/changelog release prose and places the changelog overview directly under the document title.
+
+See [`docs/releases/v30.29-beta.md`](docs/releases/v30.29-beta.md).
+
 ## v30.28 beta
 
 - Audits and rewrites `README.md` against the shipped runtime/package surface, including the correct 16-agent / 18-skill / diagnostic-tool topology.
