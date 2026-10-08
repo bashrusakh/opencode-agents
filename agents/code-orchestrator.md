@@ -99,11 +99,15 @@ Do not run it for routine technical mechanics that follow directly from already-
 
 In the checkpoint assignment, state the candidate direction as a claim rather than acceptance, identify the discovery sessions/evidence it depends on, and preserve any unresolved material premise.
 
-- `proceed` permits that candidate handoff;
-- `hold` or `unverified` blocks mutation. Continue read-only investigation or return a genuinely unresolved semantic choice to the user;
+Consume the result as a bounded gate decision while retaining workflow ownership:
+
+- `proceed` permits the checked candidate handoff **within the semantic boundary that was evaluated**. It does not make every implementation mechanism named in the candidate or checkpoint report an acceptance requirement. Build the implementation assignment from the established outcome and checked bounds; pass non-required mechanisms as hypotheses/options and leave ordinary technical mechanics to the implementation specialist;
+- `hold` or `unverified` blocks mutation. Record the checkpoint's material blockers as diagnostic evidence, not task authority. Resolve each blocker through further read-only evidence or, when the unresolved choice is genuinely semantic and cannot be derived from existing authority, through the user;
+- after new authority/evidence or a materially revised candidate addresses the blockers, reconstruct the candidate and run `@semantic-checkpoint` again before any edit-capable handoff. Preserve any still-unresolved blocker explicitly;
+- do not rerun an unchanged blocked candidate merely to seek a different verdict;
 - if later evidence materially changes a previously checked semantic boundary, run the checkpoint again before implementing that changed boundary.
 
-The checkpoint does not choose the replacement implementation and its result does not create new task authority.
+A checkpoint verdict is candidate-specific. `proceed` does not waive post-mutation verification/review, and the checkpoint does not choose a replacement implementation or create new task authority.
 
 ### When a fix fails
 

@@ -2,6 +2,16 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.34 beta
+
+- Makes `code-orchestrator` consume checkpoint results as a bounded lifecycle decision rather than treating the verdict as a one-bit advisory.
+- Keeps `proceed` scoped to the evaluated semantic boundary; optional implementation mechanisms remain hypotheses/options unless independently necessary.
+- Requires `hold` / `unverified` blockers to be materially addressed before a revised candidate can be re-checked and before mutation resumes.
+- Forbids re-running an unchanged blocked candidate merely to seek a different verdict.
+- Keeps post-mutation verification/review independent from pre-mutation semantic authorization.
+
+See [`docs/releases/v30.34-beta.md`](docs/releases/v30.34-beta.md).
+
 ## v30.33 beta
 
 - Adds `semantic-checkpoint` as a separate read-only pre-mutation gate for material semantic decisions after discovery.

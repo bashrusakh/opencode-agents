@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.33 beta
+# OpenCode Agent Pack v30.34 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
 
@@ -13,14 +13,15 @@
 
 ---
 
-## What changed in v30.33 beta
+## What changed in v30.34 beta
 
-- Adds `semantic-checkpoint`, a read-only pre-mutation gate for material candidate decisions produced after discovery.
-- Keeps `session-evaluator` post-hoc and diagnostic, while making `unverified` independent from failure classification and tightening the boundaries among instruction violations, instruction defects, and execution errors.
-- Adds a narrow `code-orchestrator` checkpoint trigger only when discovery is about to become material acceptance/scope/product semantics; routine implementation mechanics do not trigger it.
-- Prevents checkpoint over-verification: concrete child-session facts may serve as evidence, and proof that an unimplemented change already works is not required before mutation.
+- Makes `code-orchestrator` consume `semantic-checkpoint` as a candidate-specific gate instead of a one-bit advisory.
+- On `proceed`, preserves the checked semantic boundary without promoting optional implementation mechanisms from the candidate/checkpoint report into acceptance.
+- On `hold` / `unverified`, keeps mutation blocked until the identified material blockers are addressed by new evidence, existing/user authority, or a materially revised candidate.
+- Prevents verdict-shopping: an unchanged blocked candidate is not re-run merely to obtain a different checkpoint result.
+- Keeps post-mutation verification/review independent; `proceed` authorizes mutation within the checked boundary but does not prove the implementation works.
 
-See [`docs/releases/v30.33-beta.md`](docs/releases/v30.33-beta.md).
+See [`docs/releases/v30.34-beta.md`](docs/releases/v30.34-beta.md).
 
 ---
 
@@ -177,7 +178,7 @@ Read-only audits do not create repository plan files merely to maintain agent st
 
 The pack currently uses two separate semantic roles because they answer different lifecycle questions.
 
-`semantic-checkpoint` is a **pre-mutation gate**. After relevant read-only discovery, `code-orchestrator` invokes it only when the candidate direction materially establishes or changes required behavior, acceptance, scope, ownership, invariant, fix level, or product/domain policy. It returns `proceed`, `hold`, or `unverified`; `hold` and `unverified` block that edit-capable handoff. Routine technical mechanics under already-established acceptance do not trigger it.
+`semantic-checkpoint` is a **pre-mutation gate**. After relevant read-only discovery, `code-orchestrator` invokes it only when the candidate direction materially establishes or changes required behavior, acceptance, scope, ownership, invariant, fix level, or product/domain policy. `proceed` authorizes only the checked semantic boundary: the orchestrator still hands ordinary technical mechanics to the implementation role and does not turn optional mechanisms named by the checkpoint into acceptance. `hold` and `unverified` block mutation until their material blockers are addressed; an unchanged blocked candidate is not re-run merely to seek a different verdict. Routine technical mechanics under already-established acceptance do not trigger the checkpoint.
 
 `session-evaluator` remains a **post-hoc diagnostic** after non-trivial `code-orchestrator` work completes. It classifies confirmed findings as:
 
@@ -370,7 +371,7 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.33-beta.md`](docs/releases/v30.33-beta.md) | Current release notes |
+| [`docs/releases/v30.34-beta.md`](docs/releases/v30.34-beta.md) | Current release notes |
 | [`docs/releases/v30.32-beta.md`](docs/releases/v30.32-beta.md) | Claim-authority clarification |
 | [`docs/releases/v30.27-beta.md`](docs/releases/v30.27-beta.md) | `session-evaluator` introduction and compatibility notes |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Human-facing UI component MCP setup |
@@ -393,6 +394,7 @@ A release archive should verify at least:
   - after any prompt change, rerun semantic invariant checks that test the general rules rather than incident-specific wording;
 - agent/skill/install surfaces match the release manifest and unexpected runtime files are not introduced;
 - `semantic-checkpoint` remains read-only/non-implementing, gates only material pre-mutation semantic decisions, and does not classify instruction failures or require post-mutation proof before edits;
+- `code-orchestrator` treats `proceed` as candidate-specific authorization, preserves optional mechanisms as implementation choices, keeps `hold`/`unverified` blocked until their stated blockers are materially addressed, and does not re-run an unchanged blocked candidate for verdict-shopping;
 - `session-evaluator` remains post-hoc/diagnostic, uses only OpenChamber `session.list`/`session.messages`, keeps `unverified` separate from finding classes, treats checkpoint verdicts only as gate-control evidence, and audits the original decision path independently;
 - installer scripts pass `bash -n`, preserve unrelated user/project files, and match their documented backup/overwrite behavior;
 - external/setup docs remain documentation only and are not required runtime policy;
@@ -403,7 +405,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.33 beta**  
+**OpenCode Agent Pack v30.34 beta**  
 Semantic routing · bounded orchestration · evidence-grounded verification
 
 </div>
