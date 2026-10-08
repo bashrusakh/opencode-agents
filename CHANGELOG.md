@@ -2,6 +2,15 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.35 beta
+
+- Makes subagent session continuity follow assignment continuity rather than agent identity.
+- Starts new specialist assignments and independent judgment stages in fresh child sessions by default; explicit child-session continuation is reserved for the same specialist-owned workstream.
+- Requires every `semantic-checkpoint` verdict to run in a fresh child session so a later candidate is not anchored by an earlier checkpoint conversation.
+- Keeps continuity available for genuine same-workstream investigation/implementation instead of imposing a blanket fresh-session rule on every repeated role call.
+
+See [`docs/releases/v30.35-beta.md`](docs/releases/v30.35-beta.md).
+
 ## v30.34 beta
 
 - Makes `code-orchestrator` consume checkpoint results as a bounded lifecycle decision rather than treating the verdict as a one-bit advisory.

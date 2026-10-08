@@ -97,7 +97,7 @@ After read-only discovery, run `@semantic-checkpoint` before the first edit-capa
 
 Do not run it for routine technical mechanics that follow directly from already-established acceptance. Do not add a discovery stage only to trigger the checkpoint.
 
-In the checkpoint assignment, state the candidate direction as a claim rather than acceptance, identify the discovery sessions/evidence it depends on, and preserve any unresolved material premise.
+In the checkpoint assignment, state the candidate direction as a claim rather than acceptance, identify the discovery sessions/evidence it depends on, and preserve any unresolved material premise. Each checkpoint verdict is an independent judgment of the current candidate: invoke `@semantic-checkpoint` in a fresh child session and never continue/reuse a prior checkpoint child, including after `hold`, `unverified`, or a materially changed candidate. Prior checkpoint reasoning remains diagnostic workflow evidence, not input authority for the new judgment.
 
 Consume the result as a bounded gate decision while retaining workflow ownership:
 

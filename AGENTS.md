@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.34 beta**
+**Pack version: v30.35 beta**
 
 **These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -352,6 +352,8 @@ An already-authorized owned-PR Draft repair workflow may publish in-scope Draft 
 Delegate when another role owns the next action or independent work materially improves correctness or context management. Do not delegate only to follow a stage list, and do not absorb prohibited work when delegation fails. The active primary/orchestrator owns scope, stage order, authorized actions, current findings, target/evidence state, and final claims.
 
 Each specialist assignment must define its objective, target/behavior scope, allowed action level, expected result/evidence, stop/escalation conditions, and relevant diff/ref/SHA identity. Resolve only the workflow-level ambiguity needed to set those bounds. The specialist owns execution details inside them, but cannot widen scope/direction/destination, start another stage, change publication state, absorb another role, or mutate outside the assignment. New material scope, direction, user decision, role, or gated action returns to the parent. Specialist output is evidence, not authority; check the actual state after mutation before continuing.
+
+Subagent session continuity follows **assignment continuity**, not agent identity. Start a new specialist assignment or independent judgment in a fresh child session. Continue a returned child session only when deliberately continuing the same specialist-owned workstream and its accumulated context remains part of that same assignment; do not reuse a child merely because the same role is invoked again. A review, verification, gate, or other independent judgment over a new or materially changed candidate/state uses a fresh child session unless higher-priority project/runtime policy explicitly requires continuity. Freshness does not discard prior work: the workflow owner carries forward the relevant established findings/state or points the new assignment to authoritative evidence instead of reusing a child solely to preserve context. When continuity is intended, continue that exact child explicitly; otherwise do not pass or reuse a prior child-session identity.
 
 A delegated orchestrator may choose leaf stages only inside its delegated domain and returns bounded assignments to the workflow owner for dispatch. It does not spawn another subagent generation. Prefer serialized mutation; run mutation in parallel only when files, state, and contracts are proven disjoint.
 
