@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.31 beta
+# OpenCode Agent Pack v30.33 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
 
@@ -13,14 +13,14 @@
 
 ---
 
-## What changed in v30.31 beta
+## What changed in v30.33 beta
 
-- Makes `session-evaluator` request an expanded OpenChamber session listing before reconstructing the parent/descendant workflow.
-- Allows that evaluator to read only OpenCode's managed `~/.local/share/opencode/tool-output/*` spill files when large session results are materialized there.
-- Requires descendant discovery from `parentID` before declaring child-session evidence unavailable.
-- Keeps missing branches `unverified` when the expanded listing still cannot recover them instead of substituting orchestrator summaries.
+- Adds `semantic-checkpoint`, a narrow pre-mutation gate that checks whether material semantic decisions are established before edit-capable work begins.
+- Keeps `session-evaluator` post-hoc and diagnostic; checkpoint verdicts participate in the later audit but do not create task authority.
+- Separates evidence status from post-hoc failure taxonomy so missing evidence may remain `unverified` without being mislabeled as an instruction gap or execution error.
+- Tightens `instruction-gap`, `instruction-violation`, and `execution-error` boundaries after blind multi-model replay exposed classification ambiguity.
 
-See [`docs/releases/v30.31-beta.md`](docs/releases/v30.31-beta.md).
+See [`docs/releases/v30.33-beta.md`](docs/releases/v30.33-beta.md).
 
 ---
 
@@ -173,13 +173,17 @@ Read-only audits do not create repository plan files merely to maintain agent st
 
 ---
 
-## Experimental session evaluation
+## Experimental semantic evaluation
 
-v30.27 introduced a temporary diagnostic harness for developing the pack itself.
+v30.33 separates pre-mutation semantic gating from post-hoc instruction diagnosis.
 
-After non-trivial `code-orchestrator` work completes, the temporary root harness runs `session-evaluator` once as a **post-hoc diagnostic**. It audits the completed parent/child session tree against the instructions and authority that governed the workflow. It does not reopen, repair, publish, or gate completed work.
+`code-orchestrator` runs `semantic-checkpoint` only when read-only discovery has produced a candidate direction that materially establishes or changes required behavior, acceptance, scope, ownership, invariant, fix level, or product/domain policy. Routine implementation details following already-established acceptance do not trigger the checkpoint. `proceed` permits the checked handoff; `hold` or `unverified` blocks mutation until the owner obtains more evidence or resolves a genuine semantic choice.
 
-Its finding classes are:
+`semantic-checkpoint` has no failure taxonomy. It reports authority/evidence status as `established`, `unverified`, or `contradicted` and asks only whether the candidate may enter edit-capable work. Its verdict is evidence for `code-orchestrator`, not new task authority.
+
+After non-trivial `code-orchestrator` work completes, the temporary root harness still runs `session-evaluator` once as a **post-hoc diagnostic**. It audits the completed parent/child workflow, including any checkpoint sessions, against the instructions and authority that governed it. It does not reopen, repair, publish, or gate completed work.
+
+Its confirmed finding classes are:
 
 - `instruction-violation`
 - `instruction-ambiguity`
@@ -187,11 +191,10 @@ Its finding classes are:
 - `execution-error`
 - `justified`
 
-`unverified` is an evidence status when the trace or historical instruction provenance is insufficient.
+Evidence status is separate. A material item may remain `unverified` without receiving a failure class. `instruction-gap` requires an established governing instruction set plus a demonstrated reusable absence of an applicable rule; missing task evidence, missing artifact contents, incomplete history, or unknown historical instructions do not establish a gap.
 
-`session-evaluator` first requests OpenChamber `session.list` with `limit: 1000`, `all: true`, and `withStatus: true`; the large `limit` expands the default 10-session result, while `all: true` only includes archived sessions. It reconstructs the parent/descendant workflow from `parentID`, then reads each participating session with `session.messages` using `all: true` and no `limit`, `last`, or `lastAssistant`. If OpenCode materializes a large tool response into its managed `~/.local/share/opencode/tool-output/` directory, the evaluator may read only that managed output path and continue from the full result. It excludes diagnostic evaluator sessions and prefers each child's own history over an orchestrator summary. If an expanded listing still cannot recover a branch, only that branch remains `unverified`.
+Both semantic agents use OpenChamber `session.list` and `session.messages` read-only. They may read only OpenCode-managed `~/.local/share/opencode/tool-output/*` spill files for oversized results. `session-evaluator` excludes its own diagnostic retries but includes checkpoint sessions that actually participated in the workflow.
 
-The evaluator intentionally audits semantic decisions and instruction boundaries from the message/session record; raw tool-call traces are not required unless they are the only evidence that could establish a material decision.
 
 ---
 
@@ -244,6 +247,7 @@ These setup docs are not runtime policy and installers do not copy them into Ope
 | `reviewer` | Independent code/diff/PR/plan review |
 | `auditor` | Broad read-only project audit orchestrator |
 | `project-planner` | Architecture/persistent planning; may write authorized plan artifacts, never source implementation |
+| `semantic-checkpoint` | Pre-mutation semantic gate for material candidate decisions before edit-capable handoff |
 | `session-evaluator` | Experimental post-hoc audit of completed orchestrator sessions and child-agent calls against governing instructions |
 | `devops` | Runtime/CI/deploy diagnostics and authorized operational changes |
 | `general` | Read-only bounded fallback research when no specialist fits |
@@ -253,7 +257,7 @@ These setup docs are not runtime policy and installers do not copy them into Ope
 | `ui-implementer` | Focused UI implementation |
 | `a11y-reviewer` | Independent accessibility/interaction review |
 
-**Count:** 16 agents. No bundled agent has a provider-specific `model:` override.
+**Count:** 17 agents. No bundled agent has a provider-specific `model:` override.
 
 The pack ships no custom slash commands. Natural-language routing is owned by `AGENTS.md`; use OpenCode's explicit agent selection when you intentionally want a specific role.
 
@@ -371,7 +375,8 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.31-beta.md`](docs/releases/v30.31-beta.md) | Current release notes |
+| [`docs/releases/v30.33-beta.md`](docs/releases/v30.33-beta.md) | Current release notes |
+| [`docs/releases/v30.32-beta.md`](docs/releases/v30.32-beta.md) | Claim-authority clarification |
 | [`docs/releases/v30.27-beta.md`](docs/releases/v30.27-beta.md) | `session-evaluator` introduction and compatibility notes |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Human-facing UI component MCP setup |
 | [`docs/uupm_setup.md`](docs/uupm_setup.md) | Human-facing UI UX Pro Max setup |
@@ -382,7 +387,7 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 
 A release archive should verify at least:
 
-- exactly **16 agents**, **18 skills**, zero package custom commands, and zero package custom tools;
+- exactly **17 agents**, **18 skills**, zero package custom commands, and zero package custom tools;
 - valid agent frontmatter and no provider-specific `model:` overrides;
 - every current role reference resolves and obsolete package-owned `plan.md` does not remain active after upgrade;
 - root stays below the pack's `<50 KiB` target;
@@ -390,9 +395,10 @@ A release archive should verify at least:
   - each standing instruction must still prevent a concrete failure mode or encode a current product/workflow requirement;
   - remove semantic duplicates, stale model-era scaffolding, unnecessary verification/subagent rituals, role↔root restatements, release-validation or “what did not change” narration in runtime prompts, and workaround rules whose cause no longer exists;
   - retain a local reminder only when salience at that decision point materially reduces a known failure mode;
-  - after any prompt change, rerun the same semantic regression fixtures;
+  - after any prompt change, rerun semantic invariant checks that test the general rules rather than incident-specific wording;
 - agent/skill/install surfaces match the release manifest and unexpected runtime files are not introduced;
-- `session-evaluator` remains diagnostic, uses only OpenChamber `session.list`/`session.messages`, may read only OpenCode-managed `~/.local/share/opencode/tool-output/*` spill files for oversized results, excludes evaluator sessions, and audits the identified parent workflow tree;
+- `semantic-checkpoint` remains read-only, non-implementing, taxonomy-free, and blocks mutation on `hold`/`unverified` only at material semantic boundaries;
+- `session-evaluator` remains post-hoc/diagnostic, keeps evidence status independent from failure classification, includes participating checkpoint sessions, excludes evaluator retries, and proposes prompt changes only for confirmed reusable instruction ambiguity/gaps;
 - installer scripts pass `bash -n`, preserve unrelated user/project files, and match their documented backup/overwrite behavior;
 - external/setup docs remain documentation only and are not required runtime policy;
 - vendored/adapted skill content retains source/license attribution;
@@ -402,7 +408,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.31 beta**  
+**OpenCode Agent Pack v30.33 beta**  
 Semantic routing · bounded orchestration · evidence-grounded verification
 
 </div>

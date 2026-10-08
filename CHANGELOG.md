@@ -2,6 +2,24 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.33 beta
+
+- Adds `semantic-checkpoint`, a read-only pre-mutation gate for material semantic decisions before edit-capable work begins.
+- Keeps checkpoint output limited to `proceed` / `hold` / `unverified` and authority/evidence status; it does not diagnose instruction defects or choose replacement implementations.
+- Keeps `session-evaluator` post-hoc while making evidence status independent from failure classification and tightening `instruction-gap`, `instruction-violation`, and `execution-error` boundaries.
+- Makes post-hoc evaluation include checkpoint sessions that participated in the workflow so an incorrect gate decision remains auditable.
+- Adds a role-local checkpoint hook to `code-orchestrator` only at material semantic boundaries and repeats it only when later evidence materially changes that boundary.
+
+See [`docs/releases/v30.33-beta.md`](docs/releases/v30.33-beta.md).
+
+## v30.32 beta
+
+- Distinguishes normative requirements in a user-adopted artifact from factual or implementation claims inside the same artifact.
+- Treats adopted outcomes, acceptance criteria, and explicit constraints as established user intent while continuing to verify diagnoses and proposed mechanisms.
+- Reframes release semantic checks around general invariants rather than incident-specific fixtures.
+
+See [`docs/releases/v30.32-beta.md`](docs/releases/v30.32-beta.md).
+
 ## v30.31 beta
 
 - Makes `session-evaluator` request `session.list` with an explicit large limit before reconstructing the completed workflow tree; `all: true` is used only to include archived sessions.

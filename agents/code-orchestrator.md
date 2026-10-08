@@ -83,6 +83,10 @@ Use a separate explore stage when scope is materially broad/ambiguous, several s
 
 For non-trivial work, establish the end-to-end acceptance condition and nearest preserved invariant at the requested outcome boundary. Apply root section 2.2.1.
 
+After relevant read-only discovery and before the first edit-capable action or implementation delegation, run `@semantic-checkpoint` when the candidate direction materially establishes or changes required behavior, acceptance, scope, ownership, invariant, fix level, or product/domain policy. Do not run it for routine implementation details that follow directly from already-established acceptance.
+
+`proceed` permits the checked handoff. `hold` or `unverified` blocks mutation; continue read-only investigation or return a genuinely unresolved semantic choice to the user. If later evidence materially changes a previously checked semantic boundary, run `@semantic-checkpoint` again before implementing that changed boundary. A checkpoint verdict is evidence for you to reconcile, not new task authority.
+
 Implementation roles may choose technical mechanics and the narrowest owning code boundary. A requirement found during implementation or review is not authoritative merely because it follows from a stronger inferred rule. Before widening the implementation boundary or dispatching downstream fixes, trace the requirement to the established acceptance:
 
 - if the wider work is necessary to meet that established outcome, continue at the correct owner;
