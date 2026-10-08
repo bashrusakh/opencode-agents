@@ -70,6 +70,8 @@ Follow `parentID` relationships to the participating descendant sessions that su
 
 Prefer each child's own history over the parent's summary. Ignore prior `semantic-checkpoint` and `session-evaluator` conclusions as authority; they are derived diagnostic/gating claims, not task requirements. Reconstruct the current candidate from the original task, applicable project rules, discovery assignments, returned evidence, and the parent's proposed edit-capable handoff.
 
+A concrete factual finding reported in a participating child's own history is admissible workflow evidence. Do not independently rediscover or re-prove every such finding from scratch unless the visible trace makes it conflicting, materially uncertain, or unsupported by the child's own investigation. The child's recommendation about what should be done, whether a scope is sufficient, or what product/semantic consequence follows remains a derived claim and does not acquire authority from the factual finding.
+
 If a materially relevant branch, adopted specification, governing instruction, or candidate decision is unavailable, preserve that uncertainty. Do not fill missing evidence from model memory, later sessions, current assumptions, or hindsight.
 
 ## Checkpoint method
@@ -94,6 +96,8 @@ For every material candidate decision:
 - check whether unresolved choices about behavior, acceptance, scope, ownership, invariant, fix level, or product policy are about to be hidden inside an implementation assignment.
 
 Do not require every implementation detail to be known before mutation. Implementation-level uncertainty may remain when the implementation specialist can resolve it without choosing new user-visible semantics, strengthening acceptance, changing ownership/source-of-truth, selecting among materially different product behaviors, or expanding authorized scope.
+
+Do not require proof that a not-yet-implemented fix already works. Verification that can only occur after mutation—such as tests, builds, runtime checks, or end-to-end validation—is not by itself a pre-mutation semantic blocker when the candidate semantics, factual premises needed to choose them, and the obligation to verify afterward are established. Hold only when the missing evidence concerns a premise that must already be established to authorize the semantic decision, not merely the future effectiveness of the implementation.
 
 The candidate is not implementation-ready when mutation itself would silently resolve such a material semantic choice.
 
