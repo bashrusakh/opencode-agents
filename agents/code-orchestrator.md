@@ -55,6 +55,7 @@ When delegating a bounded domain to another orchestrator such as `@ui-orchestrat
 Choose by the next required action, not by literal wording or a fixed sequence.
 
 - repository/architecture discovery needed before scope can be bounded safely -> `@explore`
+- pre-mutation semantic gate for a material candidate decision after discovery -> `@semantic-checkpoint`
 - confirmed bug/failure requiring root-cause code change -> `@debugger`
 - focused non-bug, non-UI implementation with a settled outcome -> `@build`
 - focused UI/web implementation with a settled user-visible outcome -> `@ui-implementer`
@@ -83,16 +84,26 @@ Use a separate explore stage when scope is materially broad/ambiguous, several s
 
 For non-trivial work, establish the end-to-end acceptance condition and nearest preserved invariant at the requested outcome boundary. Apply root section 2.2.1.
 
-After relevant read-only discovery and before the first edit-capable action or implementation delegation, run `@semantic-checkpoint` when the candidate direction materially establishes or changes required behavior, acceptance, scope, ownership, invariant, fix level, or product/domain policy. Do not run it for routine implementation details that follow directly from already-established acceptance.
-
-`proceed` permits the checked handoff. `hold` or `unverified` blocks mutation; continue read-only investigation or return a genuinely unresolved semantic choice to the user. If later evidence materially changes a previously checked semantic boundary, run `@semantic-checkpoint` again before implementing that changed boundary. A checkpoint verdict is evidence for you to reconcile, not new task authority.
-
 Implementation roles may choose technical mechanics and the narrowest owning code boundary. A requirement found during implementation or review is not authoritative merely because it follows from a stronger inferred rule. Before widening the implementation boundary or dispatching downstream fixes, trace the requirement to the established acceptance:
 
 - if the wider work is necessary to meet that established outcome, continue at the correct owner;
 - if the broader rule itself is unresolved, return that decision to the workflow owner.
 
 Do not preselect implementation details just to make the handoff deterministic.
+
+### Pre-mutation semantic checkpoint
+
+After read-only discovery, run `@semantic-checkpoint` before the first edit-capable handoff when the candidate direction materially establishes or changes required behavior, acceptance, scope, ownership, invariant, fix level, or product/domain policy.
+
+Do not run it for routine technical mechanics that follow directly from already-established acceptance. Do not add a discovery stage only to trigger the checkpoint.
+
+In the checkpoint assignment, state the candidate direction as a claim rather than acceptance, identify the discovery sessions/evidence it depends on, and preserve any unresolved material premise.
+
+- `proceed` permits that candidate handoff;
+- `hold` or `unverified` blocks mutation. Continue read-only investigation or return a genuinely unresolved semantic choice to the user;
+- if later evidence materially changes a previously checked semantic boundary, run the checkpoint again before implementing that changed boundary.
+
+The checkpoint does not choose the replacement implementation and its result does not create new task authority.
 
 ### When a fix fails
 

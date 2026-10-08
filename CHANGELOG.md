@@ -4,11 +4,11 @@ This changelog summarizes user-visible workflow/documentation changes. Detailed 
 
 ## v30.33 beta
 
-- Adds `semantic-checkpoint`, a read-only pre-mutation gate for material semantic decisions before edit-capable work begins.
-- Keeps checkpoint output limited to `proceed` / `hold` / `unverified` and authority/evidence status; it does not diagnose instruction defects or choose replacement implementations.
-- Keeps `session-evaluator` post-hoc while making evidence status independent from failure classification and tightening `instruction-gap`, `instruction-violation`, and `execution-error` boundaries.
-- Makes post-hoc evaluation include checkpoint sessions that participated in the workflow so an incorrect gate decision remains auditable.
-- Adds a role-local checkpoint hook to `code-orchestrator` only at material semantic boundaries and repeats it only when later evidence materially changes that boundary.
+- Adds `semantic-checkpoint` as a separate read-only pre-mutation gate for material semantic decisions after discovery.
+- Adds a narrow `code-orchestrator` trigger before edit-capable handoff when discovery is about to become required behavior, acceptance, scope, ownership, invariant, fix level, or product/domain policy.
+- Keeps `session-evaluator` post-hoc while separating evidence status from finding classification and tightening `instruction-gap`, `instruction-violation`, and `execution-error` boundaries.
+- Prevents checkpoint over-verification by allowing concrete child-session factual findings as evidence and by not requiring post-mutation success evidence before implementation.
+- Keeps checkpoint verdicts available to the post-hoc evaluator only as gate-control evidence while preventing checkpoint/evaluator reasoning from becoming task authority.
 
 See [`docs/releases/v30.33-beta.md`](docs/releases/v30.33-beta.md).
 

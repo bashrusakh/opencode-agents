@@ -15,10 +15,10 @@
 
 ## What changed in v30.33 beta
 
-- Adds `semantic-checkpoint`, a narrow pre-mutation gate that checks whether material semantic decisions are established before edit-capable work begins.
-- Keeps `session-evaluator` post-hoc and diagnostic; checkpoint verdicts participate in the later audit but do not create task authority.
-- Separates evidence status from post-hoc failure taxonomy so missing evidence may remain `unverified` without being mislabeled as an instruction gap or execution error.
-- Tightens `instruction-gap`, `instruction-violation`, and `execution-error` boundaries after blind multi-model replay exposed classification ambiguity.
+- Adds `semantic-checkpoint`, a read-only pre-mutation gate for material candidate decisions produced after discovery.
+- Keeps `session-evaluator` post-hoc and diagnostic, while making `unverified` independent from failure classification and tightening the boundaries among instruction violations, instruction defects, and execution errors.
+- Adds a narrow `code-orchestrator` checkpoint trigger only when discovery is about to become material acceptance/scope/product semantics; routine implementation mechanics do not trigger it.
+- Prevents checkpoint over-verification: concrete child-session facts may serve as evidence, and proof that an unimplemented change already works is not required before mutation.
 
 See [`docs/releases/v30.33-beta.md`](docs/releases/v30.33-beta.md).
 
@@ -175,15 +175,11 @@ Read-only audits do not create repository plan files merely to maintain agent st
 
 ## Experimental semantic evaluation
 
-v30.33 separates pre-mutation semantic gating from post-hoc instruction diagnosis.
+The pack currently uses two separate semantic roles because they answer different lifecycle questions.
 
-`code-orchestrator` runs `semantic-checkpoint` only when read-only discovery has produced a candidate direction that materially establishes or changes required behavior, acceptance, scope, ownership, invariant, fix level, or product/domain policy. Routine implementation details following already-established acceptance do not trigger the checkpoint. `proceed` permits the checked handoff; `hold` or `unverified` blocks mutation until the owner obtains more evidence or resolves a genuine semantic choice.
+`semantic-checkpoint` is a **pre-mutation gate**. After relevant read-only discovery, `code-orchestrator` invokes it only when the candidate direction materially establishes or changes required behavior, acceptance, scope, ownership, invariant, fix level, or product/domain policy. It returns `proceed`, `hold`, or `unverified`; `hold` and `unverified` block that edit-capable handoff. Routine technical mechanics under already-established acceptance do not trigger it.
 
-`semantic-checkpoint` has no failure taxonomy. It reports authority/evidence status as `established`, `unverified`, or `contradicted` and asks only whether the candidate may enter edit-capable work. Its verdict is evidence for `code-orchestrator`, not new task authority.
-
-After non-trivial `code-orchestrator` work completes, the temporary root harness still runs `session-evaluator` once as a **post-hoc diagnostic**. It audits the completed parent/child workflow, including any checkpoint sessions, against the instructions and authority that governed it. It does not reopen, repair, publish, or gate completed work.
-
-Its confirmed finding classes are:
+`session-evaluator` remains a **post-hoc diagnostic** after non-trivial `code-orchestrator` work completes. It classifies confirmed findings as:
 
 - `instruction-violation`
 - `instruction-ambiguity`
@@ -191,10 +187,9 @@ Its confirmed finding classes are:
 - `execution-error`
 - `justified`
 
-Evidence status is separate. A material item may remain `unverified` without receiving a failure class. `instruction-gap` requires an established governing instruction set plus a demonstrated reusable absence of an applicable rule; missing task evidence, missing artifact contents, incomplete history, or unknown historical instructions do not establish a gap.
+`unverified` is an evidence status, not a finding class, and does not require a failure classification. The evaluator proposes prompt changes only for confirmed reusable instruction ambiguities or gaps.
 
-Both semantic agents use OpenChamber `session.list` and `session.messages` read-only. They may read only OpenCode-managed `~/.local/share/opencode/tool-output/*` spill files for oversized results. `session-evaluator` excludes its own diagnostic retries but includes checkpoint sessions that actually participated in the workflow.
-
+Both roles reconstruct relevant OpenChamber session history with read-only `session.list` / `session.messages`, prefer child-session history over parent summaries, and do not turn diagnostic output into task authority. `session-evaluator` ignores prior evaluator diagnoses as workflow evidence and uses `semantic-checkpoint` only as gate-control evidence (for example, whether a `hold` was obeyed), not as proof of the underlying requirement.
 
 ---
 
@@ -247,7 +242,7 @@ These setup docs are not runtime policy and installers do not copy them into Ope
 | `reviewer` | Independent code/diff/PR/plan review |
 | `auditor` | Broad read-only project audit orchestrator |
 | `project-planner` | Architecture/persistent planning; may write authorized plan artifacts, never source implementation |
-| `semantic-checkpoint` | Pre-mutation semantic gate for material candidate decisions before edit-capable handoff |
+| `semantic-checkpoint` | Experimental pre-mutation semantic gate for material candidate decisions after discovery |
 | `session-evaluator` | Experimental post-hoc audit of completed orchestrator sessions and child-agent calls against governing instructions |
 | `devops` | Runtime/CI/deploy diagnostics and authorized operational changes |
 | `general` | Read-only bounded fallback research when no specialist fits |
@@ -331,7 +326,7 @@ These links document runtime surfaces used by the pack; they are separate from t
 - OpenChamber agent-tool control surface, including `session.list` and `session.messages`: https://github.com/openchamber/openchamber/blob/main/packages/web/server/lib/openchamber-control/actions.js
 - OpenChamber control-service/runtime documentation: https://github.com/openchamber/openchamber/blob/main/packages/web/server/lib/openchamber-control/DOCUMENTATION.md
 
-The experimental `session-evaluator` depends on those OpenChamber read-only session actions being exposed to the active agent environment.
+The experimental `semantic-checkpoint` and `session-evaluator` roles depend on those OpenChamber read-only session actions being exposed to the active agent environment.
 
 ---
 
@@ -397,8 +392,8 @@ A release archive should verify at least:
   - retain a local reminder only when salience at that decision point materially reduces a known failure mode;
   - after any prompt change, rerun semantic invariant checks that test the general rules rather than incident-specific wording;
 - agent/skill/install surfaces match the release manifest and unexpected runtime files are not introduced;
-- `semantic-checkpoint` remains read-only, non-implementing, taxonomy-free, and blocks mutation on `hold`/`unverified` only at material semantic boundaries;
-- `session-evaluator` remains post-hoc/diagnostic, keeps evidence status independent from failure classification, includes participating checkpoint sessions, excludes evaluator retries, and proposes prompt changes only for confirmed reusable instruction ambiguity/gaps;
+- `semantic-checkpoint` remains read-only/non-implementing, gates only material pre-mutation semantic decisions, and does not classify instruction failures or require post-mutation proof before edits;
+- `session-evaluator` remains post-hoc/diagnostic, uses only OpenChamber `session.list`/`session.messages`, keeps `unverified` separate from finding classes, treats checkpoint verdicts only as gate-control evidence, and audits the original decision path independently;
 - installer scripts pass `bash -n`, preserve unrelated user/project files, and match their documented backup/overwrite behavior;
 - external/setup docs remain documentation only and are not required runtime policy;
 - vendored/adapted skill content retains source/license attribution;
