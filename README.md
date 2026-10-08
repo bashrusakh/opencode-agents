@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.30 beta
+# OpenCode Agent Pack v30.31 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
 
@@ -13,13 +13,14 @@
 
 ---
 
-## What changed in v30.30 beta
+## What changed in v30.31 beta
 
-- Replaces the package-owned `session_trace` wrapper with OpenChamber's native session history tools for `session-evaluator`.
-- Keeps session evaluation focused on semantic decision boundaries, delegation, authority propagation, and instruction compliance rather than raw tool-call traces.
-- Removes the obsolete diagnostic tool from installers and cleans it up on upgrade.
+- Makes `session-evaluator` request an expanded OpenChamber session listing before reconstructing the parent/descendant workflow.
+- Allows that evaluator to read only OpenCode's managed `~/.local/share/opencode/tool-output/*` spill files when large session results are materialized there.
+- Requires descendant discovery from `parentID` before declaring child-session evidence unavailable.
+- Keeps missing branches `unverified` when the expanded listing still cannot recover them instead of substituting orchestrator summaries.
 
-See [`docs/releases/v30.30-beta.md`](docs/releases/v30.30-beta.md).
+See [`docs/releases/v30.31-beta.md`](docs/releases/v30.31-beta.md).
 
 ---
 
@@ -188,7 +189,7 @@ Its finding classes are:
 
 `unverified` is an evidence status when the trace or historical instruction provenance is insufficient.
 
-`session-evaluator` uses OpenChamber's native `session.list` and `session.messages` actions to reconstruct the actual parent/child workflow from session metadata and histories. It excludes diagnostic evaluator sessions and prefers each child's own history over an orchestrator summary. If the relevant workflow cannot be identified or read with enough confidence, the affected conclusion is `unverified`.
+`session-evaluator` first requests OpenChamber `session.list` with `limit: 1000`, `all: true`, and `withStatus: true`; the large `limit` expands the default 10-session result, while `all: true` only includes archived sessions. It reconstructs the parent/descendant workflow from `parentID`, then reads each participating session with `session.messages` using `all: true` and no `limit`, `last`, or `lastAssistant`. If OpenCode materializes a large tool response into its managed `~/.local/share/opencode/tool-output/` directory, the evaluator may read only that managed output path and continue from the full result. It excludes diagnostic evaluator sessions and prefers each child's own history over an orchestrator summary. If an expanded listing still cannot recover a branch, only that branch remains `unverified`.
 
 The evaluator intentionally audits semantic decisions and instruction boundaries from the message/session record; raw tool-call traces are not required unless they are the only evidence that could establish a material decision.
 
@@ -370,7 +371,7 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.30-beta.md`](docs/releases/v30.30-beta.md) | Current release notes |
+| [`docs/releases/v30.31-beta.md`](docs/releases/v30.31-beta.md) | Current release notes |
 | [`docs/releases/v30.27-beta.md`](docs/releases/v30.27-beta.md) | `session-evaluator` introduction and compatibility notes |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Human-facing UI component MCP setup |
 | [`docs/uupm_setup.md`](docs/uupm_setup.md) | Human-facing UI UX Pro Max setup |
@@ -391,7 +392,7 @@ A release archive should verify at least:
   - retain a local reminder only when salience at that decision point materially reduces a known failure mode;
   - after any prompt change, rerun the same semantic regression fixtures;
 - agent/skill/install surfaces match the release manifest and unexpected runtime files are not introduced;
-- `session-evaluator` remains diagnostic, uses only OpenChamber `session.list`/`session.messages`, excludes evaluator sessions, and audits the identified parent workflow tree;
+- `session-evaluator` remains diagnostic, uses only OpenChamber `session.list`/`session.messages`, may read only OpenCode-managed `~/.local/share/opencode/tool-output/*` spill files for oversized results, excludes evaluator sessions, and audits the identified parent workflow tree;
 - installer scripts pass `bash -n`, preserve unrelated user/project files, and match their documented backup/overwrite behavior;
 - external/setup docs remain documentation only and are not required runtime policy;
 - vendored/adapted skill content retains source/license attribution;
@@ -401,7 +402,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.30 beta**  
+**OpenCode Agent Pack v30.31 beta**  
 Semantic routing · bounded orchestration · evidence-grounded verification
 
 </div>

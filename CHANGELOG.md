@@ -2,6 +2,16 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.31 beta
+
+- Makes `session-evaluator` request `session.list` with an explicit large limit before reconstructing the completed workflow tree; `all: true` is used only to include archived sessions.
+- Allows `session-evaluator` to read OpenCode-managed `~/.local/share/opencode/tool-output/*` spill files when large session results are materialized there.
+- Requires descendant discovery through `parentID` before treating child-session evidence as unavailable.
+- Reads each participating session with `session.messages` using `all: true` without incompatible `limit`/`last` selectors.
+- Marks only still-missing branches `unverified` instead of substituting orchestrator summaries for unavailable child histories.
+
+See [`docs/releases/v30.31-beta.md`](docs/releases/v30.31-beta.md).
+
 ## v30.30 beta
 
 - Replaces the package-owned `session_trace` wrapper with OpenChamber-native `session.list` and `session.messages` evidence collection in `session-evaluator`.

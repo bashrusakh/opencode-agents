@@ -29,6 +29,9 @@ permissions:
   - action: external_directory
     resource: "~/.config/opencode/*"
     effect: allow
+  - action: external_directory
+    resource: "~/.local/share/opencode/tool-output/*"
+    effect: allow
   - action: read
     resource: "~/.config/opencode/*"
     effect: deny
@@ -59,9 +62,9 @@ Treat every prior agent conclusion, assignment, review finding, test result, and
 
 Use the native OpenChamber `openchamber` tool only with the read-only actions `session.list` and `session.messages`. Do not use any other OpenChamber action.
 
-Reconstruct the completed workflow from the actual OpenChamber session history. List the relevant sessions, identify the current `session-evaluator` run and its parent `code-orchestrator` session from session metadata such as agent, `parentID`, recency, and status, then follow `parentID` relationships to include every participating descendant session. Exclude all `session-evaluator` diagnostic sessions from the audited workflow. If the parent workflow cannot be identified uniquely, mark the audit `unverified` rather than choosing one.
+Reconstruct the completed workflow from the actual OpenChamber session history. Start with `session.list` using `limit: 1000`, `all: true`, and `withStatus: true`. Here `limit` expands the default 10-session result; `all: true` includes archived sessions. Do not treat `all` as removing the list limit. Identify the current `session-evaluator` run and its parent `code-orchestrator` session from session metadata such as agent, `parentID`, recency, and status, then follow `parentID` relationships to include every participating descendant session. Exclude all `session-evaluator` diagnostic sessions from the audited workflow. If the parent workflow cannot be identified uniquely, mark the audit `unverified` rather than choosing one.
 
-Read the parent and every participating descendant with `session.messages`. Prefer a child's own history over the parent's summary of that child. Inspect enough history to recover the original request, material assignments, subagent conclusions, review/test findings, orchestrator decisions, and final workflow state. The audit is about decision boundaries and instruction compliance; do not require raw tool-call output when the message history already establishes the material decision or action.
+Read the parent and every participating descendant with `session.messages` using `all: true` and no `limit`, `last`, or `lastAssistant`. If OpenCode materializes a large OpenChamber result into its managed `~/.local/share/opencode/tool-output/` directory, read that output file and continue from the full result. Prefer a child's own history over the parent's summary of that child. Recover the original request, material assignments, subagent conclusions, review/test findings, orchestrator decisions, and final workflow state. If the expanded session listing is still incomplete, mark only the missing branch `unverified`; do not substitute the orchestrator's summary for unavailable child history. The audit is about decision boundaries and instruction compliance; do not require raw tool-call output when the message history already establishes the material decision or action.
 
 Use current project/global instruction files only to resolve a rule referenced by the session record; do not assume their current text governed an earlier action unless the session or repository evidence establishes that.
 

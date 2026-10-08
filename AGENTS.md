@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.30 beta**
+**Pack version: v30.31 beta**
 
 **These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
