@@ -2,6 +2,34 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.40
+
+- Promotes the validated v30.40 beta candidate to stable.
+- Updates the pack version marker and current-release documentation links to the stable `v30.40` / `docs/releases/v30.40.md` identity.
+
+See [`docs/releases/v30.40.md`](docs/releases/v30.40.md).
+
+## v30.40 beta
+
+- Relayers root policy using the Semantic Design Manual: global semantics stay in root; integration/procedural detail moves behind conditional skills.
+- Makes GrayMatter recall relevance-triggered rather than mandatory on every task and moves detailed tool mechanics to `graymatter-memory`.
+- Removes the static specialist/advisory catalog from root and uses runtime-exposed skill activation metadata.
+- Moves persistent-planning file-layout/procedure detail to `persistent-planning` while retaining the durable-state trigger/contract in root.
+- Narrows temporary `session-evaluator` instrumentation to terminal successful outcomes: satisfied session goal or final owned-PR readiness; it remains post-hoc and non-gating.
+- Condenses mutation-mechanism guidance to target-bounded, understood transformations plus diff/state inspection.
+- Bundled skill inventory is now 20 skills: 13 specialist/advisory and 7 workflow/policy skills.
+
+See [`docs/releases/v30.40-beta.md`](docs/releases/v30.40-beta.md).
+
+## v30.39 beta
+
+- Preserves the v30.38 claim-level authority and semantic-correspondence rules.
+- Adds compact user-facing workflow narration: Startup is the only routine pre-tool status, progress updates are material-only, and final/delegated reports omit routine narration and repeated context.
+- Withdraws the v30.37 predecessor/ancestor provenance expansion after the observed missing-history failure was traced to OpenChamber `session.messages(all:true)` pagination rather than missing ancestor authority.
+- Adds a semantic-design manual plus source-preservation audit for the developer references used to shape the pack.
+
+See [`docs/releases/v30.39-beta.md`](docs/releases/v30.39-beta.md).
+
 ## v30.38 beta
 
 - Makes user authority semantically bounded to the material proposition actually presented for decision.

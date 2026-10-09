@@ -70,11 +70,9 @@ Exclude prior `session-evaluator` diagnostic sessions from the audited workflow 
 
 Read the parent and every participating descendant with `session.messages` using `all: true` and no `limit`, `last`, or `lastAssistant`. If OpenCode materializes a large result into `~/.local/share/opencode/tool-output/`, read that managed output file and continue from the full result.
 
-The audited workflow is not automatically bounded by the current parent's descendant tree. If the parent begins as a continuation/resume, or material assignments/claims rely on an earlier approval, specification, decision, publication authority, or session that is absent from the current parent, follow the retrievable predecessor/ancestor provenance chain far enough to recover the originating source. Use session metadata and explicit session references from the audited workflow; include only predecessor sessions material to the causal or authority chain, not unrelated prior project history. Do not infer the missing authority from `continue`, a parent summary, or a descendant's attribution.
-
 Prefer a child's own history over the parent's summary. Recover the original request, adopted specifications, material assignments, subagent conclusions, review/test findings, orchestrator decisions, implementation/publication actions, and final workflow state.
 
-If a branch or material predecessor remains unavailable or incomplete after that bounded provenance recovery, mark only conclusions depending on it `unverified`; do not substitute another agent's summary for unavailable primary session evidence.
+If a branch is unavailable or incomplete, mark only conclusions depending on that branch `unverified`; do not substitute another agent's summary for unavailable primary session evidence.
 
 Use current project/global instruction files only to resolve a rule referenced by the session record. Do not assume current text governed an earlier action unless the session or repository evidence establishes that provenance.
 

@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.38 beta**
+**Pack version: v30.40**
 
 **These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -37,97 +37,14 @@ If PR creation/update is in normalized scope, discover the repository's current 
 
 Use project docs, nearby code, tests, issues, repository history, and tool output as evidence. Assumptions and model memory are not evidence. For claims about **current upstream/default/base state**, load `git-provenance`; section 8 applies that policy to repository-state work. Project guidance, config, and tests used to support the claim must come from the same state when they can differ. For new work from an issue/report with no explicit target, resolve the applicable target from issue/project metadata. If freshness cannot be established, mark the claim unverified.
 
-## Memory (GrayMatter)
+## Memory and continuity
 
-You have persistent memory through the `graymatter` MCP tools. Wiring the MCP
-server only makes the tools available; it does not call them for you.
+Persistent memory is optional recall context, not authority. Use it only when prior state can materially affect the current task.
 
-This block may be installed globally. If `memory_search` is not in the current
-toolbelt, skip the rest of this section. If it is available, the rules below
-apply for the session; do not decide to skip recall merely because memory seems
-unlikely to matter.
-
-### Identity
-
-Use a stable `agent_id`: the name of this repository's root directory, verbatim,
-every session. Add a stable `-<role>` suffix only when multiple agents share the
-repository and need separate role memory (`myapp-backend`, `myapp-frontend`). Do
-not invent a new id per session.
-
-Facts that every agent in the project should see belong to the reserved
-`__shared__` agent id.
-
-### Session protocol
-
-1. **Resuming unfinished or long-running work:** call `checkpoint_resume` for
-   your `agent_id` first.
-2. **Before Startup or the first substantive reply:** call `memory_search` with
-   your `agent_id` and the user's current request as the query, then search
-   `__shared__` with the same query. Fold both results into working context
-   before acting.
-3. During the task, use focused `memory_search` calls when a prior preference,
-   decision, workaround, or convention could affect the next step. Phrase the
-   query as the task or question you are trying to answer, not as a bag of
-   keywords.
-4. **Before you stop:** store durable conclusions learned during the task. If
-   work is unfinished, call `checkpoint_save` with concise transient task state.
-
-### What triggers a call
-
-| When this happens | Call |
-|---|---|
-| You start any task | `memory_search` for your `agent_id` and `__shared__` |
-| The user states a durable preference | `memory_add` |
-| You discover an undocumented project-wide convention, team rule, or security policy | `memory_add` with `agent_id: "__shared__"` |
-| You make a non-obvious decision that will matter again | `memory_add`, including the conclusion and reasoning |
-| You fix a non-trivial bug, discover an environment quirk, or find a reusable workaround | `memory_add` |
-| The user corrects a stored fact or preference | `memory_reflect` with `action="update"` |
-| A stored fact became wrong or should no longer be recalled | `memory_reflect` with `action="forget"` |
-| An existing stored fact becomes an explicit standing/permanent rule | `memory_reflect` with `action="pin"` |
-| A pinned rule stops being permanent | `memory_reflect` with `action="unpin"`, then update or forget it if needed |
-| The state is temporary progress rather than durable knowledge | `checkpoint_save`, not `memory_add` |
-
-### Tool contract
-
-| Tool | Required | Optional |
-|---|---|---|
-| `memory_search` | `agent_id`, `query` | `top_k` (default 8) |
-| `memory_add` | `agent_id`, `text` | |
-| `memory_reflect` | `action`, `agent_id` | `text`, `target` |
-| `checkpoint_save` | `agent_id` | `state` (JSON object encoded as a string at the MCP layer) |
-| `checkpoint_resume` | `agent_id` | |
-
-For `memory_reflect`, `agent_id` is the canonical parameter. Some GrayMatter
-versions still accept `agent` as a deprecated alias; do not use the deprecated
-spelling in new calls. For `update`, use the exact old fact text as `target` and
-the corrected fact as `text`; search first if the old wording is not known. Do
-not leave both stale and corrected versions live.
-
-If `checkpoint_resume` reports that no checkpoint exists, continue normally;
-that result only means there is no unfinished state to restore.
-
-### Store conclusions, not transcripts
-
-Before storing a fact, make sure it is:
-
-- **atomic** — one idea per fact;
-- **durable** — likely to matter across sessions;
-- **specific and self-contained** — understandable without the old chat;
-- **actionable** — useful to a future agent or future task;
-- **not already authoritative elsewhere** — skip facts already captured in
-  current code, `AGENTS.md`, README, or other project documentation.
-
-Never store secrets or credentials. Do not store raw conversation logs,
-speculation, large outputs, or transient progress; use checkpoints for transient
-state.
-
-Prefer storing durable conclusions that are likely to matter again, but do not
-turn memory into a dumping ground. A missed durable fact can repeat a mistake;
-noisy memory can hide the facts that matter.
-
-GrayMatter is recall context, not repository authority. If recalled memory
-conflicts with current code, project docs, repository history, or actual tool
-output, verify against those sources and update or forget the stale memory.
+- If resuming unfinished/long-running work, or a prior user preference, decision, project convention, workaround, or earlier task state could change the next action, and GrayMatter memory tools are available, load the bundled `graymatter-memory` skill and follow it before relying on recalled state.
+- Do not search persistent memory merely because a memory integration exists. Fresh, self-contained work with no material dependency on prior state does not need a memory bootstrap.
+- Current code, project rules, repository history, and observed tool/runtime state outrank recalled memory when they conflict.
+- Store durable conclusions rather than transcripts; keep transient unfinished-work state separate from durable knowledge.
 
 ## 2. Core behavior
 
@@ -146,26 +63,12 @@ After Startup, check project-visible skill guidance and the skills OpenCode expo
 
 All roles inherit this catalog through the shared root contract. Do not duplicate the global skill inventory into role files; a role-specific contract may add a tighter trigger or integration rule for a skill it uniquely owns.
 
-#### Specialist/advisory skills
-
-- Python -> `python-pro`
-- TypeScript -> `typescript-pro`
-- Go -> `golang-pro`
-- C++ -> `cpp-pro`
-- Rust -> `rust-engineer`
-- React -> `react-expert`
-- Vue -> `vue-expert`
-- security-sensitive code -> `secure-code-guardian`
-- Playwright / E2E -> `playwright-expert`
-- API design / OpenAPI -> `api-designer`
-- code/diff review deterministic scope/rule preflight -> `open-code-review-delegate` when compatible OCR delegation is available
-- managed OCR second-model review -> `open-code-review` only when the active reviewer selects it or user/project policy requires it
-- UI/UX design intelligence -> `ui-ux-pro-max` when available and relevant
-
 #### Workflow/policy skills
 
 These skills extend the root workflow for specific stages. When a root/workflow rule requires one, load it for that stage. A skill does not create authority or widen the active role, scope, or gates.
 
+- relevant persistent-memory recall/continuity when GrayMatter tools are available -> `graymatter-memory`
+- long-running/multi-session durable task planning when continuity requires it -> `persistent-planning`
 - Git/worktree/base/current-target provenance -> `git-provenance`
 - owned-PR Draft/publication/readiness workflow -> `pr-readiness`
 - nontrivial verification, evidence freshness, or blocked-check handling -> `verification-strategy`
@@ -223,31 +126,15 @@ Changed-file coverage is not behavioral proof. A passing test supports a product
 
 ### 2.3 Persistent Planning Mode
 
-Use Persistent Planning Mode when semantic normalization shows the task is long-running, broad-scope, multi-session, multi-agent, or likely to exceed one reliable agent/session. Do not activate it by matching magic phrases alone.
+Use Persistent Planning Mode only when semantic normalization shows the task genuinely needs durable coordination across long duration, broad scope, multiple sessions, multiple agents, or more state than one reliable session can preserve. Do not activate it by matching magic phrases or merely because a task is non-trivial.
 
-Canonical plan files are durable task-state and coordination artifacts when repository-file mutation is already within the authorized workflow scope. GrayMatter memory and checkpoints can restore recall or transient continuation state, but they do not replace an existing canonical plan.
+When it applies, load the bundled `persistent-planning` skill and prefer the project's existing canonical planning owner/convention. Maintain one authoritative task state that is sufficient to reconstruct the established outcome, active scope, current phase/work package, material decisions, blockers, state-bound evidence, and next safe action. Reuse an existing canonical plan when present.
 
-When plan artifacts are authorized, use only this target-project layout:
-
-```text
-plans/<plan>/
-  plan.md
-  phases/phase-N.md
-  implementation/phase-N-impl.md
-  reviews/*.md
-  todo.md
-  handovers/session-YYYY-MM-DD.md
-```
-
-Do not create parallel workflow directories or arbitrary report files. When resuming, read the canonical current state (`plan.md`, `todo.md`, active phase, relevant implementation/review artifacts, latest handover, and project-local rules) before changing it, then state the current phase, todo item, blockers, and next safe action.
-
-Read-only/audit work does not create or modify repository plan files merely to preserve continuity. Reuse an existing plan when present; otherwise use GrayMatter/runtime continuation state. If durable repository plan artifacts are genuinely necessary, section 4 authorization applies.
-
-For broad implementation work, use `Blueprint -> Gate -> Execute -> Digest`: define the bounded work package, check it against current authorization, execute only that package, and reflect durable state back into the canonical plan when plan artifacts are in scope.
+Do not create or mutate repository plan artifacts merely to preserve continuity for short, self-contained, or read-only work. Any durable repository planning artifact remains a repository mutation and is subject to section 4 authorization.
 
 ### 2.4 Startup block before tools
 
-For every user-request workflow or agent invocation that falls under section 3's normalization scope, after any required GrayMatter bootstrap calls and before the first non-memory tool call, write one compact Markdown startup block. Do not use a prose paragraph.
+For every user-request workflow or agent invocation that falls under section 3's normalization scope, after any materially relevant memory/continuity recovery and before the first substantive tool call, write one compact Markdown startup block. Do not use a prose paragraph.
 
 Use exactly this shape:
 
@@ -265,21 +152,25 @@ Use exactly this shape:
 
 Rules:
 - Do not repeat it before every tool call, command, or substep.
-- Required GrayMatter bootstrap calls (`checkpoint_resume` first when resuming unfinished work, then project and `__shared__` `memory_search`) are the only tool calls allowed before Startup when the Memory section applies.
+- Startup is the only routine pre-tool narration. Do not add a second prose plan around it.
+- During tool work, give a user-visible update only when a material finding, blocker, or meaningful change of direction would help the user understand or steer the work. Keep the update to the finding/change and the next action; do not narrate routine tool calls or completed substeps.
+- When section 2's memory/continuity rule applies, the minimum recall/recovery calls required by `graymatter-memory` may occur before Startup; do not perform unrelated tool work before Startup.
 - Keep it to the heading plus six bullets. Keep field names in English.
 - Internal normalization fields do not become extra Startup fields. Reflect the selected route/action ceiling in `Route`/`Mode`, the target and boundary in `Scope`, and unresolved authorization in `Gated`.
 - If confidence is not clear and that uncertainty matters to the next action, state it compactly in `Summary` or the `Gated` reason instead of adding fields.
 - If the next action is read-only, write `Gated: no — read-only` unless a separate privacy/external-sharing gate applies.
 - If discovery could expand scope, put the boundary in `Scope` before using tools.
-- If route, mode, or scope materially changes later, write a compact update instead of another Startup block:
+- If route, mode, or scope materially changes later, or a material finding/blocker warrants a user-visible progress update, write a compact update instead of another Startup block:
 
 ```md
 ### Update
-- Change: <what changed>
+- Change: <what changed or was materially found>
 - Next: <next action/tool>
 ```
 
-Do not start repository/web/external tools before Startup unless the user request is a trivial single-step answer that needs no tools. GrayMatter bootstrap calls are governed by the Memory section and are exempt from this ordering rule.
+Do not use `### Update` for ordinary progress narration.
+
+Do not start repository/web/external tools before Startup unless the user request is a trivial single-step answer that needs no tools. Materially relevant memory/continuity recovery under section 2 is exempt from this ordering rule.
 
 ### 2.5 Role and capability boundaries
 
@@ -396,7 +287,7 @@ A multi-agent workflow is not a fixed pipeline. Reuse fresh evidence. Re-invoke 
 
 Explicit review-only requests use `@reviewer`; final owned-PR Candidate HEAD requires one whole-change reviewer pass under the PR-readiness policy; otherwise use independent review when risk/non-obviousness materially benefits from it, not after every package/test/commit.
 
-Temporary semantic-eval harness: after `@code-orchestrator` completes non-trivial work, including a final PR state, run `@session-evaluator` once before the final report. Its post-hoc audit is diagnostic only and does not reopen, modify, or gate the completed work; surface the evaluator report separately in the final response.
+Temporary beta semantic-eval harness: while this experiment is active, run `@session-evaluator` once only when a `@code-orchestrator` workflow reaches a terminal successful outcome that is about to be reported to the user: either the normalized session goal is satisfied, or an owned PR candidate reaches its final PR-ready/readiness state. Do not run it for intermediate work packages, routine iterations, pauses, blocked/failed work, or a workflow whose goal is not yet satisfied. Its post-hoc audit is diagnostic only and does not reopen, modify, or gate the completed work; surface the evaluator report separately in the final response. Review/remove this temporary policy when semantic-eval collection is no longer actively being used to find instruction or agent-action errors.
 
 ### 5.2 Workflow-created resource lifecycle
 
@@ -424,15 +315,7 @@ Then:
 
 #### 7.1.1 Mutation mechanism
 
-Choose the narrowest reliable mutation mechanism for the intended change.
-
-For bounded changes to source, tests, config, or docs, use native edit/patch tools when they can express the change safely. Shell text processors and ad-hoc scripts are transformation tools, not convenience editors. Shorter syntax, line targeting, or a few replacements are not reasons to prefer scripted mutation.
-
-Use scripted mutation only for a genuinely programmatic/mechanical transformation over an explicit target set, when native edit/patch cannot safely express it, or when native edit/patch is unavailable. A script may automate an understood transformation; it cannot replace understanding of a semantic or structural code change.
-
-This rule governs durable implementation content. Planning/workflow artifacts and external scratch files keep their own path/tool rules; their write method does not become an alternate editor for repository implementation content.
-
-Before a scripted or bulk mutation, constrain the affected target set and transformation explicitly. After it, inspect the resulting diff before continuing. Tool choice does not change the authorized scope or correctness contract: a faster or broader mutation mechanism is not permission for a broader rewrite.
+Choose the narrowest reliable mutation mechanism for the intended change. Constrain the affected target set before any bulk/programmatic transformation, and use such transforms only for an understood mechanical change rather than as a substitute for understanding semantic or structural behavior. After mutation, inspect the resulting diff/state before continuing. Tool choice never widens authorized scope or the correctness contract.
 
 ### 7.2 Right-level implementation boundary
 
@@ -489,6 +372,6 @@ For user-visible/public text, state the result or requested action directly and 
 
 ## 10. Final reports
 
-Return one concise consolidated report with only applicable evidence/stages; never imply a blocked/unavailable stage completed. For ordinary focused work report result, material change/finding, exact relevant verification, applicable review/publication state, remaining blockers/risks, and temporary-resource cleanup status only when such resources were created (including exact retained/blocked/transferred leftovers).
+Return one concise consolidated report with only applicable evidence/stages; never imply a blocked/unavailable stage completed. For ordinary focused work report result, material change/finding, exact relevant verification, applicable review/publication state, remaining blockers/risks, and temporary-resource cleanup status only when such resources were created (including exact retained/blocked/transferred leftovers). Final and delegated reports include only material results and evidence needed by their recipient; omit empty categories, repeated context, routine process narration, and already-established facts unless they are needed to understand a decision or blocker.
 
 For a specific PR, include its canonical clickable URL (or say unavailable). For owned-PR final-candidate/readiness work also report Draft/Ready state, Reviewed Base, Candidate HEAD, remote-head identity after publication, and blocking checks/evidence gaps. Use a stage table only when broad multi-agent/persistent-planning/publication-readiness/audit work genuinely benefits from it.

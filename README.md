@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.38 beta
+# OpenCode Agent Pack v30.40
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
 
@@ -13,14 +13,16 @@
 
 ---
 
-## What changed in v30.38 beta
+## What changed in v30.40
 
-- Tightens claim-level authority so a user decision cannot silently acquire independently choosable semantics from labels, option descriptions, summaries, or handoffs.
-- Requires semantic correspondence across orchestration: material deltas need their own authority, necessary-consequence basis, or explicit unresolved status.
-- Keeps partial/conditional/fallback outcomes qualified and prevents a weaker permitted path from replacing a viable stronger established outcome without a blocker or separate authority.
-- Extends `code-orchestrator`, `semantic-checkpoint`, and `session-evaluator` at their distinct decision points without duplicating the full root rule.
+- Relayers the root instruction against the Semantic Design Manual: global semantic invariants stay in permanent context and conditional integration/procedure detail moves behind skills.
+- Makes GrayMatter recall relevance-triggered instead of mandatory on every task; detailed memory mechanics move to `graymatter-memory`.
+- Removes the static specialist/advisory skill routing table from root and relies on the actually exposed skill catalog/activation metadata.
+- Keeps the durable-planning trigger and state contract in root while moving the default file layout/procedure to `persistent-planning`.
+- Narrows temporary `session-evaluator` diagnostic instrumentation to terminal successful outcomes: satisfied session goal or final owned-PR readiness.
+- Condenses mutation-tool policy to the semantic invariant: narrow target, understood transform, inspect resulting state/diff, no scope widening.
 
-See [`docs/releases/v30.38-beta.md`](docs/releases/v30.38-beta.md).
+See [`docs/releases/v30.40.md`](docs/releases/v30.40.md).
 
 ---
 
@@ -153,23 +155,9 @@ Managed OCR is not a universal Ready gate and review-only workflows do not auto-
 
 ## Persistent planning
 
-Persistent planning is for work that genuinely needs durable coordination across broad scope, phases, agents, or sessions.
+Persistent planning is for work that genuinely needs durable coordination across broad scope, phases, agents, or sessions. Root keeps only the trigger and durable-state contract; when persistent planning applies, load `persistent-planning` and prefer the project's existing planning convention before the pack default.
 
-When repository plan artifacts are authorized, `project-planner` uses:
-
-```text
-plans/<plan>/
-  plan.md
-  phases/phase-N.md
-  implementation/phase-N-impl.md
-  reviews/*.md
-  todo.md
-  handovers/session-YYYY-MM-DD.md
-```
-
-`project-planner` is intentionally separate from OpenCode's built-in `plan` agent so repository planning writes do not depend on the built-in plan agent's restricted edit policy.
-
-Read-only audits do not create repository plan files merely to maintain agent state.
+`project-planner` is intentionally separate from OpenCode's built-in `plan` agent so repository planning writes do not depend on the built-in plan agent's restricted edit policy. Read-only audits do not create repository plan files merely to maintain agent state.
 
 ---
 
@@ -181,7 +169,7 @@ The pack currently uses two separate semantic roles because they answer differen
 
 Each checkpoint evaluation runs in a **fresh child session**. A re-check after new evidence or a materially revised candidate does not continue the previous checkpoint conversation; the new child reconstructs the current decision from authoritative task/session evidence. More generally, the pack reuses a child session only for deliberate continuation of the same specialist-owned assignment, not merely because the same role is called again.
 
-`session-evaluator` remains a **post-hoc diagnostic** after non-trivial `code-orchestrator` work completes. It classifies confirmed findings as:
+`session-evaluator` remains a **post-hoc diagnostic** and, while the temporary semantic-eval experiment is active, runs once only when `code-orchestrator` reaches a terminal successful outcome about to be reported: the normalized session goal is satisfied or an owned PR candidate reaches final readiness. It classifies confirmed findings as:
 
 - `instruction-violation`
 - `instruction-ambiguity`
@@ -209,7 +197,7 @@ For workflows covered by the root Startup rule, the active agent emits one compa
 - Next: <next action/tool>
 ```
 
-A material route/mode/scope change uses a compact `### Update`; Startup is not repeated before every tool call.
+Startup is the only routine pre-tool narration. A material finding, blocker, or route/mode/scope change may use a compact `### Update`; ordinary tool use and completed substeps are not narrated. Final reports lead with the result and include only material evidence needed by the recipient.
 
 ### GrayMatter memory
 
@@ -266,14 +254,15 @@ The pack ships no custom slash commands. Natural-language routing is owned by `A
 
 ```text
 api-designer          cpp-pro                  git-provenance
-golang-pro            open-code-review         open-code-review-delegate
-output-formatting     playwright-expert        pr-readiness
-python-pro            react-expert             resource-lifecycle
-rust-engineer         secure-code-guardian     typescript-pro
-ui-ux-pro-max         verification-strategy    vue-expert
+golang-pro            graymatter-memory        open-code-review
+open-code-review-delegate output-formatting     persistent-planning
+playwright-expert      pr-readiness             python-pro
+react-expert           resource-lifecycle       rust-engineer
+secure-code-guardian   typescript-pro           ui-ux-pro-max
+verification-strategy vue-expert
 ```
 
-**Count:** 18 skills. Skills are conditional/procedural guidance and remain subordinate to root/project authority, role boundaries, and gates.
+**Count:** 20 skills. Skills are conditional/procedural guidance and remain subordinate to root/project authority, role boundaries, and gates.
 
 ### External integrations
 
@@ -372,7 +361,9 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.37-beta.md`](docs/releases/v30.37-beta.md) | Current release notes |
+| [`docs/releases/v30.40.md`](docs/releases/v30.40.md) | Current release notes |
+| [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) | Method for turning developer guidance and traces into durable semantic rules |
+| [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) | Source → generalized rule → reverse-action preservation audit |
 | [`docs/releases/v30.32-beta.md`](docs/releases/v30.32-beta.md) | Claim-authority clarification |
 | [`docs/releases/v30.27-beta.md`](docs/releases/v30.27-beta.md) | `session-evaluator` introduction and compatibility notes |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Human-facing UI component MCP setup |
@@ -384,7 +375,7 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 
 A release archive should verify at least:
 
-- exactly **17 agents**, **18 skills**, zero package custom commands, and zero package custom tools;
+- exactly **17 agents**, **20 skills**, zero package custom commands, and zero package custom tools;
 - valid agent frontmatter and no provider-specific `model:` overrides;
 - every current role reference resolves and obsolete package-owned `plan.md` does not remain active after upgrade;
 - root stays below the pack's `<50 KiB` target;
@@ -398,7 +389,9 @@ A release archive should verify at least:
 - `semantic-checkpoint` remains read-only/non-implementing, gates only material pre-mutation semantic decisions, runs each verdict in a fresh child session, and does not classify instruction failures or require post-mutation proof before edits;
 - `code-orchestrator` treats `proceed` as candidate-specific authorization, preserves optional mechanisms as implementation choices, keeps `hold`/`unverified` blocked until their stated blockers are materially addressed, does not re-run an unchanged blocked candidate for verdict-shopping, and never continues a prior checkpoint child for a new verdict;
 - `session-evaluator` remains post-hoc/diagnostic, uses only OpenChamber `session.list`/`session.messages`, keeps `unverified` separate from finding classes, treats checkpoint verdicts only as gate-control evidence, and audits the original decision path independently;
-- provenance absence is not inferred from a resumed/current parent alone: checkpoint/evaluator follow only material retrievable predecessor lineage when the active workflow depends on earlier authority or evidence;
+- runtime retrieval defects are not patched with broader semantic session crawling: checkpoint/evaluator use their documented parent/participating-session evidence boundary, and OpenChamber pagination defects belong in the runtime;
+- Startup/update/final communication remains compact: no duplicate prose plan around Startup, no routine tool narration, and no empty/repeated report sections;
+- the semantic design manual remains documentation rather than runtime policy, and its source-preservation audit still derives the tracked developer actions after abstraction;
 - installer scripts pass `bash -n`, preserve unrelated user/project files, and match their documented backup/overwrite behavior;
 - external/setup docs remain documentation only and are not required runtime policy;
 - vendored/adapted skill content retains source/license attribution;
@@ -408,7 +401,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.38 beta**  
+**OpenCode Agent Pack v30.40**  
 Semantic routing · bounded orchestration · evidence-grounded verification
 
 </div>
