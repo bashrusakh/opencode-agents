@@ -66,9 +66,15 @@ A technically plausible candidate is not automatically implementation-ready. A s
 
 For session evidence, use only OpenChamber's read-only `session.list` and `session.messages`; no other OpenChamber action is allowed.
 
-Identify the current `semantic-checkpoint` run and its parent `code-orchestrator` session from session metadata. Inspect the parent session and the participating descendant sessions that supplied evidence for the candidate decision.
+Start session discovery with `session.list` using an explicit large limit (normally `1000`), `all: true`, and `withStatus: true`. Do not treat OpenChamber's default-limited session result as the complete workflow tree. Identify the current `semantic-checkpoint` run and its parent `code-orchestrator` session from session metadata, then use `parentID` relationships to distinguish participating descendants from unrelated sibling sessions in the same directory. Do not use recency alone to decide which descendant branches can contain material evidence.
 
-Read enough of those sessions to reconstruct:
+Before concluding that historical user authority or adoption is absent, read the parent session's complete text-bearing user history with `session.messages` using `role: user`, `all: true`, and no `limit`, `last`, or `lastAssistant`. Read enough current parent context to reconstruct the candidate decision and proposed handoff. If the complete parent history is materially needed to resolve chronology or provenance, read it with `all: true` rather than relying on a bounded recent window.
+
+Inspect participating descendant sessions that materially supplied evidence for the candidate decision. Prefer each child's own history over the parent's summary. For a bounded child whose evidence is material, read `session.messages` with `all: true` and no incompatible `limit`, `last`, or `lastAssistant`; if a material claim points to another earlier participating branch, follow that branch before declaring the evidence unavailable. Listing the whole tree does not require reading unrelated sessions merely for completeness.
+
+If a complete-history request fails because `all` was combined with `limit`, `last`, or `lastAssistant`, retry with `all: true` and without those mutually exclusive selectors. Do not fall back to a bounded read and then infer that older authority or evidence is absent. If OpenCode materializes a large result into `~/.local/share/opencode/tool-output/`, read the managed output file and continue from the full result.
+
+Read enough of the recovered workflow to reconstruct:
 
 1. the authoritative task and any adopted specification;
 2. the discovery assignments;
@@ -76,9 +82,9 @@ Read enough of those sessions to reconstruct:
 4. the parent's current candidate decision;
 5. the edit-capable handoff that would follow if the checkpoint passes.
 
-Prefer each child's own history over the parent's summary. Exclude prior `semantic-checkpoint` and `session-evaluator` diagnostic sessions from evidence used to justify the candidate.
+Exclude prior `semantic-checkpoint` and `session-evaluator` diagnostic sessions from evidence used to justify the candidate.
 
-If the parent session, candidate decision, governing instructions, or a materially relevant evidence branch cannot be identified sufficiently, return `unverified`. Do not fill missing evidence from model memory, later sessions, or hindsight.
+If the parent session, candidate decision, governing instructions, or a materially relevant evidence branch still cannot be identified after exhausting the relevant retrievable history, return `unverified`. Do not fill missing evidence from model memory, later sessions, hindsight, or a stronger restatement of the same unsupported claim. A parent summary that says the user approved something does not substitute for retrievable primary authority when that provenance is material.
 
 When a relevant child history shows the inspection or concrete source basis for a factual finding, treat that finding as evidence; do not repeat repository inspection merely because you did not perform it yourself. Distinguish factual evidence from the child's recommendation about what should be required or implemented. A report-only assertion whose basis cannot be recovered may remain `unverified`, and a recommendation does not become authority because a specialist returned it.
 
