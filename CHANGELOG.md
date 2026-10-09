@@ -2,6 +2,22 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.43 beta
+
+- Consolidates Markdown, brevity, and outcome-first writing rules under the root communication owner and removes duplicate generic formatting rules from `output-formatting`.
+- Reduces `code-orchestrator` material-decision visibility text to a role-specific application of the root contract.
+- Deduplicates repeated authority/evidence wording in gates, delegation, and regression guidance without removing their local behavioral consequences.
+
+See [`docs/releases/v30.43-beta.md`](docs/releases/v30.43-beta.md).
+
+## v30.42 beta
+
+- Makes material decisions derived from new evidence visible before consequential downstream work while keeping routine execution narration suppressed.
+- Requires concise, readable Markdown for free-form agent communication, including specialist assignments and handoffs, unless the destination requires another format.
+- Extends session-evaluator diagnostics to detect silent material decision adoption from tool/specialist evidence.
+
+See [`docs/releases/v30.42-beta.md`](docs/releases/v30.42-beta.md).
+
 ## v30.41 beta
 
 - Passes already-known current/participating session IDs from `code-orchestrator` into session-aware read-only judgments.

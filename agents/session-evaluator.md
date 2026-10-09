@@ -95,6 +95,7 @@ For each material decision or delegated claim:
 - compare each subagent assignment with the authority and scope the parent actually had;
 - check whether the subagent stayed inside its role and assignment;
 - check whether the parent reconciled returned evidence rather than adopting it as authority;
+- check whether new evidence materially determined downstream work and the orchestrator made the resulting decision state and relevant basis visible before acting on it; a visible task/tool row is not decision visibility, while evidence that merely confirms an already-visible path does not require another update;
 - identify unauthorized narrowing or strengthening of required behavior, scope, ownership, fix level, product semantics, or gated authority;
 - trace downstream work back to the earliest material divergence instead of blaming later work that was locally reasonable under an inherited bad premise.
 

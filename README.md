@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.41 beta
+# OpenCode Agent Pack v30.43 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
 
@@ -13,13 +13,13 @@
 
 ---
 
-## What changed in v30.41 beta
+## What changed in v30.43 beta
 
-- Adds an evidence-handoff contract for session-aware delegated judgments: `code-orchestrator` passes exact current/participating session IDs when they are already known.
-- `semantic-checkpoint` and `session-evaluator` use supplied IDs directly and do not call `session.list` merely to rediscover them.
-- Keeps `session.list` as fallback only for missing session identities or parent/child relationships needed to reconstruct the material workflow evidence.
+- Restores outcome-first/plain-language wording to the canonical root communication contract while keeping Markdown and brevity globally owned there.
+- Removes duplicate generic Markdown/verbosity rules from `output-formatting` and duplicate material-decision wording from `code-orchestrator`; those layers now keep only their destination/role-specific consequences.
+- Converts repeated authority/evidence statements in gates, delegation, and regression guidance into explicit references to the canonical claim-authority section while preserving their local gate/delegation/test semantics.
 
-See [`docs/releases/v30.41-beta.md`](docs/releases/v30.41-beta.md).
+See [`docs/releases/v30.43-beta.md`](docs/releases/v30.43-beta.md).
 
 ---
 
@@ -358,7 +358,7 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.41-beta.md`](docs/releases/v30.41-beta.md) | Current release notes |
+| [`docs/releases/v30.43-beta.md`](docs/releases/v30.43-beta.md) | Current release notes |
 | [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) | Method for turning developer guidance and traces into durable semantic rules |
 | [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) | Source → generalized rule → reverse-action preservation audit |
 | [`docs/releases/v30.32-beta.md`](docs/releases/v30.32-beta.md) | Claim-authority clarification |
@@ -398,7 +398,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.41 beta**  
+**OpenCode Agent Pack v30.43 beta**  
 Semantic routing · bounded orchestration · evidence-grounded verification
 
 </div>

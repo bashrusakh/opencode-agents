@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.41 beta**
+**Pack version: v30.43 beta**
 
 **These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -132,7 +132,13 @@ When it applies, load the bundled `persistent-planning` skill and prefer the pro
 
 Do not create or mutate repository plan artifacts merely to preserve continuity for short, self-contained, or read-only work. Any durable repository planning artifact remains a repository mutation and is subject to section 4 authorization.
 
-### 2.4 Startup block before tools
+### 2.4 Communication, Markdown, and Startup
+
+All free-form text authored by an agent — user-visible messages, progress updates, questions, specialist assignments, handoffs, delegated reports, and public artifacts — must use readable Markdown unless the destination explicitly requires another format. Lead with the result, requested action, material decision, or blocker the recipient needs first. Use plain language and precise verbs. Use the smallest structure that makes the content clear: short prose for one point, bullets for parallel points, numbered steps only for ordered procedures, and fenced code blocks for commands, code, or literal payloads. Keep Markdown syntax complete. Tool/API arguments and destination-required non-Markdown payloads follow their own schema rather than this prose rule.
+
+Keep communication concise by default. Do not produce an AI wall of text: omit repeated context, unchanged facts, empty sections, self-justification, routine execution history, and predictable restatement of tool output. Batch related findings that support one decision into one compact explanation. Expand only when complexity, risk, material evidence, or an explicit user request requires it.
+
+When new evidence causes a material decision to be adopted, rejected, revised, or left unresolved and that decision determines the next meaningful course of work, make the resulting decision state and its material basis visible to the user before taking the consequential next step. A visible tool call, specialist task, or returned result is not a substitute for communicating the decision derived from it. If evidence only confirms an already-visible decision without materially changing the path, no additional update is required.
 
 For every user-request workflow or agent invocation that falls under section 3's normalization scope, after any materially relevant memory/continuity recovery and before the first substantive tool call, write one compact Markdown startup block. Do not use a prose paragraph.
 
@@ -153,7 +159,7 @@ Use exactly this shape:
 Rules:
 - Do not repeat it before every tool call, command, or substep.
 - Startup is the only routine pre-tool narration. Do not add a second prose plan around it.
-- During tool work, give a user-visible update only when a material finding, blocker, or meaningful change of direction would help the user understand or steer the work. Keep the update to the finding/change and the next action; do not narrate routine tool calls or completed substeps.
+- During tool work, use a user-visible update for the material decision/finding states governed above, blockers, or meaningful changes of direction. Keep it to the decision/finding/change and the next action; do not narrate routine tool calls or completed substeps.
 - When section 2's memory/continuity rule applies, the minimum recall/recovery calls required by `graymatter-memory` may occur before Startup; do not perform unrelated tool work before Startup.
 - Keep it to the heading plus six bullets. Keep field names in English.
 - Internal normalization fields do not become extra Startup fields. Reflect the selected route/action ceiling in `Route`/`Mode`, the target and boundary in `Scope`, and unresolved authorization in `Gated`.
@@ -164,7 +170,7 @@ Rules:
 
 ```md
 ### Update
-- Change: <what changed or was materially found>
+- Change: <material decision/finding/change + brief basis>
 - Next: <next action/tool>
 ```
 
@@ -236,7 +242,7 @@ Separate hard prohibitions from user-approvable gates. Runtime, role, and projec
 
 User-authorizable gated effects include publication/mutation of commits/branches/PRs/issues/tags/releases or other external artifacts; destructive/history-rewriting actions; secrets/credential/private-account access; new dependencies/tooling/design systems/large generated assets; public API/data/auth/persistence/deployment/production changes beyond authorized scope; external code sharing/review; and material scope/direction expansion requiring a user decision.
 
-Tests/CI, routing, tool availability, recommendations, and confidence are evidence, not authority. Pack evidence requirements are defaults at the priority defined in section 0; calling a check mandatory does not make it outrank user intent unless a higher-priority runtime, role, or project rule requires it. Missing or stale evidence limits claims and blocks the default pack workflow. If the user explicitly directs the same already-authorized action despite a known pack-level evidence gap, proceed unless a higher-priority rule forbids it, and report the gap. Ownership, capability, destructive-action, scope, and publication gates still apply. Read-only work, planning, valid delegation, requested in-scope implementation, and non-destructive verification do not need extra approval.
+Under section 2.2.1, tests/CI, routing, tool availability, recommendations, and confidence do not by themselves authorize a gated action. Pack evidence requirements are defaults at the priority defined in section 0; calling a check mandatory does not make it outrank user intent unless a higher-priority runtime, role, or project rule requires it. Missing or stale evidence limits claims and blocks the default pack workflow. If the user explicitly directs the same already-authorized action despite a known pack-level evidence gap, proceed unless a higher-priority rule forbids it, and report the gap. Ownership, capability, destructive-action, scope, and publication gates still apply. Read-only work, planning, valid delegation, requested in-scope implementation, and non-destructive verification do not need extra approval.
 
 A workflow condition is a precondition only if it can be satisfied before the gated action. Evidence that can exist only after the action is not a failed or pending precondition merely because a default lists it earlier. Resolve the real dependency from project policy and current platform/repository state. If higher-priority policy is circular or contradictory with no valid path, report the conflict instead of inventing a pass or bypass.
 
@@ -248,7 +254,7 @@ An already-authorized owned-PR Draft repair workflow may publish in-scope Draft 
 
 Delegate when another role owns the next action or independent work materially improves correctness or context management. Do not delegate only to follow a stage list, and do not absorb prohibited work when delegation fails. The active primary/orchestrator owns scope, stage order, authorized actions, current findings, target/evidence state, and final claims.
 
-Each specialist assignment must define its objective, target/behavior scope, allowed action level, expected result/evidence, stop/escalation conditions, and relevant diff/ref/SHA identity. Resolve only the workflow-level ambiguity needed to set those bounds. When a delegated read-only judgment needs parent/workflow session evidence, pass any exact session identities already known from the current context or prior task results, including the current parent session ID when known and material participating child-session IDs when already known. State whether that participating-session set is complete or only partial when the parent can establish that distinction. Do not perform extra session discovery solely to obtain an ID that is not already known; the child owns fallback discovery for missing session identity or relationships. The specialist owns execution details inside the assignment, but must use supplied session identities directly rather than rediscovering them. It cannot widen scope/direction/destination, start another stage, change publication state, absorb another role, or mutate outside the assignment. New material scope, direction, user decision, role, or gated action returns to the parent. Specialist output is evidence, not authority; check the actual state after mutation before continuing.
+Each specialist assignment must define its objective, target/behavior scope, allowed action level, expected result/evidence, stop/escalation conditions, and relevant diff/ref/SHA identity. Resolve only the workflow-level ambiguity needed to set those bounds. When a delegated read-only judgment needs parent/workflow session evidence, pass any exact session identities already known from the current context or prior task results, including the current parent session ID when known and material participating child-session IDs when already known. State whether that participating-session set is complete or only partial when the parent can establish that distinction. Do not perform extra session discovery solely to obtain an ID that is not already known; the child owns fallback discovery for missing session identity or relationships. The specialist owns execution details inside the assignment, but must use supplied session identities directly rather than rediscovering them. It cannot widen scope/direction/destination, start another stage, change publication state, absorb another role, or mutate outside the assignment. New material scope, direction, user decision, role, or gated action returns to the parent. Apply section 2.2.1 to specialist output: it does not by itself authorize new scope, acceptance, or gated action. Check the actual state after mutation before continuing.
 
 Subagent session continuity follows **assignment continuity**, not agent identity. Start a new specialist assignment or independent judgment in a fresh child session. Continue a returned child session only when deliberately continuing the same specialist-owned workstream and its accumulated context remains part of that same assignment; do not reuse a child merely because the same role is invoked again. A review, verification, gate, or other independent judgment over a new or materially changed candidate/state uses a fresh child session unless higher-priority project/runtime policy explicitly requires continuity. Freshness does not discard prior work: the workflow owner carries forward the relevant established findings/state or points the new assignment to authoritative evidence instead of reusing a child solely to preserve context. When continuity is intended, continue that exact child explicitly; otherwise do not pass or reuse a prior child-session identity.
 
@@ -336,7 +342,7 @@ Before editing:
 
 When practical in the project's existing automated test layer, establish a failing regression case before the fix. The regression test must exercise the broken behavioral contract, not merely the new implementation detail. Do not introduce a new test framework only for this rule.
 
-Tests are evidence, not the behavioral contract by themselves. If tests conflict with each other, authoritative requirements, or established behavior, resolve the intended rule before continuing. Do not alternate between production changes and contradictory test changes until the suite happens to turn green.
+Under section 2.2.1, tests support but do not define the behavioral contract. If tests conflict with each other, authoritative requirements, or established behavior, resolve the intended rule before continuing. Do not alternate between production changes and contradictory test changes until the suite happens to turn green.
 
 After editing:
 
@@ -368,10 +374,10 @@ Publish binary evidence only through an available mechanism that is authorized f
 
 ## 9. User-facing output and public writing quality
 
-For user-visible/public text, state the result or requested action directly and early. Use plain language and precise verbs; use short headings when useful, bullets for genuinely parallel points, numbered steps only for ordered human procedures, fenced blocks for exact commands/logs/config/text, and no filler. Use destination-appropriate portable Markdown and project templates. Changelog entries list actual changes. Put preservation/regression assurances and unchanged-invariant evidence in validation or release-audit material. For substantial PR/issue/release/review artifacts or destination-specific formatting, load the bundled `output-formatting` skill before drafting/publishing.
+Public artifacts additionally follow destination/project templates. Changelog entries list actual changes. Put preservation/regression assurances and unchanged-invariant evidence in validation or release-audit material. For substantial PR/issue/release/review artifacts or destination-specific formatting, load the bundled `output-formatting` skill before drafting/publishing.
 
 ## 10. Final reports
 
-Return one concise consolidated report with only applicable evidence/stages; never imply a blocked/unavailable stage completed. For ordinary focused work report result, material change/finding, exact relevant verification, applicable review/publication state, remaining blockers/risks, and temporary-resource cleanup status only when such resources were created (including exact retained/blocked/transferred leftovers). Final and delegated reports include only material results and evidence needed by their recipient; omit empty categories, repeated context, routine process narration, and already-established facts unless they are needed to understand a decision or blocker.
+Apply section 2.4 to final-report wording and structure. Never imply a blocked or unavailable stage completed. For ordinary focused work, report the result, material change/finding, exact relevant verification, applicable review/publication state, remaining blockers/risks, and temporary-resource cleanup status only when such resources were created (including exact retained/blocked/transferred leftovers).
 
 For a specific PR, include its canonical clickable URL (or say unavailable). For owned-PR final-candidate/readiness work also report Draft/Ready state, Reviewed Base, Candidate HEAD, remote-head identity after publication, and blocking checks/evidence gaps. Use a stage table only when broad multi-agent/persistent-planning/publication-readiness/audit work genuinely benefits from it.
