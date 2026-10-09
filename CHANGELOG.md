@@ -2,6 +2,14 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.41 beta
+
+- Passes already-known current/participating session IDs from `code-orchestrator` into session-aware read-only judgments.
+- Makes `semantic-checkpoint` and `session-evaluator` consume supplied IDs directly and use `session.list` only to resolve missing session identity or parent/child relationships.
+- Removes unconditional full-session-list discovery from those active evidence contracts.
+
+See [`docs/releases/v30.41-beta.md`](docs/releases/v30.41-beta.md).
+
 ## v30.40
 
 - Promotes the validated v30.40 beta candidate to stable.

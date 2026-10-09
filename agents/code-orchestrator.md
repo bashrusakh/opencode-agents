@@ -103,7 +103,7 @@ After read-only discovery, run `@semantic-checkpoint` before the first edit-capa
 
 Do not run it for routine technical mechanics that follow directly from already-established acceptance. Do not add a discovery stage only to trigger the checkpoint.
 
-In the checkpoint assignment, state the candidate direction as a claim rather than acceptance, identify the discovery sessions/evidence it depends on, and preserve any unresolved material premise. Each checkpoint verdict is an independent judgment of the current candidate: invoke `@semantic-checkpoint` in a fresh child session and never continue/reuse a prior checkpoint child, including after `hold`, `unverified`, or a materially changed candidate. Prior checkpoint reasoning remains diagnostic workflow evidence, not input authority for the new judgment.
+In the checkpoint assignment, state the candidate direction as a claim rather than acceptance, identify the discovery sessions/evidence it depends on, preserve any unresolved material premise, and pass session identities already known from the current context or task results when they are material to that evidence. If the current orchestrator session ID is already known, pass it as the parent session ID; pass already-known material child-session IDs as well, and state whether that set is complete or partial when established. Do not call `session.list` merely to obtain IDs for this handoff. Each checkpoint verdict is an independent judgment of the current candidate: invoke `@semantic-checkpoint` in a fresh child session and never continue/reuse a prior checkpoint child, including after `hold`, `unverified`, or a materially changed candidate. Prior checkpoint reasoning remains diagnostic workflow evidence, not input authority for the new judgment.
 
 Consume the result as a bounded gate decision while retaining workflow ownership:
 
@@ -224,6 +224,10 @@ Reuse canonical plan artifacts when present. When escalation needs durable coord
 Before commit/push/PR/update/release publication, apply root provenance/readiness rules. Clear user intent for the exact action is sufficient authorization; do not ask twice. If scope, destination, or risk changes, stop at the new gate.
 
 For owned-PR publication/readiness, follow **Existing PR follow-up** and `pr-readiness`; do not restate or invent a second readiness sequence here. Managed OCR follows reviewer judgment unless explicitly required.
+
+## Terminal semantic-evaluator handoff
+
+When the root temporary semantic-eval harness applies, invoke `@session-evaluator` only at the terminal-success boundary defined there. Pass the exact current orchestrator session ID when it is already known from current context/tool output. Also pass any material participating child-session IDs already known from task results and state whether that set is complete or partial when established. Do not perform a new `session.list` lookup merely to populate these fields. If an identity or relationship is not already known, omit it and let the evaluator use its fallback discovery contract.
 
 ## Final report
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.40
+# OpenCode Agent Pack v30.41 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
 
@@ -13,16 +13,13 @@
 
 ---
 
-## What changed in v30.40
+## What changed in v30.41 beta
 
-- Relayers the root instruction against the Semantic Design Manual: global semantic invariants stay in permanent context and conditional integration/procedure detail moves behind skills.
-- Makes GrayMatter recall relevance-triggered instead of mandatory on every task; detailed memory mechanics move to `graymatter-memory`.
-- Removes the static specialist/advisory skill routing table from root and relies on the actually exposed skill catalog/activation metadata.
-- Keeps the durable-planning trigger and state contract in root while moving the default file layout/procedure to `persistent-planning`.
-- Narrows temporary `session-evaluator` diagnostic instrumentation to terminal successful outcomes: satisfied session goal or final owned-PR readiness.
-- Condenses mutation-tool policy to the semantic invariant: narrow target, understood transform, inspect resulting state/diff, no scope widening.
+- Adds an evidence-handoff contract for session-aware delegated judgments: `code-orchestrator` passes exact current/participating session IDs when they are already known.
+- `semantic-checkpoint` and `session-evaluator` use supplied IDs directly and do not call `session.list` merely to rediscover them.
+- Keeps `session.list` as fallback only for missing session identities or parent/child relationships needed to reconstruct the material workflow evidence.
 
-See [`docs/releases/v30.40.md`](docs/releases/v30.40.md).
+See [`docs/releases/v30.41-beta.md`](docs/releases/v30.41-beta.md).
 
 ---
 
@@ -179,7 +176,7 @@ Each checkpoint evaluation runs in a **fresh child session**. A re-check after n
 
 `unverified` is an evidence status, not a finding class, and does not require a failure classification. The evaluator proposes prompt changes only for confirmed reusable instruction ambiguities or gaps.
 
-Both roles reconstruct relevant OpenChamber session history with read-only `session.list` / `session.messages`, prefer child-session history over parent summaries, and do not turn diagnostic output into task authority. `session-evaluator` ignores prior evaluator diagnoses as workflow evidence and uses `semantic-checkpoint` only as gate-control evidence (for example, whether a `hold` was obeyed), not as proof of the underlying requirement.
+Both roles reconstruct relevant OpenChamber session history with read-only `session.list` / `session.messages`, use exact parent/participating session IDs supplied by `code-orchestrator` before any discovery, and fall back to `session.list` only for missing identities or relationships needed by the material evidence boundary. They prefer child-session history over parent summaries and do not turn diagnostic output into task authority. `session-evaluator` ignores prior evaluator diagnoses as workflow evidence and uses `semantic-checkpoint` only as gate-control evidence (for example, whether a `hold` was obeyed), not as proof of the underlying requirement.
 
 ---
 
@@ -361,7 +358,7 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.40.md`](docs/releases/v30.40.md) | Current release notes |
+| [`docs/releases/v30.41-beta.md`](docs/releases/v30.41-beta.md) | Current release notes |
 | [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) | Method for turning developer guidance and traces into durable semantic rules |
 | [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) | Source → generalized rule → reverse-action preservation audit |
 | [`docs/releases/v30.32-beta.md`](docs/releases/v30.32-beta.md) | Claim-authority clarification |
@@ -388,8 +385,8 @@ A release archive should verify at least:
 - subagent session continuity follows assignment continuity: new specialist assignments/independent judgments use fresh child sessions, while continuation is explicit and limited to the same specialist-owned workstream;
 - `semantic-checkpoint` remains read-only/non-implementing, gates only material pre-mutation semantic decisions, runs each verdict in a fresh child session, and does not classify instruction failures or require post-mutation proof before edits;
 - `code-orchestrator` treats `proceed` as candidate-specific authorization, preserves optional mechanisms as implementation choices, keeps `hold`/`unverified` blocked until their stated blockers are materially addressed, does not re-run an unchanged blocked candidate for verdict-shopping, and never continues a prior checkpoint child for a new verdict;
-- `session-evaluator` remains post-hoc/diagnostic, uses only OpenChamber `session.list`/`session.messages`, keeps `unverified` separate from finding classes, treats checkpoint verdicts only as gate-control evidence, and audits the original decision path independently;
-- runtime retrieval defects are not patched with broader semantic session crawling: checkpoint/evaluator use their documented parent/participating-session evidence boundary, and OpenChamber pagination defects belong in the runtime;
+- `session-evaluator` remains post-hoc/diagnostic, uses only OpenChamber `session.list`/`session.messages`, consumes supplied parent/participating session IDs before fallback discovery, keeps `unverified` separate from finding classes, treats checkpoint verdicts only as gate-control evidence, and audits the original decision path independently;
+- session-aware delegated judgments do not enumerate the project merely to rediscover supplied session identities; `session.list` remains fallback only for missing identities/relationships, while OpenChamber pagination defects remain runtime defects rather than prompts for broader semantic crawling;
 - Startup/update/final communication remains compact: no duplicate prose plan around Startup, no routine tool narration, and no empty/repeated report sections;
 - the semantic design manual remains documentation rather than runtime policy, and its source-preservation audit still derives the tracked developer actions after abstraction;
 - installer scripts pass `bash -n`, preserve unrelated user/project files, and match their documented backup/overwrite behavior;
@@ -401,7 +398,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.40**  
+**OpenCode Agent Pack v30.41 beta**  
 Semantic routing · bounded orchestration · evidence-grounded verification
 
 </div>
