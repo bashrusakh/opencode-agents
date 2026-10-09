@@ -2,6 +2,15 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.36 beta
+
+- Makes `semantic-checkpoint` establish retrieval coverage before treating historical user authority or material evidence as absent.
+- Reads complete parent user history and full material child histories with `session.messages all: true`, using no incompatible `limit` / `last` selectors.
+- Adds explicit recovery from `all + limit/last` usage errors instead of allowing a truncated fallback to drive `unverified`.
+- Uses explicit large session discovery plus `parentID` relationships while avoiding ritual reads of unrelated sessions.
+
+See [`docs/releases/v30.36-beta.md`](docs/releases/v30.36-beta.md).
+
 ## v30.35 beta
 
 - Makes subagent session continuity follow assignment continuity rather than agent identity.

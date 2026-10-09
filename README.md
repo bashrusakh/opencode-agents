@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.35 beta
+# OpenCode Agent Pack v30.36 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
 
@@ -13,14 +13,14 @@
 
 ---
 
-## What changed in v30.35 beta
+## What changed in v30.36 beta
 
-- Makes subagent session continuity follow the delegated assignment rather than the agent name: new assignments/independent judgments start fresh, while genuine continuation of the same specialist-owned workstream may reuse that child explicitly.
-- Requires every `semantic-checkpoint` verdict to run in a fresh child session, including re-checks after `hold`, `unverified`, or a materially changed candidate.
-- Prevents a prior checkpoint verdict/reasoning from becoming hidden conversational state for the next candidate while preserving it as workflow evidence for the orchestrator.
-- Does not impose blanket fresh sessions on implementation/discovery roles when continuity is genuinely part of the same assignment.
+- Makes `semantic-checkpoint` exhaust the relevant retrievable authority path before concluding that historical user adoption or evidence is missing.
+- Requires an explicit large `session.list`, complete parent `role: user` history, and full reads of material child sessions instead of relying on bounded recent windows.
+- Requires recovery from invalid `all + limit/last` message requests by retrying `all: true` without mutually exclusive selectors rather than silently falling back to a truncated read.
+- Keeps evidence collection selective: unrelated sessions need not be read merely because they appear in the same directory; `parentID` and the current decision chain determine participation.
 
-See [`docs/releases/v30.35-beta.md`](docs/releases/v30.35-beta.md).
+See [`docs/releases/v30.36-beta.md`](docs/releases/v30.36-beta.md).
 
 ---
 
@@ -372,7 +372,7 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.35-beta.md`](docs/releases/v30.35-beta.md) | Current release notes |
+| [`docs/releases/v30.36-beta.md`](docs/releases/v30.36-beta.md) | Current release notes |
 | [`docs/releases/v30.32-beta.md`](docs/releases/v30.32-beta.md) | Claim-authority clarification |
 | [`docs/releases/v30.27-beta.md`](docs/releases/v30.27-beta.md) | `session-evaluator` introduction and compatibility notes |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Human-facing UI component MCP setup |
@@ -407,7 +407,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.35 beta**  
+**OpenCode Agent Pack v30.36 beta**  
 Semantic routing · bounded orchestration · evidence-grounded verification
 
 </div>
