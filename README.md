@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.36 beta
+# OpenCode Agent Pack v30.38 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
 
@@ -13,14 +13,14 @@
 
 ---
 
-## What changed in v30.36 beta
+## What changed in v30.38 beta
 
-- Makes `semantic-checkpoint` exhaust the relevant retrievable authority path before concluding that historical user adoption or evidence is missing.
-- Requires an explicit large `session.list`, complete parent `role: user` history, and full reads of material child sessions instead of relying on bounded recent windows.
-- Requires recovery from invalid `all + limit/last` message requests by retrying `all: true` without mutually exclusive selectors rather than silently falling back to a truncated read.
-- Keeps evidence collection selective: unrelated sessions need not be read merely because they appear in the same directory; `parentID` and the current decision chain determine participation.
+- Tightens claim-level authority so a user decision cannot silently acquire independently choosable semantics from labels, option descriptions, summaries, or handoffs.
+- Requires semantic correspondence across orchestration: material deltas need their own authority, necessary-consequence basis, or explicit unresolved status.
+- Keeps partial/conditional/fallback outcomes qualified and prevents a weaker permitted path from replacing a viable stronger established outcome without a blocker or separate authority.
+- Extends `code-orchestrator`, `semantic-checkpoint`, and `session-evaluator` at their distinct decision points without duplicating the full root rule.
 
-See [`docs/releases/v30.36-beta.md`](docs/releases/v30.36-beta.md).
+See [`docs/releases/v30.38-beta.md`](docs/releases/v30.38-beta.md).
 
 ---
 
@@ -372,7 +372,7 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.36-beta.md`](docs/releases/v30.36-beta.md) | Current release notes |
+| [`docs/releases/v30.37-beta.md`](docs/releases/v30.37-beta.md) | Current release notes |
 | [`docs/releases/v30.32-beta.md`](docs/releases/v30.32-beta.md) | Claim-authority clarification |
 | [`docs/releases/v30.27-beta.md`](docs/releases/v30.27-beta.md) | `session-evaluator` introduction and compatibility notes |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Human-facing UI component MCP setup |
@@ -398,6 +398,7 @@ A release archive should verify at least:
 - `semantic-checkpoint` remains read-only/non-implementing, gates only material pre-mutation semantic decisions, runs each verdict in a fresh child session, and does not classify instruction failures or require post-mutation proof before edits;
 - `code-orchestrator` treats `proceed` as candidate-specific authorization, preserves optional mechanisms as implementation choices, keeps `hold`/`unverified` blocked until their stated blockers are materially addressed, does not re-run an unchanged blocked candidate for verdict-shopping, and never continues a prior checkpoint child for a new verdict;
 - `session-evaluator` remains post-hoc/diagnostic, uses only OpenChamber `session.list`/`session.messages`, keeps `unverified` separate from finding classes, treats checkpoint verdicts only as gate-control evidence, and audits the original decision path independently;
+- provenance absence is not inferred from a resumed/current parent alone: checkpoint/evaluator follow only material retrievable predecessor lineage when the active workflow depends on earlier authority or evidence;
 - installer scripts pass `bash -n`, preserve unrelated user/project files, and match their documented backup/overwrite behavior;
 - external/setup docs remain documentation only and are not required runtime policy;
 - vendored/adapted skill content retains source/license attribution;
@@ -407,7 +408,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.36 beta**  
+**OpenCode Agent Pack v30.38 beta**  
 Semantic routing · bounded orchestration · evidence-grounded verification
 
 </div>

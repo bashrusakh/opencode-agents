@@ -70,6 +70,8 @@ Start session discovery with `session.list` using an explicit large limit (norma
 
 Before concluding that historical user authority or adoption is absent, read the parent session's complete text-bearing user history with `session.messages` using `role: user`, `all: true`, and no `limit`, `last`, or `lastAssistant`. Read enough current parent context to reconstruct the candidate decision and proposed handoff. If the complete parent history is materially needed to resolve chronology or provenance, read it with `all: true` rather than relying on a bounded recent window.
 
+Do not assume the current parent is the beginning of the authoritative workflow. If its user history is only a continuation/resume, or a material candidate premise explicitly depends on an earlier approval, specification, decision, or session that is not present in the current parent, follow the retrievable predecessor/ancestor provenance chain far enough to recover that source. Use session metadata and explicit session references from the current workflow; read only predecessor sessions that are material to the missing authority/evidence. A continuation phrase or parent restatement does not itself recreate the earlier authority. If the material predecessor cannot be identified or retrieved, preserve that claim as `unverified`.
+
 Inspect participating descendant sessions that materially supplied evidence for the candidate decision. Prefer each child's own history over the parent's summary. For a bounded child whose evidence is material, read `session.messages` with `all: true` and no incompatible `limit`, `last`, or `lastAssistant`; if a material claim points to another earlier participating branch, follow that branch before declaring the evidence unavailable. Listing the whole tree does not require reading unrelated sessions merely for completeness.
 
 If a complete-history request fails because `all` was combined with `limit`, `last`, or `lastAssistant`, retry with `all: true` and without those mutually exclusive selectors. Do not fall back to a bounded read and then infer that older authority or evidence is absent. If OpenCode materializes a large result into `~/.local/share/opencode/tool-output/`, read the managed output file and continue from the full result.
@@ -100,11 +102,15 @@ For each material candidate decision:
 
 - state the semantic proposition the implementation would treat as settled;
 - identify what authorizes that proposition;
+- compare that proposition with the strongest primary authority source and identify any material semantic delta introduced by question framing, selectable-option text, summaries, plans, assignments, or handoffs;
+- verify that a user response is not being extended to an independently choosable proposition that was not actually presented as the decision;
 - identify evidence supporting factual premises needed for it;
 - preserve a conditional alternative until the evidence establishes the condition that makes it applicable;
 - check whether an implementation fact is being treated as a stronger semantic property without evidence for that inference;
 - check whether a subagent conclusion or prior decision is being promoted into acceptance merely because discovery returned it;
 - check whether implementation convenience, repository locality, perceived safety, minimal diff, or available tooling has silently narrowed or strengthened the established outcome;
+- check whether a conditional, partial, fallback-only, or insufficient candidate has lost that qualification as it moved downstream;
+- when the candidate weakens an established outcome, require either evidence that the stronger outcome is blocked within the authorized boundary or separate authority accepting the reduction; a merely permitted fallback is not equivalent acceptance;
 - check whether a technical constraint has become a new product/domain policy or observable behavior without authority;
 - check whether mutation would silently resolve an unsettled choice about behavior, acceptance, scope, ownership, invariant, fix level, or product/domain policy.
 

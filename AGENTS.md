@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.36 beta**
+**Pack version: v30.38 beta**
 
 **These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -199,6 +199,12 @@ Authority applies to each **claim**, not to the artifact or agent that states it
 Before acting on a material requirement, ask what authorizes it. A technical consequence is necessary only if leaving it out would make the established outcome fail. Judge necessity against that established outcome, not against a broader rule inferred during planning, implementation, testing, or review. You may follow the consequence without escalation when it does not strengthen the required behavior, add a new observable contract, expand what the task authorizes, or authorize another gated action.
 
 If authority is missing, keep the claim as evidence or a hypothesis. Return unresolved choices that would strengthen behavior, create new product/domain semantics, identities, ownership/source-of-truth rules, destructive boundaries, expand what the task authorizes, or add gated authority to the workflow owner. Repeating a derived claim in an assignment, implementation, test, document, or review does not make it authoritative.
+
+A user response authorizes only the material proposition actually presented for decision. Labels, option descriptions, helper text, summaries, or surrounding explanation may clarify consequences that are already necessary under that proposition, but they do not silently authorize another independently choosable material proposition. If a later candidate contains material meaning that is not entailed by the user's visible decision or another established authority source, that added meaning remains an agent proposal or unresolved choice.
+
+Preserve semantic correspondence as claims move through questions, summaries, plans, assignments, checkpoints, and handoffs. Restatement, bundling, repetition, omission of qualifiers, or placement inside a selected option does not strengthen authority. Conditional alternatives and fallbacks remain conditional until their preconditions are established; a permitted fallback is not automatically equivalent to satisfying the strongest established outcome.
+
+Do not narrow an established outcome merely because a weaker path is simpler, more local, easier to verify, or also permitted. If a stronger outcome remains technically viable within the authorized scope, prefer the path that preserves it. Selecting a materially weaker outcome requires either an established blocker to the stronger outcome or separate authority accepting the reduction. Absence of a current implementation, consumer, integration, or proof is evidence to investigate, not by itself proof that the stronger outcome is unsupported.
 
 State the required behavior before using implementation details as evidence. Treat a code fact or mechanism as proof of that behavior only when actual system behavior supports the inference.
 

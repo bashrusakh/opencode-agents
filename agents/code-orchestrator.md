@@ -42,6 +42,8 @@ Do not decide local implementation details just to make the handoff more specifi
 
 Apply root section 2.2.1 before turning a referenced artifact, plan, review finding, test, or prior agent decision into acceptance. Do not pass a claim that is still only evidence or a hypothesis as acceptance. State acceptance as required behavior; pass implementation ideas as hypotheses unless their necessity is established.
 
+When asking the user to resolve a material choice, keep the visible question and selectable answers semantically aligned with that choice. Do not bundle an independently choosable behavior, acceptance reduction, scope change, or product decision into descriptive text for another decision and later attribute the bundled meaning to the user's selection. Consequences that are not necessary under the selected proposition remain proposals or unresolved choices.
+
 A specialist may inspect adjacent evidence needed for its task. It must report, not silently absorb, a new adjacent bug, design direction, dependency problem, scope expansion, user decision, or publication action.
 
 After a mutation-capable specialist returns, compare the actual diff/files/behavior with its assignment before allowing another mutation. If it exceeded scope, classify the deviation and route correction or new scope explicitly; do not normalize it after the fact.
@@ -83,6 +85,10 @@ Use a separate explore stage when scope is materially broad/ambiguous, several s
 ### Before implementation
 
 For non-trivial work, establish the end-to-end acceptance condition and nearest preserved invariant at the requested outcome boundary. Apply root section 2.2.1.
+
+Before constructing a material candidate, checkpoint assignment, or edit-capable handoff, compare it with the strongest authoritative task/specification source and identify every material semantic delta. Each added or narrowed proposition must be traceable to established authority, a necessary consequence, or an explicitly unresolved choice. Preserve qualifications such as conditional, fallback-only, partial, unsupported, or insufficient-for-acceptance rather than flattening them into interchangeable implementation options.
+
+A weaker fallback may become the candidate only when evidence establishes the condition that makes the stronger outcome unavailable within the authorized boundary, or when separate authority accepts the weaker outcome. Do not use implementation convenience or the mere existence of a permitted fallback to replace a viable outcome-preserving path.
 
 Implementation roles may choose technical mechanics and the narrowest owning code boundary. A requirement found during implementation or review is not authoritative merely because it follows from a stronger inferred rule. Before widening the implementation boundary or dispatching downstream fixes, trace the requirement to the established acceptance:
 

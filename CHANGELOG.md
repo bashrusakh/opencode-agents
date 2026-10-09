@@ -2,6 +2,24 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.38 beta
+
+- Makes user authority semantically bounded to the material proposition actually presented for decision.
+- Prevents descriptive text, summaries, or handoffs from silently adding independently choosable semantics to a user selection.
+- Preserves conditional/fallback qualifications across agent boundaries and requires a blocker or separate authority before weakening an established viable outcome.
+- Adds role-specific semantic-delta checks to `code-orchestrator`, `semantic-checkpoint`, and `session-evaluator`.
+
+See [`docs/releases/v30.38-beta.md`](docs/releases/v30.38-beta.md).
+
+## v30.37 beta
+
+- Extends provenance recovery beyond the current parent session when a workflow is explicitly a continuation/resume or materially depends on earlier authority/evidence.
+- Requires `semantic-checkpoint` to follow only the material predecessor/ancestor chain before declaring historical authority unavailable.
+- Requires `session-evaluator` to audit material predecessor provenance as well as the current parent and participating descendants, without ritual reads of unrelated prior sessions.
+- Keeps continuation wording and parent/child restatements as pointers to recover primary authority, never as substitutes for it.
+
+See [`docs/releases/v30.37-beta.md`](docs/releases/v30.37-beta.md).
+
 ## v30.36 beta
 
 - Makes `semantic-checkpoint` establish retrieval coverage before treating historical user authority or material evidence as absent.

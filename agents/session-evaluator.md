@@ -70,9 +70,11 @@ Exclude prior `session-evaluator` diagnostic sessions from the audited workflow 
 
 Read the parent and every participating descendant with `session.messages` using `all: true` and no `limit`, `last`, or `lastAssistant`. If OpenCode materializes a large result into `~/.local/share/opencode/tool-output/`, read that managed output file and continue from the full result.
 
+The audited workflow is not automatically bounded by the current parent's descendant tree. If the parent begins as a continuation/resume, or material assignments/claims rely on an earlier approval, specification, decision, publication authority, or session that is absent from the current parent, follow the retrievable predecessor/ancestor provenance chain far enough to recover the originating source. Use session metadata and explicit session references from the audited workflow; include only predecessor sessions material to the causal or authority chain, not unrelated prior project history. Do not infer the missing authority from `continue`, a parent summary, or a descendant's attribution.
+
 Prefer a child's own history over the parent's summary. Recover the original request, adopted specifications, material assignments, subagent conclusions, review/test findings, orchestrator decisions, implementation/publication actions, and final workflow state.
 
-If a branch is unavailable or incomplete, mark only conclusions depending on that branch `unverified`; do not substitute another agent's summary for unavailable primary session evidence.
+If a branch or material predecessor remains unavailable or incomplete after that bounded provenance recovery, mark only conclusions depending on it `unverified`; do not substitute another agent's summary for unavailable primary session evidence.
 
 Use current project/global instruction files only to resolve a rule referenced by the session record. Do not assume current text governed an earlier action unless the session or repository evidence establishes that provenance.
 
@@ -86,8 +88,12 @@ For each material decision or delegated claim:
 
 - identify who introduced it and when;
 - identify the authority and evidence available at that point;
+- compare the original authoritative proposition with each downstream restatement and record any material semantic delta;
+- when user authority is claimed, compare the actual user-visible decision with the later meaning attributed to it rather than relying on option descriptions, summaries, or descendant attributions as substitutes;
 - check whether the conclusion followed under root section 2.2.1;
 - check whether an assumption, inferred invariant, review/test finding, implementation choice, or prior-agent claim was promoted into acceptance or a requirement;
+- check whether repetition, bundling, paraphrase, or loss of qualification caused an agent proposal, conditional alternative, or fallback to acquire apparent authority downstream;
+- check whether a materially weaker outcome replaced a stronger established and viable outcome without an established blocker or separate authority accepting the reduction;
 - compare each subagent assignment with the authority and scope the parent actually had;
 - check whether the subagent stayed inside its role and assignment;
 - check whether the parent reconciled returned evidence rather than adopting it as authority;
@@ -114,7 +120,7 @@ Only confirmed material findings receive one of the classes below.
 
 An applicable governing instruction is established and clear enough for the material decision, but the actor acts contrary to it.
 
-Use this class when a clear authority/scope/acceptance/gate rule is violated by promoting an unsupported claim into required semantics, narrowing or strengthening established acceptance, or authorizing a material action the rule does not permit.
+Use this class when a clear authority/scope/acceptance/gate rule is violated by promoting an unsupported claim into required semantics, expanding the meaning of a user's decision, laundering an agent-originated proposal into apparent authority, narrowing or strengthening established acceptance, or authorizing a material action the rule does not permit.
 
 A reasoning mistake does not become `execution-error` merely because reasoning caused the violation. If the resulting material semantic decision directly contradicts a clear governing rule, classify that decision as `instruction-violation`.
 
