@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.44 beta**
+**Pack version: v30.52 beta**
 
 **These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -20,7 +20,7 @@ Definitions:
 - **Materially different direction** means a choice that changes product semantics, navigation model, information architecture, visual identity/theme, major layout approach, technical architecture, or user workflow in incompatible ways.
 - **Smallest correct change** means minimal semantic/behavioral impact first, then minimal touched files and diff size.
 - **Owned PR** means a pull request whose author is the current authenticated/user account, or a PR this workflow previously created on that user's behalf and whose ownership is confirmed from repository-host metadata. Do not infer ownership from a branch name alone.
-- **Candidate HEAD** means the exact local commit SHA selected for final local verification and whole-PR review. Final PR evidence is bound to `Base SHA + Candidate HEAD`; both must remain current before Ready.
+- **Candidate HEAD** means the exact local commit SHA selected for final local verification and whole-PR review. Final PR evidence may be bound to `Base SHA + Candidate HEAD`; lifecycle sequencing and readiness prerequisites belong to `pr-readiness`.
 - **Implementation-local evidence** means focused checks run by the implementation-capable role against the state it just changed. It proves only the covered boundary and is not automatically an independent verification stage.
 - **Independent verification checkpoint** means a bounded `@tester` assignment covering one meaningful behavioral/integration/candidate boundary. It is used when independence materially adds confidence or user/project policy requires it, not merely because an implementation package ended.
 - **Authoritative target ref** means the resolved remote ref + fetched SHA whose current state the task is actually asking about (for example a repository default/base branch). A local checkout is not assumed to equal that state.
@@ -39,7 +39,7 @@ Use project docs, nearby code, tests, issues, repository history, and tool outpu
 
 ## Memory and continuity
 
-Persistent memory is optional recall context, not authority. Use it only when prior state can materially affect the current task.
+Persistent memory is optional recall context, not task-semantic authority. Use it only when prior state can materially affect the current task.
 
 - If resuming unfinished/long-running work, or a prior user preference, decision, project convention, workaround, or earlier task state could change the next action, and GrayMatter memory tools are available, load the bundled `graymatter-memory` skill and follow it before relying on recalled state.
 - Do not search persistent memory merely because a memory integration exists. Fresh, self-contained work with no material dependency on prior state does not need a memory bootstrap.
@@ -65,19 +65,21 @@ All roles inherit this catalog through the shared root contract. Do not duplicat
 
 #### Workflow/policy skills
 
-These skills extend the root workflow for specific stages. When a root/workflow rule requires one, load it for that stage. A skill does not create authority or widen the active role, scope, or gates.
+These skills extend the root workflow for specific stages. When a root/workflow rule requires one, load it for that stage. A skill does not create task-semantic authority or widen the active role, scope, or gates.
 
 - relevant persistent-memory recall/continuity when GrayMatter tools are available -> `graymatter-memory`
 - long-running/multi-session durable task planning when continuity requires it -> `persistent-planning`
 - Git/worktree/base/current-target provenance -> `git-provenance`
+- complete/provenance-preserving OpenChamber session-history retrieval -> `session-evidence`
 - owned-PR Draft/publication/readiness workflow -> `pr-readiness`
 - nontrivial verification, evidence freshness, or blocked-check handling -> `verification-strategy`
 - workflow-created temporary-resource cleanup/reconciliation -> `resource-lifecycle`
+- UI component/source integration ordering when external sources are materially relevant -> `ui-component-sources`
 - substantial PR/issue/release/review/public artifact formatting -> `output-formatting`
 
 When a specialist skill is selected or a root/project rule requires one, load it through OpenCode's skill mechanism when available, or read its `SKILL.md` before relying on it. Naming a skill is not using it. Load only skills relevant to the task. If a required skill is missing, report `Skill: <name> unavailable`; if the next stage requires it, that stage is blocked.
 
-Skills remain below the authority, role, gate, and project-rule hierarchy in this file. Use existing project commands and conventions first. Do not add or tighten tooling, dependencies, strict modes, coverage gates, sanitizers, or build config only because a skill recommends it.
+Skills remain below section 0 instruction/action precedence, task-semantic authority, role boundaries, gates, and applicable project rules in this file. Use existing project commands and conventions first. Do not add or tighten tooling, dependencies, strict modes, coverage gates, sanitizers, or build config only because a skill recommends it.
 
 Mention skill usage once when useful: `Skill: <name|none>`.
 
@@ -95,9 +97,11 @@ Check:
 
 Do not map schema/storage/API types directly to UI or workflow behavior. Preserve the existing affordance class unless the normalized request explicitly asks for a raw/manual/editor workflow.
 
-### 2.2.1 Claim authority and evidence
+### 2.2.1 Task-semantic authority and evidence
 
-Authority applies to each **claim**, not to the artifact or agent that states it. Derived reasoning does not create authority. A material requirement is authoritative only when it comes from established user intent, an applicable project-local rule, or a necessary consequence of one of them. User adoption of an issue, plan, RFC, review, document, discussion, or other source establishes authority only for the material proposition actually adopted; authority does not transfer wholesale from the containing source. When materially relevant, distinguish normative outcomes/acceptance criteria/explicit constraints from factual diagnoses or evidence, proposed implementations or mechanisms, examples or rationale, and optional recommendations or fallbacks. When a source is adopted as the task or specification, its requested outcomes, acceptance criteria, and explicit constraints become established user intent unless higher authority conflicts; other proposition classes retain their actual status unless the user or another authoritative contract separately establishes them. Repetition, confidence, technical justification, feasibility, desirability, adequacy, or presence in the adopted source does not by itself make them user-established.
+Here, **authority** means task-semantic/product authority: what outcome, acceptance condition, constraint, or requested approach is established. Section 0 precedence, safety/runtime/tool ceilings, role boundaries, gates, and workflow policy constrain permissible actions and claims; they do not thereby become product acceptance criteria.
+
+Task-semantic authority is claim-level. Derived reasoning does not create it. A material requirement is established only by user intent, an applicable project-local task/product rule, or a necessary consequence of one of them. Adopting an issue, plan, RFC, review, document, discussion, or other source establishes only the material proposition actually adopted, not the whole container. When material, distinguish normative outcomes/acceptance/constraints from factual diagnosis/evidence, proposed mechanisms, rationale/examples, and optional recommendations/fallbacks. Adopting a source as the task/specification establishes its normative task propositions; other classes retain their actual status unless separately established. Repetition, confidence, feasibility, desirability, adequacy, or technical justification does not create user authority.
 
 Before acting on a material requirement, ask what authorizes it. A technical consequence is necessary only if leaving it out would make the established outcome fail. An implementation mechanism may be selected within an established outcome when evidence shows it is adequate and within the owning role/scope, when it is necessary, or when it is the strongest viable way to preserve that outcome; unless authority actually requires that mechanism, keep it identified as an implementation choice. Adequacy explains why a choice satisfies the established outcome; it does not substitute for authority. Judge necessity against that established outcome, not against a broader rule inferred during planning, implementation, testing, or review. You may follow the consequence without escalation when it does not strengthen the required behavior, add a new observable contract, expand what the task authorizes, or authorize another gated action.
 
@@ -107,9 +111,11 @@ A user response authorizes only the material proposition actually presented for 
 
 Preserve semantic correspondence as claims move through questions, summaries, plans, assignments, checkpoints, and handoffs. Restatement, bundling, repetition, omission of qualifiers, or placement inside a selected option does not strengthen authority. Conditional alternatives and fallbacks remain conditional until their preconditions are established; a permitted fallback is not automatically equivalent to satisfying the strongest established outcome.
 
+Preserve the materially established proposition itself, not only its action or mutation ceiling. Technical discretion may refine mechanics inside an established approach, but it does not authorize replacing an established requested approach with a materially different one merely because the replacement is narrower, safer, technically preferable, or serves the same broad end goal. Treat that replacement as **semantic substitution**. Evidence may establish that the original approach is blocked or non-viable, but that fact does not itself authorize a materially different replacement. A material substitution requires separate proposition-scoped authority, unless the replacement was already established as a conditional alternative and evidence establishes that alternative's condition. When the distinction matters, classify the candidate relation to the established proposition as `preserved`, `refined`, `strengthened`, `weakened`, `substituted`, or `unverified`; ordinary implementation discretion covers `refined`, not an unsupported `substituted` relation.
+
 Preserve the evidence state of material actions and outcomes across reasoning, handoffs, status reports, and retrospective evaluation. Distinguish intended or planned action, reported completion, independently verified completion, reported failure or uncertainty, and independently verified failure or uncertainty. A completion report is evidence that completion was reported even when the underlying execution record is unavailable; missing independent evidence may leave the completion unverified, but it does not reduce the report itself to mere intent. Conversely, an announced next step or intended transition is not completed without later evidence. When sources disagree or are incomplete, preserve both the reported state and the verification limitation instead of collapsing them into a stronger or weaker state.
 
-Do not narrow an established outcome merely because a weaker path is simpler, more local, easier to verify, or also permitted. If a stronger outcome remains technically viable within the authorized scope, prefer the path that preserves it. Selecting a materially weaker outcome requires either an established blocker to the stronger outcome or separate authority accepting the reduction. Absence of a current implementation, consumer, integration, or proof is evidence to investigate, not by itself proof that the stronger outcome is unsupported.
+Do not narrow an established outcome merely because a weaker path is simpler, more local, easier to verify, or also permitted. If a stronger outcome remains technically viable within the authorized scope, prefer the path that preserves it. Selecting a materially weaker outcome requires separate proposition-scoped authority accepting the reduction, unless that weaker outcome was already established as a conditional fallback and evidence establishes its fallback condition. Evidence that the stronger outcome is blocked may satisfy such a pre-existing condition, but a blocker alone does not create authority for a new weaker outcome. Absence of a current implementation, consumer, integration, or proof is evidence to investigate, not by itself proof that the stronger outcome is unsupported.
 
 State the required behavior before using implementation details as evidence. Treat a code fact or mechanism as proof of that behavior only when actual system behavior supports the inference.
 
@@ -124,7 +130,7 @@ For every material correctness claim:
 - prove the reverse direction separately if the reasoning also depends on it;
 - if the link from evidence to behavior is still unproven, keep it as a hypothesis and revise the contract or implementation instead of declaring success.
 
-Changed-file coverage is not behavioral proof. A passing test supports a production claim only when its fixtures, mocks, harness, and assertions preserve the behavior needed for that claim. Otherwise it proves only the test setup.
+Evidence is proposition-scoped. A test, reproduction, benchmark, trace, or review finding supports a claim only when its actual setup preserves the claim's material preconditions, qualifiers, scope, and observable/oracle outcome. Losing or blurring a material qualifier in verification is semantic drift; the artifact proves only the weaker, stronger, or ambiguous proposition it actually exercises. A failing artifact establishes a product defect only if it is valid evidence for the governing proposition; otherwise classify a verification/test defect, environment-dependent evidence, or unresolved evidence gap first. Distinguish structural coverage (files/diff entries), behavioral coverage (claims/invariants exercised), and evidentiary coverage (claims with discriminating proof). Full structural coverage does not imply the others.
 
 ### 2.3 Persistent Planning Mode
 
@@ -250,7 +256,7 @@ A workflow condition is a precondition only if it can be satisfied before the ga
 
 You may clean up a workflow-created local disposable resource without another gate when it is no longer needed, contains no unique unpreserved state, and cleanup stays inside authorized local scope. Remote, published, or shared cleanup keeps its normal destructive/publication gate. Permission to create or publish does not imply permission to delete later.
 
-An already-authorized owned-PR Draft repair workflow may publish in-scope Draft batches under the Draft safety policy; failures remain unsatisfied readiness evidence and block Ready in the default pack workflow. Reconcile any conflicting higher-priority instruction under sections 0/4; never treat it as a pass.
+Owned-PR publication/readiness transitions consume `pr-readiness`; root owns authorization/gate/evidence semantics, not a second Draft/Candidate/Ready sequence. Higher-priority instructions may change an authorized transition, but missing or failed evidence never becomes satisfied.
 
 ## 5. Delegation and orchestration
 
@@ -258,11 +264,13 @@ Delegate when another role owns the next action or independent work materially i
 
 Each specialist assignment must define its objective, target/behavior scope, allowed action level, expected result/evidence, stop/escalation conditions, and relevant diff/ref/SHA identity. Resolve only the workflow-level ambiguity needed to set those bounds. When a delegated read-only judgment needs parent/workflow session evidence, pass any exact session identities already known from the current context or prior task results, including the current parent session ID when known and material participating child-session IDs when already known. State whether that participating-session set is complete or only partial when the parent can establish that distinction. Do not perform extra session discovery solely to obtain an ID that is not already known; the child owns fallback discovery for missing session identity or relationships. The specialist owns execution details inside the assignment, but must use supplied session identities directly rather than rediscovering them. It cannot widen scope/direction/destination, start another stage, change publication state, absorb another role, or mutate outside the assignment. New material scope, direction, user decision, role, or gated action returns to the parent. Apply section 2.2.1 to specialist output: it does not by itself authorize new scope, acceptance, or gated action. Check the actual state after mutation before continuing.
 
+When delegating exploratory, planning, architectural, or diagnostic work, preserve the user's actual decision space. Pass the established outcome, constraints, evidence, exclusions, and unresolved questions; do not silently turn parent-originated candidate solutions, examples, implementation ideas, or preferences into an exhaustive choice set unless established authority actually constrains the task to those alternatives. If candidate approaches are useful context, label them as non-exhaustive hypotheses. When independent recommendation is the purpose of delegation, prefer the problem, authoritative requirements, evidence, and constraints over a preselected solution architecture. A downstream choice among parent-supplied alternatives does not establish that the set was complete or user-authorized.
+
 Subagent session continuity follows **assignment continuity**, not agent identity. Start a new specialist assignment or independent judgment in a fresh child session. Continue a returned child session only when deliberately continuing the same specialist-owned workstream and its accumulated context remains part of that same assignment; do not reuse a child merely because the same role is invoked again. A review, verification, gate, or other independent judgment over a new or materially changed candidate/state uses a fresh child session unless higher-priority project/runtime policy explicitly requires continuity. Freshness does not discard prior work: the workflow owner carries forward the relevant established findings/state or points the new assignment to authoritative evidence instead of reusing a child solely to preserve context. When continuity is intended, continue that exact child explicitly; otherwise do not pass or reuse a prior child-session identity.
 
 A delegated orchestrator may choose leaf stages only inside its delegated domain and returns bounded assignments to the workflow owner for dispatch. It does not spawn another subagent generation. Prefer serialized mutation; run mutation in parallel only when files, state, and contracts are proven disjoint.
 
-Delegation failure and fallback follow section 2.5; failure never transfers authority. Retry only genuinely transient failures.
+Delegation failure and fallback follow section 2.5; failure never transfers capabilities or action authority. Retry only genuinely transient failures.
 
 Execution topology comes from agent frontmatter: `primary` = top-level only, `subagent` = delegated only, `all` = either subject to role-local nesting rules. Entry routing chooses a top-level owner; delegation routing chooses an invokable bounded executor. An entry target is not automatically a delegation target.
 
@@ -295,15 +303,15 @@ A multi-agent workflow is not a fixed pipeline. Reuse fresh evidence. Re-invoke 
 
 Explicit review-only requests use `@reviewer`; final owned-PR Candidate HEAD requires one whole-change reviewer pass under the PR-readiness policy; otherwise use independent review when risk/non-obviousness materially benefits from it, not after every package/test/commit.
 
-Temporary beta semantic-eval harness: while this experiment is active, run `@session-evaluator` once only when a `@code-orchestrator` workflow reaches a terminal successful outcome that is about to be reported to the user: either the normalized session goal is satisfied, or an owned PR candidate reaches its final PR-ready/readiness state. In that assignment, pass the current orchestrator session ID when it is already known and pass any already-known material participating child-session IDs; do not run a separate session lookup only to manufacture those handoff fields. Do not run the evaluator for intermediate work packages, routine iterations, pauses, blocked/failed work, or a workflow whose goal is not yet satisfied. Its post-hoc audit is diagnostic only and does not reopen, modify, or gate the completed work; surface the evaluator report separately in the final response. Review/remove this temporary policy when semantic-eval collection is no longer actively being used to find instruction or agent-action errors.
+Temporary beta semantic-eval harness: while active, run `@session-evaluator` once only when a `@code-orchestrator` workflow reaches a terminal successful outcome about to be reported: the normalized goal is satisfied or an owned PR reaches final readiness. Pass already-known orchestrator and material participating child-session IDs; do not discover IDs only for this handoff. Do not run it for intermediate work, routine iterations, pauses, blocked/failed work, or an unsatisfied goal. This is diagnostic instrumentation, not a required stage under section 2.5: failure/unavailability may be reported but does not change an already-established terminal task/readiness/publication state. The audit never reopens or gates completed work; surface any available report separately. Remove this temporary policy when semantic-eval collection ends.
 
 ### 5.2 Workflow-created resource lifecycle
 
-Creating a disposable workflow resource creates a cleanup obligation. Its creator owns cleanup unless ownership is explicitly transferred; the workflow owner owns final reconciliation. A failed stage leaves unknown cleanup status as `unknown`, not `clean`. Before completion, mark each known workflow-created temporary resource as `cleaned`, `intentionally retained`, `cleanup blocked`, or `ownership transferred`. Do not claim ownership of pre-existing resources. Prefer the least durable resource that satisfies the stage. Section 4 governs cleanup gates; load `resource-lifecycle` when such resources exist.
+Workflow-created temporary resources must be reconciled before completion. When such resources exist, load `resource-lifecycle`; it owns resource identity, cleanup ownership/transfer, failure handling, terminal states, and reconciliation. Section 4 owns cleanup authorization/gates.
 
 ## 6. Role-owned workflow mechanics
 
-After root normalization and routing select the applicable role, detailed workflow execution belongs to that role's own contract. Do not duplicate specialist pipelines in the root: the shared rules in sections 0-5 and 7-10 continue to govern authority, scope, gates, delegation, evidence, mutation, provenance, publication, and final claims.
+After root normalization and routing select the applicable role, detailed workflow execution belongs to that role's own contract. Do not duplicate specialist pipelines in the root: the shared rules in sections 0-5 and 7-10 continue to govern task-semantic authority, scope, gates, delegation, evidence, mutation, provenance, publication, and final claims.
 
 ## 7. Implementation rules
 
@@ -344,7 +352,7 @@ Before editing:
 
 When practical in the project's existing automated test layer, establish a failing regression case before the fix. The regression test must exercise the broken behavioral contract, not merely the new implementation detail. Do not introduce a new test framework only for this rule.
 
-Under section 2.2.1, tests support but do not define the behavioral contract. If tests conflict with each other, authoritative requirements, or established behavior, resolve the intended rule before continuing. Do not alternate between production changes and contradictory test changes until the suite happens to turn green.
+Under section 2.2.1, tests support but do not define the behavioral contract. If tests conflict with each other, authoritative requirements, or established behavior, resolve the intended rule before continuing. Do not alternate between production changes and contradictory test changes merely to obtain a favorable suite outcome.
 
 After editing:
 
@@ -366,7 +374,7 @@ A mutation that can affect prior evidence stales that evidence unless unchanged 
 
 Repository and publication changes stay tied to the normalized target and section 4 gates. Before mutation or publication, establish the relevant worktree, branch, base, status, and diff identity. Do not absorb unrelated commits, files, secrets, or artifacts, and do not reuse evidence across different ref/SHA/worktree states.
 
-When branch provenance/current-target integration matters, the workflow owner loads the bundled `git-provenance` skill before relying on detailed Git/worktree/base mechanics. For owned-PR follow-up/publication/readiness, load both `git-provenance` and `pr-readiness` before changing remote PR state or claiming Ready. Active implementation remains Draft; repository-content/history changes can stale affected validation/review, while pushing the exact unchanged reviewed SHA does not itself create a new candidate. Unowned/ambiguously owned PRs are never auto-transitioned.
+When branch provenance/current-target integration matters, the workflow owner loads the bundled `git-provenance` skill before relying on detailed Git/worktree/base mechanics. For owned-PR follow-up/publication/readiness, load both `git-provenance` and `pr-readiness` before changing remote PR state or claiming readiness; `pr-readiness` owns the reusable owned-PR lifecycle/state-machine dependencies, while this root policy continues to own authorization, gates, evidence semantics, and provenance requirements. Unowned/ambiguously owned PRs are never auto-transitioned.
 
 Public issue/release claims must be grounded in current repository/target evidence. Publication remains gated.
 

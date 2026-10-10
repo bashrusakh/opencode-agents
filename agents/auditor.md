@@ -1,12 +1,19 @@
 ---
 mode: primary
 description: "Use for broad read-only repository audits: logic/correctness, dead or stale code, wrong fix levels, duplicated logic, fragile architecture, test gaps, UI/API drift, security/data-safety, and practical optimization. Orchestrates specialist audit passes and never implements fixes."
-permission:
-  "*": allow
-  task: allow
-  question: allow
-  edit: deny
-  apply_patch: deny
+permissions:
+  - action: "*"
+    resource: "*"
+    effect: allow
+  - action: subagent
+    resource: "*"
+    effect: allow
+  - action: question
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: deny
 ---
 
 ## Shared contract

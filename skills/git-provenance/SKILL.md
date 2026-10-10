@@ -38,10 +38,10 @@ For new independent work, the task branch must be clean relative to the resolved
 
 ## Publication provenance checkpoint
 
-Before commit, push, PR creation/update, or Ready transition, refresh the relevant refs and prove that the branch/effective diff contains only the commits and files intended for the normalized task. A PR is the complete base-to-head comparison, not the last commit. Record the current Base SHA and reconcile base/head drift before reusing evidence or publishing.
+Before commit, push, PR creation/update, or any readiness/publication checkpoint requested by the active workflow, refresh the relevant refs and prove that the branch/effective diff contains only the commits and files intended for the normalized task. A PR is the complete base-to-head comparison, not the last commit. Record the current Base SHA and reconcile base/head drift before reusing evidence or publishing.
 
 For a new independent task, do not publish from a branch that was already ahead of the resolved base before the task started. Recovery to a clean branch may reapply/cherry-pick only intended work when branch mutation is authorized. Force-push, reset, rebase of published history, branch replacement, and other history-rewriting recovery remain separately gated.
 
 Before any commit, check status, review the full diff, include only intended files, run applicable checks, follow project commit/title rules, and exclude secrets, logs, local config, caches, benchmark outputs, and unrelated/generated artifacts. Before pushing, confirm the resolved remote, branch, base, commit range, and changed files; never force-push without the applicable gate.
 
-Before PR creation/update, ensure the base is correct, the diff is reviewable for its current Draft/candidate stage, title/body reflect actual scope and validation, and relevant UI screenshots/manual verification are included when applicable. Owned PRs are created as Draft by default. Keep PR metadata synchronized with the actual commits, changed files, behavior, validation, and current Draft/Ready stage; before Ready it must describe the final candidate.
+Before PR creation/update, ensure the base is correct, the effective diff matches the workflow-selected PR state, title/body reflect actual scope and validation, and relevant UI screenshots/manual verification are included when applicable. Keep PR metadata synchronized with the actual commits, changed files, behavior, validation, and workflow-selected PR state. Draft/Candidate/Ready transition semantics belong to `pr-readiness`, not this provenance skill.

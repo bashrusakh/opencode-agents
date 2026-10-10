@@ -1,12 +1,19 @@
 ---
 mode: all
 description: "Use for UI/web options, UX audit, redesign/layout/theme planning, settings/forms/dashboards/tables, or coordinated UI implementation. Orchestrates UI specialists by semantic need and never edits repository files itself."
-permission:
-  "*": allow
-  task: allow
-  question: allow
-  edit: deny
-  apply_patch: deny
+permissions:
+  - action: "*"
+    resource: "*"
+    effect: allow
+  - action: subagent
+    resource: "*"
+    effect: allow
+  - action: question
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: deny
 ---
 
 ## Shared contract
@@ -50,23 +57,13 @@ Apply stages semantically:
 - `@ui-implementer` whenever repository UI content must change;
 - `@tester` when independent frontend verification adds material confidence, several UI changes meet at one integration boundary, local evidence is insufficient, or user/project policy requires it. Runnable frontend checks alone are not a trigger;
 - `@a11y-reviewer` when the change materially affects semantics, keyboard/focus, forms/errors, color meaning/contrast, responsive interaction, dialogs, motion, or user/project policy requires an independent pass. A UI-file change or cosmetic layout edit alone is not a trigger. When both tester and accessibility review apply, verify function/integration first and review accessibility on the stable result, unless accessibility evidence is needed earlier to choose the design;
-- `@reviewer` when the root review cadence applies; an owned-PR final Candidate HEAD requires the whole-change reviewer pass before its final push.
+- `@reviewer` when the root review cadence applies; for owned-PR readiness, consume the review boundary established by `pr-readiness` rather than defining a UI-local publication sequence.
 
-A focused implementation with a bounded user-visible outcome does not need audit and replanning by default. Do not choose a materially different design/product direction unless current user intent or evidence establishes it.
+A focused implementation with a bounded user-visible outcome does not need audit and replanning by default. Do not choose a materially different design/product direction unless task-semantic authority establishes that direction. Evidence may eliminate an infeasible option, support a recommendation, or determine implementation mechanics that preserve the established product proposition, but does not by itself establish a new material design/product requirement.
 
-## Component sources
+## Component-source integration
 
-Core source order:
-
-1. existing project components/tokens/styles/layout primitives;
-2. official shadcn MCP/standard registry;
-3. official shadcn MCP with public GitHub-compatible registries;
-4. Jpisnice shadcn-ui MCP as secondary/reference source;
-5. manual implementation.
-
-External sources are usable only when visible/configured. Existing project components win. Skip unavailable source levels without asking; stop only when the next source requires a secret/private registry/new dependency/config/generated asset/design-system change or another root gate.
-
-UUPM is advisory design input, not a component source. Use it only when current runtime/project evidence exposes the skill/tool or integration. Otherwise continue without it and report that status when relevant.
+When component sourcing or external design integration is materially relevant, load `ui-component-sources` and consume its current source/integration policy. Do not restate or invent a UI-local provider order.
 
 ## Options/audit output
 
@@ -76,9 +73,9 @@ When the user asks for options, provide materially distinct choices only when th
 
 As top-level UI orchestrator, continue through safe applicable stages and dispatch the required specialists. When delegated, follow the hard handoff bounds above. Return to the parent for a root gate, unresolved material direction, or new cross-layer state/protocol rule. Preserve existing behavior unless the request changes it. Keep existing PR follow-up on the same branch by default.
 
-Before final claims/publication, compare the final diff with current accessibility, test, and review evidence under root section 7.4. For owned-PR readiness, follow root section 8 plus `git-provenance` / `pr-readiness`; settle required tester/a11y evidence for the final UI state before the whole-change reviewer pass. Prefer one meaningful tester checkpoint over repeated calls after component edits.
+Before final claims/publication, compare the final diff with current accessibility, test, and review evidence under root section 7.4. For owned-PR readiness, follow root section 8 plus `git-provenance` / `pr-readiness` and supply the UI verification/accessibility evidence those contracts require for the current state; do not define a separate UI lifecycle order. Prefer one meaningful tester checkpoint over repeated calls after component edits.
 
 ## Final report
 
-Report normalized/delegated intent, authoritative target/state identity when inherited/relevant, specialists actually run, plan/change summary, files changed if implementation occurred, component/source/UUPM status when relevant, exact validation/accessibility status, out-of-scope/cross-layer escalation findings, publication/readiness status and PR URL when relevant, and blockers/remaining decisions.
+Report normalized/delegated intent, authoritative target/state identity when inherited/relevant, specialists actually run, plan/change summary, files changed if implementation occurred, component/source integration status when relevant, exact validation/accessibility status, out-of-scope/cross-layer escalation findings, publication/readiness status and PR URL when relevant, and blockers/remaining decisions.
 

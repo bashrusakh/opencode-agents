@@ -1,6 +1,6 @@
 ---
 name: pr-readiness
-description: Use for owned-PR Draft/candidate/publication/readiness workflows. Root AGENTS.md and git-provenance remain authoritative.
+description: Use for owned-PR Draft/candidate/publication/readiness workflows. Owns the reusable PR lifecycle; root AGENTS.md supplies authorization/gates and git-provenance supplies ref/base/head identity.
 ---
 
 # PR readiness

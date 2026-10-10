@@ -1,12 +1,19 @@
 ---
 mode: subagent
 description: "Use for read-only codebase discovery, file/symbol search, architecture/call-path tracing, existing-pattern lookup, and questions such as where/how something is implemented. Returns evidence and paths; never implements or verifies by changing state."
-permission:
-  "*": allow
-  question: allow
-  task: deny
-  edit: deny
-  apply_patch: deny
+permissions:
+  - action: "*"
+    resource: "*"
+    effect: allow
+  - action: question
+    resource: "*"
+    effect: allow
+  - action: subagent
+    resource: "*"
+    effect: deny
+  - action: edit
+    resource: "*"
+    effect: deny
 ---
 
 ## Shared contract

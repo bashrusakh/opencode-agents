@@ -1,6 +1,6 @@
 ---
 name: resource-lifecycle
-description: Use when the workflow deliberately creates temporary worktrees, branches, files, processes, evidence workspaces, or hosted resources that require cleanup reconciliation. Root AGENTS.md remains authoritative.
+description: Use when the workflow deliberately creates temporary worktrees, branches, files, processes, evidence workspaces, or hosted resources that require cleanup reconciliation. Root AGENTS.md supplies authorization/gates; this skill owns lifecycle mechanics.
 ---
 
 # Resource lifecycle

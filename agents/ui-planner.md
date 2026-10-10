@@ -1,12 +1,19 @@
 ---
 mode: subagent
 description: "Use for a concrete, implementable UI/web redesign/layout/theme plan when the desired outcome is known but design/layout/theme direction still needs planning. Read-only; defines component/layout/state/token/accessibility/verification guidance and never edits files."
-permission:
-  "*": allow
-  question: allow
-  task: deny
-  edit: deny
-  apply_patch: deny
+permissions:
+  - action: "*"
+    resource: "*"
+    effect: allow
+  - action: question
+    resource: "*"
+    effect: allow
+  - action: subagent
+    resource: "*"
+    effect: deny
+  - action: edit
+    resource: "*"
+    effect: deny
 ---
 
 ## Shared contract
@@ -30,13 +37,11 @@ Do not choose a new product/design direction when materially different alternati
 - Plan responsive and accessibility behavior proportional to the changed interaction.
 - Flag dependencies/frameworks/fonts/icon sets/generated assets/design-system changes as gated rather than silently adding them to the plan.
 
-## Component sources and UUPM
+## Component-source integration
 
-When visible/configured, prefer sources in this order: existing project components/tokens/styles/layout primitives; official shadcn MCP/standard registry; official shadcn MCP with public GitHub-compatible registries; Jpisnice shadcn-ui MCP as a secondary/reference source; manual implementation. Skip unavailable sources without asking, and do not assume availability from documentation alone.
-
-UUPM is advisory design input only. Use it only when current runtime/project evidence exposes it; project behavior, architecture, accessibility, and existing components take priority.
+When the plan needs a component-source or external design-integration choice, load `ui-component-sources` and apply that policy. Preserve project constraints and report the selected/remaining source decision without defining a second provider order here.
 
 ## Result
 
-Provide an implementable plan: design goal, priority/information architecture when relevant, layout/component/state changes, token changes only when relevant, responsive/accessibility behavior, component-source choices, ordered `@ui-implementer` steps, verification/regression checklist grouped into implementation-local evidence vs any meaningful independent tester checkpoint, gated decisions/risks, and UUPM status when relevant. Do not prescribe a tester call after every component/package by default.
+Provide an implementable plan: design goal, priority/information architecture when relevant, layout/component/state changes, token changes only when relevant, responsive/accessibility behavior, component-source choices, ordered `@ui-implementer` steps, verification/regression checklist grouped into implementation-local evidence vs any meaningful independent tester checkpoint, gated decisions/risks, and component-source integration status when relevant. Do not prescribe a tester call after every component/package by default.
 

@@ -2,6 +2,81 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.52 beta
+
+- Allows the already-required `session-evidence` skill for `semantic-checkpoint` and `session-evaluator` without otherwise changing their permission policy.
+- Makes static semantic guards owner-specific so documentation/manual text cannot satisfy assertions about missing active runtime guards.
+- Adds effective-permission regression coverage for mandatory role→skill dependencies.
+- Makes the temporary semantic-transition eval contract explicit about injected intermediate faults and separates proposition relation from evidence-state transitions.
+- Extends the Semantic Design Manual release checklist with runtime-dependency reachability and owner-specific static-oracle checks.
+
+See [`docs/releases/v30.52-beta.md`](docs/releases/v30.52-beta.md).
+
+## v30.51 beta
+
+- Migrates all pack-owned agent frontmatter to OpenCode V2 `permissions` rules with V2 action names while preserving the existing permission-policy intent.
+- Corrects blocker/replacement semantics and evidence-vs-product-choice authority boundaries.
+- Relayers owned-PR lifecycle, temporary-resource lifecycle, and UI component-source integration to one canonical owner each.
+- Adds `ui-component-sources` as a pack-owned conditional integration skill without changing the established source order.
+- Expands end-to-end semantic transition traces from 16 to 18 cases and adds executable static schema/ownership regression guards.
+
+See [`docs/releases/v30.51-beta.md`](docs/releases/v30.51-beta.md).
+
+## v30.50 beta
+
+- Adds an isolated end-to-end semantic transition trace eval across the complete applicable workflow path.
+- Requires each material semantic delta in replay to record what changed, why it changed, its cause/source, and the authority/evidence sufficient for that exact transition.
+- Adds 16 synthetic adversarial/preservation scenarios, including two incident-independent regressions derived from observed source-authority/report-state and verification-qualifier failures.
+- Extends the Semantic Design Manual and release checklist so per-file/cross-layer static audits do not substitute for fresh semantic-path replay.
+
+See [`docs/releases/v30.50-beta.md`](docs/releases/v30.50-beta.md).
+
+## v30.49 beta
+
+- Separates task-semantic/product authority from action/policy precedence without changing the existing precedence hierarchy.
+- Makes terminal `session-evaluator` instrumentation explicitly non-gating when the diagnostic invocation is unavailable or fails.
+- Adds the conditional `session-evidence` skill as the single owner of OpenChamber session-history retrieval/pagination mechanics and removes those procedures from semantic role prompts.
+- Removes OCR CLI/provider procedure duplication from `reviewer`; review integrations are consumed through their owning skills.
+- Makes `pr-readiness` the single owner of the reusable owned-PR lifecycle/readiness sequence.
+- Extends semantic release checks to cross-layer ownership, gating consistency, provider/API/CLI mechanism leakage from semantic roles, and finding ownership/provenance triage.
+
+See [`docs/releases/v30.49-beta.md`](docs/releases/v30.49-beta.md).
+
+## v30.48 beta
+
+- Replaces the remaining evaluator-specific `PASS`/`BLOCK` proof labels with proposition-based evidence semantics.
+- Generalizes semantic terminology validation to any origin-specific literal semantic state/value, not only presentation/color examples.
+- Adds a rename-counterfactual release check for incidental local status/value names.
+
+See [`docs/releases/v30.48-beta.md`](docs/releases/v30.48-beta.md).
+
+## v30.47 beta
+
+- Replaces presentation-specific success/failure color metaphors in active semantic/runtime guidance with outcome-based wording.
+- Adds a generic Semantic Design Manual guard against deriving portable policy from incidental UI/status presentation.
+- Adds presentation-neutral terminology validation alongside the existing semantic ownership/duplication checks.
+- Corrects the stale root pack-version marker that still identified v30.45.
+
+See [`docs/releases/v30.47-beta.md`](docs/releases/v30.47-beta.md).
+
+## v30.46 beta
+
+- Makes verification evidence proposition-scoped and requires material preconditions, qualifiers, scope, and oracle semantics to survive translation into tests/reproductions/benchmarks/traces/review evidence.
+- Separates structural, behavioral, and evidentiary coverage; full file/diff review no longer implies full proof coverage.
+- Makes reported success/failure from verification artifacts support product claims only after evidence-validity/causality checks, with proportional negative controls when they materially improve discrimination.
+- Adds role-specific proof-obligation preservation and evidence-laundering detection without introducing another verification stage.
+
+See [`docs/releases/v30.46-beta.md`](docs/releases/v30.46-beta.md).
+
+## v30.45 beta
+
+- Preserves the user's open decision space when exploratory/planning/architectural/diagnostic work is delegated; parent-originated candidate solutions remain non-exhaustive unless authority closes the choice set.
+- Adds explicit proposition-preservation classification and treats materially different same-goal replacements as semantic substitution rather than ordinary implementation refinement.
+- Makes semantic-checkpoint require separate authority or an established blocker before a candidate substitutes an established material proposition.
+- Extends session-evaluator delegation and semantic-delta audits to detect parent-narrowed choice sets and unsupported substitutions.
+
+See [`docs/releases/v30.45-beta.md`](docs/releases/v30.45-beta.md).
+
 ## v30.44 beta
 
 - Makes adoption of a source proposition-scoped instead of inheriting authority for every statement in the source.

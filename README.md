@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.44 beta
+# OpenCode Agent Pack v30.52 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
 
@@ -13,14 +13,14 @@
 
 ---
 
-## What changed in v30.44 beta
+## What changed in v30.52 beta
 
-- Prevents adopted sources from transferring user authority wholesale: normative outcomes/constraints remain distinct from diagnoses, proposed mechanisms, rationale/examples, and optional recommendations/fallbacks.
-- Separates implementation choice and adequacy from authority in the semantic checkpoint and orchestrator handoffs.
-- Preserves historical action-state provenance across handoffs and evaluation: intended/planned, reported completion/failure, and independently verified completion/failure remain distinct.
-- Extends session-evaluator diagnostics so missing independent execution evidence cannot downgrade a visible completion report into mere intent or upgrade a report into independent verification.
+- Makes the mandatory `session-evidence` skill reachable to `semantic-checkpoint` and `session-evaluator` under their existing OpenCode V2 permission policy.
+- Strengthens static release guards so active runtime invariants are checked against their actual owners instead of being satisfiable by documentation text elsewhere in the package.
+- Adds an effective-permission regression for required `session-evidence` access.
+- Clarifies the temporary semantic-transition eval contract by separating proposition relation from evidence-state change and declaring injected-fault boundaries per scenario.
 
-See [`docs/releases/v30.44-beta.md`](docs/releases/v30.44-beta.md).
+See [`docs/releases/v30.52-beta.md`](docs/releases/v30.52-beta.md), [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md), and [`evals/static-policy-regressions.py`](evals/static-policy-regressions.py).
 
 ---
 
@@ -256,11 +256,12 @@ golang-pro            graymatter-memory        open-code-review
 open-code-review-delegate output-formatting     persistent-planning
 playwright-expert      pr-readiness             python-pro
 react-expert           resource-lifecycle       rust-engineer
-secure-code-guardian   typescript-pro           ui-ux-pro-max
-verification-strategy vue-expert
+session-evidence       secure-code-guardian    typescript-pro
+ui-component-sources   ui-ux-pro-max           verification-strategy
+vue-expert
 ```
 
-**Count:** 20 skills. Skills are conditional/procedural guidance and remain subordinate to root/project authority, role boundaries, and gates.
+**Count:** 22 skills. Skills are conditional/procedural guidance and remain subordinate to root/project authority, role boundaries, and gates.
 
 ### External integrations
 
@@ -359,9 +360,10 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.44-beta.md`](docs/releases/v30.44-beta.md) | Current release notes |
+| [`docs/releases/v30.52-beta.md`](docs/releases/v30.52-beta.md) | Current release notes |
 | [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) | Method for turning developer guidance and traces into durable semantic rules |
 | [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) | Source → generalized rule → reverse-action preservation audit |
+| [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md) | Fresh-session end-to-end semantic transition replay suite |
 | [`docs/releases/v30.32-beta.md`](docs/releases/v30.32-beta.md) | Claim-authority clarification |
 | [`docs/releases/v30.27-beta.md`](docs/releases/v30.27-beta.md) | `session-evaluator` introduction and compatibility notes |
 | [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Human-facing UI component MCP setup |
@@ -373,7 +375,7 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 
 A release archive should verify at least:
 
-- exactly **17 agents**, **20 skills**, zero package custom commands, and zero package custom tools;
+- exactly **17 agents**, **22 skills**, zero package custom commands, and zero package custom tools;
 - valid agent frontmatter and no provider-specific `model:` overrides;
 - every current role reference resolves and obsolete package-owned `plan.md` does not remain active after upgrade;
 - root stays below the pack's `<50 KiB` target;
@@ -382,14 +384,23 @@ A release archive should verify at least:
   - remove semantic duplicates, stale model-era scaffolding, unnecessary verification/subagent rituals, role↔root restatements, release-validation or “what did not change” narration in runtime prompts, and workaround rules whose cause no longer exists;
   - retain a local reminder only when salience at that decision point materially reduces a known failure mode;
   - after any prompt change, rerun semantic invariant checks that test the general rules rather than incident-specific wording;
+  - build a cross-layer ownership map for material state machines/procedures and verify root/roles/skills reference one owner instead of restating the same sequence;
+  - check gating consistency: diagnostic/non-gating instrumentation must remain non-gating when invocation is unavailable and must not inherit generic required-stage blocker semantics;
+  - scan semantic role prompts for provider/API/CLI mechanics that should live in a conditional skill/runtime adapter rather than the role itself;
+  - triage findings by ownership/provenance before changing anything: pack-owned policy/integration, external/vendor skill content, project-local policy, and historical documentation are different surfaces;
+  - audit literal semantic state/value vocabulary: each such literal must be a pack-defined semantic class/enum or an exact external value whose representation is contractual; otherwise express the underlying meaning and verify the rule still works if incidental local labels are renamed;
 - agent/skill/install surfaces match the release manifest and unexpected runtime files are not introduced;
 - subagent session continuity follows assignment continuity: new specialist assignments/independent judgments use fresh child sessions, while continuation is explicit and limited to the same specialist-owned workstream;
 - `semantic-checkpoint` remains read-only/non-implementing, gates only material pre-mutation semantic decisions, runs each verdict in a fresh child session, and does not classify instruction failures or require post-mutation proof before edits;
 - `code-orchestrator` treats `proceed` as candidate-specific authorization, preserves optional mechanisms as implementation choices, keeps `hold`/`unverified` blocked until their stated blockers are materially addressed, does not re-run an unchanged blocked candidate for verdict-shopping, and never continues a prior checkpoint child for a new verdict;
 - `session-evaluator` remains post-hoc/diagnostic, uses only OpenChamber `session.list`/`session.messages`, consumes supplied parent/participating session IDs before fallback discovery, keeps `unverified` separate from finding classes, treats checkpoint verdicts only as gate-control evidence, and audits the original decision path independently;
 - session-aware delegated judgments do not enumerate the project merely to rediscover supplied session identities; `session.list` remains fallback only for missing identities/relationships, while OpenChamber pagination defects remain runtime defects rather than prompts for broader semantic crawling;
+- run the **end-to-end semantic transition trace suite** from `evals/semantic-transition-traces.md` in an isolated/fresh evaluation context: trace each material proposition across the complete applicable workflow, identify every semantic delta, record why it changed and the source/cause, and require sufficient authority/evidence for that exact transition;
+- the trace suite includes both adversarial and preservation cases, including synthetic regressions derived from real failure classes without repository-, incident-, provider-, or UI-specific details; existence/static inspection of the eval file does not count as a replay pass;
 - Startup/update/final communication remains compact: no duplicate prose plan around Startup, no routine tool narration, and no empty/repeated report sections;
 - the semantic design manual remains documentation rather than runtime policy, and its source-preservation audit still derives the tracked developer actions after abstraction;
+- all pack-owned agent frontmatter uses the declared OpenCode V2 `permissions` rule schema with V2 action names; schema migration must preserve the existing permission-policy intent unless a separate policy change is explicitly authorized;
+- `python evals/static-policy-regressions.py` passes as a structural/ownership guard; this does **not** substitute for fresh isolated semantic-transition replay;
 - installer scripts pass `bash -n`, preserve unrelated user/project files, and match their documented backup/overwrite behavior;
 - external/setup docs remain documentation only and are not required runtime policy;
 - vendored/adapted skill content retains source/license attribution;
@@ -399,7 +410,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.44 beta**  
+**OpenCode Agent Pack v30.52 beta**  
 Semantic routing · bounded orchestration · evidence-grounded verification
 
 </div>

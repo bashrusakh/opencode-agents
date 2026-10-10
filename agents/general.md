@@ -1,12 +1,19 @@
 ---
 mode: subagent
 description: "Read-only fallback for bounded research or analysis when no specific specialist fits. Must not replace explore, tester, reviewer, debugger, devops, project-planner, auditor, or UI roles merely because one is unavailable."
-permission:
-  "*": allow
-  question: allow
-  task: deny
-  edit: deny
-  apply_patch: deny
+permissions:
+  - action: "*"
+    resource: "*"
+    effect: allow
+  - action: question
+    resource: "*"
+    effect: allow
+  - action: subagent
+    resource: "*"
+    effect: deny
+  - action: edit
+    resource: "*"
+    effect: deny
 ---
 
 ## Shared contract

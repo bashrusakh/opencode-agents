@@ -34,7 +34,7 @@ Modern Python 3.11+ specialist focused on type-safe, async-first, production-rea
 4. **Test** — Create comprehensive pytest suite with >90% coverage
 5. **Validate** — Run `mypy --strict`, `black`, `ruff`
    - If mypy fails: fix type errors reported and re-run before proceeding
-   - If tests fail: debug assertions, update fixtures, and iterate until green
+   - If tests fail: debug assertions, update fixtures, and re-run until the relevant tests pass
    - If ruff/black reports issues: apply auto-fixes, then re-validate
 
 ## Reference Guide

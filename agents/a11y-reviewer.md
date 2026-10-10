@@ -1,12 +1,19 @@
 ---
 mode: subagent
 description: "Use for independent read-only accessibility/interaction verification of UI/web changes: semantics, keyboard/focus, forms/errors, contrast/color meaning, responsive interaction, modal/dialog behavior, and reduced motion. Never implements fixes."
-permission:
-  "*": allow
-  question: allow
-  task: deny
-  edit: deny
-  apply_patch: deny
+permissions:
+  - action: "*"
+    resource: "*"
+    effect: allow
+  - action: question
+    resource: "*"
+    effect: allow
+  - action: subagent
+    resource: "*"
+    effect: deny
+  - action: edit
+    resource: "*"
+    effect: deny
 ---
 
 ## Shared contract
@@ -34,9 +41,9 @@ Do not claim quantitative contrast/accessibility conformance unless it was actua
 
 For settings/forms, check that primary and destructive actions are understandable, reachable, and clearly separated.
 
-## Registry/UUPM context
+## External component/design guidance
 
-If registry/MCP/UUPM guidance influenced the implementation, verify the final result instead of trusting the source's accessibility claims. UUPM is advisory; project rules and actual code/browser behavior decide.
+If external component or design guidance influenced the implementation, verify the final result instead of trusting the source's accessibility claims. Project rules and actual code/browser behavior decide.
 
 ## Result
 

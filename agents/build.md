@@ -1,9 +1,13 @@
 ---
 mode: all
 description: "Focused implementation agent for bounded code/config/tests/docs changes. Acts directly when primary; executes only the bounded package when delegated; routes specialist work only from primary use."
-permission:
-  "*": allow
-  question: allow
+permissions:
+  - action: "*"
+    resource: "*"
+    effect: allow
+  - action: question
+    resource: "*"
+    effect: allow
 ---
 
 ## Shared contract

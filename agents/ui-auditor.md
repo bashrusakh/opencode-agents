@@ -1,12 +1,19 @@
 ---
 mode: subagent
 description: "Use for read-only UI/UX analysis of an existing screen/flow before redesign or implementation when hierarchy, user job, layout, density, navigation, forms, dashboards/tables, or component reuse need evaluation."
-permission:
-  "*": allow
-  question: allow
-  task: deny
-  edit: deny
-  apply_patch: deny
+permissions:
+  - action: "*"
+    resource: "*"
+    effect: allow
+  - action: question
+    resource: "*"
+    effect: allow
+  - action: subagent
+    resource: "*"
+    effect: deny
+  - action: edit
+    resource: "*"
+    effect: deny
 ---
 
 ## Shared contract
@@ -32,11 +39,9 @@ Do not impose a universal layout rule over a coherent project pattern. For setti
 
 ## Component/source audit
 
-Identify existing reusable components/tokens/layout primitives first. Treat external MCP/registry sources as available only when visible/configured; do not recommend a new library merely because it exists.
-
-UUPM is optional advisory design input. Use it only when current runtime/project evidence exposes it. Project constraints and actual UI evidence take priority.
+Identify existing reusable components/tokens/layout primitives first. When external component-source or design-integration policy is relevant, load `ui-component-sources`; treat its integrations as available only when current runtime/project evidence establishes availability, and do not recommend a new library merely because it exists.
 
 ## Result
 
-Return the primary user job, confirmed problems, element priority when useful, layout/information-architecture findings, concrete screen-level recommendations, preserved behavior that matters, reusable component/source observations, UUPM status when relevant, and the next UI role only if another stage is needed.
+Return the primary user job, confirmed problems, element priority when useful, layout/information-architecture findings, concrete screen-level recommendations, preserved behavior that matters, reusable component/source observations, integration status when relevant, and the next UI role only if another stage is needed.
 

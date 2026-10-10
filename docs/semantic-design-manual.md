@@ -20,18 +20,19 @@ The goal is not to copy vendor prompts. The goal is to preserve the reusable beh
 
 Do not put every useful statement into one prompt layer. First classify it.
 
-### 1.1 Authority
+### 1.1 Task-semantic authority
 
-Authority answers: **what is required or allowed?**
+Task-semantic authority answers: **what outcome, acceptance condition, constraint, or requested approach is established for the task/product?**
 
 Typical sources:
 
 - current user intent and explicit approvals;
-- applicable project rules;
-- safety/runtime/tool ceilings;
+- applicable project rules that govern the task/product contract;
 - an artifact the user explicitly adopted as a specification, limited to its normative outcomes, acceptance criteria, and explicit constraints.
 
-Authority is claim-level. A document, reviewer, test, or child agent is not globally authoritative merely because some statement inside it is valid.
+Safety/runtime/tool ceilings, hard role boundaries, gates, workflow policy, and instruction precedence answer a different question: **what may this actor/workflow do or claim?** They constrain execution and can block an otherwise valid requested action, but they do not thereby become product acceptance criteria or user-established task semantics.
+
+Task-semantic authority is claim-level. A document, reviewer, test, or child agent is not globally authoritative merely because some statement inside it is valid.
 
 Adopting a source does not transfer authority to every statement it contains. When the distinction matters, classify source propositions as normative outcome/acceptance/constraint, factual diagnosis/evidence, proposed mechanism, example/rationale, or optional recommendation/fallback. When a source is adopted as the task/specification, its normative task propositions inherit user authority; the other propositions keep their own semantic class unless separately adopted or required by another authority.
 
@@ -140,6 +141,24 @@ A compact way to catch semantic overreach is:
 
 If such a state exists, the evidence is insufficient to establish that semantic claim.
 
+### Proposition-preservation test
+
+Authority bounds more than the maximum action level. Compare a candidate with the material proposition actually established and classify the relation when it matters:
+
+- **preserved** — the established proposition is unchanged;
+- **refined** — only implementation mechanics become more specific;
+- **strengthened / weakened** — the force or result changes;
+- **substituted** — a materially different approach, outcome, or constraint replaces the established one;
+- **unverified** — available evidence cannot establish the relation.
+
+A replacement is not merely a refinement because it is safer, narrower, technically better, lower-permission, or aimed at the same broad goal. Evidence may establish that the original proposition is blocked or non-viable, but that does not itself authorize a materially different replacement. Semantic substitution needs separate proposition-scoped authority unless the replacement was already established as a conditional alternative and evidence establishes that condition. Adequacy of the replacement does not create that authority.
+
+### Evidence-fidelity test
+
+Evidence is proposition-scoped too. A test, reproduction, benchmark, trace, or review finding proves only the proposition whose material preconditions, qualifiers, scope, and observable outcome its actual fixture/setup and oracle preserve. Translating an invariant into weaker, stronger, or ambiguous verification is semantic drift even when the artifact passes.
+
+For a material proof obligation, ask: **what must be true for this evidence to distinguish the governing proposition from a counterexample, and does the actual artifact guarantee those conditions?** A failing artifact establishes a product defect only after that validity check; otherwise classify the result as a verification/test defect, environment-dependent evidence, or unresolved proof gap. Negative controls are useful when they materially increase discrimination, not as a ritual.
+
 ---
 
 ## 4. Put each rule at one owning layer
@@ -154,7 +173,7 @@ Put a rule in root only when it must govern many unrelated workflows before role
 
 Examples:
 
-- authority hierarchy;
+- instruction/action precedence and task-semantic authority rules;
 - gated actions;
 - shared evidence rules;
 - general delegation ownership;
@@ -185,6 +204,10 @@ Keep project-specific commands, architecture, constraints, and conventions in th
 Put behavior in runtime code when it is actually a tool/API contract, not a reasoning preference.
 
 Do not compensate for a broken pagination API, permission boundary, or session topology with semantic prose if the runtime can be corrected.
+
+When auditing ownership, inspect the **cross-layer graph**, not only each file in isolation. A rule can have one apparent owner inside every file while still being duplicated across root, role, and skill. For every material state machine, lifecycle, or procedural integration, identify the canonical owner and verify that other layers only activate, constrain, consume, or report it.
+
+A semantic role may reference a conditional integration, but provider/API/CLI invocation mechanics belong in the owning integration skill or runtime adapter unless the exact mechanic is itself part of that role's semantic responsibility.
 
 ---
 
@@ -251,6 +274,12 @@ Add a role only if at least one of these materially improves:
 - trace legibility.
 
 Do not add a role merely to create another check.
+
+### Preserve decision space in exploratory delegation
+
+An exploratory, planning, architectural, or diagnostic handoff should preserve the decision space established by the user. Pass the outcome, constraints, evidence, exclusions, and unresolved questions. Parent-originated candidate solutions, examples, preferences, or implementation ideas remain non-exhaustive hypotheses unless authority actually constrains the task to those alternatives.
+
+When the purpose is an independent recommendation, avoid preselecting the solution architecture. A downstream choice among a parent-supplied list does not prove that the list was complete or user-authorized. A useful check before the handoff is: if the delegate returned an approach outside the parent's current candidates, would the original request allow it to be considered? If yes, the assignment must not make the parent candidates the closed choice set.
 
 ---
 
@@ -324,6 +353,14 @@ Examples:
 - integration test -> integration contract;
 - end-to-end environment check -> end-to-end outcome;
 - review -> judgment about the inspected candidate, not proof that runtime behavior succeeded.
+
+Separate coverage dimensions when they matter:
+
+- **structural coverage** — which files/diff entries were inspected;
+- **behavioral coverage** — which material claims/invariants were exercised;
+- **evidentiary coverage** — which claims have evidence that actually discriminates the governing proposition from relevant counterexamples.
+
+Full structural coverage does not imply full behavioral or evidentiary coverage.
 
 ### Avoid over-verification
 
@@ -457,11 +494,37 @@ For important behavior, combine the grader that best fits the property:
 
 Do not use one grader type for everything.
 
+### Trace semantic transitions end to end
+
+Static ownership and cross-layer composition checks are necessary but insufficient. A material proposition can remain valid in each file while changing incorrectly at a handoff, retry, skill activation, verification step, or final summary.
+
+For representative release scenarios, trace the proposition across the complete applicable workflow rather than grading documents independently. At each material transition record:
+
+- incoming and outgoing proposition/state;
+- qualifiers, preconditions, exclusions, unresolved conditions, and proof obligations that must survive;
+- **what changed**;
+- **why it changed** and the source of that cause;
+- whether that source is task-semantic authority, evidence, implementation discretion, runtime fact, or another established class;
+- what authorizes the resulting transition when authority is required;
+- proposition relation separately from the evidence-state transition.
+
+The central test is not merely whether a delta exists. It is whether the **cause is sufficient for that exact delta**. Evidence may establish that an earlier path is blocked without authorizing a materially different replacement. A downstream agent, loaded skill, repeated recommendation, or successful local artifact does not create provenance merely by producing a new state.
+
+Treat a material semantic delta without identifiable and sufficient provenance as drift. Also test preservation cases so this rule does not freeze legitimate implementation refinement, user-authorized closed choices, project-local constraints, or evidence that merely resolves uncertainty.
+
+For a negative replay, state explicitly whether the harness **injects** a faulty intermediate artifact at a named stage or expects the active upstream workflow to avoid producing that fault. Record the earliest observable stage that must preserve state or stop. Do not attribute an injected fault to the upstream role, and do not mix evidence-state changes such as uncertainty resolution into the proposition-relation taxonomy.
+
+Convert observed failures into incident-independent synthetic regression scenarios. Preserve the semantic structure of the failure, not its repository names, UI labels, provider terms, or accidental implementation details. Run these scenarios in an isolated/fresh evaluation context; authoring-context agreement is not evidence that the candidate pack passes the replay.
+
 ---
 
 ## 14. Write semantic rules so an action can be derived from them
 
 A good semantic rule contains enough information to determine behavior, not merely a principle slogan.
+
+Name semantic states by their meaning, not by incidental presentation. Portable policy should not depend on UI colors, icons, badge names, local CI labels, repository-specific status vocabulary, or other origin-specific literal state values unless that representation is itself part of the governing contract. Translate presentation labels into the underlying semantic state before turning them into a reusable rule.
+
+Treat a literal state/value in canonical policy as justified only when the pack explicitly defines it as a canonical semantic class/enum, or the exact external literal is itself part of the governing contract. Otherwise express the rule through the state's underlying meaning. Use a rename counterfactual: if the originating system renamed every local status/value while preserving their meanings, the reusable rule should remain complete and unambiguous. If it would not, the abstraction is too concrete.
 
 Use this template:
 
@@ -505,7 +568,9 @@ Preserve distinctions such as:
 - selected/adequate mechanism vs required mechanism;
 - intended action vs reported completion vs independently verified completion;
 - temporary workaround vs desired outcome;
-- conditional alternative vs active choice.
+- conditional alternative vs active choice;
+- non-exhaustive hypothesis vs exhaustive choice set;
+- preserved/refined proposition vs semantic substitution.
 
 Use stable terminology and direct verbs. Split stacked instructions when ambiguity can change behavior. A shorter sentence is not better if it destroys a condition or exception.
 
@@ -731,7 +796,13 @@ Before shipping a prompt/harness semantic change, verify:
 - [ ] The expected behavior is stated independently of the incident.
 - [ ] Authority and evidence are not conflated.
 - [ ] Optional mechanisms remain optional.
-- [ ] The rule has one canonical owner.
+- [ ] The rule has one canonical owner **across the full root → role → skill/runtime graph**, not merely within each file; consumers activate/reference the owner instead of restating its state machine or procedure.
+- [ ] Every stage/instrumentation hook has one explicit gating class. A diagnostic/non-gating hook must not inherit generic required-stage failure semantics that would change terminal outcome when the hook is unavailable.
+- [ ] Semantic role prompts contain only role-owned semantics/integration points; provider/API/CLI retrieval or invocation mechanics live in a conditional skill/runtime adapter unless that mechanic is itself the governing contract.
+- [ ] Audit findings are triaged by ownership/provenance before mutation: pack-owned canonical policy, pack-owned integration procedure, external/vendor skill content, project-local policy, and historical documentation are not interchangeable owners. Do not rewrite external/vendor semantics merely to make the pack look internally uniform; verify that root precedence/containment remains correct and change the external surface only when this pack intentionally owns that contract.
+- [ ] Representative end-to-end semantic traces were replayed across the complete applicable workflow, not inferred from per-file inspection alone.
+- [ ] For every material transition in those traces, the eval records what changed, why it changed, the cause/source, and whether sufficient authority/evidence exists for that exact resulting state; a blocker to an old path is not treated as automatic authority for a replacement.
+- [ ] The replay set contains adversarial and preservation cases plus incident-independent regressions derived from established real failure classes, and was run in an isolated/fresh evaluation context.
 - [ ] Standing prompt growth is justified; otherwise use conditional disclosure.
 - [ ] Delegation/checking is conditional rather than ritual unless policy requires it.
 - [ ] Important state identity is preserved.
@@ -739,6 +810,12 @@ Before shipping a prompt/harness semantic change, verify:
 - [ ] A preservation case protects a valid existing workflow.
 - [ ] The synthesized rule passes the round-trip action test.
 - [ ] Runtime/API assumptions were checked against the actual implementation when they are material.
+- [ ] The pack declares one target host configuration generation for pack-owned runtime definitions; every agent frontmatter conforms to that generation, and legacy compatibility syntax is absent unless an explicit compatibility requirement justifies it.
+- [ ] A host-schema migration is checked separately from permission-policy changes: action/resource/effect intent remains equivalent unless the release explicitly authorizes a policy delta.
+- [ ] Every mandatory runtime dependency named by a role (required skill/tool/integration owner) is reachable under that role's **effective** host permissions; existence of the dependency and correctness of its ownership do not prove reachability.
+- [ ] A static assertion about an active runtime invariant is checked against its canonical active owner/consumer surface directly; documentation/manual parity is tested separately and cannot satisfy a runtime-owner assertion.
+- [ ] Static ownership/schema regression checks pass, but are not counted as evidence that end-to-end semantic replay passed.
+- [ ] Every literal semantic state/value in canonical wording is either a pack-defined semantic class/enum or an exact external literal whose representation is contractual; otherwise the rule names the underlying meaning and survives renaming of incidental local values.
 - [ ] The final prompt is written with stable terms, direct actions, preserved conditions, and no unnecessary narration.
 
 ---

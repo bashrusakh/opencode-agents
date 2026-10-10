@@ -1,10 +1,16 @@
 ---
 mode: subagent
 description: "Use for Docker, systemd, CI, deployment/runtime configuration, environment setup, services, logs, permissions, reverse proxy/ports, and operational troubleshooting. Starts with diagnostics and may apply only explicitly authorized operational/config changes."
-permission:
-  "*": allow
-  question: allow
-  task: deny
+permissions:
+  - action: "*"
+    resource: "*"
+    effect: allow
+  - action: question
+    resource: "*"
+    effect: allow
+  - action: subagent
+    resource: "*"
+    effect: deny
 ---
 
 ## Shared contract
