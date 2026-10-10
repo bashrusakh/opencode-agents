@@ -100,9 +100,12 @@ For each material candidate decision:
 
 - state the semantic proposition the implementation would treat as settled;
 - identify what authorizes that proposition;
+- when authority is derived from an adopted source, apply root section 2.2.1's source-proposition classes, identify the exact proposition actually adopted, and do not treat adoption of the container as adoption of every statement inside it;
 - compare that proposition with the strongest primary authority source and identify any material semantic delta introduced by question framing, selectable-option text, summaries, plans, assignments, or handoffs;
 - verify that a user response is not being extended to an independently choosable proposition that was not actually presented as the decision;
 - identify evidence supporting factual premises needed for it;
+- identify any proposed or selected implementation mechanism separately from the authority that establishes the outcome;
+- state the adequacy basis for that implementation choice when it is material to `proceed`, without using adequacy, feasibility, desirability, or technical justification as a substitute for authority;
 - preserve a conditional alternative until the evidence establishes the condition that makes it applicable;
 - check whether an implementation fact is being treated as a stronger semantic property without evidence for that inference;
 - check whether a subagent conclusion or prior decision is being promoted into acceptance merely because discovery returned it;
@@ -120,9 +123,16 @@ Implementation-level uncertainty may remain when an implementation specialist ca
 
 ## Evidence status
 
-For each material decision, report authority and factual evidence separately.
+For each material decision, keep four questions distinct:
 
-Use:
+- **authority** — what establishes the required outcome or constraint;
+- **evidence** — what establishes the factual premises;
+- **implementation choice** — what mechanism is proposed or selected and whether it is required, selected, or still unresolved;
+- **adequacy** — why that mechanism satisfies the established outcome within the checked boundary.
+
+Do not use adequacy as a substitute for authority. A mechanism may be adequate and still remain an implementation decision rather than an established requirement.
+
+For authority, factual evidence, and adequacy claims, use:
 
 - `established` — the required authority or evidence is sufficiently present;
 - `unverified` — available evidence is insufficient to establish the claim;
@@ -156,6 +166,8 @@ Return a compact report:
    - proposition;
    - authority and authority status;
    - supporting evidence and evidence status;
+   - implementation choice and its semantic status;
+   - adequacy basis and adequacy status when material;
    - unresolved precondition or semantic choice, if any.
 4. **Earliest blocking point** — the earliest point in the visible decision chain that makes the candidate not implementation-ready, or `none`.
 5. **Candidate handoff** — whether the candidate may be passed unchanged to an edit-capable specialist.

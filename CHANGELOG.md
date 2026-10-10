@@ -2,6 +2,15 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.44 beta
+
+- Makes adoption of a source proposition-scoped instead of inheriting authority for every statement in the source.
+- Separates authority, evidence, implementation choice, and adequacy in semantic checkpoint/orchestrator handling.
+- Preserves intended, reported, and independently verified action/outcome state across handoffs and retrospective evaluation.
+- Makes session-evaluator report completion as reported-but-unverified when execution evidence is missing, rather than rewriting it as intent.
+
+See [`docs/releases/v30.44-beta.md`](docs/releases/v30.44-beta.md).
+
 ## v30.43 beta
 
 - Consolidates Markdown, brevity, and outcome-first writing rules under the root communication owner and removes duplicate generic formatting rules from `output-formatting`.

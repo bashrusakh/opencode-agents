@@ -33,6 +33,8 @@ Typical sources:
 
 Authority is claim-level. A document, reviewer, test, or child agent is not globally authoritative merely because some statement inside it is valid.
 
+Adopting a source does not transfer authority to every statement it contains. When the distinction matters, classify source propositions as normative outcome/acceptance/constraint, factual diagnosis/evidence, proposed mechanism, example/rationale, or optional recommendation/fallback. When a source is adopted as the task/specification, its normative task propositions inherit user authority; the other propositions keep their own semantic class unless separately adopted or required by another authority.
+
 ### 1.2 Evidence
 
 Evidence answers: **what do we know about the current system or candidate?**
@@ -49,6 +51,8 @@ Examples:
 
 Evidence can support a requirement or implementation claim. It does not create product authority by repetition.
 
+Evidence also has a state and provenance. Preserve the distinction between intended/planned action, reported completion, independently verified completion, reported failure/uncertainty, and independently verified failure/uncertainty. A completion report proves that completion was reported; without independent execution evidence it may remain unverified, but it is not equivalent to mere intent. Conversely, announcing a next step does not prove that it happened. When records disagree, preserve the disagreement instead of collapsing it into one stronger or weaker state.
+
 ### 1.3 Mechanism
 
 Mechanism answers: **how will an established outcome be achieved?**
@@ -61,7 +65,7 @@ Examples:
 - a particular helper or callback;
 - one implementation architecture among several compatible choices.
 
-Do not promote mechanisms into acceptance criteria unless they are explicitly required or are a necessary consequence of the established outcome.
+Do not promote mechanisms into acceptance criteria unless they are explicitly required or are a necessary consequence of the established outcome. A mechanism may still be selected because it is adequate, necessary, or the strongest viable way to preserve the established outcome; that is implementation/adequacy reasoning, not a new source of authority.
 
 ### 1.4 Runtime fact
 
@@ -498,6 +502,8 @@ Preserve distinctions such as:
 - absence vs unknown;
 - evidence vs authority;
 - recommendation vs adopted requirement;
+- selected/adequate mechanism vs required mechanism;
+- intended action vs reported completion vs independently verified completion;
 - temporary workaround vs desired outcome;
 - conditional alternative vs active choice.
 

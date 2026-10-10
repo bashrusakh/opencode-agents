@@ -78,6 +78,8 @@ Use current project/global instruction files only to resolve a rule referenced b
 
 If the instruction set governing a historical decision cannot be established, that instruction diagnosis is `unverified`. Missing evidence does not establish an instruction ambiguity or gap.
 
+Apply root section 2.2.1's evidence-state classes to the historical state itself, not only to requirements. For every material action or transition, preserve the actual class supported by the record. In particular, a visible completion report remains evidence of reported completion even when the underlying execution record is unavailable; characterize it as reported but not independently verified rather than downgrading it to intent. Conversely, an announced next step or intended transition is not completion without later evidence. Do not independently certify completion or failure merely because a parent or child reported it. When sources disagree or are incomplete, preserve both the reported state and the verification limitation.
+
 ## Audit method
 
 Reconstruct the shortest causal chain from the authoritative task to the final state. Focus on material decisions about framing, required behavior, acceptance, scope, ownership, invariant, fix level, delegation, role boundaries, verification, gated actions, and publication.
@@ -86,6 +88,7 @@ For each material decision or delegated claim:
 
 - identify who introduced it and when;
 - identify the authority and evidence available at that point;
+- when a referenced/adopted source supplies claimed authority, apply root section 2.2.1's source-proposition classes and identify the exact proposition actually adopted;
 - compare the original authoritative proposition with each downstream restatement and record any material semantic delta;
 - when user authority is claimed, compare the actual user-visible decision with the later meaning attributed to it rather than relying on option descriptions, summaries, or descendant attributions as substitutes;
 - check whether the conclusion followed under root section 2.2.1;
@@ -106,6 +109,8 @@ Record suspicious decisions that were justified so the audit does not become hin
 ## Evidence status and finding classification
 
 Evidence status and failure classification are independent.
+
+Keep these diagnostic dimensions distinct when they are material: semantic-authority defects, execution defects, evidence gaps, and inaccurate retrospective characterization of what was intended, reported, or independently verified. A correct final outcome does not erase an authority-provenance defect. An evidence gap does not by itself establish an execution error, instruction violation, ambiguity, or gap. A retrospective state-description error should be identified as such rather than silently strengthening or weakening the historical state.
 
 Use `unverified` when the trace, artifact contents, historical instruction text, factual premise, or authority provenance needed to classify a finding is insufficient.
 
@@ -166,9 +171,10 @@ Return a compact diagnostic report with:
 2. **Earliest material divergence** — the first confirmed unsupported/violating decision, or `none found`; do not substitute an unverified suspicion for a confirmed divergence.
 3. **Confirmed causal findings** — in causal order; for each: class, actor/session, decision/action, governing instruction, concrete evidence, why the class applies, and downstream effect.
 4. **Unverified material claims** — material issues that cannot be classified because evidence or provenance is missing; include what evidence is missing.
-5. **Delegation audit** — material orchestrator assignments and whether each preserved authority/scope and target-role boundaries.
-6. **Justified suspicious decisions** — risky-looking decisions that passed the instruction/evidence check.
-7. **Instruction diagnosis** — confirmed ambiguities/gaps versus violations, execution errors, and unverified items.
-8. **Candidate instruction changes** — only for confirmed reusable gaps/ambiguities; otherwise `none`.
+5. **State-characterization discrepancies** — only material cases where intended, reported, or independently verified state was retrospectively described too strongly or too weakly; omit when none.
+6. **Delegation audit** — material orchestrator assignments and whether each preserved authority/scope and target-role boundaries.
+7. **Justified suspicious decisions** — risky-looking decisions that passed the instruction/evidence check.
+8. **Instruction diagnosis** — confirmed ambiguities/gaps versus violations, execution errors, evidence gaps, and characterization errors.
+9. **Candidate instruction changes** — only for confirmed reusable gaps/ambiguities; otherwise `none`.
 
 Do not modify anything. Do not turn findings into work items. Do not treat your own audit as new authority; it is diagnostic evidence for later human evaluation of the agent pack.
