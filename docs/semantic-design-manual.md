@@ -66,7 +66,7 @@ Examples:
 - a particular helper or callback;
 - one implementation architecture among several compatible choices.
 
-Do not promote mechanisms into acceptance criteria unless they are explicitly required or are a necessary consequence of the established outcome. A mechanism may still be selected because it is adequate, necessary, or the strongest viable way to preserve the established outcome; that is implementation/adequacy reasoning, not a new source of authority.
+Do not promote mechanisms into acceptance criteria unless they are explicitly required or are a necessary consequence of the established outcome. A mechanism may still be selected by the role that owns the relevant implementation/design choice because it is adequate, necessary, or the strongest viable way to preserve the established outcome; upstream roles may propose alternatives, but that is reasoning/context rather than new authority or a downstream recipe.
 
 ### 1.4 Runtime fact
 
@@ -372,7 +372,11 @@ Full structural coverage does not imply full behavioral or evidentiary coverage.
 
 Acceptance/task scope and review surface are different objects. Acceptance scope establishes what change is requested; the actual candidate establishes which changed behaviors must be judged for correctness. If a nominally local patch materially alters a destructive boundary, authorization, ownership/reservation, lifecycle, concurrency/locking, persistence/migration, or another high-risk behavior, reviewing that boundary is not scope expansion. It increases review depth inside the candidate without creating implementation authority for unrelated fixes.
 
+An explicitly selected implementation mechanism remains a proposition-scoped constraint, not proof that the candidate is adequate. Review still judges correctness, preserved behavior, fix level, maintainability, security, performance/resource effects, and regressions. A user may explicitly accept a specific tradeoff or temporary workaround; that bounds the review proposition to the exact accepted envelope but does not authorize additional collateral degradation or turn the workaround into production-grade design.
+
 For changed guards/classifiers, preserve both material sides of the governing invariant when both matter. Review whether a prohibited state can be accepted and whether an established permitted state can be rejected. Use the nearest meaningful counterexample rather than assuming conservative rejection is inherently safe.
+
+When a candidate materially changes the amount, placement, frequency, or scaling of work on a performance-sensitive path, compare it with Base behavior or an established expectation at representative scale. Trace meaningful fan-out/asymptotic changes, repeated I/O/network/process/retry/cache work, allocation or memory growth, and other resource costs. Do not invent a budget or require a benchmark by ritual; establish material impact or keep the claim as an evidence gap.
 
 For changed work executed under a contended/global lock, transaction, scheduler/state guard, or similar critical shared resource, trace reachable changed calls far enough to expose blocking or materially expensive work and qualitative fan-out/cardinality. Filesystem, network, process, retry, recursive traversal, and comparable latency-bearing operations deserve explicit attention when their placement can change contention or liveness. Do not infer a defect from cost alone; establish the material impact or keep the claim as an evidence gap.
 
@@ -572,6 +576,8 @@ Weak:
 Derivable rule:
 
 > Start a new specialist assignment or independent judgment in fresh child context. Continue an existing child only when deliberately continuing the same specialist-owned workstream; role identity alone does not justify reuse.
+
+For an independent judgment, fresh session identity is necessary but not sufficient. Keep prior verdicts, expected outcomes, parent conclusions, claimed-clean areas, and fix-history framing out of the initial judgment context; reconcile them after the independent result. A targeted re-review is different: known findings may be supplied, but the result must remain partial/incremental rather than masquerading as a fresh whole-scope judgment.
 
 The second form predicts an action in a concrete case.
 
@@ -829,6 +835,7 @@ Before shipping a prompt/harness semantic change, verify:
 - [ ] The replay set contains adversarial and preservation cases plus incident-independent regressions derived from established real failure classes, and was run in an isolated/fresh evaluation context.
 - [ ] Standing prompt growth is justified; otherwise use conditional disclosure.
 - [ ] Delegation/checking is conditional rather than ritual unless policy requires it.
+- [ ] Fresh independent judgments isolate their initial context from prior verdict/expected-outcome framing; targeted re-review history is allowed only with explicitly partial/incremental verdict semantics.
 - [ ] Important state identity is preserved.
 - [ ] A negative/counterexample case prevents overreach.
 - [ ] Reviewer depth follows actual candidate effects rather than issue wording alone: materially changed high-risk boundaries become review surfaces without becoming new implementation authority.

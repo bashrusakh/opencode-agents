@@ -39,6 +39,28 @@ manual_sem = text("docs/semantic-design-manual.md")
 checkpoint_sem = text("agents/semantic-checkpoint.md")
 evaluator_sem = text("agents/session-evaluator.md")
 semantic_runtime = "\n".join([root_sem, checkpoint_sem, evaluator_sem])
+
+# Release identity must stay consistent across canonical/root and overview surfaces.
+version_match = re.search(r"\*\*Pack version: ([^*]+)\*\*", root_sem)
+check(version_match is not None, "AGENTS.md: pack version marker missing")
+if version_match:
+    pack_version = version_match.group(1).strip()
+    readme_sem = text("README.md")
+    changelog_sem = text("CHANGELOG.md")
+    check(
+        f"# OpenCode Agent Pack {pack_version}" in readme_sem
+        and f"**OpenCode Agent Pack {pack_version}**" in readme_sem,
+        "README.md: header/footer version drift from AGENTS.md",
+    )
+    check(
+        changelog_sem.startswith(f"# Changelog\n\n## {pack_version}"),
+        "CHANGELOG.md: current release heading drift from AGENTS.md",
+    )
+    release_slug = pack_version.replace(" beta", "-beta").replace(".", ".")
+    check(
+        f"[`docs/releases/{release_slug}.md`](docs/releases/{release_slug}.md) | Current release notes" in readme_sem,
+        "README.md: current release-notes link drift from AGENTS.md",
+    )
 for bad in [
     "requires separate authority or evidence of an established blocker",
     "require separate authority for the substitution or evidence of an established blocker",
@@ -76,6 +98,33 @@ check(
     "selected role's standing contract" in evaluator_sem
     and "partial result was not later consumed as completion of a broader stage" in evaluator_sem,
     "session-evaluator: assignment/role-contract diagnostic guard missing",
+)
+check(
+    "it is an implementation constraint, not evidence of candidate adequacy/correctness" in root_sem
+    and "collateral degradation/tradeoffs that were not separately established" in root_sem,
+    "AGENTS.md: implementation-constraint/correctness boundary missing",
+)
+check(
+    "selected only by the role/authority that owns that implementation/design choice" in root_sem
+    and "other roles may propose mechanisms only as non-binding hypotheses" in root_sem,
+    "AGENTS.md: implementation-mechanism ownership boundary missing",
+)
+check(
+    "freshness also requires **judgment-context isolation**" in root_sem
+    and "task-contract propositions with provenance/qualifiers" in root_sem
+    and "material implementation constraints" in root_sem
+    and "Do not frame a candidate mechanism as accepted/correct design" in root_sem
+    and "Do not seed the child with prior verdicts" in root_sem
+    and "targeted re-review" in root_sem
+    and "partial/incremental" in root_sem,
+    "AGENTS.md: independent-judgment context-isolation guard missing",
+)
+check(
+    "check judgment-context isolation" in evaluator_sem
+    and "must not pre-anchor the fresh child with prior verdicts" in evaluator_sem
+    and "targeted re-review" in evaluator_sem
+    and "fresh whole-scope judgment" in evaluator_sem,
+    "session-evaluator: independent-judgment contamination diagnostic guard missing",
 )
 
 # Required skill dependencies must be reachable through the effective V2 permission rules.
@@ -246,11 +295,57 @@ check(
     and "successful return is not evidence" in reviewer,
     "reviewer: fallback semantic-success contract missing",
 )
+check(
+    "Review the candidate independently against the authoritative task contract" in reviewer
+    and "implementation mechanism constrains the solution only to that exact established proposition" in reviewer
+    and "does not waive collateral effects that were not separately accepted" in reviewer
+    and "contract/design incompatibility" in reviewer
+    and "exact accepted envelope" in reviewer,
+    "reviewer: implementation-constraint independence/tradeoff boundary missing",
+)
+check(
+    "materially changes the amount, placement, frequency, or scaling of work" in reviewer
+    and "compare the candidate with Base behavior or an established performance/resource expectation" in reviewer
+    and "allocations/memory growth" in reviewer
+    and "performance/resource regression" in reviewer
+    and "report the specific evidence gap" in reviewer,
+    "reviewer: general performance/resource regression contract missing",
+)
+check(
+    "Do not waive wrong fix level because the requested case passes" in reviewer
+    and "test-specific branches, duplicated policy, compatibility tricks" in reviewer
+    and "temporary workarounds" in reviewer
+    and "never silently normalize it into production-grade design" in reviewer,
+    "reviewer: wrong-fix-level/workaround reporting contract missing",
+)
+check(
+    "For every code/diff/commit/branch/workspace/PR review" in reviewer
+    and "load `open-code-review-delegate`" in reviewer
+    and "before substantive host review reasoning" in reviewer
+    and "delegate preflight is mandatory" in reviewer
+    and "not a risk/usefulness heuristic" in reviewer
+    and "if delegation is unavailable" in reviewer
+    and "continue with the native review preflight" in reviewer
+    and "Managed `open-code-review` / `ocr review` is separate from mandatory delegation" in reviewer,
+    "reviewer: mandatory deterministic OCR delegate preflight contract missing",
+)
 
 # Material user decisions that are not retrievable downstream need provenance
 # preservation, but the receipt itself must not become a new authority source.
 orch = text("agents/code-orchestrator.md")
 session_evidence = text("skills/session-evidence/SKILL.md")
+check(
+    "For a fresh whole-change/final reviewer judgment" in orch
+    and "authoritative task-contract propositions needed for judgment" in orch
+    and "label only that exact proposition as an `implementation constraint`" in orch
+    and "do not present the mechanism as an accepted design, adequate/correct fix" in orch
+    and "Do not seed the fresh reviewer with prior reviewer/OCR verdicts or findings" in orch
+    and "claimed-clean areas" in orch
+    and "reconcile it only after the reviewer returns" in orch
+    and "targeted re-review" in orch
+    and "partial/incremental" in orch,
+    "code-orchestrator: fresh reviewer context-isolation/mechanism-framing contract missing",
+)
 check(
     "preserve a contemporaneous provenance receipt" in orch
     and "exact material proposition presented" in orch
@@ -265,17 +360,105 @@ check(
 )
 
 
+# Cross-role mutation handoffs must preserve role ownership instead of laundering
+# upstream planning/checkpoint/review recommendations into implementation recipes.
+checkpoint_sem = text("agents/semantic-checkpoint.md")
+debugger_sem = text("agents/debugger.md")
+ui_orch_sem = text("agents/ui-orchestrator.md")
+ui_impl_sem = text("agents/ui-implementer.md")
+check(
+    "do not certify a concrete implementation mechanism, patch shape, or technical design as correct" in checkpoint_sem
+    and "does not certify design/implementation adequacy" in checkpoint_sem
+    and "Remaining implementation uncertainty belongs to the implementation role" in checkpoint_sem
+    and "## Result" in checkpoint_sem
+    and "**Mutation boundary**" in checkpoint_sem
+    and "Do not recommend forwarding the candidate or checkpoint report unchanged as an implementation recipe" in checkpoint_sem
+    and "Candidate handoff" not in checkpoint_sem,
+    "semantic-checkpoint: semantic authorization still leaks into implementation certification/recipe",
+)
+check(
+    "omit upstream non-required mechanism/remediation proposals by default" in orch
+    and "do not forward the candidate/checkpoint report verbatim" in orch
+    and "does not certify a proposed implementation mechanism" in orch
+    and "do not turn a reviewer/tester remediation suggestion or patch shape into the assigned fix" in orch,
+    "code-orchestrator: mutation handoff still permits upstream recipe laundering",
+)
+check(
+    "Treat any caller/reviewer/tester proposed remediation or patch shape as a hypothesis" in debugger_sem
+    and "diagnose the root cause from the governing behavior and evidence" in debugger_sem,
+    "debugger: caller/remediation recipe anchoring guard missing",
+)
+check(
+    "upstream plan/checkpoint/review recommendations were not laundered into a binding implementation recipe" in evaluator_sem
+    and "debugger received the defect/invariant/evidence rather than an unestablished remediation shape" in evaluator_sem,
+    "session-evaluator: cross-role mutation-handoff contamination diagnostic missing",
+)
+check(
+    "do not forward the whole artifact as binding implementation authority" in ui_orch_sem
+    and "omit non-required layout/mechanism recommendations by default" in ui_orch_sem
+    and "A supplied audit/plan is context, not blanket authority or correctness proof" in ui_impl_sem
+    and "non-required mechanism/layout recommendations remain hypotheses" in ui_impl_sem,
+    "UI mutation handoff: plan/audit recipe-laundering guard missing",
+)
+
+
+# A returned build package that independent evidence proves defective must not
+# re-enter ordinary build iteration merely because build authored the code.
+build_sem = text("agents/build.md")
+check(
+    "returned implementation package is later rejected by valid independent evidence" in orch
+    and "route the corrective mutation by the **current action**, not by the original implementer" in orch
+    and "belongs to `@debugger`" in orch
+    and "Do not send the defect back to `@build` as ordinary implementation" in orch
+    and "own local verification before returning its current package" in orch
+    and "root reset/escalation rules before another patch" in orch,
+    "code-orchestrator: independently rejected build package can still loop back as ordinary build work",
+)
+check(
+    "do not accept a follow-up assignment whose primary purpose is to repair a concrete confirmed product-code defect" in build_sem
+    and "bugfix/root-cause work owned by `@debugger`" in build_sem
+    and "own local checks discover before you return the current package" in build_sem
+    and "purely mechanical non-bug/tests/docs corrections" in build_sem,
+    "build: post-return confirmed-defect reroute boundary missing",
+)
+check(
+    "It is not proof that a proposed mechanism is correct and is not an implementation recipe" in build_sem
+    and "implementation proof" in build_sem
+    and "narrowest existing owner/primitive" in build_sem
+    and "nearest preserved behavior/invariant" in build_sem
+    and "Do not start from the requested patch shape and work backward" in build_sem,
+    "build: pre-edit implementation-proof/owner reasoning gate missing",
+)
+check(
+    "## Pre-return self-review and verification" in build_sem
+    and "inspect the effective diff/state against the implementation proof" in build_sem
+    and "actually wired into the required behavior" in build_sem
+    and "preserves the nearest required sibling/negative behavior" in build_sem
+    and "mandatory implementation self-review, not independent `@reviewer` evidence" in build_sem
+    and "A green focused test does not by itself complete the package" in build_sem,
+    "build: pre-return self-review/preserved-behavior gate missing",
+)
+check(
+    "for every materially relevant input, state/transition, representation, lifecycle, boundary/environment, or consumer class" in build_sem
+    and "at least one materially different representative capable of falsifying the chosen mechanism" in build_sem
+    and "actively try to falsify the final mechanism against the established case map" in build_sem
+    and "Derive those probes from the behavioral contract and owning abstraction, not from the patch shape" in build_sem
+    and "multiple self-authored tests that share the same implementation assumption do not establish closure" in build_sem
+    and "unclosed established class" in build_sem,
+    "build: cross-class falsification/self-test blind-spot gate missing",
+)
+
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 30, "semantic-transition suite must contain 30 cases")
+check(traces.count("### ST-") == 46, "semantic-transition suite must contain 46 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 30, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 46, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -289,6 +472,22 @@ for case in [
     "ST-28 — Delegated assignment must specialize rather than redefine the selected role contract",
     "ST-29 — Review evidence must remain bound to the exact candidate state",
     "ST-30 — Mutation receipt must not substitute for authoritative state read-back",
+    "ST-31 — Deterministic code-review delegation must not become discretionary",
+    "ST-32 — Fresh independent judgment must not be pre-anchored by prior verdict framing",
+    "ST-33 — An implementation constraint must not become a correctness waiver",
+    "ST-34 — Functional success must not hide a material performance or resource regression",
+    "ST-35 — Independently rejected implementation must not loop back as ordinary build work",
+    "ST-36 — Implementation handoff/checkpoint approval must not become a code recipe or correctness proof",
+    "ST-37 — Build must self-review the final diff against changed and preserved behavior before returning",
+    "ST-38 — Build must not narrow an authoritative domain through a convenient local surface",
+    "ST-39 — Incomplete or unknown evidence must not be collapsed into a positive classification",
+    "ST-40 — Local movement must not be mistaken for durable monotonic progress",
+    "ST-41 — Identity equality must not silently stand in for identity lifetime",
+    "ST-42 — Failure of the chosen implementation path must not prove capability fallback is unavailable",
+    "ST-43 — Local worker termination must not be mistaken for whole-operation termination",
+    "ST-44 — Semantic checkpoint authorization must not certify or forward an implementation recipe",
+    "ST-45 — A confirmed finding must become a debugger defect contract, not a reviewer patch recipe",
+    "ST-46 — A plan or audit must not become blanket mutation authority",
 ]:
     check(case in traces, f"semantic-transition suite missing reviewer regression: {case}")
 check(
@@ -306,6 +505,85 @@ check(
     "mutation acknowledgment is evidence that the request/report occurred" in traces
     and "authoritative post-mutation" in traces,
     "ST-30 mutation-read-back regression missing",
+)
+check(
+    "compatible deterministic delegation is available" in traces
+    and "required preflight for the applicable target class" in traces
+    and "pass fallback only when delegation is unavailable" in traces,
+    "ST-31 mandatory deterministic delegate-preflight regression missing",
+)
+check(
+    "judgment-context isolation, not merely a new child-session identity" in traces
+    and "prior verdicts, claimed-clean areas, expected outcome" in traces
+    and "targeted fix re-review" in traces
+    and "partial/incremental" in traces
+    and "reconcile that independent result with prior findings" in traces,
+    "ST-32 independent-judgment context-contamination regression missing",
+)
+check(
+    "implementation constraint" in traces
+    and "blanket authority for collateral regressions/tradeoffs" in traces
+    and "exact accepted envelope" in traces
+    and "contract/design incompatibility" in traces,
+    "ST-33 implementation-constraint/correctness-waiver regression missing",
+)
+check(
+    "material performance or resource regression" in traces
+    and "relative to Base or an established performance/resource expectation" in traces
+    and "no explicit performance benchmark/threshold was supplied" in traces
+    and "must not invent a performance budget" in traces,
+    "ST-34 material performance/resource-regression review missing",
+)
+check(
+    "`@build` returns its package with local evidence" in traces
+    and "valid independent reviewer/tester/CI/reproduction result establishes a concrete product-code defect" in traces
+    and "routes to `@debugger`" in traces
+    and "merely because build authored the code" in traces
+    and "local pre-return self-correction stays with build" in traces,
+    "ST-35 independently-rejected-build reroute/convergence regression missing",
+)
+check(
+    "checkpoint approval must not become a code recipe or correctness proof" in traces.lower()
+    and "narrowest owner that can guarantee the outcome" in traces
+    and "non-required H remains a hypothesis/option" in traces
+    and "does not work backward from the requested patch shape" in traces,
+    "ST-36 build handoff/checkpoint recipe-regression missing",
+)
+check(
+    "self-review the final diff against changed and preserved behavior" in traces.lower()
+    and "before package return" in traces
+    and "green focused case" in traces
+    and "implementation-local preserved/representative check" in traces
+    and "does not label this self-review independent review" in traces,
+    "ST-37 build pre-return self-review regression missing",
+)
+check(
+    "narrow an authoritative domain through a convenient local surface" in traces.lower()
+    and "incomplete or unknown evidence" in traces.lower()
+    and "durable monotonic progress" in traces.lower()
+    and "identity lifetime" in traces.lower()
+    and "capability fallback is unavailable" in traces.lower()
+    and "whole-operation termination" in traces.lower()
+    and "self-authored tests" in traces,
+    "ST-38..ST-43 trace-derived build falsification suite missing",
+)
+check(
+    "checkpoint authorization must not certify or forward an implementation recipe" in traces.lower()
+    and "must not certify design/implementation adequacy" in traces
+    and "orchestrator must reconstruct the mutation handoff" in traces,
+    "ST-44 checkpoint-to-mutation recipe-laundering regression missing",
+)
+check(
+    "debugger defect contract, not a reviewer patch recipe" in traces.lower()
+    and "separate the defect proposition/evidence from remediation advice" in traces
+    and "caller/reviewer remediation suggestion as a hypothesis" in traces,
+    "ST-45 finding-to-debugger recipe-laundering regression missing",
+)
+check(
+    "plan or audit must not become blanket mutation authority" in traces.lower()
+    and "actually adopted plan propositions/constraints" in traces
+    and "whole artifact as correctness proof" in traces,
+    "ST-46 plan/audit mutation-authority regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | unverified`" in traces,

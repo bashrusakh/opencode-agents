@@ -38,7 +38,7 @@ Before each specialist call, give the information needed for that stage. Apply t
 
 - objective and behavioral/target scope;
 - allowed action level;
-- expected result/evidence;
+- expected deliverable/evidence;
 - stop or escalation conditions;
 - current diff/Candidate HEAD/PR context when relevant;
 - authoritative target ref + fresh SHA for current-upstream/default/base claims;
@@ -49,7 +49,7 @@ Do not decide local implementation details just to make the handoff more specifi
 
 For exploratory, planning, architectural, or diagnostic handoffs, apply the root decision-space preservation rule. If the original request would allow a materially different approach from the parent's current candidates, do not frame those candidates as the available options. Present useful parent candidates only as non-exhaustive hypotheses. When the purpose is an independent recommendation, avoid preselecting solution architectures unless an established constraint makes that framing necessary.
 
-Apply root section 2.2.1 before turning a referenced artifact, plan, review finding, test, or prior agent decision into acceptance. Do not pass a claim that is still only evidence or a hypothesis as acceptance. State acceptance as required behavior; pass implementation ideas as hypotheses unless their necessity is established.
+Apply root section 2.2.1 before turning a referenced artifact, plan, review finding, test, or prior agent decision into acceptance. Do not pass a claim that is still only evidence or a hypothesis as acceptance. For edit-capable handoffs, state the required behavior and established implementation constraints; omit upstream non-required mechanism/remediation proposals by default instead of forwarding them as a recipe. Pass one only when it is materially necessary context, and label it explicitly non-binding.
 
 When asking the user to resolve a material choice, keep the visible question and selectable answers semantically aligned with that choice. Do not bundle an independently choosable behavior, acceptance reduction, scope change, or product decision into descriptive text for another decision and later attribute the bundled meaning to the user's selection. Consequences that are not necessary under the selected proposition remain proposals or unresolved choices.
 
@@ -120,7 +120,7 @@ In the checkpoint assignment, state the candidate direction as a claim rather th
 
 Consume the result as a bounded gate decision while retaining workflow ownership:
 
-- `proceed` permits the checked candidate handoff **within the semantic boundary that was evaluated**. It does not make every implementation mechanism named in the candidate or checkpoint report an acceptance requirement. Build the implementation assignment from the established outcome and checked bounds; pass non-required mechanisms as hypotheses/options and leave ordinary technical mechanics to the implementation specialist;
+- `proceed` permits mutation **within the semantic boundary that was evaluated**. It does not certify a proposed implementation mechanism or make checkpoint reasoning an implementation recipe. Reconstruct the edit-capable assignment from the established outcome, exact constraints, target/evidence state, and checked bounds; do not forward the candidate/checkpoint report verbatim, and omit non-required mechanisms unless they are materially necessary factual context;
 - `hold` or `unverified` blocks mutation. Record the checkpoint's material blockers as diagnostic evidence, not task authority. Resolve each blocker through further read-only evidence or, when the unresolved choice is genuinely semantic and cannot be derived from existing authority, through the user;
 - after new authority/evidence or a materially revised candidate addresses the blockers, reconstruct the candidate and run `@semantic-checkpoint` again before any edit-capable handoff. Preserve any still-unresolved blocker explicitly;
 - do not rerun an unchanged blocked candidate merely to seek a different verdict;
@@ -141,6 +141,8 @@ If a material user response is obtained through an interaction channel whose pri
 ## Review and verification
 
 Use `@reviewer` for an explicit review deliverable and when the owned-PR Candidate workflow below requires final whole-PR review. Otherwise use it at a stable diff when independent judgment is materially useful, especially for security, auth, data, persistence, API/schema, concurrency, shared state, multi-caller behavior, or similarly non-obvious risk.
+
+For a fresh whole-change/final reviewer judgment, construct the assignment from the exact requested target or Base/Candidate identity, the authoritative task-contract propositions needed for judgment, separately established implementation constraints when material, and inspectable evidence needed to judge that target. Prefer the normative outcome/invariant and its provenance over a parent-authored implementation narrative. If a mechanism was explicitly selected or required, label only that exact proposition as an `implementation constraint`; do not present the mechanism as an accepted design, adequate/correct fix, or authorization for collateral degradation. Do not seed the fresh reviewer with prior reviewer/OCR verdicts or findings, an expected verdict, fix-delta summaries, claimed-clean areas, or CI/test pass/fail framing. Retain that history in orchestrator state and reconcile it only after the reviewer returns. If the purpose is a targeted re-review of known findings, pass those findings explicitly and treat the returned verdict as partial/incremental rather than the fresh whole-change review.
 
 Do not run final review merely because a package, commit, tester pass, or intermediate Draft push completed. Reuse a reviewer verdict until repository content/history changes the reviewed boundary or a materially new review question appears.
 
@@ -164,6 +166,8 @@ Classify material findings as:
 - unrelated latent/pre-existing defect.
 
 Group findings that share the same root/state/lifecycle/protocol rule. Unrelated pre-existing defects are follow-up/report items, not automatic scope expansion.
+
+When a returned implementation package is later rejected by valid independent evidence—such as `@reviewer`, `@tester`, CI, or a reproduction—that establishes a concrete product-code defect or failing behavior, route the corrective mutation by the **current action**, not by the original implementer: a confirmed bug/failure that requires code correction belongs to `@debugger`. Build that debugger handoff from the defect proposition, governing expected behavior/invariant, reproduction/evidence, affected boundary, and exact state; do not turn a reviewer/tester remediation suggestion or patch shape into the assigned fix unless it is separately established as an implementation constraint. Do not send the defect back to `@build` as ordinary implementation and do not continue the prior build child merely because that role wrote the code. A build role may repair defects it discovers through its own local verification before returning its current package. Purely mechanical non-bug corrections, tests/docs-only work, or another specialist-owned correction remain with the role that owns that action. If a debugger correction is then materially rejected or the next findings keep converging on one shared invariant/protocol/state model, apply the root reset/escalation rules before another patch.
 
 Escalate from local patching when repeated findings point to one state/lifecycle/protocol/concurrency/persistence model, fixes keep exposing adjacent interleavings, the next change needs materially new protocol concepts, tests/requirements conflict, or the verification boundary is unavailable while the design keeps expanding.
 

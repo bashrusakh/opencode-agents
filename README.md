@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.58 beta
+# OpenCode Agent Pack v30.65 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
 
@@ -13,14 +13,15 @@
 
 ---
 
-## What changed in v30.58 beta
+## What changed in v30.65 beta
 
-- Broadens the existing reviewer-owned authoritative-domain check so it covers behavior-domain restrictions imposed through narrower non-authoritative operational surfaces, not only value/parser/representation transforms.
-- Explicitly treats packaging/build/release matrices and similar operational subsets as evidence about their own coverage unless authoritative policy establishes them as the governing behavior domain.
-- Keeps root authority/qualifier/fallback semantics unchanged; no platform-specific rule is introduced.
-- Keeps ST-24 through ST-30 unchanged and strengthens the static reviewer guard so runtime operationalization cannot regress back to representation-only coverage.
+- Fixes cross-role mutation-handoff contamination found by re-reading the full historical trace analysis: semantic approval, plans, audits, and review findings no longer become implementation recipes merely because an upstream specialist returned them.
+- `semantic-checkpoint` now authorizes only the semantic mutation boundary; `proceed` does not certify implementation/design adequacy or approve a concrete patch mechanism.
+- `code-orchestrator` reconstructs edit-capable assignments from established outcomes, exact constraints, evidence, and target state; non-required mechanisms/remediation suggestions are omitted by default instead of forwarded as recipes.
+- Confirmed defects routed to `@debugger` carry the defect/invariant/reproduction contract; debugger treats suggested remediation shapes as hypotheses unless separately established as implementation constraints.
+- Applies the same proposition-scoped handoff rule to UI plan/audit → implementation and adds ST-44…ST-46 plus static/mutation guards.
 
-See [`docs/releases/v30.58-beta.md`](docs/releases/v30.58-beta.md), [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md), and [`evals/static-policy-regressions.py`](evals/static-policy-regressions.py).
+See [`docs/releases/v30.65-beta.md`](docs/releases/v30.65-beta.md), [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md), and [`evals/static-policy-regressions.py`](evals/static-policy-regressions.py).
 
 ---
 
@@ -360,7 +361,7 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.58-beta.md`](docs/releases/v30.58-beta.md) | Current release notes |
+| [`docs/releases/v30.65-beta.md`](docs/releases/v30.65-beta.md) | Current release notes |
 | [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) | Method for turning developer guidance and traces into durable semantic rules |
 | [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) | Source → generalized rule → reverse-action preservation audit |
 | [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md) | Fresh-session end-to-end semantic transition replay suite |
@@ -391,6 +392,8 @@ A release archive should verify at least:
   - audit literal semantic state/value vocabulary: each such literal must be a pack-defined semantic class/enum or an exact external value whose representation is contractual; otherwise express the underlying meaning and verify the rule still works if incidental local labels are renamed;
   - verify reviewer depth is derived from actual candidate effects rather than issue framing alone; materially changed high-risk boundaries remain in review scope without creating implementation authority;
   - for reviewer guard/classifier logic, require meaningful counterexamples on both material classification sides when applicable, and for changed work under contended critical resources trace reachable latency-bearing work plus qualitative fan-out/cardinality;
+  - treat an explicitly selected implementation mechanism as a proposition-scoped constraint rather than correctness evidence; reviewer still reports unaccepted correctness, regression, fix-level, maintainability, security, and performance/resource consequences, while separately accepted tradeoffs stay bounded to their exact accepted envelope;
+  - review material performance/resource regressions on performance-sensitive changed paths relative to Base or established expectations without inventing budgets or requiring benchmarks by ritual;
   - for reconstruction/reconciliation of shared state, review relevant mutator composition and distinguish intentional state from accidental absence when material; for claimed fallback/recovery behavior, establish that representative supported inputs can actually reach the fallback through earlier guards/transformations/failure points;
 - agent/skill/install surfaces match the release manifest and unexpected runtime files are not introduced;
 - subagent session continuity follows assignment continuity: new specialist assignments/independent judgments use fresh child sessions, while continuation is explicit and limited to the same specialist-owned workstream;
@@ -415,7 +418,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.58 beta**  
+**OpenCode Agent Pack v30.65 beta**  
 Semantic routing · bounded orchestration · evidence-grounded verification
 
 </div>

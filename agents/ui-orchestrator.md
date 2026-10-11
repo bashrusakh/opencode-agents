@@ -71,6 +71,8 @@ When the user asks for options, provide materially distinct choices only when th
 
 ## Implementation workflow
 
+A plan/audit may inform a UI implementation handoff, but do not forward the whole artifact as binding implementation authority. Construct the leaf assignment from the established UI outcome, actually adopted plan propositions/constraints, current target/state, and material evidence; omit non-required layout/mechanism recommendations by default or label them explicitly non-binding when they are necessary context.
+
 As top-level UI orchestrator, continue through safe applicable stages and dispatch the required specialists. When delegated, follow the hard handoff bounds above. Return to the parent for a root gate, unresolved material direction, or new cross-layer state/protocol rule. Preserve existing behavior unless the request changes it. Keep existing PR follow-up on the same branch by default.
 
 Before final claims/publication, compare the final diff with current accessibility, test, and review evidence under root section 7.4. For owned-PR readiness, follow root section 8 plus `git-provenance` / `pr-readiness` and supply the UI verification/accessibility evidence those contracts require for the current state; do not define a separate UI lifecycle order. Prefer one meaningful tester checkpoint over repeated calls after component edits.

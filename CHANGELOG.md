@@ -1,6 +1,68 @@
 # Changelog
 
-This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
+## v30.65 beta
+
+- Fixes cross-role handoff contamination: upstream plans/checkpoints/reviews no longer become binding mutation recipes merely because they are technically plausible or were returned by a specialist.
+- Clarifies root mechanism ownership: implementation/design mechanisms are selected by the role/authority that owns that choice; other roles may propose only non-binding hypotheses unless authority requires the mechanism.
+- Narrows `semantic-checkpoint` to semantic authorization of a mutation boundary; `proceed` no longer certifies implementation/design adequacy or recommends forwarding the candidate/checkpoint report unchanged.
+- Reconstructs edit-capable handoffs from established outcome/constraints/evidence; correction handoffs to `@debugger` carry the defect/invariant/evidence rather than reviewer/tester patch recipes.
+- Adds matching protection for UI plan/audit → implementation handoffs and evaluator diagnostics.
+- Extends semantic regression/static guards for cross-role recipe laundering and correction-handoff anchoring.
+
+## v30.64 beta
+
+- Strengthens `build` with a contract-derived falsification pass across every materially relevant already-established case class, rather than relying on the requested case plus one nearby negative.
+- Requires representative probes to come from the behavioral contract/owning abstraction; multiple self-authored tests sharing the same implementation assumption do not establish closure.
+- Keeps the case map proportional to risk: no arbitrary cross-product expansion and no invented semantic classes.
+- Adds six trace-derived, domain-neutral builder regression scenarios ST-38…ST-43.
+
+See [`docs/releases/v30.64-beta.md`](docs/releases/v30.64-beta.md).
+
+## v30.63 beta
+
+- Strengthens `build` first-pass implementation quality without adding a new root semantic owner: checkpoint/handoff approval is authorization for a semantic boundary, not an implementation recipe or correctness proof.
+- Adds a role-local pre-edit implementation-proof gate: establish required outcome, exact implementation constraints, the narrowest existing owner/primitive, nearest preserved behavior/invariant, and affected callers/states before semantic mutation.
+- Adds mandatory pre-return implementation self-review of the exact final diff/state plus changed-and-preserved verification; a green focused case no longer suffices when the implementation proof includes uncovered preserved behavior or shared consumers.
+- Adds ST-36/ST-37 and static guards for blind handoff-mechanism execution and returning a locally green but implementation-locally detectable regression.
+
+See [`docs/releases/v30.63-beta.md`](docs/releases/v30.63-beta.md).
+
+## v30.62 beta
+
+- Prevents a returned `@build` package from entering a blind review-fix loop: once valid independent reviewer/tester/CI/reproduction evidence establishes a concrete product-code defect requiring correction, the next mutation is routed as bugfix/root-cause work to `@debugger`.
+- Keeps build-local self-correction valid before the package is returned and keeps purely mechanical non-bug/tests/docs corrections with their normal owner.
+- Adds a build-side reroute boundary so an incorrectly assigned post-return confirmed defect is rejected instead of being absorbed as another ordinary build iteration.
+- Adds ST-35 and static guards for build→review FAIL→same-build looping and preserves existing reset/escalation behavior when a debugger fix is rejected or findings converge on one invariant.
+
+See [`docs/releases/v30.62-beta.md`](docs/releases/v30.62-beta.md).
+
+## v30.61 beta
+
+- Separates authoritative implementation constraints from candidate correctness: a selected mechanism constrains the solution but is not evidence of adequacy and does not waive unaccepted collateral regressions or tradeoffs.
+- Hardens fresh reviewer handoffs so mechanism choices are passed only as proposition-scoped `implementation constraint` facts, never as accepted-design/correctness framing.
+- Makes reviewer independence explicit for requested mechanisms and accepted tradeoffs, strengthens wrong-fix-level/workaround reporting, and adds general material performance/resource regression review beyond only contended-lock paths.
+- Adds ST-33/ST-34 and owner-specific static guards for mechanism-as-correctness laundering and functionally-green performance/resource regressions.
+
+See [`docs/releases/v30.61-beta.md`](docs/releases/v30.61-beta.md).
+
+## v30.60 beta
+
+- Adds root-owned judgment-context isolation for fresh independent specialist judgments, beyond merely using a fresh child-session identity.
+- Makes fresh whole-change/final reviewer handoffs omit prior reviewer/OCR verdicts/findings, expected verdicts, fix-delta summaries, claimed-clean areas, and CI/test pass/fail framing until post-review reconciliation.
+- Keeps targeted re-review valid only as an explicitly partial/incremental judgment that cannot satisfy a fresh whole-scope review stage.
+- Extends `session-evaluator`, the semantic-design manual, ST-32, and static policy guards for independent-judgment context contamination.
+- Adds a generic release-identity consistency guard and fixes a stale README footer version inherited from earlier betas.
+
+See [`docs/releases/v30.60-beta.md`](docs/releases/v30.60-beta.md).
+
+## v30.59 beta
+
+- Restores `open-code-review-delegate` as mandatory deterministic preflight for code/diff/commit/branch/workspace/PR reviewer runs when the delegate skill establishes compatible local OCR delegation.
+- Makes the fallback explicit: unavailable delegation is recorded and reviewer continues with native preflight; reviewer may not skip a compatible delegate merely because it appears unnecessary or low-risk.
+- Keeps managed `open-code-review` / `ocr review` as a separate independent-model escalation.
+- Adds ST-31 and an owner-specific static guard for the mandatory delegate-preflight contract.
+
+See [`docs/releases/v30.59-beta.md`](docs/releases/v30.59-beta.md).
 
 ## v30.58 beta
 

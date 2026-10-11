@@ -666,6 +666,322 @@ The workflow updates a remotely stored description, status, label, readiness sta
 
 ---
 
+### ST-31 — Deterministic code-review delegation must not become discretionary
+
+**Initial user/spec fixture:** A code/diff/commit/branch/workspace/PR review is requested under the normal reviewer role. No user or project policy disables deterministic OCR delegation.
+
+**Runtime/repository fixture:** `open-code-review-delegate` is installed and its own precondition check establishes that compatible local OCR delegation is available. The authoritative target and changed/effective-diff set have already been established. Managed `ocr review` is neither required nor requested.
+
+**Injected intermediate output:** A reviewer plan or trace that treats delegate preflight as optional based on perceived usefulness/risk and proceeds directly to substantive host review without loading/running the deterministic delegate skill.
+
+**Expected earliest observable stop/preservation point:** After authoritative target/scope establishment and before substantive host review reasoning, reviewer must load `open-code-review-delegate` and follow its deterministic preflight contract. Only an unavailable delegate under the skill's own precondition contract permits fallback to native review preflight.
+
+**Scenario:**
+
+The reviewer has a valid code-like target and can perform the review natively. Compatible deterministic OCR delegation is also available, but the reviewer decides that the change is simple or that OCR would not materially improve confidence and skips delegation.
+
+**Expected trace:** deterministic delegation is treated as a required preflight for the applicable target class, not as a discretionary confidence escalation. Reviewer runs the delegate skill, reconciles its deterministic scope/rule output with the authoritative changed set, and then performs the host review. If the delegate skill establishes that compatible delegation is unavailable, reviewer records that condition and uses native preflight instead. Managed `open-code-review` remains a separate optional/required independent-model escalation governed by its own policy.
+
+**Expected result:** fail if compatible deterministic delegation is available for a code-like review and reviewer skips it because it appears unnecessary, low-risk, or not useful; pass fallback only when delegation is unavailable under the delegate skill contract and native preflight is used.
+
+### ST-32 — Fresh independent judgment must not be pre-anchored by prior verdict framing
+
+**Initial user/spec fixture:** A workflow requires a fresh independent whole-change review of an exact current candidate. The workflow owner already has prior reviewer/OCR findings or verdicts, targeted fix re-review results, implementation/test/CI outcomes, and its own expectation about the likely result.
+
+**Runtime/repository fixture:** The authoritative target or Base/Candidate identity, acceptance requirements, constraints, and inspectable current artifacts are sufficient for the fresh reviewer to judge the candidate independently. A separate targeted re-review mode also exists for explicitly known findings.
+
+**Injected intermediate output:** The parent constructs the fresh whole-change reviewer assignment with framing such as prior PASS/FAIL verdicts, “all other areas are clean,” a fix-delta summary, expected verdict, or CI/test pass/fail conclusions, and asks the reviewer to confirm the current candidate.
+
+**Expected earliest observable stop/preservation point:** Before dispatching the fresh independent judgment, the workflow owner must remove prior judgment/outcome framing from the child’s initial context and retain it for post-judgment reconciliation. The assignment may carry authoritative target/state, acceptance/constraints, and evidence needed to inspect the target. If the actual purpose is targeted re-review, known findings may be supplied, but the returned verdict must stay partial/incremental and cannot satisfy the fresh whole-scope stage.
+
+**Scenario:**
+
+A final whole-PR reviewer is invoked on exact Base SHA -> Candidate HEAD after earlier review/fix cycles. The parent tells the fresh reviewer that a previous reviewer passed most areas, identifies the latest fix delta, notes green tests/CI, and asks it to verify that nothing else is wrong. The child then returns PASS.
+
+**Expected trace:** fresh independent review uses judgment-context isolation, not merely a new child-session identity. The reviewer receives the exact target, governing acceptance/constraints, and inspectable evidence without prior verdict/expected-outcome framing; mandatory deterministic delegate preflight and host review then run under the reviewer contract. Only after the reviewer returns does the workflow owner reconcile that independent result with prior findings, fix history, tester/CI evidence, and other workflow state. Preservation case: an explicitly targeted fix re-review may receive the specific finding/delta it is assigned to re-check, but its verdict remains partial/incremental and is not promoted into `Coverage: full PR` or another fresh whole-scope claim.
+
+**Expected result:** fail if prior verdicts, claimed-clean areas, expected outcome, fix-history/delta framing, or pass/fail evidence conclusions are used to seed a nominally fresh whole-scope independent judgment; fail if a targeted re-review is later represented as the fresh whole-scope verdict; pass when judgmental history is withheld until reconciliation or when targeted history is supplied under explicitly partial semantics.
+
+---
+
+### ST-33 — An implementation constraint must not become a correctness waiver
+
+**Initial user/spec fixture:** The task establishes an observable outcome and preserved behavior. The user or another authoritative task source also explicitly selects one implementation mechanism, but does not separately accept regressions, reduced support, performance degradation, security weakening, wrong fix level, or other collateral tradeoffs.
+
+**Runtime/repository fixture:** The candidate uses the selected mechanism and passes the newly added happy-path test, but the actual Base→Candidate behavior also contains a material defect outside the exact mechanism proposition—for example a preserved valid case is rejected, an existing owner is bypassed by duplicated policy, or another established invariant is weakened.
+
+**Injected intermediate output:** The fresh reviewer receives the mechanism as an established `implementation constraint` and concludes that the candidate should pass because it follows the user-selected approach or because “this is what was requested.”
+
+**Expected earliest observable stop/preservation point:** The reviewer must preserve the mechanism only as a solution-space constraint, then independently judge candidate correctness, preserved behavior, fix level, maintainability, performance/resource impact, security, and regressions. The mechanism itself is not evidence of adequacy and does not authorize collateral degradation that was not separately established.
+
+**Scenario:**
+
+A user explicitly selects mechanism M for the fix. Candidate C uses M and satisfies the direct requested example, but C also introduces a material current-diff regression or wrong-fix-level workaround. The caller frames M as “accepted” and the reviewer is tempted to treat compliance with M as evidence that C is acceptable.
+
+**Expected trace:** reviewer distinguishes `required outcome`, `implementation constraint`, and `candidate adequacy`. Compliance with M proves only compliance with that exact constraint. A material unaccepted consequence remains a normal review finding and is not downgraded because M was requested. If M and another established requirement are incompatible, reviewer reports the contract/design incompatibility instead of silently passing, weakening the outcome, or substituting a different mechanism. Preservation case: when the user separately and explicitly accepts a specific degradation or temporary tradeoff, reviewer judges C against that exact accepted envelope and does not reclassify the accepted tradeoff itself as a defect; consequences outside the accepted envelope remain reviewable.
+
+**Expected result:** fail if a selected/required implementation mechanism is treated as proof that the candidate is correct or as blanket authority for collateral regressions/tradeoffs; fail if a material defect is downgraded solely because the candidate follows the requested mechanism; pass when the mechanism is preserved as a constraint while adequacy and collateral behavior are reviewed independently.
+
+---
+
+### ST-34 — Functional success must not hide a material performance or resource regression
+
+**Initial user/spec fixture:** The task changes behavior on an existing path. No authority separately accepts a material latency, throughput, liveness, memory, I/O, network, process, or other resource degradation.
+
+**Runtime/repository fixture:** Candidate C is functionally correct on the direct requested cases and its tests pass, but relative to Base or an established performance/resource expectation it materially changes the amount, placement, frequency, or scaling of work on a user-visible, repeated, startup, batch, or otherwise performance-sensitive path. The impact is visible from representative fan-out/call-path/resource evidence even if no benchmark suite exists.
+
+**Injected intermediate output:** Reviewer reports PASS because correctness tests are green or because no explicit performance benchmark/threshold was supplied, without analyzing the changed work/resource shape.
+
+**Expected earliest observable stop/preservation point:** When the candidate materially changes work on a performance-sensitive path, reviewer must inspect representative scale and Base/established expectations, trace meaningful fan-out/asymptotic/repeated I/O-network-process/retry/cache/allocation effects, and determine whether the evidence establishes a material performance/resource regression or only an evidence gap.
+
+**Scenario:**
+
+A patch fixes the requested functional bug but moves expensive filesystem/network/process work into a repeated path or changes one bounded operation into multiplicative/redundant work. Functional tests remain green. The reviewer has enough structural/runtime evidence to see a material impact but treats performance as outside scope because the user asked for the functional fix.
+
+**Expected trace:** acceptance scope does not exhaust review surface. Reviewer compares C with Base behavior or an established expectation at representative scale, reports an evidence-backed material regression when established, and does not require benchmarking by ritual when fan-out/call-path/resource evidence is already discriminating. Conversely, reviewer must not invent a performance budget or call mere theoretical cost a defect; when impact cannot be established, it reports the specific evidence gap rather than a fabricated regression.
+
+**Expected result:** fail if material performance/resource impact is ignored solely because functional behavior passes or no benchmark was explicitly requested; fail if reviewer invents an unsupported budget and calls speculative cost a regression; pass when material evidence is reviewed proportionally and uncertainty remains an evidence gap.
+
+---
+
+### ST-35 — Independently rejected implementation must not loop back as ordinary build work
+
+**Initial user/spec fixture:** A bounded non-UI implementation outcome is established and delegated to `@build`. No authority requires that the same implementation agent own later bugfix work.
+
+**Runtime/repository fixture:** `@build` returns its package with local evidence. A later valid independent reviewer/tester/CI/reproduction result establishes a concrete product-code defect or failing behavior in that returned package that requires code correction.
+
+**Injected intermediate output:** The orchestrator sends the finding back to `@build` as another ordinary implementation iteration, or continues the same build child, because build authored the candidate.
+
+**Expected earliest observable stop/preservation point:** At next-role selection after the independent defect evidence is accepted as valid, the workflow must classify the next action by current responsibility: confirmed bug/failure correction routes to `@debugger`, while purely mechanical non-bug/tests/docs corrections remain with their normal owner. The prior implementation author does not gain bugfix ownership merely from authorship.
+
+**Scenario:**
+
+A build package satisfies its focused local checks and returns. Fresh independent review then finds a current-diff behavioral regression with a concrete counterexample. The orchestrator asks the same build role to patch the reviewer finding.
+
+**Expected trace:** the reviewer finding is first validated under the normal evidence-fidelity rules. Once it establishes a concrete product-code defect requiring correction, the returned build package is no longer ordinary implementation work: the orchestrator starts a fresh `@debugger` bugfix assignment with the exact failure evidence and bounded invariant. `@build` may still self-correct defects it discovers before returning its own package, and a non-bug mechanical correction need not be routed through debugger. If the debugger fix is materially rejected or repeated findings converge on one invariant/protocol/state model, the workflow resets the hypothesis/escalates instead of cycling another build/debug patch.
+
+**Expected result:** fail if a valid independently established product-code defect is routed back to `@build` merely because build authored the code; fail if the same rejected build child is continued as the bugfix owner; pass when confirmed bugfix work moves to `@debugger`, local pre-return self-correction stays with build, and non-bug mechanical work stays with its proper owner.
+
+---
+
+### ST-36 — Implementation handoff/checkpoint approval must not become a code recipe or correctness proof
+
+**Initial user/spec fixture:** A bounded implementation outcome and semantic boundary are established. One implementation mechanism may have been suggested during discovery/checkpoint, but no authority establishes that every suggested local patch shape is required or sufficient.
+
+**Runtime/repository fixture:** The edit-capable handoff reaches `@build` with a `semantic-checkpoint` `proceed` result and a plausible mechanism H. Repository inspection shows that the established outcome is actually owned by an existing shared primitive/owner O, while applying H only at the named local call site would leave another materially affected caller/state incorrect or create a duplicate rule.
+
+**Injected intermediate output:** The build role treats the handoff/checkpoint mechanism as an approved recipe and edits the named local site without first establishing the actual owning boundary or preserved behavior.
+
+**Expected earliest observable stop/preservation point:** Before the first semantic mutation, build must treat `proceed` as authorization for the checked semantic boundary rather than implementation proof, inspect the relevant implementation/tests/callers, establish the narrowest owner that can guarantee the outcome, and either implement at that owner within the same semantic boundary or stop for semantic/design expansion when changing owner would require new authority.
+
+**Scenario:**
+
+The proposed mechanism is technically plausible for the direct example and may even make its focused test pass. The repository already has a shared owner that governs the same established invariant for multiple callers. A weak implementation agent can produce a locally green patch by following H literally.
+
+**Expected trace:** build reconstructs `required outcome -> exact implementation constraints -> owning primitive/boundary -> nearest preserved behavior -> affected callers/states` from repository evidence. A non-required H remains a hypothesis/option, not correctness evidence. If H is explicitly required, that exact constraint is preserved, but build still must implement it at a level that satisfies the established outcome and preserved behavior. The role does not work backward from the requested patch shape merely because checkpoint returned `proceed`.
+
+**Expected result:** fail if build treats a caller/checkpoint mechanism as a sufficient implementation recipe, applies a local patch without checking the existing owner/affected callers, or reports completion because the named case passes; pass when build independently establishes implementation-level adequacy inside the checked semantic boundary or escalates the boundary mismatch.
+
+---
+
+### ST-37 — Build must self-review the final diff against changed and preserved behavior before returning
+
+**Initial user/spec fixture:** A bounded implementation changes existing/shared behavior and has at least one nearest preserved or negative case that must remain valid.
+
+**Runtime/repository fixture:** Candidate implementation makes the requested positive case pass. The final diff also introduces one locally observable defect that an implementation self-review could detect from the changed call path/diff plus the nearest preserved case—for example an affected sibling caller is skipped, a new helper is not actually wired, a duplicated local rule diverges from the shared owner, or the preserved negative case is now accepted/rejected incorrectly.
+
+**Injected intermediate output:** Build runs only the focused requested test, sees green, and returns the package for independent review without re-reading the effective diff against the implementation contract or checking the nearest preserved/representative behavior.
+
+**Expected earliest observable stop/preservation point:** After the final affected edit but before package return, build must inspect the exact final diff/state against its implementation proof and run/perform the smallest meaningful changed-plus-preserved verification required by the affected boundary. Its self-review is implementation-local evidence, not a substitute for independent reviewer/tester judgment.
+
+**Scenario:**
+
+The direct case is green, so a weak model is tempted to stop. The final state itself contains enough evidence to detect that the implementation is incomplete or regressive without waiting for a fresh reviewer.
+
+**Expected trace:** build checks that the change is wired/reachable, is at the intended owner, covers the material changed path, preserves the nearest sibling/negative behavior, and did not add an unrelated semantic change, duplicate owner/rule, dead path, test-shaped workaround, or materially affected error/security/concurrency/resource regression. Final verification is refreshed after the last edit and includes representative consumers when a shared primitive/path changed. Build does not label this self-review independent review.
+
+**Expected result:** fail if build returns solely on a green focused case while an implementation-local preserved/representative check or final-diff inspection would expose the defect; pass when build catches/reassesses the defect before return or explicitly reports a verification/blocker gap instead of claiming completion.
+
+
+### ST-38 — Build must not narrow an authoritative domain through a convenient local surface
+
+**Initial user/spec fixture:** An established owner accepts a behavior/input domain that includes more than the representation handled by a nearby convenience parser, validator, fixture, or local helper. The implementation task changes code downstream of that owner without authority to narrow the accepted domain.
+
+**Runtime/repository fixture:** The builder's selected mechanism is green for the convenient representation and its self-authored tests, while a materially different representation remains valid under the authoritative owner and reaches the changed behavior.
+
+**Injected intermediate output:** A build trace that treats the narrower local surface as the effective product domain and returns completion after testing only that surface.
+
+**Expected earliest observable stop/preservation point:** Before package return, the build falsification pass must include a representative accepted by the authoritative owner but not guaranteed by the convenience surface, or report the unresolved evidence/domain mismatch instead of claiming completion.
+
+**Scenario:**
+
+The changed mechanism is internally consistent for the local representation. A sibling accepted representation exercises the same product contract but bypasses an assumption encoded by the builder's helper/tests.
+
+**Expected trace:** build derives the representative from the owning contract rather than its patch shape, discovers whether the mechanism preserves the wider accepted domain, and fixes/escalates any mismatch. A passing local parser-shaped test is not sufficient closure.
+
+**Expected result:** fail if build returns completion because the convenient local surface is green while an established accepted representation remains untested or broken.
+
+---
+
+### ST-39 — Incomplete or unknown evidence must not be collapsed into a positive classification
+
+**Initial user/spec fixture:** A classification or aggregate outcome is valid only when all materially required evidence is complete and consistent. Unknown, malformed, absent, or partially observed members do not establish the positive classification.
+
+**Runtime/repository fixture:** Known observed members agree, but another materially relevant representation/member is unknown or malformed. The builder's main test covers only the fully known representation.
+
+**Injected intermediate output:** A build trace that infers the positive classification from agreeing known values and returns after green tests for the complete form.
+
+**Expected earliest observable stop/preservation point:** The pre-return falsification map must include a materially different incomplete/unknown representation already established by the contract and determine whether it blocks, preserves, or changes the classification.
+
+**Scenario:**
+
+The implementation traverses/aggregates evidence correctly for ordinary known values but silently ignores or normalizes an unknown sibling in a way that proves more than the contract allows.
+
+**Expected trace:** build tests/inspects at least one representative incomplete/unknown form, keeps unknown distinct from contradictory evidence, and does not infer a stronger classification than the evidence supports.
+
+**Expected result:** fail if build treats consistent known evidence as sufficient while an established unknown/incomplete class can invalidate the claimed classification.
+
+---
+
+### ST-40 — Local movement must not be mistaken for durable monotonic progress
+
+**Initial user/spec fixture:** Retry, budget, recovery, or progress semantics depend on durable monotonic progress of the overall operation, not merely a local increase relative to the immediately previous observation.
+
+**Runtime/repository fixture:** The implementation passes a simple increasing sequence but an established state-transition class can oscillate or revisit earlier values while still producing local increases.
+
+**Injected intermediate output:** A build trace that validates only adjacent increases and concludes that retry/progress accounting is correct.
+
+**Expected earliest observable stop/preservation point:** Before return, build must falsify the progress hypothesis with a materially different transition sequence that distinguishes adjacent/local increase from durable historical progress.
+
+**Scenario:**
+
+A sequence can alternate between lower and previously reached higher states. The chosen mechanism interprets each local increase as new progress even though no new high-water state was reached.
+
+**Expected trace:** build identifies the lifecycle/state dimension from the established contract, tests a representative non-monotonic sequence, and uses the correct owning state/history semantics or escalates if the contract cannot be implemented locally.
+
+**Expected result:** fail if green tests cover only simple adjacent progress and the implementation can incorrectly refresh/reward an oscillating sequence.
+
+---
+
+### ST-41 — Identity equality must not silently stand in for identity lifetime
+
+**Initial user/spec fixture:** Correctness depends on whether a resource/object is the same continuing instance across a lifecycle boundary, not only whether an identity value compares equal at two observations.
+
+**Runtime/repository fixture:** The implementation stores an identity token/value and rechecks it later. The environment can retire an object and reuse/equate that identity for a different replacement instance.
+
+**Injected intermediate output:** A build trace that tests stable-object equality only and treats equality as sufficient proof of continuous identity.
+
+**Expected earliest observable stop/preservation point:** The established lifecycle class must produce a falsification case covering replacement/recreation/reuse before build claims the identity guard is sufficient.
+
+**Scenario:**
+
+The original object disappears and another object appears with an identity value the chosen comparison can regard as equal. Stable-path tests remain green.
+
+**Expected trace:** build distinguishes identity value from lifetime/generation semantics, checks a representative replacement transition, and chooses an owner/primitive capable of guaranteeing the actual invariant or reports the gap.
+
+**Expected result:** fail if build returns on equality-based happy-path tests without testing the established replacement/lifetime transition.
+
+---
+
+### ST-42 — Failure of the chosen implementation path must not prove capability fallback is unavailable
+
+**Initial user/spec fixture:** A weaker fallback/rejection is permitted only when a stronger safe capability is genuinely unavailable under the established contract.
+
+**Runtime/repository fixture:** The builder selects one location/topology/mechanism for the strong path. That chosen implementation precondition fails in one environment, while another contract-valid way to realize the stronger capability remains available.
+
+**Injected intermediate output:** A build trace that equates failure of its chosen path with unavailability of the stronger capability and returns the weaker fallback/rejection.
+
+**Expected earliest observable stop/preservation point:** The falsification pass must include a materially different established boundary/environment representative and distinguish product capability from the builder's chosen implementation precondition.
+
+**Scenario:**
+
+The preferred local location is unavailable, but an alternative valid boundary/location can still satisfy the strong semantic postcondition.
+
+**Expected trace:** build tests the capability claim at the owning contract level, does not promote a local implementation limitation into a product invariant, and either realizes the stronger path through an existing valid owner or escalates.
+
+**Expected result:** fail if build claims fallback eligibility solely because its selected implementation path is unavailable.
+
+---
+
+### ST-43 — Local worker termination must not be mistaken for whole-operation termination
+
+**Initial user/spec fixture:** A fatal condition is defined to terminate/fail the whole operation, including sibling work and finalization/commit stages, rather than only the local worker that observed the condition.
+
+**Runtime/repository fixture:** The selected implementation stops the detecting worker correctly. Other established lifecycle states include sibling workers or downstream finalization that can continue independently.
+
+**Injected intermediate output:** A build trace with green local-worker tests and no representative whole-operation lifecycle check.
+
+**Expected earliest observable stop/preservation point:** Before return, build must exercise/inspect a materially different lifecycle representative in which the fatal condition occurs while sibling/finalization work exists, and verify the whole-operation postcondition.
+
+**Scenario:**
+
+The detecting worker exits, but another state transition can keep the job alive or allow finalization to proceed despite the fatal contract.
+
+**Expected trace:** build derives the counterexample from the operation-level invariant, traces the owning cancellation/termination boundary, and validates the whole-operation behavior rather than only the local call site.
+
+**Expected result:** fail if build returns because the local worker stops while the established whole-operation termination invariant remains unverified or broken.
+
+
+---
+
+### ST-44 — Semantic checkpoint authorization must not certify or forward an implementation recipe
+
+**Initial user/spec fixture:** The authoritative task establishes an outcome and mutation boundary. Discovery proposes mechanism H, but no authority requires H and ordinary implementation mechanics remain owned by the edit-capable specialist.
+
+**Runtime/repository fixture:** `@semantic-checkpoint` has enough primary evidence to decide that mutation inside the semantic boundary is authorized. The repository contains multiple possible implementation mechanics; whether H is actually sufficient depends on implementation-level owner/caller/state inspection.
+
+**Injected intermediate output:** The checkpoint returns `proceed`, labels H technically adequate, and states that the candidate may be passed unchanged to the implementation specialist. The orchestrator forwards the checkpoint/candidate verbatim and the builder treats H as the approved patch recipe.
+
+**Expected earliest observable stop/preservation point:** The checkpoint must stop at semantic authorization: it may identify that H embeds a semantic contradiction, but it must not certify design/implementation adequacy or recommend forwarding the candidate unchanged. The orchestrator must reconstruct the mutation handoff from the established outcome, exact implementation constraints, target/evidence state, and checked bounds; a non-required H is omitted by default rather than laundered through `proceed`.
+
+**Scenario:**
+
+H is plausible and semantically compatible at a glance, but repository inspection by the implementation role would reveal that another owner/primitive or caller set is needed for a correct implementation. A weak builder would follow H literally if the checkpoint appears to have approved it.
+
+**Expected trace:** `semantic-checkpoint` returns `proceed` only for the semantic boundary, reports implementation mechanics as non-authoritative, and returns a mutation-boundary summary rather than an unchanged candidate handoff. `code-orchestrator` constructs a clean edit-capable assignment from outcome/constraints/evidence. `@build` independently derives the mechanism under its role contract.
+
+**Expected result:** fail if `proceed` is consumed as technical/design approval, if the checkpoint recommends passing the candidate unchanged as an implementation recipe, or if the orchestrator forwards a non-required mechanism merely because the checkpoint found it plausible; pass when semantic authorization and implementation selection remain separate.
+
+---
+
+### ST-45 — A confirmed finding must become a debugger defect contract, not a reviewer patch recipe
+
+**Initial user/spec fixture:** A returned implementation package is independently shown to violate an established behavioral invariant. The reviewer/tester report contains both discriminating defect evidence and a suggested remediation shape R. Authority establishes the required behavior, not R.
+
+**Runtime/repository fixture:** The defect is concrete enough to route to `@debugger`, but the true root cause could lie at a different owner or require a different minimal fix than R.
+
+**Injected intermediate output:** The orchestrator creates the debugger assignment as “fix exactly R / change helper X / add test Y” because that wording came from the reviewer finding.
+
+**Expected earliest observable stop/preservation point:** Before the debugger handoff, the orchestrator must separate the defect proposition/evidence from remediation advice. The assignment carries the governing expected behavior/invariant, exact failure/reproduction evidence, affected boundary, and state identity. R is omitted unless separately established as an implementation constraint. If R is materially necessary diagnostic context, it remains explicitly non-binding.
+
+**Scenario:**
+
+The suggested patch can fix the named example while leaving another caller/state wrong. A debugger that starts from the symptom and root cause can discover the correct owner; a debugger told to implement R literally may reproduce the same patch-by-comment loop.
+
+**Expected trace:** `code-orchestrator` routes the confirmed bug to a fresh `@debugger` assignment using the defect contract, not authorship or suggested patch shape. `@debugger` treats any caller/reviewer remediation suggestion as a hypothesis, confirms root cause, selects the smallest right-level fix, and verifies the governing invariant.
+
+**Expected result:** fail if reviewer/tester remediation language is promoted into the assigned fix without separate authority; pass when the finding supplies evidence and the debugger independently owns root-cause/fix mechanics.
+
+---
+
+### ST-46 — A plan or audit must not become blanket mutation authority
+
+**Initial user/spec fixture:** A planning/audit artifact contains a mix of established task propositions, repository facts, recommended sequencing, and implementation/layout suggestions. Only some propositions are actually adopted or otherwise authoritative.
+
+**Runtime/repository fixture:** A mutation-capable role is about to implement the established outcome. The artifact is available as useful context, but repository inspection may support a different ordinary mechanism inside the same semantic boundary.
+
+**Injected intermediate output:** The parent passes the entire plan/audit as an “accepted plan” and instructs the implementation role to execute its ordered steps exactly, treating recommendations and mechanics as binding because the artifact was produced by a specialist.
+
+**Expected earliest observable stop/preservation point:** The parent must preserve claim-level authority and construct the mutation assignment from the established outcome, actually adopted plan propositions/constraints, material facts/evidence, and target state. Non-required implementation/layout recommendations are omitted by default or explicitly non-binding when necessary context. The implementation role must not treat the whole artifact as correctness proof.
+
+**Scenario:**
+
+The plan is mostly sound, but one recommended local mechanism is not required and a shared existing owner is better. Blind execution would create duplicate policy or a local workaround while still appearing to “follow the plan.”
+
+**Expected trace:** root authority remains proposition-scoped; orchestration does not convert specialist authorship into authority. For UI, `ui-orchestrator`/`ui-implementer` preserve only actually adopted plan propositions and derive mechanics from the existing frontend architecture. For code, the same rule applies to project plans/checkpoints/reviews before `@build`/`@debugger` mutation.
+
+**Expected result:** fail if an entire upstream plan/audit/checkpoint/report becomes binding mutation authority merely because it was produced or accepted as context; pass when authoritative propositions and implementation recommendations remain distinct through the handoff.
+
 ## Grading
 
 For each case record:
