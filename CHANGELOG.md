@@ -1,6 +1,6 @@
 # Changelog
 
-## v30.75 beta
+## v30.75
 
 README navigation deduplication:
 
@@ -11,7 +11,7 @@ README navigation deduplication:
 - preserves `AGENTS.md` mentions that are operational rather than architectural duplication: install paths and the title of an external reference;
 - runtime agent/skill contracts and workflow semantics remain unchanged from v30.74.
 
-See [`docs/releases/v30.75-beta.md`](docs/releases/v30.75-beta.md) and [`docs/contract-protocol-audit-v30.75.md`](docs/contract-protocol-audit-v30.75.md).
+See [`docs/releases/v30.75.md`](docs/releases/v30.75.md) and [`docs/contract-protocol-audit-v30.75.md`](docs/contract-protocol-audit-v30.75.md).
 
 ## v30.74 beta
 
