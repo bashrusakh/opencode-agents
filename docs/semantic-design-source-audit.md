@@ -22,7 +22,7 @@ A source does not need to be copied verbatim. It passes when the behavior and ma
 | OpenAI — Goals in Codex | Define outcome, verification surface, constraints, boundaries, iteration policy, and blocked stop condition. | §2 reproduces those six semantic fields as the default outcome contract. | PASS |
 | OpenAI — Agent improvement loop | Start from real traces/feedback, turn recurring expectations into evals, change the harness, rerun the gate; do not reduce improvement to prompt tuning. | §12 explicitly defines trace → classification → eval → narrow harness change → rerun. | PASS |
 | OpenAI — Iterative repair loops | Separate review, repair, and validation; let validation determine remaining delta and next repair. | §10 preserves judgment/mutation/proof separation and makes observed validation the next-iteration input. | PASS |
-| OpenAI — Orchestration and handoffs | Use handoff when specialist owns the branch; use manager-owned specialists as bounded capabilities when the manager keeps final ownership; split only for real instruction/tool/policy differences. | §§6–7 make workflow ownership explicit and condition role/delegation creation on isolation/independence value. | PASS |
+| OpenAI — Agent definitions / orchestration and handoffs | Keep intrinsic specialist behavior in the agent definition; pass runtime context as task-specific specialization rather than rebuilding the role at the call site; use handoff when the specialist owns the branch and manager-owned bounded specialists when the manager keeps final ownership. | §§4, 6–7 keep one owner for intrinsic role semantics, make workflow ownership explicit, and require assignment/role-contract composition without treating a partial invocation as a full-stage verdict. | PASS |
 | Anthropic — Opus 5 | Explicitly limit response verbosity; one short pre-tool status; update only on important findings/direction changes; outcome first; remove blanket verification/subagent instructions that cause over-verification. | §§9 and 16 plus the root communication invariant preserve cadence, concise reporting, and proportional verification. | PASS |
 | Anthropic — Prompting best practices | Use subagents for parallel/isolated/independent work; direct execution for simple/sequential/stateful work; explicit chaining only when intermediate inspection/branching is needed; damp overengineering. | §§7–8 and §20 derive the same delegation/chaining decision and minimality boundary. | PASS |
 | Anthropic — Sonnet 5.5 | Steer initiative so work completes without premature check-ins but stops at requested scope; add stronger real checks when observed behavior shows completion claims without execution evidence. | §§2, 9, 19 preserve completion/blocked boundaries and treat model-specific verification scaffolding as symptom/eval-driven rather than universal. | PASS |
@@ -33,7 +33,7 @@ A source does not need to be copied verbatim. It passes when the behavior and ma
 | DeepSeek — skill system | Keep catalog metadata small, disclose full instruction bodies on demand, keep deterministic skill resolution, avoid injecting every skill body into every request. | §§4–5 derive conditional skill loading and minimal activation metadata. Provider-specific registry mechanics are correctly left runtime-specific. | PASS |
 | GLM-5.3 | Train/evaluate in executable, verifiable, realistic long-horizon environments; use independent verification/judging and both end-to-end completion and fine-grained criteria. | §§9, 13, 17 require realistic state-bound outcomes plus focused criteria; independent judgment is conditional on value/risk rather than mandatory everywhere. | PASS |
 | GLM inference engineering | Turn ambiguous failures into local, timely, objective feedback; test hypotheses with controlled experiments; use local checks for diagnosis and end-to-end checks for final acceptance; humans own objectives/bounds/risk. | §§11 and 18 reproduce those responsibilities and the layered validation loop. | PASS |
-| OpenCode runtime docs | `mode`, permissions, and child-session topology are runtime facts; subagents use fresh child context and permissions are hard ceilings. | §§1.4, 6–7 explicitly separate runtime capability from semantic authority and use fresh context for new independent assignments. | PASS |
+| OpenCode runtime docs | `AGENTS.md` instructions and each agent body are persistent context/system surfaces; `mode`, permissions, and child-session topology are runtime facts, and delegated task text is instance-specific input rather than a replacement for the agent profile. | §§1.4, 4, 6–7 separate persistent role/runtime contracts from task-specific assignment context, preserve hard ceilings, and use fresh context for new independent assignments. | PASS |
 
 **Result: 17/17 PASS.**
 
@@ -124,6 +124,19 @@ From manual §16:
 - no routine tool narration.
 
 This reproduces the Claude Opus 5 action directly.
+
+**PASS**
+
+### Case H — a reviewer assignment narrows the check and asks for a full verdict
+
+From manual §6:
+
+- treat the assignment as specialization of the reviewer contract, not a replacement for it;
+- preserve reviewer-owned obligations that still apply to the selected target;
+- if the parent intentionally requests only a diagnostic subset, keep the returned judgment explicitly partial;
+- do not consume that partial result as completion of the broader review stage.
+
+This preserves the OpenAI/OpenCode separation between persistent specialist instructions and per-invocation task context.
 
 **PASS**
 

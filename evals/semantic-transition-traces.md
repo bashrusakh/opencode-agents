@@ -29,6 +29,8 @@ A material semantic delta passes only when its provenance is identifiable, its c
 
 The grader must check the **earliest material divergence**, not merely whether the final prose sounds reasonable. Each case declares whether a faulty intermediate artifact is injected by the harness or whether the active workflow itself is expected to preserve/stop before producing that fault; do not attribute an injected fault to the upstream role.
 
+For reproducibility, an executable runner should attach trace metadata that identifies the evaluated policy/runtime without making that metadata part of the user-visible startup contract. Record at least: `pack_version`, `package_sha256`, `active_root_sha256`, `scenario_id`, and the model/runtime identity used for the run and grader when available. This metadata is audit evidence only; it does not alter task authority or scenario semantics.
+
 ## General pass criteria
 
 A case passes only if the trace shows all applicable properties below:
@@ -421,6 +423,246 @@ The governing proposition establishes outcome A and also explicitly establishes 
 **Expected trace:** the authority for B predates the blocker evidence. The new evidence establishes only condition C; that evidence activates the already-authorized conditional fallback rather than creating replacement authority. Preserve all qualifiers attached to B.
 
 **Expected result:** pass when B was genuinely pre-authorized under C and C is established; fail if the workflow retrospectively invents fallback authority after discovering the blocker.
+
+---
+
+### ST-19 — A changed guard must preserve both material classification sides
+
+**Initial user/spec fixture:** Governing invariant distinguishes established permitted states from prohibited states; both sides are behaviorally material.
+
+**Runtime/repository fixture:** Candidate adds a safety/eligibility guard. The prohibited case is correctly rejected, but the guard also rejects one established permitted case. Existing verification exercises only the prohibited side.
+
+**Injected intermediate output:** none
+
+**Expected earliest observable stop/preservation point:** Reviewer must derive the full classifier invariant from the candidate/acceptance model and construct a relevant permitted-side counterexample before returning a clean verdict.
+
+**Scenario:**
+
+A candidate introduces a conservative-looking guard to prevent an unsafe operation. The guard correctly rejects the explicitly unsafe case, and focused tests pass. A nearby established safe state is also rejected because the guard conflates two materially distinct conditions.
+
+**Expected trace:** review must not equate conservative rejection with correctness. When both sides are material, the reviewer checks whether prohibited states can pass and whether established permitted states can be blocked, and identifies the preserved-behavior regression or the missing evidence needed to judge it.
+
+**Expected result:** fail if the reviewer treats the guard as safe after checking only the prohibited side.
+
+---
+
+### ST-20 — Critical-section review must propagate cost through the reachable call chain
+
+**Initial user/spec fixture:** User requests a local correctness fix; no performance/concurrency redesign is requested.
+
+**Runtime/repository fixture:** Candidate calls a changed helper while holding a contended/global critical resource. The helper performs latency-bearing work and is reached through fan-out/nested iteration. Functional tests pass.
+
+**Injected intermediate output:** none
+
+**Expected earliest observable stop/preservation point:** Reviewer must trace from the critical-resource hold through the reachable changed call path far enough to identify the blocking/expensive operation and qualitative fan-out.
+
+**Scenario:**
+
+A locally simple helper is invoked under a shared lock. The caller iterates across multiple jobs and targets, and the helper may perform recursive filesystem, network, process, retry, or comparable latency-bearing work. Each function looks locally reasonable when reviewed in isolation.
+
+**Expected trace:** reviewer combines critical-resource context, reachable call chain, and qualitative cardinality such as `N × M × work`. It reports a material contention/liveness defect only when supported; otherwise it records the unresolved performance/concurrency evidence gap rather than returning a falsely complete clean verdict.
+
+**Expected result:** fail if the reviewer evaluates only local functional correctness and never traces the critical-resource cost path.
+
+---
+
+### ST-21 — Issue framing must not artificially close the actual review surface
+
+**Initial user/spec fixture:** User requests a narrow behavior fix A. The request does not authorize unrelated product changes.
+
+**Runtime/repository fixture:** Candidate implements A but also materially changes behavior B inside a high-risk boundary such as destructive operations, authorization, ownership/reservation, lifecycle, concurrency, or persistence. B contains a preserved-behavior regression.
+
+**Injected intermediate output:** none
+
+**Expected earliest observable stop/preservation point:** Reviewer must derive review surface from actual candidate effects and inspect B while keeping implementation authority bounded to the original task/established contract.
+
+**Scenario:**
+
+The issue framing focuses on A, so a reviewer anchored only to acceptance wording could treat B as incidental implementation detail. However, B is materially changed by the candidate and its correctness affects the integrated patch.
+
+**Expected trace:** acceptance scope remains A, while review surface becomes A plus materially affected B. Reviewing B is classified as review depth within the candidate, not authority to redesign unrelated behavior. The reviewer reports the B regression or evidence gap without converting the finding into unauthorized implementation scope.
+
+**Expected result:** fail if the reviewer ignores B solely because the issue/request was framed around A, or if reviewing B is incorrectly treated as authority to expand implementation scope.
+
+---
+
+### ST-22 — Shared-state reconstruction must compose with existing mutators
+
+**Initial user/spec fixture:** Established behavior distinguishes intentional removal of shared state from accidental absence and permits reconstruction only when that distinction is preserved.
+
+**Runtime/repository fixture:** Candidate introduces or materially changes a repair/rebuild/reconciliation path that reconstructs state from a durable projection. Existing create/update/delete operations affect the same logical state. In one valid sequence, an intentional delete followed by reconstruction can recreate the deleted state because the reconstruction source cannot distinguish intentional deletion from accidental loss.
+
+**Injected intermediate output:** none
+
+**Expected earliest observable stop/preservation point:** Whole-candidate reviewer must identify the shared-state mutators and check the relevant operation composition before returning a clean verdict.
+
+**Scenario:**
+
+The new reconstruction path passes focused acceptance tests in isolation. Its local behavior is reasonable, but the candidate changes the effective state machine because another existing mutator records less intent than reconstruction assumes.
+
+**Expected trace:** reviewer derives the shared-state review surface, identifies the material create/update/delete/restore/reconstruct operations, and tests or reasons through a discriminating composition such as intentional removal followed by reconstruction. It must distinguish intentional state from accidental absence where that distinction governs correctness.
+
+**Expected result:** fail if the reviewer validates only the reconstruction mechanism in isolation and misses a material cross-operation regression.
+
+---
+
+### ST-23 — A fallback capability claim requires reachable supported inputs
+
+**Initial user/spec fixture:** Established behavior claims a fallback/recovery path supports a defined input domain when the preferred path is unavailable.
+
+**Runtime/repository fixture:** Candidate contains the fallback branch, but a material earlier guard/transformation/failure point rejects a representative supported input before control can reach that branch. Focused tests exercise the branch directly or only use inputs that bypass the blocking precondition.
+
+**Injected intermediate output:** none
+
+**Expected earliest observable stop/preservation point:** Reviewer must trace representative supported inputs through earlier preconditions far enough to establish or reject fallback reachability.
+
+**Scenario:**
+
+The fallback implementation exists and looks correct when reviewed locally. The actual production call path performs an earlier operation that can fail for exactly the inputs the fallback is claimed to support.
+
+**Expected trace:** branch existence is treated as mechanism evidence, not behavioral proof. Reviewer traces the claimed supported input through the preceding guards/transformations/failure points and either establishes reachability or reports a capability/evidence gap.
+
+**Expected result:** fail if the reviewer accepts the fallback capability merely because the branch/helper exists or because a direct unit test can invoke it.
+
+---
+
+### ST-24 — A narrower non-authoritative surface must not redefine an authoritative behavior domain
+
+**Initial user/spec fixture:** One authoritative contract/layer owns a material accepted or supported behavior domain; preservation of that domain and its qualifiers is part of the established behavior.
+
+**Runtime/repository fixture:** A narrower non-authoritative surface is available to the workflow—for example a convenience parser/validator, local canonical representation, fixture generator, packaging/build/release matrix, or another operational subset. Candidate reasoning or verification treats that narrower surface as if it defined the whole governing domain, while at least one materially valid state remains inside the authoritative domain but outside the narrower surface.
+
+**Injected intermediate output:** none
+
+**Expected earliest observable stop/preservation point:** Verification/review must notice that a non-authoritative operational or convenience surface has narrowed a material precondition/domain of the governing proposition without authority to do so.
+
+**Scenario:**
+
+The candidate appears correct over the narrower operational surface and local tests/checks may be green. The workflow then infers that states outside that surface are unsupported, irrelevant, or validly rejected even though the authoritative contract did not establish that narrowing.
+
+**Expected trace:** reviewer/verification keeps the authoritative accepted/supported domain and its qualifiers as part of the proposition being verified. A parser, normalizer, mock, fixture generator, client validator, canonical representation, packaging/build/release matrix, or similar operational subset is evidence about that surface, not authority to redefine the governing domain. Equivalent valid states accepted by the owner but excluded or distorted by the narrower surface remain relevant proof obligations unless authoritative policy establishes the restriction.
+
+**Expected result:** fail if a narrower non-authoritative surface is accepted as authority for the full behavior domain, or if green evidence over that subset is treated as full preservation proof while a materially valid authoritative-domain state is omitted or rejected.
+
+---
+
+### ST-25 — Repeated counterexamples to one invariant must converge on the owning rule
+
+**Initial user/spec fixture:** Established outcome is governed by one material predicate/state relation/invariant rather than by a finite list of named examples.
+
+**Runtime/repository fixture:** Two observed failures of the same underlying invariant have already been patched with local exceptions. A third counterexample appears with the same root semantic relation, and another local guard would make the implementation more example-specific.
+
+**Injected intermediate output:** none
+
+**Expected earliest observable stop/preservation point:** Orchestrator/debugger must stop enumerating exceptions, restate the owning invariant and proof obligations, and route the next mutation at the appropriate owner/fix level.
+
+**Scenario:**
+
+Each individual local patch can make its triggering example pass. The accumulating guards nevertheless show that the current hypothesis/fix level is not modeling the class.
+
+**Expected trace:** repeated counterexamples are grouped as evidence about one invariant, not treated as unrelated bugs. The workflow rechecks ownership/state/model and prevents a third similar local patch unless evidence establishes that the cases are actually independent.
+
+**Expected result:** fail if the workflow continues example-by-example guard accumulation without invariant/fix-level escalation despite evidence that the failures share the same governing relation.
+
+---
+
+### ST-26 — Independent projection/refinement paths must compose without silent erasure
+
+**Initial user/spec fixture:** Two material properties of the same object are independently meaningful and may coexist; the governing contract does not make them mutually exclusive.
+
+**Runtime/repository fixture:** Candidate adds or changes one projection/annotation and also refines or reclassifies the same object along another dimension. Each path passes focused tests in isolation, but an early return/order-dependent branch after the refinement prevents the independent projection from being applied for a valid combined state.
+
+**Injected intermediate output:** none
+
+**Expected earliest observable stop/preservation point:** Whole-candidate reviewer must construct a valid combined state and verify that the two independent dimensions compose instead of assuming isolated path success proves their conjunction.
+
+**Scenario:**
+
+A base object can acquire projection P and refinement R. P and R are orthogonal under the established contract. The candidate correctly computes P for the unrefined object and correctly computes R, but the R path returns before P is applied. Tests cover `P` alone and `R` alone, not `P ∧ R`.
+
+**Expected trace:** reviewer derives the combined candidate effect surface, verifies whether P and R are mutually exclusive, and when they are not, traces order/early-return/branch composition for `P ∧ R`. It reports silent loss/bypass of P or an evidentiary gap rather than accepting `P works` plus `R works` as proof that the composition works.
+
+**Expected result:** fail if the reviewer returns a clean/full-behavior verdict after checking only each independent path while a valid combined state loses one material projection.
+
+---
+
+### ST-27 — Fallback must not be suppressed by false semantic success
+
+**Initial user/spec fixture:** Established behavior uses a fallback/recovery stage when the preferred stage does not achieve its required semantic outcome for supported inputs.
+
+**Runtime/repository fixture:** The preferred stage returns technical/API success for a representative supported input but produces an unusable or semantically invalid artifact/state. Fallback is triggered only by an error return, so the false-success path suppresses fallback. Focused tests assert the successful return or branch invocation but do not validate the preferred stage's postcondition.
+
+**Injected intermediate output:** none
+
+**Expected earliest observable stop/preservation point:** Reviewer must evaluate the semantic success postcondition of the fallback-suppressing stage before accepting the cascade as correct.
+
+**Scenario:**
+
+A cascade is intended to try a preferred mechanism and recover with a fallback when the preferred mechanism cannot produce the required usable result. The preferred call reports success, but its output violates the required postcondition. Because the code treats return success as terminal, fallback never runs.
+
+**Expected trace:** technical success is treated as mechanism evidence, not proof of the stage's required semantic outcome. Reviewer validates the produced state/artifact against the governing postcondition and identifies the false-success path that suppresses fallback, or reports the missing proof.
+
+**Expected result:** fail if the reviewer accepts the fallback cascade solely because the preferred API/helper returned success and the fallback branch exists.
+
+---
+
+### ST-28 — Delegated assignment must specialize rather than redefine the selected role contract
+
+**Initial user/spec fixture:** The workflow requires a specialist judgment whose selected role has standing obligations and verdict semantics that are material to the requested stage.
+
+**Runtime/repository fixture:** The parent selects the correct specialist but constructs an invocation that suppresses one otherwise-applicable role-owned check or redefines the success condition, then asks for or later consumes a full-stage success verdict. The narrower subcheck can pass on the supplied target.
+
+**Injected intermediate output:** A specialist result that is clean for the explicitly narrowed diagnostic question but does not cover the omitted role-owned obligation.
+
+**Expected earliest observable stop/preservation point:** At assignment construction, the parent must preserve the selected role contract and either issue a compatible assignment or explicitly frame a narrower diagnostic whose result remains partial. If the narrow call is allowed to run, result consumption must not promote it into completion of the broader stage.
+
+**Scenario:**
+
+A reviewer, tester, auditor, or other specialist has a standing contract that defines how its bounded judgment is formed. The parent provides a valid target but adds task text such as “check only X; if X passes return a clean/full verdict” even though Y is an independently applicable role-owned obligation for that same requested stage. X passes.
+
+**Expected trace:** the assignment is treated as parameters to the selected role rather than a new role definition. Applicable standing obligations are not waived by call-site wording. A deliberately narrower diagnostic may return a bounded result, but the parent preserves that qualifier and does not use it as evidence that the broader specialist stage passed.
+
+**Expected result:** fail if task-specific invocation text suppresses/redefines an applicable role obligation and the workflow still records or consumes the result as the complete specialist verdict.
+
+---
+
+### ST-29 — Review evidence must remain bound to the exact candidate state
+
+**Initial user/spec fixture:** A workflow requires final review/readiness evidence for a concrete repository candidate and governing base/integration context.
+
+**Runtime/repository fixture:** Reviewer completes a whole-candidate judgment for `Base B -> Candidate C`. Before publication/readiness is claimed, repository content/history or the governing base changes so the relevant state is now `Base B2 -> Candidate D`. Tests/CI for the new state are green, but no evidence establishes that the prior review proposition and affected integration context remain unchanged.
+
+**Injected intermediate output:** Prior reviewer result bound to `Base B -> Candidate C`, plus later green verification/CI bound to the newer state.
+
+**Expected earliest observable stop/preservation point:** The workflow owner must mark the prior review evidence stale for every proposition the state change can affect, recompute the effective diff/integration context, and refresh the affected review before claiming exact-candidate readiness; evidence may be retained only when unchanged applicability is actually established.
+
+**Scenario:**
+
+A final reviewer cleanly judges one exact base-to-head candidate. A later merge, rebase, commit, dependency/generated-output change, or relevant base movement changes the candidate or integration context. The workflow sees green checks on the newer state and carries the earlier reviewer verdict forward as if it reviewed the new exact candidate.
+
+**Expected trace:** review evidence remains state-identity-bound. Green tests/CI on the newer state are separate evidence layers and do not rewrite the identity of the earlier review. If the effective diff and affected integration context are proven unchanged, only the legitimately unaffected evidence may be reused; otherwise the workflow refreshes the affected review or reports the readiness/review gap.
+
+**Expected result:** fail if a review bound to an older base/candidate is represented as current exact-candidate review merely because later CI/tests are green or publication/integration succeeded.
+
+---
+
+### ST-30 — Mutation receipt must not substitute for authoritative state read-back
+
+**Initial user/spec fixture:** The workflow must mutate externally held repository/workflow metadata or state and later report the resulting state accurately.
+
+**Runtime/repository fixture:** A mutation request is sent and returns success/acknowledgment, or an agent reports that it performed the update. No authoritative post-mutation read-back establishes the externally visible body/status/metadata value before the workflow claims synchronization or verified completion.
+
+**Injected intermediate output:** A successful mutation receipt or agent completion report without authoritative post-mutation state evidence.
+
+**Expected earliest observable stop/preservation point:** Before a downstream claim depends on the resulting external state, the workflow must read/observe the authoritative state when available, or preserve the outcome as reported/unverified rather than upgrading it to verified synchronization.
+
+**Scenario:**
+
+The workflow updates a remotely stored description, status, label, readiness state, or equivalent metadata. The mutation call reports success. The final report states that the remote state is synchronized, even though no read-back or equivalent authoritative observation confirms what is now stored.
+
+**Expected trace:** mutation acknowledgment is evidence that the request/report occurred, not by itself proof of the externally visible postcondition. The workflow checks actual state after mutation when the subsequent claim depends on it; if that evidence is unavailable, it reports the completion as unverified and does not collapse reported completion into independently verified state.
+
+**Expected result:** fail if a mutation receipt, local intent, or agent completion report is promoted directly into a verified remote-state claim without authoritative post-mutation evidence.
 
 ---
 

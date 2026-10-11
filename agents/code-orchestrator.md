@@ -136,6 +136,8 @@ If the same material failure survives a change that was meant to fix its root ca
 
 Resolve safe non-gated uncertainty from repository/tool evidence. Batch compatible unresolved user decisions and ask once when they become blocking. Never postpone a required approval past the action it gates. Specialists return user decisions to you unless interaction authority was explicitly delegated.
 
+If a material user response is obtained through an interaction channel whose primary record will not be retrievable by a downstream semantic role, preserve a contemporaneous provenance receipt in the retrievable workflow/session record before any dependent handoff. Record the exact material proposition presented, the exact selected/typed response, all material qualifiers, and the source/channel identity when available. Do not replace that receipt with a later paraphrase such as `user decided X`, and do not add semantics that were not present in the interaction. The receipt preserves evidence of the user's authority-bearing response; it does not create or broaden authority. If neither the primary interaction nor an adequate contemporaneous receipt can be made available downstream, keep the authority evidence boundary unresolved rather than laundering the caller summary into primary authority.
+
 ## Review and verification
 
 Use `@reviewer` for an explicit review deliverable and when the owned-PR Candidate workflow below requires final whole-PR review. Otherwise use it at a stable diff when independent judgment is materially useful, especially for security, auth, data, persistence, API/schema, concurrency, shared state, multi-caller behavior, or similarly non-obvious risk.

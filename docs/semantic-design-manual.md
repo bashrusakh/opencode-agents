@@ -263,6 +263,12 @@ Use a handoff only when the specialist should actually own the next conversation
 
 Do not simulate a handoff merely because a specialist has useful expertise.
 
+### Assignment/role contract composition
+
+A delegation prompt supplies instance-specific scope and context to the selected role; it does not replace that role's standing contract. Legitimate specialization can narrow the target, question, action ceiling, or requested evidence while preserving the role-owned obligations and result semantics that still apply. A deliberately partial diagnostic is valid when its boundary stays explicit, but its result cannot satisfy a broader stage.
+
+Check both directions: could the assignment suppress or redefine a material role obligation, and could the caller later over-claim completion from a result that was intentionally partial?
+
 ### New role test
 
 Add a role only if at least one of these materially improves:
@@ -361,6 +367,18 @@ Separate coverage dimensions when they matter:
 - **evidentiary coverage** — which claims have evidence that actually discriminates the governing proposition from relevant counterexamples.
 
 Full structural coverage does not imply full behavioral or evidentiary coverage.
+
+### Derive review depth from the actual candidate
+
+Acceptance/task scope and review surface are different objects. Acceptance scope establishes what change is requested; the actual candidate establishes which changed behaviors must be judged for correctness. If a nominally local patch materially alters a destructive boundary, authorization, ownership/reservation, lifecycle, concurrency/locking, persistence/migration, or another high-risk behavior, reviewing that boundary is not scope expansion. It increases review depth inside the candidate without creating implementation authority for unrelated fixes.
+
+For changed guards/classifiers, preserve both material sides of the governing invariant when both matter. Review whether a prohibited state can be accepted and whether an established permitted state can be rejected. Use the nearest meaningful counterexample rather than assuming conservative rejection is inherently safe.
+
+For changed work executed under a contended/global lock, transaction, scheduler/state guard, or similar critical shared resource, trace reachable changed calls far enough to expose blocking or materially expensive work and qualitative fan-out/cardinality. Filesystem, network, process, retry, recursive traversal, and comparable latency-bearing operations deserve explicit attention when their placement can change contention or liveness. Do not infer a defect from cost alone; establish the material impact or keep the claim as an evidence gap.
+
+When a candidate reconstructs or reconciles shared state, review the relevant operations that mutate the same semantic state as a composition rather than validating the new mechanism only in isolation. Create/update/delete/restore/reconstruct paths can each be locally valid while their sequence violates the governing invariant. Use discriminating round trips when correctness depends on distinguishing intentional state from accidental absence.
+
+Treat fallback/recovery reachability as part of the behavioral claim. A branch that exists syntactically does not establish that representative supported inputs can reach it through earlier guards, transformations, and failure points. If reachability is not established, the supported-behavior claim remains an evidence gap.
 
 ### Avoid over-verification
 
@@ -514,7 +532,13 @@ Treat a material semantic delta without identifiable and sufficient provenance a
 
 For a negative replay, state explicitly whether the harness **injects** a faulty intermediate artifact at a named stage or expects the active upstream workflow to avoid producing that fault. Record the earliest observable stage that must preserve state or stop. Do not attribute an injected fault to the upstream role, and do not mix evidence-state changes such as uncertainty resolution into the proposition-relation taxonomy.
 
+When a material authority-bearing interaction cannot be retrieved by a downstream semantic role, preserve provenance before dependent handoff rather than asking downstream roles to trust a later summary. A contemporaneous receipt can preserve the exact proposition, response, qualifiers, and source of the interaction; it is evidence of the interaction, not a new source of authority. Prefer the primary interaction whenever it remains retrievable.
+
+For reproducible behavioral evals, attach the evaluated policy/runtime identity to the trace as metadata rather than user-visible prompt scaffolding. Version/package/root hashes, scenario identity, and model/runtime identity help determine which governing instruction set actually produced the trace without changing scenario semantics.
+
 Convert observed failures into incident-independent synthetic regression scenarios. Preserve the semantic structure of the failure, not its repository names, UI labels, provider terms, or accidental implementation details. Run these scenarios in an isolated/fresh evaluation context; authoring-context agreement is not evidence that the candidate pack passes the replay.
+
+For review-oriented regressions, distinguish isolated-path correctness from **composition correctness**. If independently valid projections/refinements can coexist, include a combined-state case; if a fallback depends on a prior stage failing, distinguish control-flow reachability from the prior stage's semantic success postcondition. When one layer owns an accepted or supported behavior domain, cross-layer tests must preserve that owner's domain rather than inheriting a narrower convenience representation or non-authoritative operational surface as an unstated precondition. Packaging/build/release matrices and similar operational subsets are evidence about their own surface unless authoritative policy makes them the governing domain.
 
 ---
 
@@ -807,6 +831,10 @@ Before shipping a prompt/harness semantic change, verify:
 - [ ] Delegation/checking is conditional rather than ritual unless policy requires it.
 - [ ] Important state identity is preserved.
 - [ ] A negative/counterexample case prevents overreach.
+- [ ] Reviewer depth follows actual candidate effects rather than issue wording alone: materially changed high-risk boundaries become review surfaces without becoming new implementation authority.
+- [ ] When a changed guard/classifier has material allowed and prohibited sides, review checks both with meaningful counterexamples; when changed work runs under a contended critical resource, review traces reachable blocking/expensive work and qualitative fan-out without turning benchmarking into a ritual.
+- [ ] Reviewer composition checks cover independently coexisting projections/refinements where isolated-path success would not prove the combined state; cross-layer accepted-domain checks keep the owning contract authoritative rather than inheriting a narrower local representation.
+- [ ] Fallback/recovery review proves both control-flow reachability and any fallback-suppressing stage's semantic success postcondition; a successful return is not substituted for the required usable outcome.
 - [ ] A preservation case protects a valid existing workflow.
 - [ ] The synthesized rule passes the round-trip action test.
 - [ ] Runtime/API assumptions were checked against the actual implementation when they are material.

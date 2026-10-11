@@ -63,6 +63,21 @@ check(
 )
 
 
+
+# Delegated task text specializes the selected role; it must not rewrite role-owned
+# obligations or allow a partial diagnostic to masquerade as a complete stage verdict.
+check(
+    "An assignment specializes the selected role contract; it does not replace it" in root_sem
+    and "must remain explicitly partial" in root_sem
+    and "cannot satisfy a broader stage" in root_sem,
+    "AGENTS.md: assignment/role-contract composition guard missing",
+)
+check(
+    "selected role's standing contract" in evaluator_sem
+    and "partial result was not later consumed as completion of a broader stage" in evaluator_sem,
+    "session-evaluator: assignment/role-contract diagnostic guard missing",
+)
+
 # Required skill dependencies must be reachable through the effective V2 permission rules.
 def frontmatter(rel):
     raw = text(rel)
@@ -181,18 +196,117 @@ for rel in ui_roles:
 for rel in ui_roles[:4]:
     check("ui-component-sources" in text(rel), f"{rel}: does not consume canonical UI integration owner")
 
+# Reviewer-owned adversarial depth: structural presence only, not behavioral proof.
+reviewer = text("agents/reviewer.md")
+check(
+    "whether a prohibited state can be accepted" in reviewer
+    and "whether an established permitted state can be rejected" in reviewer,
+    "reviewer: bidirectional guard/classifier counterexample contract missing",
+)
+check(
+    "Derive the **review surface** from the actual candidate" in reviewer
+    and "This expands review depth, not implementation authority" in reviewer,
+    "reviewer: acceptance-scope/review-surface boundary missing",
+)
+check(
+    "contended/global lock" in reviewer
+    and "N × M × work" in reviewer
+    and "latency-bearing operations" in reviewer,
+    "reviewer: critical-resource call-chain cost contract missing",
+)
+check(
+    "reconstruction/reconciliation of shared state" in reviewer
+    and "create, update, delete, restore, or reinterpret" in reviewer
+    and "intentional state from accidental absence" in reviewer,
+    "reviewer: shared-state mutator composition contract missing",
+)
+check(
+    "establish reachability as part of the behavior claim" in reviewer
+    and "can actually reach the fallback" in reviewer
+    and "existence of a branch" in reviewer,
+    "reviewer: fallback/recovery reachability contract missing",
+)
+check(
+    "projections, annotations, classifications, or refinements" in reviewer
+    and "combined states" in reviewer
+    and "must not silently erase, skip, or bypass" in reviewer,
+    "reviewer: independent projection/refinement composition contract missing",
+)
+check(
+    "candidate behavior or accepted values are bounded by a domain owned by another layer" in reviewer
+    and "packaging/build/release matrix" in reviewer
+    and "other non-authoritative operational surface" in reviewer
+    and "must not silently narrow the accepted or supported behavior domain" in reviewer
+    and "evidence about their own coverage" in reviewer,
+    "reviewer: generalized authoritative-domain preservation contract missing",
+)
+check(
+    "semantic success postcondition" in reviewer
+    and "reported success suppresses fallback" in reviewer
+    and "successful return is not evidence" in reviewer,
+    "reviewer: fallback semantic-success contract missing",
+)
+
+# Material user decisions that are not retrievable downstream need provenance
+# preservation, but the receipt itself must not become a new authority source.
+orch = text("agents/code-orchestrator.md")
+session_evidence = text("skills/session-evidence/SKILL.md")
+check(
+    "preserve a contemporaneous provenance receipt" in orch
+    and "exact material proposition presented" in orch
+    and "does not create or broaden authority" in orch,
+    "code-orchestrator: opaque-interaction provenance receipt contract missing",
+)
+check(
+    "contemporaneous provenance receipt created before the dependent handoff" in session_evidence
+    and "A later paraphrase such as `user decided X` is not an equivalent receipt" in session_evidence
+    and "does not itself create, broaden, or reinterpret authority" in session_evidence,
+    "session-evidence: receipt consumption/provenance boundary missing",
+)
+
 
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 18, "semantic-transition suite must contain 18 cases")
+check(traces.count("### ST-") == 30, "semantic-transition suite must contain 30 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 18, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 30, f"semantic-transition suite missing per-case field: {field}")
+for case in [
+    "ST-19 — A changed guard must preserve both material classification sides",
+    "ST-20 — Critical-section review must propagate cost through the reachable call chain",
+    "ST-21 — Issue framing must not artificially close the actual review surface",
+    "ST-22 — Shared-state reconstruction must compose with existing mutators",
+    "ST-23 — A fallback capability claim requires reachable supported inputs",
+    "ST-24 — A narrower non-authoritative surface must not redefine an authoritative behavior domain",
+    "ST-25 — Repeated counterexamples to one invariant must converge on the owning rule",
+    "ST-26 — Independent projection/refinement paths must compose without silent erasure",
+    "ST-27 — Fallback must not be suppressed by false semantic success",
+    "ST-28 — Delegated assignment must specialize rather than redefine the selected role contract",
+    "ST-29 — Review evidence must remain bound to the exact candidate state",
+    "ST-30 — Mutation receipt must not substitute for authoritative state read-back",
+]:
+    check(case in traces, f"semantic-transition suite missing reviewer regression: {case}")
+check(
+    "non-authoritative operational or convenience surface" in traces
+    and "packaging/build/release matrix" in traces
+    and "authority to redefine the governing domain" in traces,
+    "ST-24 no longer exercises generalized authoritative-domain narrowing",
+)
+check(
+    "review evidence remains state-identity-bound" in traces
+    and "Green tests/CI on the newer state are separate evidence layers" in traces,
+    "ST-29 exact-candidate evidence-freshness regression missing",
+)
+check(
+    "mutation acknowledgment is evidence that the request/report occurred" in traces
+    and "authoritative post-mutation" in traces,
+    "ST-30 mutation-read-back regression missing",
+)
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | unverified`" in traces,
     "semantic-transition suite proposition-relation axis missing",
@@ -205,10 +319,15 @@ check(
     "classify the transition as `uncertainty-resolved`" not in traces,
     "ST-09 still classifies uncertainty resolution as a proposition relation",
 )
+check(
+    all(key in traces for key in ["`pack_version`", "`package_sha256`", "`active_root_sha256`", "`scenario_id`"])
+    and "user-visible startup contract" in traces,
+    "semantic-transition suite trace metadata contract missing",
+)
 
 if failures:
     print("STATIC POLICY REGRESSIONS: FAIL")
     for item in failures:
         print(f"- {item}")
     sys.exit(1)
-print(f"STATIC POLICY REGRESSIONS: PASS ({len(agents)} agents; schema/dependency/blocker/product/PR/resource/UI/eval guards)")
+print(f"STATIC POLICY REGRESSIONS: PASS ({len(agents)} agents; schema/dependency/blocker/product/PR/resource/UI/reviewer/eval guards)")

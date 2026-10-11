@@ -2,6 +2,60 @@
 
 This changelog summarizes user-visible workflow/documentation changes. Detailed notes for retained releases live under `docs/releases/`.
 
+## v30.58 beta
+
+- Generalizes the existing reviewer authoritative-domain operational check from value/parser/representation narrowing to accepted/supported behavior-domain narrowing by any non-authoritative operational surface.
+- Makes packaging/build/release matrices explicit examples of evidence that cannot silently redefine the governing supported domain.
+- Leaves root authority, qualifier, fallback, exact-candidate, and read-back policy unchanged; this is a reviewer-salience/runtime-operationalization refinement, not a new platform-specific policy.
+- Keeps the 30-case semantic transition suite unchanged and strengthens the static reviewer guard for the generalized runtime wording.
+
+See [`docs/releases/v30.58-beta.md`](docs/releases/v30.58-beta.md).
+
+## v30.57 beta
+
+- Classifies the motivating review miss as primarily execution/model failure and deliberately avoids adding another runtime reviewer/root rule before current-candidate replay demonstrates a remaining prompt gap.
+- Broadens ST-24 from parser-only narrowing to any narrower non-authoritative operational/convenience surface that is incorrectly treated as the governing behavior domain.
+- Adds ST-29 for exact Base/Candidate-bound review evidence freshness and ST-30 for mutation receipt versus authoritative post-mutation read-back.
+- Updates semantic-design eval guidance; runtime agent/skill semantics remain unchanged from v30.56 apart from the root version marker.
+
+See [`docs/releases/v30.57-beta.md`](docs/releases/v30.57-beta.md).
+
+## v30.56 beta
+
+- Defines specialist assignments as task-specific specialization of the selected standing role contract rather than replacement role definitions.
+- Prevents call-site prompts from waiving/redefining role-owned obligations or verdict semantics and prevents partial diagnostics from being consumed as full-stage completion.
+- Extends `session-evaluator` to audit assignment/role-contract composition.
+- Expands semantic transition regressions from 27 to 28 cases with ST-28.
+
+See [`docs/releases/v30.56-beta.md`](docs/releases/v30.56-beta.md).
+
+## v30.55 beta
+
+- Adds reviewer-owned composition checks for independently coexisting projections/refinements, including order/early-return paths that can silently erase an orthogonal projection.
+- Promotes authoritative accepted-domain preservation into reviewer runtime methodology without duplicating the root evidence-fidelity owner.
+- Extends fallback/recovery review to validate the semantic success postcondition of earlier stages whose reported success suppresses fallback.
+- Expands semantic transition regressions from 25 to 27 cases with dedicated projection-composition and false-semantic-success fallback scenarios.
+
+See [`docs/releases/v30.55-beta.md`](docs/releases/v30.55-beta.md).
+
+## v30.54 beta
+
+- Preserves exact provenance for material user decisions obtained through interactions that are not retrievable downstream, without promoting receipts or caller summaries into new authority.
+- Adds reviewer-owned shared-state mutator composition checks for reconstruction/reconciliation behavior and reachability proof for claimed fallback/recovery paths.
+- Expands semantic transition regressions from 21 to 25 cases; authoritative-domain oracle and counterexample-convergence scenarios remain eval-only probes of existing general rules.
+- Adds trace reproducibility metadata requirements for a future executable replay runner without changing the user-visible Startup contract.
+
+See [`docs/releases/v30.54-beta.md`](docs/releases/v30.54-beta.md).
+
+## v30.53 beta
+
+- Adds reviewer-owned bidirectional counterexample checks for material guard/classifier invariants.
+- Makes actual candidate effects, not issue framing alone, determine review depth while keeping implementation authority bounded.
+- Adds conditional call-chain cost tracing for changed work under contended critical resources.
+- Expands semantic transition regressions from 18 to 21 cases and adds static/mutation guards for the new reviewer obligations.
+
+See [`docs/releases/v30.53-beta.md`](docs/releases/v30.53-beta.md).
+
 ## v30.52 beta
 
 - Allows the already-required `session-evidence` skill for `semantic-checkpoint` and `session-evaluator` without otherwise changing their permission policy.
