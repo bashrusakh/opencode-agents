@@ -38,6 +38,7 @@ root_sem = text("AGENTS.md")
 manual_sem = text("docs/semantic-design-manual.md")
 checkpoint_sem = text("agents/semantic-checkpoint.md")
 evaluator_sem = text("agents/session-evaluator.md")
+code_orchestrator_sem = text("agents/code-orchestrator.md")
 semantic_runtime = "\n".join([root_sem, checkpoint_sem, evaluator_sem])
 
 # Release identity must stay consistent across canonical/root and overview surfaces.
@@ -90,6 +91,23 @@ if delegated_section:
         "README.md: delegated-specialist inventory drift from classified delegation topology "
         f"(missing={sorted(delegated_targets - documented_targets)}, stale={sorted(documented_targets - delegated_targets)})",
     )
+# The workflow owner must expose semantic progress without becoming a tool logger,
+# and must translate hidden specialist context into a decision-complete user question.
+check(
+    "workflow state rather than the tool stream" in code_orchestrator_sem
+    and "what is now established or still unresolved" in code_orchestrator_sem
+    and "which stage/owner comes next and why" in code_orchestrator_sem
+    and "short single-stage workflow may go directly from Startup to Final" in code_orchestrator_sem,
+    "code-orchestrator: workflow-milestone communication guard missing",
+)
+check(
+    "factual/technical uncertainty" in code_orchestrator_sem
+    and "self-contained for someone who has not seen child sessions or tool output" in code_orchestrator_sem
+    and "viable alternatives and their material consequences/tradeoffs" in code_orchestrator_sem
+    and "recommendation when the evidence supports one" in code_orchestrator_sem,
+    "code-orchestrator: decision-context completeness guard missing",
+)
+
 for bad in [
     "requires separate authority or evidence of an established blocker",
     "require separate authority for the substitution or evidence of an established blocker",
@@ -537,14 +555,14 @@ check("Role contract semantic shape" in text("docs/semantic-design-manual.md") a
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 70, "semantic-transition suite must contain 70 cases")
+check(traces.count("### ST-") == 74, "semantic-transition suite must contain 74 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 70, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 74, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -809,6 +827,30 @@ check(
     and "omit empty sections" in traces.lower()
     and "lightest presentation" in traces.lower(),
     "ST-70 librarian result-format semantics regression missing",
+)
+check(
+    "multi-stage orchestration must synthesize workflow milestones without narrating the tool stream" in traces.lower()
+    and "opaque tool stream" in traces.lower()
+    and "what is established/unresolved" in traces.lower(),
+    "ST-71 orchestrator milestone-visibility regression missing",
+)
+check(
+    "milestone visibility must not regress into tool-by-tool status narration" in traces.lower()
+    and "no time/tool-count quota forces updates" in traces.lower()
+    and "startup → tools → final" in traces.lower(),
+    "ST-72 anti-status-spam preservation regression missing",
+)
+check(
+    "user decision raised from hidden specialist context must be self-contained" in traces.lower()
+    and "viable alternatives and consequences/tradeoffs" in traces.lower()
+    and "recommendation when evidence supports one" in traces.lower(),
+    "ST-73 hidden-context decision-brief regression missing",
+)
+check(
+    "evidence-resolvable technical ambiguity must not be promoted into a user product choice" in traces.lower()
+    and "resolve factual/technical part" in traces.lower()
+    and "continue without user choice" in traces.lower(),
+    "ST-74 evidence-before-user-choice regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | unverified`" in traces,

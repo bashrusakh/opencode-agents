@@ -10,7 +10,7 @@
     "a11y-reviewer": "independent_review",
     "auditor": "audit_orchestrator",
     "build": "implementation",
-    "code-orchestrator": "orchestrator",
+    "code-orchestrator": "code_orchestrator",
     "debugger": "debug_mutation",
     "devops": "ops_mutation",
     "explore": "discovery",
@@ -190,6 +190,17 @@
         "evidence",
         "authority_boundary",
         "unknowns",
+        "stop_escalation",
+        "result_semantics"
+      ]
+    },
+    "code_orchestrator": {
+      "critical": [
+        "scope_input",
+        "routing",
+        "handoff_construction",
+        "procedure",
+        "result_interpretation",
         "stop_escalation",
         "result_semantics"
       ]

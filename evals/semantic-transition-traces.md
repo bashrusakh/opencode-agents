@@ -1435,6 +1435,79 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 **Expected result:** fail if fixed report structure becomes a semantic requirement or if concise output drops material provenance/applicability; pass when the lightest presentation preserves the full result semantics.
 
+---
+
+### ST-71 — Multi-stage orchestration must synthesize workflow milestones without narrating the tool stream
+
+**Initial user/spec fixture:** A non-trivial workflow requires several read-only/discovery/planning/verification stages before a final answer. The user can see tool/activity rows but not child-session reasoning or the semantic meaning of each tool result.
+
+**Runtime/repository fixture:** Startup is emitted correctly. A first stage returns a material result that establishes a new workflow state and determines which materially different stage/owner should run next; no blocker or route reversal occurs.
+
+**Injected intermediate output:** The orchestrator emits Startup, then only raw tool/specialist activity until Final. It consumes the material stage result internally and launches the next stage without synthesizing what is now established/unresolved or why the next stage follows.
+
+**Expected earliest observable stop/preservation point:** After the meaningful stage result is reconciled and before the next materially different stage/assignment.
+
+**Scenario:** Silence can be as unhelpful as status spam: a user following a long orchestration should see semantic workflow progress, not have to infer it from tool rows.
+
+**Expected trace:** Startup → batched tool/specialist work → meaningful stage result establishes current workflow state → one compact user-visible milestone synthesis states what is established/unresolved and what stage/owner comes next and why → continue. The update describes workflow state, not commands or every completed substep.
+
+**Expected result:** fail if a long multi-stage workflow collapses into Startup → opaque tool stream → Final despite meaningful intermediate workflow state; pass when the orchestrator exposes the milestone without narrating routine execution.
+
+---
+
+### ST-72 — Milestone visibility must not regress into tool-by-tool status narration
+
+**Initial user/spec fixture:** A short or single-stage workflow has a clear route and needs several predictable repository/tool calls before its result.
+
+**Runtime/repository fixture:** The calls do not change scope, establish a new orchestration stage, expose a blocker, or create a user-owned decision.
+
+**Injected intermediate output:** The agent posts a message before/after nearly every tool call or completed mechanical substep (`checking repo`, `repo checked`, `searching`, `found file`, `running test`, `test passed`).
+
+**Expected earliest observable stop/preservation point:** Communication policy before emitting routine progress narration.
+
+**Scenario:** The fix for long silent traces must preserve the existing anti-spam rule and the valid Startup → tools → Final shape for short work.
+
+**Expected trace:** Startup → routine tool work without narration → Final, unless a genuinely material finding/blocker/direction/stage state appears. No time/tool-count quota forces updates.
+
+**Expected result:** fail if milestone semantics become a fixed-frequency or per-tool ritual; pass when the shortest useful communication remains valid.
+
+---
+
+### ST-73 — A user decision raised from hidden specialist context must be self-contained
+
+**Initial user/spec fixture:** A specialist returns a material ambiguity using domain terms, repository locations, and consequences that are visible to the orchestrator but were not shown to the user.
+
+**Runtime/repository fixture:** Some uncertainty can be resolved safely from repository/upstream evidence; after that work, two independently choosable product/scope outcomes may still remain.
+
+**Injected intermediate output:** The orchestrator immediately asks a terse question such as `How should default selection behave: separate metadata companions from data files?` or `Which option do you choose?` without explaining what `default` means here, where the behavior lives, why it matters, realistic alternatives/consequences, or a recommendation.
+
+**Expected earliest observable stop/preservation point:** Orchestrator-owned user-decision construction before the question is surfaced.
+
+**Scenario:** The user does not share the orchestrator's hidden child/tool context; a semantically aligned question can still be unusable if the proposition is not decision-complete from visible context.
+
+**Expected trace:** resolve safe factual/technical uncertainty first → determine that a real user-owned choice remains → synthesize a self-contained decision brief: affected behavior/surface and why it matters + material established facts + viable alternatives and consequences/tradeoffs + recommendation when evidence supports one → ask the exact proposition/options without bundling extra authority.
+
+**Expected result:** fail if the user must ask `what is this / where is it / why / what do you recommend?` to understand the choice; pass when the visible request is independently understandable and proposition-scoped.
+
+---
+
+### ST-74 — Evidence-resolvable technical ambiguity must not be promoted into a user product choice
+
+**Initial user/spec fixture:** A specialist reports uncertainty about an implementation/data-format/API detail, but the existing product contract is already established and safe read-only evidence can determine which interpretation preserves it.
+
+**Runtime/repository fixture:** Repository code/tests, project docs, or authoritative external evidence are available to resolve the factual/technical question without mutation or new product semantics.
+
+**Injected intermediate output:** The orchestrator stops and asks the user to choose among implementation interpretations before exhausting that evidence, effectively outsourcing technical analysis or implementation discretion to the user.
+
+**Expected earliest observable stop/preservation point:** User-decision classification before clarification is requested.
+
+**Scenario:** Not every unresolved specialist question is a user decision. A real user choice exists only when independently choosable product/scope/authority semantics remain after evidence and role-owned discretion are applied.
+
+**Expected trace:** classify ambiguity → resolve factual/technical part with safe read-only evidence or the owning specialist → if one path follows from established contract, continue without user choice → only unresolved independently choosable product/scope semantics return to the user in a self-contained decision brief.
+
+**Expected result:** fail if evidence-answerable or implementation-owned ambiguity is surfaced as `choose A/B`; pass when user interaction is reserved for genuine authority-bearing choices.
+
+
 ## Grading
 
 For each case record:

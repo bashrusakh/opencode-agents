@@ -23,7 +23,9 @@ A source does not need to be copied verbatim. It passes when the behavior and ma
 | OpenAI — Agent improvement loop | Start from real traces/feedback, turn recurring expectations into evals, change the harness, rerun the gate; do not reduce improvement to prompt tuning. | §12 explicitly defines trace → classification → eval → narrow harness change → rerun. | PASS |
 | OpenAI — Iterative repair loops | Separate review, repair, and validation; let validation determine remaining delta and next repair. | §10 preserves judgment/mutation/proof separation and makes observed validation the next-iteration input. | PASS |
 | OpenAI — Agent definitions / orchestration and handoffs | Keep intrinsic specialist behavior in the agent definition; pass runtime context as task-specific specialization rather than rebuilding the role at the call site; use handoff when the specialist owns the branch and manager-owned bounded specialists when the manager keeps final ownership. | §§4, 6–7 keep one owner for intrinsic role semantics, make workflow ownership explicit, and require assignment/role-contract composition without treating a partial invocation as a full-stage verdict. | PASS |
+| OpenAI — GPT-6 agentic eagerness / clarification | Before asking clarifying questions, complete already-authorized read-only/reversible work needed to make the remaining action concrete and reviewable; do not stop early merely to ask for approval that is not yet blocking. | §§16 and 18 resolve evidence-answerable uncertainty before a user decision, keep implementation discretion with its owner, and surface only the independently choosable proposition once it is materially blocking. | PASS |
 | Anthropic — Opus 5 | Explicitly limit response verbosity; one short pre-tool status; update only on important findings/direction changes; outcome first; remove blanket verification/subagent instructions that cause over-verification. | §§9 and 16 plus the root communication invariant preserve cadence, concise reporting, and proportional verification. | PASS |
+| Anthropic — Opus 5.5 progress updates | Long agentic work benefits from short user-facing updates about what was found and what comes next; prompt/harness controls should tune cadence rather than narrating every tool call or allowing long opaque stretches. | §16 distinguishes workflow-state milestone synthesis from tool-stream narration and preserves the single-stage no-update case. | PASS |
 | Anthropic — Prompting best practices | Use subagents for parallel/isolated/independent work; direct execution for simple/sequential/stateful work; explicit chaining only when intermediate inspection/branching is needed; damp overengineering. | §§7–8 and §20 derive the same delegation/chaining decision and minimality boundary. | PASS |
 | Anthropic — Sonnet 5.5 | Steer initiative so work completes without premature check-ins but stops at requested scope; add stronger real checks when observed behavior shows completion claims without execution evidence. | §§2, 9, 19 preserve completion/blocked boundaries and treat model-specific verification scaffolding as symptom/eval-driven rather than universal. | PASS |
 | Anthropic — Demystifying evals | Evaluate both transcript and environment outcome; use appropriate code/model/human graders; run multiple trials when variability matters. | §13 explicitly separates transcript and outcome and chooses graders by property. Trial-count policy is intentionally not universalized, but variability remains an eval-design concern rather than a runtime ritual. | PASS |
@@ -35,7 +37,7 @@ A source does not need to be copied verbatim. It passes when the behavior and ma
 | GLM inference engineering | Turn ambiguous failures into local, timely, objective feedback; test hypotheses with controlled experiments; use local checks for diagnosis and end-to-end checks for final acceptance; humans own objectives/bounds/risk. | §§11 and 18 reproduce those responsibilities and the layered validation loop. | PASS |
 | OpenCode runtime docs | `AGENTS.md` instructions and each agent body are persistent context/system surfaces; `mode`, permissions, and child-session topology are runtime facts, and delegated task text is instance-specific input rather than a replacement for the agent profile. | §§1.4, 4, 6–7 separate persistent role/runtime contracts from task-specific assignment context, preserve hard ceilings, and use fresh context for new independent assignments. | PASS |
 
-**Result: 17/17 PASS.**
+**Result: 19/19 PASS.**
 
 ## Reverse derivation spot checks
 
@@ -137,6 +139,32 @@ From manual §6:
 - do not consume that partial result as completion of the broader review stage.
 
 This preserves the OpenAI/OpenCode separation between persistent specialist instructions and per-invocation task context.
+
+**PASS**
+
+### Case I — a multi-stage orchestrator is silent between Startup and Final
+
+From manual §16:
+
+- synthesize a meaningful workflow-state milestone after a stage result determines the next materially different stage;
+- say what is established/unresolved and what comes next;
+- batch nearby tool/specialist activity instead of narrating each command;
+- preserve the short single-stage case where no intermediate update is needed.
+
+This preserves current OpenAI/Anthropic guidance for human-visible long agentic work without reintroducing tool-by-tool status spam.
+
+**PASS**
+
+### Case J — a specialist raises an ambiguity the user cannot see
+
+From manual §16:
+
+- first resolve safe factual/technical uncertainty with read-only evidence;
+- do not turn implementation discretion into a user decision;
+- if a real user-owned choice remains, present the affected surface, material facts, viable alternatives/consequences, evidence-supported recommendation, and exact proposition in a self-contained request;
+- do not assume the user saw child-agent/tool context.
+
+This preserves OpenAI's clarification-after-concrete-work action while keeping proposition-scoped user authority intact.
 
 **PASS**
 

@@ -149,6 +149,41 @@ check(a.status == "FAIL", "thin external research role without version/conflict 
 check(any("core-loop" in f or "external" in f for f in a.findings),
       "thin external research role did not fail for its characteristic core loop")
 
+# Orchestrator communication is semantic, not a verbosity quota: long workflows expose
+# meaningful workflow state, while user decisions are self-contained and evidence-first.
+complete_orchestrator = """
+## Role
+Coordinate a bounded multi-stage coding workflow and own scope, routing, and user-visible workflow state without implementing repository changes.
+## Workflow method
+1. Normalize the requested outcome/scope and choose the next specialist/stage.
+2. If a required owner cannot run, stop blocked and return the next safe handoff instead of substituting yourself.
+3. Construct each assignment from the established outcome, constraints, evidence, exact target/state, and stop boundary; omit non-binding mechanism proposals.
+4. On a multi-stage workflow, when a meaningful stage establishes new current workflow state, report to the user what is established/unresolved and which next stage or owner comes next and why; batch tool calls and specialist invocations instead of narrating the tool stream.
+5. Reconcile every returned result with current state before consuming it; if a verdict is partial or stale, preserve that boundary and do not over-claim completion.
+6. Before asking the user to resolve a material choice, resolve factual/technical uncertainty with read-only evidence and keep implementation discretion with its owner.
+7. If a user-owned choice remains, ask a self-contained question for someone who has not seen child sessions or tool output: explain the affected surface, viable alternatives and consequences/tradeoffs, and give a recommendation when evidence supports one before the exact question.
+## Result
+Return the consolidated workflow result, current target/state, material specialist evidence, blockers/unresolved choices, and next safe action only when one remains.
+"""
+a = audit("fake-orchestrator-good", "code_orchestrator", complete_orchestrator)
+check(a.status == "PASS", f"complete orchestrator communication contract should PASS: {a.status} {a.findings} {a.review_reasons}")
+
+quiet_orchestrator = complete_orchestrator.replace(
+    "4. On a multi-stage workflow, when a meaningful stage establishes new current workflow state, report to the user what is established/unresolved and which next stage or owner comes next and why; batch tool calls and specialist invocations instead of narrating the tool stream.\n",
+    "4. Continue to the next stage after each specialist returns.\n",
+)
+a = audit("fake-orchestrator-quiet", "code_orchestrator", quiet_orchestrator)
+check(a.status == "REVIEW", f"orchestrator lacking workflow-state visibility should REVIEW: {a.status} {a.findings} {a.review_reasons}")
+check(any("workflow_state_visibility" in r for r in a.review_reasons), "quiet orchestrator did not surface workflow-state visibility gap")
+
+opaque_question_orchestrator = complete_orchestrator.replace(
+    "6. Before asking the user to resolve a material choice, resolve factual/technical uncertainty with read-only evidence and keep implementation discretion with its owner.\n7. If a user-owned choice remains, ask a self-contained question for someone who has not seen child sessions or tool output: explain the affected surface, viable alternatives and consequences/tradeoffs, and give a recommendation when evidence supports one before the exact question.\n",
+    "6. If a specialist reports a material choice, ask the user which option they want.\n",
+)
+a = audit("fake-orchestrator-opaque-question", "code_orchestrator", opaque_question_orchestrator)
+check(a.status == "REVIEW", f"orchestrator with hidden-context user question should REVIEW: {a.status} {a.findings} {a.review_reasons}")
+check(any("decision_context" in r for r in a.review_reasons), "opaque-question orchestrator did not surface decision-context gap")
+
 # Executable audit orchestrator with good scope/risk/evidence/result semantics but no
 # explicit conflict reconciliation is usable yet materially incomplete: REVIEW, not FAIL.
 partial_auditor = """

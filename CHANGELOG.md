@@ -1,5 +1,19 @@
 # Changelog
 
+## v30.78 beta
+
+Orchestrator communication and decision-context hardening:
+
+- adds role-local milestone synthesis so long multi-stage `code-orchestrator` workflows expose meaningful workflow state without narrating every tool call or specialist invocation;
+- requires evidence-resolvable factual/technical uncertainty to be resolved before asking the user, while leaving implementation discretion with its owning role;
+- makes material user choices self-contained even when the underlying evidence came from hidden child sessions/tool output: affected surface, why it matters, established facts, viable alternatives/consequences, evidence-supported recommendation when available, then the exact proposition;
+- adds adversarial/preservation regressions for under-communication, status spam, hidden-context questions, and unnecessary user escalation of evidence-resolvable ambiguity;
+- updates the Semantic Design Manual/source-preservation audit with current OpenAI GPT-6 and Anthropic Opus 5.5 guidance that supports these abstractions.
+
+Fresh isolated behavioral replay of ST-01…ST-74 remains separate evidence and is not claimed by static/contract/package validation.
+
+See [`docs/releases/v30.78-beta.md`](docs/releases/v30.78-beta.md) and [`docs/contract-protocol-audit-v30.78.md`](docs/contract-protocol-audit-v30.78.md).
+
 ## v30.77 beta
 
 Delegated-specialist README/topology consistency:

@@ -712,9 +712,14 @@ Update the user only when there is:
 - a material finding;
 - a blocker;
 - a meaningful change of direction;
-- a decision where steering would materially help.
+- a decision where steering would materially help;
+- for a workflow owner, a meaningful stage result that establishes new workflow state and determines the next materially different stage/owner.
 
-State the finding/change and the next action. Do not narrate routine tool use or completed substeps.
+State what is now established or unresolved and the next meaningful action/stage. Communicate **workflow state, not the tool stream**: batch nearby commands, specialist calls, and mechanical substeps instead of narrating them one by one. A short single-stage task may need no intermediate update; a longer multi-stage workflow should not become only Startup, opaque tool activity, and Final after meaningful intermediate state has been established.
+
+### Decision requests
+
+Before asking the user to resolve a material choice, first resolve factual or technical uncertainty that safe read-only evidence can establish, and leave role-owned implementation discretion with the role that owns it. If an independently choosable user/product decision remains, make the request self-contained for a user who did not see hidden tool or child-agent context: explain the affected behavior/surface and why the decision matters, the material established facts, real alternatives and consequences/tradeoffs, and a recommendation when evidence supports one; then ask the exact proposition. Do not turn a specialist's unresolved technical question directly into `which option?` or make the user reconstruct hidden context.
 
 ### Final response
 
@@ -968,11 +973,13 @@ This manual synthesizes the reference set already tracked by the OpenCode Agent 
 - Agent improvement loop with traces/evals: https://developers.openai.com/cookbook/examples/agents_sdk/agent_improvement_loop
 - Iterative repair loops: https://developers.openai.com/cookbook/examples/codex/build_iterative_repair_loops_with_codex
 - Orchestration and handoffs: https://developers.openai.com/api/docs/guides/agents/orchestration
+- Using GPT-6 / agentic eagerness and clarification: https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6-astra
 
 ### Anthropic
 
 - Prompting best practices: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
 - Prompting Claude Opus 5: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5
+- Prompting Claude Opus 5.5: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5
 - Prompting Claude Sonnet 5.5: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5
 - Demystifying evals for AI agents: https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
 - Harness design for long-running application development: https://www.anthropic.com/engineering/harness-design-long-running-apps

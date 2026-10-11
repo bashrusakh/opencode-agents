@@ -142,6 +142,13 @@ CORE = {
         "clean_handoff": [[r"construct|reconstruct"], [r"handoff|assignment"], [r"outcome|constraint|evidence|target|state"], [r"omit|non-binding|do not forward|not blanket authority"]],
         "consume_without_overclaim": [[r"reconcile|consume|result"], [r"partial|full .*verdict|do not .*claim|over[- ]claim|stale|fresh"]],
     },
+    "code_orchestrator": {
+        "normalize_and_route": [[r"normalize|intent|outcome|scope"], [r"route|choose .*role|specialist|stage"]],
+        "clean_handoff": [[r"construct|reconstruct"], [r"handoff|assignment"], [r"outcome|constraint|evidence|target|state"], [r"omit|non-binding|do not forward|not blanket authority"]],
+        "consume_without_overclaim": [[r"reconcile|consume|result"], [r"partial|full .*verdict|do not .*claim|over[- ]claim|stale|fresh"]],
+        "workflow_state_visibility": [[r"multi[- ]stage workflow|multi[- ]step workflow|longer multi[- ]stage workflow"], [r"workflow state rather than the tool stream|workflow state[^.\n]{0,180}(?:established|unresolved)"], [r"(?:meaningful stage|batched evidence result)[^.\n]{0,240}(?:establish|current state)"], [r"(?:stage/owner|next stage|next owner)[^.\n]{0,180}(?:comes next|why)|comes next and why"], [r"do not announce every tool call|batch nearby work|tool stream"]],
+        "decision_context": [[r"factual/technical uncertainty|factual[^.\n]{0,80}technical uncertainty"], [r"implementation discretion"], [r"self-contained[^.\n]{0,200}(?:child sessions?|tool output)|has not seen child sessions"], [r"viable alternatives[^.\n]{0,180}(?:consequences|tradeoffs)|alternatives[^.\n]{0,120}consequences/tradeoffs"], [r"recommendation[^.\n]{0,140}evidence supports|evidence[^.\n]{0,120}support[^.\n]{0,80}recommend"]],
+    },
     "semantic_gate": {
         "bind_and_classify": [[r"claim|proposition|candidate|target .*state"], [r"authority|evidence|authoritative"], [r"preserv|refin|strengthen|weaken|contradict|classif"]],
         "boundary_not_recipe": [[r"mutation boundary|semantic boundary|proceed"], [r"non-binding|not .*recipe|does not certify|not .*implementation .*adequacy|mechanism .*hypothesis"]],
@@ -171,6 +178,7 @@ CORE_SEVERITY = {
     "audit": {"scope_and_risk": "FAIL", "evidence_and_counterexample": "FAIL", "coverage_and_stop": "FAIL"},
     "audit_orchestrator": {"scope_and_specialists": "FAIL", "risk_and_evidence": "FAIL", "reconcile_specialists": "REVIEW", "bounded_audit_result": "FAIL"},
     "orchestrator": {"normalize_and_route": "FAIL", "clean_handoff": "FAIL", "consume_without_overclaim": "FAIL"},
+    "code_orchestrator": {"normalize_and_route": "FAIL", "clean_handoff": "FAIL", "consume_without_overclaim": "FAIL", "workflow_state_visibility": "REVIEW", "decision_context": "REVIEW"},
     "semantic_gate": {"bind_and_classify": "FAIL", "boundary_not_recipe": "FAIL", "bounded_result": "FAIL"},
     "evaluation": {"trace_contract": "FAIL", "classify_failure": "FAIL", "bound_conclusion": "FAIL"},
 }
@@ -191,6 +199,7 @@ CHALLENGE = {
     "audit": [[r"evidence|confirm|reject|counterexample|negative|preserv|regression"], [r"coverage|not covered|confidence|cannot .*claim|insufficient"]],
     "audit_orchestrator": [[r"conflict|partial|missing .*coverage|reconcile|synthesi"], [r"do not .*invent|cannot .*flatten|coverage|confidence"]],
     "orchestrator": [[r"omit|non-binding|do not forward|not blanket authority|do not replace .*specialist|do not skip .*stage"], [r"partial|full .*verdict|stale|fresh|over[- ]claim|required .*cannot run|implementation is blocked|return .*parent|unresolved .*direction"]],
+    "code_orchestrator": [[r"omit|non-binding|do not forward|not blanket authority|do not replace .*specialist|do not skip .*stage"], [r"partial|full .*verdict|stale|fresh|over[- ]claim|required .*cannot run|implementation is blocked|return .*parent|unresolved .*direction"]],
     "semantic_gate": [[r"non-binding|not .*recipe|does not certify|not .*adequacy|hypothesis"], [r"authority|evidence|proposition|claim"]],
     "evaluation": [[r"instruction-violation|instruction-ambiguity|instruction-gap|execution-error|classif"], [r"evidence|trace|exact .*message|tool .*output"]],
 }
@@ -214,6 +223,7 @@ PROFILE_MIN = {
     "audit": (5, 2),
     "audit_orchestrator": (6, 2),
     "orchestrator": (6, 3),
+    "code_orchestrator": (6, 3),
     "semantic_gate": (6, 2),
     "evaluation": (6, 2),
 }

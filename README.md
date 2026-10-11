@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.77 beta
+# OpenCode Agent Pack v30.78 beta
 
 ### Model-agnostic routing · explicit workflow owners · bounded specialist delegation · evidence-grounded verification
 
@@ -156,12 +156,14 @@ The pack is model-agnostic. These are design references rather than runtime depe
 - Evidence-based persistent goals and bounded completion contracts: https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex
 - Turn real traces and feedback into reusable evals and harness changes: https://developers.openai.com/cookbook/examples/agents_sdk/agent_improvement_loop
 - Separate review/repair/validation and let observed validation decide success: https://developers.openai.com/cookbook/examples/codex/build_iterative_repair_loops_with_codex
+- GPT-6 agentic eagerness / clarification: do already-authorized read-only or reversible work needed to make a remaining choice concrete before asking: https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6-astra
 
 ### Anthropic
 
 - Agent-evaluation design using transcripts, outcomes, graders, and real failure cases: https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
 - Harness design with separate evaluator roles, concrete grading criteria, and deliberate simplification as model capability improves: https://www.anthropic.com/engineering/harness-design-long-running-apps
 - Claude Opus 5 prompting guidance on scope, over-verification, self-correction, and subagent use: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5
+- Claude Opus 5.5 guidance on user-facing progress visibility in long agentic/tool workflows: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5
 - Claude Sonnet 5.5 prompting guidance on initiative/scope and proportionate coding verification: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5
 
 ### DeepSeek
@@ -235,9 +237,9 @@ The project installer backs up existing runtime surfaces before copying the pack
 
 | If you need… | Read… |
 |---|---|
-| Release notes | [`docs/releases/v30.77-beta.md`](docs/releases/v30.77-beta.md) |
+| Release notes | [`docs/releases/v30.78-beta.md`](docs/releases/v30.78-beta.md) |
 | Release history | [`CHANGELOG.md`](CHANGELOG.md) |
-| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.77.md`](docs/contract-protocol-audit-v30.77.md) |
+| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.78.md`](docs/contract-protocol-audit-v30.78.md) |
 | Semantic transition scenarios | [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md) |
 | Source-to-generalized-rule preservation method | [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) |
 
@@ -247,7 +249,7 @@ Release validation is defined in **§21 of [`docs/semantic-design-manual.md`](do
 
 <div align="center">
 
-**OpenCode Agent Pack v30.77 beta**  
+**OpenCode Agent Pack v30.78 beta**  
 Workflow-owner first · bounded specialist delegation · evidence-grounded verification
 
 </div>
