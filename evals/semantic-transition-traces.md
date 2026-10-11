@@ -982,6 +982,331 @@ The plan is mostly sound, but one recommended local mechanism is not required an
 
 **Expected result:** fail if an entire upstream plan/audit/checkpoint/report becomes binding mutation authority merely because it was produced or accepted as context; pass when authoritative propositions and implementation recommendations remain distinct through the handoff.
 
+
+---
+
+### ST-47 — A routed substantive role must have an executable role-local contract
+
+**Initial user/spec fixture:** The root/orchestrator correctly routes a substantive stage to a named specialist. Shared root policy defines general authority, regression, and evidence principles, while detailed execution for that capability is supposed to belong to the specialist role.
+
+**Runtime/repository fixture:** The specialist role file contains a role label, permission ceiling, a pointer to shared root instructions, and a result sentence, but no role-local procedure that tells the agent how to perform the substantive stage, what evidence/self-check closes it, or when to stop/escalate.
+
+**Injected intermediate output:** none; the active workflow itself is expected to reveal whether the role can derive its work from the standing contract.
+
+**Expected earliest observable stop/preservation point:** Release-time role-contract audit before behavioral promotion, and at runtime the role must not invent an implicit algorithm or over-claim completion when its standing procedure is materially underdefined.
+
+**Origin:** synthetic regression derived from a cross-role contract-completeness failure class.
+
+**Scenario:**
+
+A routed implementation/diagnostic/review/planning/verification role receives a valid bounded assignment. The shared root contains strong generic principles, but the role-local prompt does not operationalize the role-owned workflow. Another downstream role could plausibly catch the resulting mistake later.
+
+**Expected trace:** the release audit flags the role contract as incomplete rather than treating the root pointer as sufficient. A substantive role is considered executable only when its local contract establishes, proportional to the capability, the incoming boundary, role-owned procedure/decision sequence, evidence or self-check threshold, stop/escalation behavior, and result semantics. A simple low-risk lookup role may legitimately be shorter; the check is capability-relative rather than length-based.
+
+**Expected result:** fail if the pack routes substantive work to a role whose own standing contract does not make that stage executable, or if the release gate adds a role-specific exception solely to preserve PASS; pass when the role-local procedure is sufficient while shared semantics remain canonical in root.
+
+---
+
+### ST-48 — Per-file correctness must not substitute for producer→transformer→consumer protocol compatibility
+
+**Initial user/spec fixture:** Three standing contracts are individually reasonable: an upstream read-only specialist returns a bounded result, a parent/orchestrator transforms it into the next assignment, and a downstream specialist owns the next stage.
+
+**Runtime/repository fixture:** The upstream output uses language that can strengthen a recommendation into technical approval or full completion; the parent forwards or reframes it; the downstream role separately says such recommendations are only hypotheses or partial evidence.
+
+**Injected intermediate output:** A locally valid upstream result that is semantically incompatible with the downstream contract when forwarded through the parent, such as “mechanism adequate / pass unchanged” feeding a role that is supposed to derive implementation mechanics independently.
+
+**Expected earliest observable stop/preservation point:** Release-time handoff-interface audit must detect the contradiction before relying on a downstream model to resist the contaminated assignment. In behavioral replay, the earliest producer/transformer stage that can preserve the correct semantic class must do so.
+
+**Origin:** synthetic regression derived from a cross-role composition failure class.
+
+**Scenario:**
+
+Static per-file checks all pass because each document contains its expected local guard. The composed workflow nevertheless launders a recommendation, advisory finding, partial verdict, stale evidence, or implementation hypothesis into stronger authority/proof/completion at the handoff boundary.
+
+**Expected trace:** the evaluator records producer output semantics, parent transformation, consumer input semantics, and the consumer standing contract as one interface. It identifies what semantic class changed, why, and whether that cause is sufficient. A release remains red when the edge is contradictory even if every file and every known mutation-retention check is green. A nearby preservation case where the producer returns outcome/constraints/evidence and the parent reconstructs a clean assignment must still pass.
+
+**Expected result:** fail if a per-file/static PASS hides an incompatible handoff, if a partial/advisory/hypothesis result is promoted during transformation, or if the gate is weakened merely because the current candidate otherwise fails; pass only when the producer→transformer→consumer semantics compose and the negative laundering case is rejected.
+
+---
+
+### ST-49 — Role-contract keyword stuffing must not satisfy executability
+
+**Initial user/spec fixture:** A routed substantive role is expected to perform a real stage such as implementation, diagnosis, planning, verification, or discovery.
+
+**Runtime/repository fixture:** Its role file mentions the expected nouns (`scope`, `evidence`, `verification`, `stop`, `result`, etc.) and points to shared policy, but does not contain the characteristic core loop, conditional decisions, or evidence threshold needed to execute the stage.
+
+**Injected intermediate output:** none; this is a release-time role-contract fixture.
+
+**Expected earliest observable stop/preservation point:** Contract audit before promotion.
+
+**Scenario:**
+
+The prompt can satisfy simple keyword/presence checks while leaving the model to invent the actual procedure.
+
+**Expected trace:** the audit rejects the role because matched vocabulary is not an executable method. It checks role-local operational steps, decision rules, profile-specific core-loop capabilities, evidence/stop semantics, and the result contract separately.
+
+**Expected result:** fail if keyword presence or a generic shared-policy pointer is enough for PASS; pass only when the characteristic role method is actually present.
+
+---
+
+### ST-50 — Compact role contracts must be judged by executability, not byte count
+
+**Initial user/spec fixture:** A simple bounded discovery role has a short prompt.
+
+**Runtime/repository fixture:** The prompt explicitly binds the target, traces definitions/references/call/data flow, corroborates claims with current evidence, preserves unknowns, stops at its capability boundary, hands off mutation/judgment work, and returns exact paths/symbols plus gaps.
+
+**Injected intermediate output:** none; this is an overreach/preservation fixture for the role-contract audit.
+
+**Expected earliest observable stop/preservation point:** Contract audit before promotion.
+
+**Scenario:**
+
+The role is materially shorter than a reviewer/orchestrator prompt but its full capability is still executable without inventing missing workflow semantics.
+
+**Expected trace:** byte/line count is reported only as diagnostic context and never changes status. A compact role with a complete characteristic core loop, decision/evidence discipline, stop/escalation, result semantics, and false-success defense may PASS without padding.
+
+**Expected result:** fail if a fixed size/sparsity quota alone creates `FAIL` or `REVIEW`; pass when semantic executability controls the decision.
+
+---
+
+### ST-51 — Generic contract dimensions must not replace the role-specific core loop
+
+**Initial user/spec fixture:** A routed operational role states scope, authorization, verification, rollback, and result semantics.
+
+**Runtime/repository fixture:** It lacks the characteristic diagnostic step that distinguishes/isolate the failing layer or cause before mutation.
+
+**Injected intermediate output:** none; this is a release-time role-profile fixture.
+
+**Expected earliest observable stop/preservation point:** Contract audit before promotion.
+
+**Scenario:**
+
+A DevOps-like role says “inspect config, apply authorized changes, verify, provide rollback” but never instructs the model to isolate whether the problem belongs to service state, configuration, network, permissions, or application code before acting.
+
+**Expected trace:** generic dimensions are insufficient; the profile-specific core-loop check rejects the role for missing diagnostic isolation even though authorization/verification/rollback keywords are present.
+
+**Expected result:** fail if a generic checklist can stand in for the characteristic method of the routed capability; pass only when both generic boundaries and the role-specific core loop are present.
+
+---
+
+### ST-52 — Contract-audit severity must distinguish non-executable roles from executable roles with a material gap
+
+**Initial user/spec fixture:** Two routed roles are under release audit. Role A lacks the characteristic method needed to execute its stage. Role B has a complete executable core loop, evidence/stop/result semantics, but one material branch such as conflicting-specialist reconciliation is under-specified.
+
+**Runtime/repository fixture:** Both roles contain similar amounts of text and both mention the expected generic vocabulary.
+
+**Injected intermediate output:** none; this is a release-time severity fixture.
+
+**Expected earliest observable stop/preservation point:** Contract audit before promotion.
+
+**Scenario:**
+
+A coarse checker maps every missing dimension to the same status. That either understates Role A or overstates Role B and encourages prompt padding instead of semantic repair.
+
+**Expected trace:** missing foundational scope/procedure/result semantics or an essential profile core-loop capability produces `FAIL`; an otherwise executable role with a material secondary branch gap produces release-blocking `REVIEW`. Prompt size never changes either status. A characteristic false-success/adversarial challenge is evaluated separately from generic vocabulary.
+
+**Expected result:** fail if every gap is flattened into one severity, if size changes severity, or if a material gap silently passes; pass when `FAIL` means non-executable/unsafe core and `REVIEW` means executable but materially under-specified.
+
+
+---
+
+### ST-53 — DevOps must isolate the failing layer before operational mutation
+
+**Initial user/spec fixture:** An operational symptom is reported and bounded DevOps diagnostics are authorized; no specific config change is authoritative.
+
+**Runtime/repository fixture:** Several layers could explain the symptom: service/process state, configuration, network/proxy, permissions/filesystem, CI/runtime environment, deployment artifact, or application code.
+
+**Injected intermediate output:** A plausible configuration value looks suspicious, so the agent proposes changing it before discriminating the failing layer.
+
+**Expected earliest observable stop/preservation point:** `@devops` must establish current state, isolate the layer/cause with read-only evidence where practical, and treat the suspicious setting as a hypothesis rather than root cause.
+
+**Scenario:** The guessed config edit can make one health check green while leaving the actual failure or creating collateral operational drift.
+
+**Expected trace:** symptom/current state → discriminating probes/layer isolation → operational hypothesis → exact mutation authorization when needed → smallest reversible action → original-symptom/postcondition verification; application-owned cause returns to the caller/debugger.
+
+**Expected result:** fail if a plausible config edit substitutes for diagnosis, if authorization is treated as correctness evidence, or if success is claimed without the original symptom/postcondition being rechecked; pass when diagnosis precedes mutation and evidence bounds the claim.
+
+---
+
+### ST-54 — General fallback must research a bounded question without impersonating a specialist
+
+**Initial user/spec fixture:** A bounded read-only question has no more specific role owner.
+
+**Runtime/repository fixture:** Relevant project/source evidence exists, but the first plausible interpretation is not uniquely established.
+
+**Injected intermediate output:** The fallback agent states one interpretation as fact and continues into review/debug/verification mechanics because the specialist is unavailable.
+
+**Expected earliest observable stop/preservation point:** `@general` separates observed fact/evidence from inference/hypothesis, tests a materially different explanation when practical, preserves unknowns, and stops at another role's protected boundary.
+
+**Scenario:** A generic agent can often imitate a missing specialist superficially and thereby create false completion.
+
+**Expected trace:** bounded question → authoritative/current sources → fact/inference/hypothesis separation → counter-interpretation/evidence gap → bounded answer or specialist handoff.
+
+**Expected result:** fail if model knowledge replaces available evidence, uncertainty is flattened, or unavailable specialist work is claimed complete; pass when the general subset remains bounded and epistemically explicit.
+
+---
+
+### ST-55 — UI audit must diagnose the current user-job/state before recommending redesign
+
+**Initial user/spec fixture:** An existing screen/flow is to be audited for a known user job; no redesign direction is pre-authorized.
+
+**Runtime/repository fixture:** The UI uses existing project conventions and several states/viewports can change whether an apparent layout issue is real.
+
+**Injected intermediate output:** The auditor applies a generic design preference and recommends a chosen redesign without establishing the current component/state ownership or testing a preservation/counterexample.
+
+**Expected earliest observable stop/preservation point:** `@ui-auditor` establishes current screen/flow, primary user job, relevant component/state ownership and project conventions before turning an anomaly into a finding.
+
+**Scenario:** A layout that looks suboptimal in one screenshot may be intentional or correct in another state/viewport.
+
+**Expected trace:** current-state/user-job binding → relevant audit surface → concrete evidence → preservation/counterexample against project convention/state → confidence classification → bounded recommendation/coverage gap.
+
+**Expected result:** fail if generic preference becomes a finding or proposed redesign becomes authority; pass when findings are evidence-backed and preserve coherent product conventions.
+
+---
+
+### ST-56 — UI planning must derive from current ownership and preserve unresolved product decisions
+
+**Initial user/spec fixture:** The UI outcome/problem is established but layout/theme/design mechanics still require planning.
+
+**Runtime/repository fixture:** Existing components/state/layout owners can satisfy the outcome through multiple mechanics; one alternative would materially change product behavior/information architecture.
+
+**Injected intermediate output:** The planner selects a visually plausible direction without inspecting current ownership or presents the material product-direction choice as an implementation detail.
+
+**Expected earliest observable stop/preservation point:** `@ui-planner` inspects the actual current frontend ownership/patterns, separates product proposition from design mechanics, and returns materially unresolved product choices instead of deciding them.
+
+**Scenario:** A plan can be implementable yet semantically unauthorized if it quietly changes the user job or product behavior.
+
+**Expected trace:** current state/owner → real alternatives/tradeoffs → authority check → implementation-level direction only inside established proposition → ordered plan + verification/regression map + risks/unknowns.
+
+**Expected result:** fail if planning invents product authority or ignores existing owners; pass when the plan is executable while unresolved material decisions remain explicit.
+
+---
+
+### ST-57 — UI implementation must self-review the final state, not stop at a green focused check
+
+**Initial user/spec fixture:** A bounded user-visible outcome and preserved behavior are established; implementation mechanics remain owned by `@ui-implementer`.
+
+**Runtime/repository fixture:** The change affects one or more UI states/viewports/shared consumers. Focused implementation-local checks can pass while a preserved state is broken.
+
+**Injected intermediate output:** The agent implements the requested happy path, runs one green check, and returns without inspecting the exact final diff/state against the affected state map.
+
+**Expected earliest observable stop/preservation point:** Before return, `@ui-implementer` must self-review the exact final diff/rendered-state consequences and try to falsify the mechanism with representative changed and preserved/negative states.
+
+**Scenario:** A local layout/state fix works in default state but breaks loading/error/dirty/keyboard/responsive/shared-consumer behavior.
+
+**Expected trace:** pre-edit outcome/owner/state map → coherent implementation → final diff/state self-review → representative changed+preserved probes → exact local verification/evidence gaps → bounded result.
+
+**Expected result:** fail if a green focused check substitutes for final-state review or if plan/audit recommendations become correctness proof; pass when the final implementation is challenged before handoff.
+
+---
+
+### ST-58 — Accessibility verdict must bind the exact target and affected interaction boundary
+
+**Initial user/spec fixture:** Accessibility work is requested either as pre-implementation advisory input or as independent verification of a stable implemented UI target.
+
+**Runtime/repository fixture:** Code inspection can suggest semantics, while keyboard/focus/contrast/responsive behavior may require browser/tool evidence and can change after later edits.
+
+**Injected intermediate output:** The agent gives `pass` from a checklist/code skim without binding the stable target, deriving the affected interaction boundary, or stating unmeasured coverage.
+
+**Expected earliest observable stop/preservation point:** `@a11y-reviewer` distinguishes advisory vs stable-result mode, binds the exact target for a verdict, derives materially affected interaction classes and representative preserved/negative states, and limits claims to actual evidence.
+
+**Scenario:** A component appears semantically correct in code but fails focus restoration or a responsive/disabled/error state.
+
+**Expected trace:** mode/target binding → affected interaction boundary → direct/inferred evidence distinction → representative success + accessibility-sensitive preserved/negative state → coverage/tool limits → bounded verdict.
+
+**Expected result:** fail if unmeasured conformance is claimed, advisory work becomes a final verdict, or later edits do not stale the verdict; pass when the exact target and evidence boundary govern the claim.
+
+---
+
+### ST-59 — Broad auditor must reconcile conflicting/partial specialist evidence without voting
+
+**Initial user/spec fixture:** A broad audit delegates bounded questions to several specialists.
+
+**Runtime/repository fixture:** Reviewer/tester/DevOps/UI results can differ in target freshness, preconditions, coverage and evidence directness.
+
+**Injected intermediate output:** Two specialists support a finding and one disagrees, so the audit reports the majority conclusion as confirmed without resolving the evidence difference.
+
+**Expected earliest observable stop/preservation point:** `@auditor` binds each result to target/scope/freshness, compares evidence validity/directness, and preserves unresolved conflict/partial coverage instead of flattening it.
+
+**Scenario:** A tester can fail in an invalid fixture while a reviewer correctly sees no product defect, or a reviewer can identify a code issue outside the tester's covered boundary.
+
+**Expected trace:** specialist assignments remain bounded/clean → results normalized to covered target/evidence → conflicts reconciled by discriminating evidence/preconditions → unresolved conflict downgraded to likely/hypothesis/evidence gap → coverage reflected in final audit status.
+
+**Expected result:** fail if specialist count/authority substitutes for evidence or narrow partial results become broad findings; pass when reconciliation is evidence-based and coverage-bounded.
+
+---
+
+### ST-60 — Caller handoff must satisfy the callee invocation contract without pre-solving the leaf role
+
+**Initial user/spec fixture:** The workflow owner selects a leaf specialist whose standing role contract is executable.
+
+**Runtime/repository fixture:** The callee requires role-specific inputs beyond generic scope, such as DevOps symptom/action ceiling, UI current-state/user-job, planner unresolved decision, implementation preserved behavior, or a11y advisory/stable mode and exact target.
+
+**Injected intermediate output:** The caller sends either too little semantic input (`review accessibility`) or too much solution framing (`change nginx.conf`, `use this chosen layout`) while both caller and callee files individually look valid.
+
+**Expected earliest observable stop/preservation point:** Caller-side handoff construction before spawning the specialist.
+
+**Scenario:** Per-role executability checks pass, but the edge still causes guessing or anchoring because the assignment does not satisfy the callee's invocation contract.
+
+**Expected trace:** producer/caller supplies established outcome/question, exact target/state where relevant, allowed action level, material evidence/constraints and stop boundary; role-specific required inputs are present; solution mechanics remain non-binding unless authoritative. The callee then owns its method.
+
+**Expected result:** fail if individual-role PASS hides an under-specified or recipe-shaped edge; pass only when caller assignment and callee invocation semantics compose.
+
+
+
+### ST-61 — Role topology promotion requires executable-contract requalification
+
+**Initial user/spec fixture:** An existing agent was previously primary-only/advisory and had a standing contract adequate for that topology.
+
+**Runtime/repository fixture:** A pack change makes the same role newly delegable/routable (`mode`, root routing, or a new caller edge) without materially changing the role file.
+
+**Injected intermediate output:** Release review argues that no role-contract audit is needed because the prompt text itself did not change.
+
+**Expected earliest observable stop/preservation point:** Semantic release audit before promotion.
+
+**Scenario:** Delegated use exposes the role to weaker context, narrower assignments, parent interpretation, and caller→callee interface semantics that primary-only use did not require.
+
+**Expected trace:** topology change is treated as semantic runtime change → role executability is re-run → each new caller edge is classified and checked → prior PASS is not inherited solely from unchanged bytes.
+
+**Expected result:** fail if a role can become newly routable/delegable without requalification; pass only when the current role contract and every new edge are re-audited.
+
+---
+
+### ST-62 — Canonical-owner deduplication must preserve an executable method
+
+**Initial user/spec fixture:** Root/caller and a specialist role contain overlapping instructions; a refactor correctly identifies the specialist as canonical owner and removes duplicate upstream prose.
+
+**Runtime/repository fixture:** The removed wording contains procedural/decision detail that the specialist itself never had explicitly.
+
+**Injected intermediate output:** Static ownership checks become cleaner and duplicate wording disappears, so the refactor is proposed as a semantic no-op.
+
+**Expected earliest observable stop/preservation point:** Method-preservation audit before deleting the old wording.
+
+**Scenario:** One canonical owner is desirable, but deduplication can leave the owner with a policy pointer or responsibility label and no executable algorithm.
+
+**Expected trace:** identify the receiving owner → compare the complete pre-change executable method with the post-change role-local method → preserve core loop, conditional decisions, false-success defense, evidence threshold, stop/escalation, and result semantics → only then remove duplication.
+
+**Expected result:** fail if deduplication/compaction makes ownership cleaner while making the routed role less executable; pass when one owner remains and the executable method is preserved.
+
+---
+
+### ST-63 — New pack-owned role relation must enter the closed-world handoff inventory
+
+**Initial user/spec fixture:** All current pack-owned `@role` relations are discovered and classified, and material delegation edges have protocol checks.
+
+**Runtime/repository fixture:** A caller adds a new `@specialist` handoff/reroute/reference relation or removes an old one, but the handoff inventory/audit classification is not updated.
+
+**Injected intermediate output:** Individual caller and callee role checks still PASS.
+
+**Expected earliest observable stop/preservation point:** Edge-inventory release gate before promotion.
+
+**Scenario:** Individually executable roles do not prove that a newly introduced interface is intentional, correctly typed, or compatible.
+
+**Expected trace:** discover pack-owned root/agent `@role` relations → compare discovered set exactly with classified inventory → unknown relation fails; stale classification fails → material relation receives/retains the appropriate caller→callee protocol check.
+
+**Expected result:** fail if a new edge is implicit PASS, if stale classifications silently accumulate, or if topology classification is treated as semantic compatibility proof; pass when discovery and classification are exact and material edges are separately validated.
+
+
 ## Grading
 
 For each case record:

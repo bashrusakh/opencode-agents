@@ -1,0 +1,42 @@
+{
+  "version": 2,
+  "principles": {
+    "role_executability": "A routed substantive role needs a role-local executable method, not merely a description/checklist plus root pointer. Evaluate the characteristic core loop, conditional decisions, evidence discipline, stop/escalation and result semantics.",
+    "protocol_composition": "Evaluate producer output, parent transformation, consumer input, and consumer standing contract as one interface. Per-file correctness does not prove handoff correctness.",
+    "anti_gaming": "The gate exists to falsify the candidate. Keyword presence, prompt length, mutation retention and current-candidate wording cannot independently prove adequacy. REVIEW is release-blocking when semantic evidence is too sparse for an honest PASS."
+  },
+  "role_profiles": {
+    "a11y-reviewer": "independent_review",
+    "auditor": "audit_orchestrator",
+    "build": "implementation",
+    "code-orchestrator": "orchestrator",
+    "debugger": "debug_mutation",
+    "devops": "ops_mutation",
+    "explore": "discovery",
+    "general": "analysis_fallback",
+    "project-planner": "planning",
+    "reviewer": "independent_review",
+    "semantic-checkpoint": "semantic_gate",
+    "session-evaluator": "evaluation",
+    "tester": "verification",
+    "ui-auditor": "audit",
+    "ui-implementer": "implementation",
+    "ui-orchestrator": "orchestrator",
+    "ui-planner": "planning"
+  },
+  "profiles": {
+    "implementation": {"critical": ["scope_input", "pre_action_model", "ownership", "preserved_behavior", "procedure", "self_review", "verification", "stop_escalation", "result_semantics"]},
+    "debug_mutation": {"critical": ["scope_input", "reproduction", "root_cause", "ownership", "procedure", "verification", "hypothesis_reset", "stop_escalation", "result_semantics"]},
+    "ops_mutation": {"critical": ["scope_input", "diagnose_before_change", "authorization", "procedure", "verification", "rollback", "stop_escalation", "result_semantics"]},
+    "independent_review": {"critical": ["scope_input", "state_binding", "independence", "procedure", "evidence", "adversarial_preservation", "bounded_verdict", "stop_escalation", "result_semantics"]},
+    "verification": {"critical": ["scope_input", "state_binding", "independence", "coverage_derivation", "procedure", "evidence", "preserved_behavior", "bounded_verdict", "stop_escalation", "result_semantics"]},
+    "discovery": {"critical": ["scope_input", "procedure", "evidence", "unknowns", "stop_escalation", "result_semantics"]},
+    "analysis_fallback": {"critical": ["scope_input", "procedure", "evidence", "unknowns", "stop_escalation", "result_semantics"]},
+    "planning": {"critical": ["scope_input", "procedure", "decision_space", "ownership", "verification_plan", "unknowns", "stop_escalation", "result_semantics"]},
+    "audit": {"critical": ["scope_input", "procedure", "evidence", "adversarial_preservation", "coverage_limits", "stop_escalation", "result_semantics"]},
+    "audit_orchestrator": {"critical": ["scope_input", "routing", "procedure", "evidence", "coverage_limits", "result_interpretation", "stop_escalation", "result_semantics"]},
+    "orchestrator": {"critical": ["scope_input", "routing", "handoff_construction", "procedure", "result_interpretation", "stop_escalation", "result_semantics"]},
+    "semantic_gate": {"critical": ["scope_input", "state_binding", "procedure", "evidence", "authority_boundary", "result_interpretation", "stop_escalation", "result_semantics"]},
+    "evaluation": {"critical": ["scope_input", "procedure", "evidence", "authority_boundary", "finding_classification", "coverage_limits", "stop_escalation", "result_semantics"]}
+  }
+}

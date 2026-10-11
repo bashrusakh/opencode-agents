@@ -269,6 +269,55 @@ A delegation prompt supplies instance-specific scope and context to the selected
 
 Check both directions: could the assignment suppress or redefine a material role obligation, and could the caller later over-claim completion from a result that was intentionally partial?
 
+### Role executability test
+
+A routed substantive role needs more than a description plus a pointer back to root policy. Shared/root policy may own canonical semantics, but the role contract must still make the role-owned work executable. Proportional to the role, the contract should establish:
+
+- what incoming assignment/context means and which parts are authority, evidence, constraints, or hypotheses;
+- the role-owned procedure or decision sequence before it acts or returns a judgment;
+- what evidence/self-check is sufficient for the role-local result and what is not;
+- what the role must not absorb from adjacent roles;
+- stop, blocker, escalation, or handoff behavior when the role cannot complete its obligation inside the boundary;
+- result semantics: what the output proves, what remains partial/unknown, and what the caller may safely infer.
+
+Do not count a generic statement such as “apply AGENTS.md” as the role-owned procedure when the root itself says detailed execution belongs to the role. A short contract is fine when the capability is simple, but substantive mutation, diagnosis, independent judgment, planning, orchestration, or verification needs enough local procedure that a weaker conforming model can derive the intended work without inventing the missing algorithm.
+
+The audit question is not “is this prompt long enough?” It is:
+
+> If the root/orchestrator routes a valid assignment here, can the role derive the required sequence, evidence threshold, stop conditions, and output semantics from its own standing contract plus shared policy?
+
+If not, treat that as a role-contract gap even when another role later catches the mistake.
+
+### Role lifecycle requalification
+
+A prior PASS does not automatically survive a topology or ownership change. Re-run the role-executability and relevant handoff-interface tests whenever a change does any of the following:
+
+- makes an existing role newly routable/delegable, broadens its `mode`/entry topology, or adds a new caller;
+- moves a substantive responsibility, decision, proof obligation, or procedure from root/caller/skill into the role;
+- removes or compacts role-local wording because the same semantic rule appears elsewhere;
+- changes which role owns implementation, diagnosis, planning, verification, independent judgment, or publication work;
+- converts an advisory/reference relationship into a mutation, verdict, or workflow-owning handoff.
+
+For owner moves and compaction, run a **method-preservation test** before deleting the old wording: after the move, can the receiving role still derive the complete role-local action/decision sequence, evidence threshold, false-success defense, stop/escalation behavior, and result semantics without relying on the removed text? Canonical-owner deduplication is not successful if it leaves the owner with policy but no executable method.
+
+Treat role topology as runtime semantics. A role promoted from primary-only to delegated/all use is a newly exposed interface even if the file contents did not change; it must be requalified against the weaker-conforming-model test and every new caller edge before release.
+
+### Handoff interface composition test
+
+Audit every material producer → parent/transformation → consumer edge as a protocol interface, not only as three individually valid documents. Record:
+
+- what the producer output actually means and explicitly does not mean;
+- what semantic classes the parent may preserve, omit, reframe, or add;
+- what the consumer is allowed to infer from the resulting assignment;
+- which role owns unresolved implementation/design/judgment choices;
+- whether partial, advisory, diagnostic, or stale evidence can be laundered into full authority, proof, or completion.
+
+A per-file PASS is insufficient when the composition is contradictory. For example, a producer that says a mechanism is technically adequate or may be forwarded unchanged conflicts with a consumer contract that says upstream mechanisms are only hypotheses. Fix the interface at the earliest owning stage rather than requiring the downstream model to resist contaminated context.
+
+For release gating, maintain a **closed-world discovered handoff inventory** over pack-owned root/agent contracts. Every current `@role` relation must be classified (for example routing policy, direct delegation, reroute, return-to-parent, output-package, or boundary/reference), and the discovered set must exactly match the classified set. A newly discovered relation without classification and a stale classification with no remaining runtime relation both fail release. Classification is only topology evidence: material delegation edges still need caller→callee protocol checks.
+
+Adding a new caller→callee relation therefore requires two proofs before promotion: the callee still passes role executability under the new context, and the edge satisfies the callee invocation contract without laundering caller hypotheses/partial evidence into authority or completion.
+
 ### New role test
 
 Add a role only if at least one of these materially improves:
@@ -515,6 +564,27 @@ For important behavior, combine the grader that best fits the property:
 - human judgment where preference or policy cannot be reduced safely.
 
 Do not use one grader type for everything.
+
+### Keep release gates adversarial to the candidate
+
+A release check exists to falsify the candidate, not to confirm that expected wording is present. Separate at least three evidence classes:
+
+1. **structural/retention checks** — schema, dependencies, known owner/consumer invariants, and whether a known guard disappeared;
+2. **contract/protocol checks** — split into (a) role executability and (b) caller→assignment→callee edge compatibility. Every routed substantive role must be executable, and every real handoff must satisfy the callee invocation contract without laundering authority, proof, recipes, or completion; an individually correct caller and callee do not prove their edge;
+3. **behavioral replay** — whether representative traces actually produce the required behavior under the evaluated model/runtime.
+
+Mutation tests show that a known guard is load-bearing; they do not prove that the guard set is complete. Keyword/presence checks show structural evidence; they do not prove semantic adequacy. Do not add a role-specific exception merely because a new generic audit makes the current candidate fail. First decide whether the audit criterion itself is wrong using a nearby preservation/overreach case. If the criterion remains valid, keep the release red until the contract is fixed.
+
+For routed-role executability, do not reduce the contract check to prompt size or vocabulary. Audit two layers independently:
+
+- **generic execution skeleton** — role-local action sequence/decision rules, evidence threshold, stop/escalation and result semantics;
+- **profile-specific core loop** — the characteristic method that makes that capability distinct (for example symptom→cause→fix→rerun for debugging, current-state→fault-layer isolation→authorized reversible action→postcondition for operations, or target→reference/call-flow trace→corroboration→bounded handoff for discovery).
+
+A role that merely mentions the right nouns can still be non-executable. Conversely a compact role can be sufficient. Prompt length is diagnostic only and must never create PASS, REVIEW, or FAIL. Severity follows semantics: **FAIL** means the role lacks a foundational boundary or essential characteristic core-loop capability needed to execute safely; **REVIEW** means the core loop is executable but a material correctness/coverage branch remains under-specified. PASS additionally requires a characteristic false-success/adversarial defense, not just generic vocabulary. REVIEW is resolved only by strengthening the generic criterion/role contract or by a documented semantic adjudication with an overreach/preservation case; it is not a candidate-specific waiver.
+
+The checker itself needs synthetic anti-gaming fixtures: keyword-stuffed thin roles must fail, profile-specific method gaps must fail even when generic dimensions are present, and a compact executable role must not hard-fail solely for size.
+
+A gate may report **FAIL with useful findings** and still be a successful evaluation artifact. Do not redefine success as “all checks say PASS.” The goal is early error discovery and calibrated confidence.
 
 ### Trace semantic transitions end to end
 
@@ -827,6 +897,15 @@ Before shipping a prompt/harness semantic change, verify:
 - [ ] Authority and evidence are not conflated.
 - [ ] Optional mechanisms remain optional.
 - [ ] The rule has one canonical owner **across the full root → role → skill/runtime graph**, not merely within each file; consumers activate/reference the owner instead of restating its state machine or procedure.
+- [ ] Every real caller→callee edge satisfies the callee invocation contract: required target/state/mode/action/evidence inputs are supplied, caller-originated solutions remain hypotheses unless authoritative, and deleting an edge-specific handoff guard makes an edge-level regression test fail even if both roles still pass individually.
+- [ ] Every routed substantive role passes the role-executability test: shared/root policy may own common semantics, but the role itself contains enough role-owned procedure, profile-specific core loop, conditional decision logic, evidence/self-check, stop/escalation behavior, and result semantics to perform the delegated stage. Generic keywords alone are insufficient; prompt size is diagnostic only. `FAIL` and `REVIEW` follow semantic executability/severity, and PASS requires a characteristic false-success/adversarial defense in addition to the core loop.
+- [ ] Any role-topology/ownership change (new caller, `mode`/delegability expansion, responsibility/proof transfer, advisory→mutation/verdict transition) re-runs role qualification; an earlier PASS is not inherited merely because the role file itself was unchanged.
+- [ ] Any deduplication/compaction or canonical-owner move that removes procedural wording passes the method-preservation test: the receiving role still has an executable role-local algorithm, false-success defense, evidence threshold, stop/escalation, and result semantics after the deletion.
+- [ ] Every material producer → parent/transformation → consumer handoff is audited as one interface; individually valid files do not count as composition proof.
+- [ ] The discovered pack-owned `@role` relation set exactly matches the classified handoff inventory. New/unclassified and stale classified edges both block promotion; topology classification alone does not waive material edge protocol checks.
+- [ ] New routed roles/edges are discovered automatically or explicitly classified before promotion; an unclassified role/edge is a release finding rather than an implicit default.
+- [ ] Release gates are adversarial to the candidate: unresolved generic contract/protocol findings keep promotion red unless the audit criterion is independently shown wrong by a preservation/overreach case. Do not add candidate-specific exceptions merely to recover PASS.
+- [ ] Structural/static PASS and mutation PASS are treated only as evidence for known invariants/retention; they do not prove semantic completeness, role executability, handoff compatibility, or behavioral replay.
 - [ ] Every stage/instrumentation hook has one explicit gating class. A diagnostic/non-gating hook must not inherit generic required-stage failure semantics that would change terminal outcome when the hook is unavailable.
 - [ ] Semantic role prompts contain only role-owned semantics/integration points; provider/API/CLI retrieval or invocation mechanics live in a conditional skill/runtime adapter unless that mechanic is itself the governing contract.
 - [ ] Audit findings are triaged by ownership/provenance before mutation: pack-owned canonical policy, pack-owned integration procedure, external/vendor skill content, project-local policy, and historical documentation are not interchangeable owners. Do not rewrite external/vendor semantics merely to make the pack look internally uniform; verify that root precedence/containment remains correct and change the external surface only when this pack intentionally owns that contract.

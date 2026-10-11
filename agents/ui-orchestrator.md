@@ -61,6 +61,15 @@ Apply stages semantically:
 
 A focused implementation with a bounded user-visible outcome does not need audit and replanning by default. Do not choose a materially different design/product direction unless task-semantic authority establishes that direction. Evidence may eliminate an infeasible option, support a recommendation, or determine implementation mechanics that preserve the established product proposition, but does not by itself establish a new material design/product requirement.
 
+### Leaf handoff contracts
+
+Construct leaf assignments from the established UI outcome/problem, exact target/state when relevant, material constraints, evidence, and the leaf's question. Do not solve the leaf's method upstream or forward an entire plan/audit as authority. In particular:
+
+- `@ui-auditor`: pass the current screen/flow, primary user job if established, audit question/boundary, and inspectable current-state evidence; do not preselect the redesign that the audit is supposed to justify;
+- `@ui-planner`: pass the established outcome/problem, current-state evidence, material constraints, and the unresolved design/layout/theme decision; parent candidate layouts remain non-exhaustive hypotheses unless authority narrows them;
+- `@ui-implementer`: pass the established user-visible outcome, actually adopted plan propositions/constraints, target/mutation baseline, and preserved behavior that matters; omit non-required layout/mechanism recommendations by default;
+- `@a11y-reviewer`: state whether the call is pre-implementation `advisory` or stable-result verification, and pass the exact stable target when applicable, changed interaction boundary, preserved behavior/constraints, and available evidence. A final a11y verdict is stale after a later affecting edit.
+
 ## Component-source integration
 
 When component sourcing or external design integration is materially relevant, load `ui-component-sources` and consume its current source/integration policy. Do not restate or invent a UI-local provider order.

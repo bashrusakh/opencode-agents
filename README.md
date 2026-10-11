@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.65 beta
+# OpenCode Agent Pack v30.70 beta
 
 ### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
 
@@ -13,17 +13,16 @@
 
 ---
 
-## What changed in v30.65 beta
+## What changed in v30.70 beta
 
-- Fixes cross-role mutation-handoff contamination found by re-reading the full historical trace analysis: semantic approval, plans, audits, and review findings no longer become implementation recipes merely because an upstream specialist returned them.
-- `semantic-checkpoint` now authorizes only the semantic mutation boundary; `proceed` does not certify implementation/design adequacy or approve a concrete patch mechanism.
-- `code-orchestrator` reconstructs edit-capable assignments from established outcomes, exact constraints, evidence, and target state; non-required mechanisms/remediation suggestions are omitted by default instead of forwarded as recipes.
-- Confirmed defects routed to `@debugger` carry the defect/invariant/reproduction contract; debugger treats suggested remediation shapes as hypotheses unless separately established as implementation constraints.
-- Applies the same proposition-scoped handoff rule to UI plan/audit → implementation and adds ST-44…ST-46 plus static/mutation guards.
+- Hardens role lifecycle/requalification in the existing semantic-design manual: new delegation topology, ownership transfer, mode expansion, and compaction/deduplication must re-run role executability and handoff checks; an older PASS is not inherited from unchanged role bytes.
+- Adds a method-preservation rule for canonical-owner moves so removing duplicate upstream prose cannot leave the receiving role with policy/responsibility but no executable algorithm.
+- Upgrades `role-handoff-audit.py` to a closed-world inventory over all pack-owned root/agent `@role` relations: the current topology is **54 discovered / 54 classified**; unknown and stale edges are release failures.
+- Extends synthetic anti-gaming tests for unclassified/stale edge inventory and new roles without audit profiles.
+- Adds ST-61…ST-63 for role-topology requalification, owner-move/compaction method preservation, and closed-world handoff inventory. Runtime agent contracts remain byte-identical to v30.69.
+- Release gates pass structurally/contractually; isolated behavioral replay ST-01…ST-63 remains a separate unclaimed evidence class.
 
-See [`docs/releases/v30.65-beta.md`](docs/releases/v30.65-beta.md), [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md), and [`evals/static-policy-regressions.py`](evals/static-policy-regressions.py).
-
----
+See [`docs/releases/v30.70-beta.md`](docs/releases/v30.70-beta.md), [`docs/contract-protocol-audit-v30.70.md`](docs/contract-protocol-audit-v30.70.md), [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md), [`evals/contract-protocol-audit.py`](evals/contract-protocol-audit.py), [`evals/role-handoff-audit.py`](evals/role-handoff-audit.py), and [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md).
 
 ## Core model
 
@@ -361,7 +360,7 @@ The installer backs up existing runtime surfaces before copying the pack and rem
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.65-beta.md`](docs/releases/v30.65-beta.md) | Current release notes |
+| [`docs/releases/v30.70-beta.md`](docs/releases/v30.70-beta.md) | Current release notes |
 | [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) | Method for turning developer guidance and traces into durable semantic rules |
 | [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) | Source → generalized rule → reverse-action preservation audit |
 | [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md) | Fresh-session end-to-end semantic transition replay suite |
@@ -380,6 +379,9 @@ A release archive should verify at least:
 - valid agent frontmatter and no provider-specific `model:` overrides;
 - every current role reference resolves and obsolete package-owned `plan.md` does not remain active after upgrade;
 - root stays below the pack's `<50 KiB` target;
+- run `python evals/contract-protocol-selftest.py` first; the audit criteria must reject synthetic thin-role and contaminated-handoff fixtures without depending on current-pack wording;
+- run `python evals/contract-protocol-audit.py`; every routed substantive role must have an executable role-local contract and every producer → transformer → consumer edge must compose without authority/proof/recipe laundering; unresolved findings keep promotion red;
+- run `python evals/run-release-gates.py` as the aggregate structural/contract gate; do not add candidate-specific waivers merely to recover PASS;
 - run a **fresh semantic prompt audit** over root `AGENTS.md` and every agent file as one corpus:
   - each standing instruction must still prevent a concrete failure mode or encode a current product/workflow requirement;
   - remove semantic duplicates, stale model-era scaffolding, unnecessary verification/subagent rituals, role↔root restatements, release-validation or “what did not change” narration in runtime prompts, and workaround rules whose cause no longer exists;
@@ -408,7 +410,7 @@ A release archive should verify at least:
 - Startup/update/final communication remains compact: no duplicate prose plan around Startup, no routine tool narration, and no empty/repeated report sections;
 - the semantic design manual remains documentation rather than runtime policy, and its source-preservation audit still derives the tracked developer actions after abstraction;
 - all pack-owned agent frontmatter uses the declared OpenCode V2 `permissions` rule schema with V2 action names; schema migration must preserve the existing permission-policy intent unless a separate policy change is explicitly authorized;
-- `python evals/static-policy-regressions.py` passes as a structural/ownership guard; this does **not** substitute for fresh isolated semantic-transition replay;
+- `python evals/static-policy-regressions.py` passes only as a structural/retention guard; it cannot substitute for the contract/protocol audit or fresh isolated semantic-transition replay;
 - installer scripts pass `bash -n`, preserve unrelated user/project files, and match their documented backup/overwrite behavior;
 - external/setup docs remain documentation only and are not required runtime policy;
 - vendored/adapted skill content retains source/license attribution;
@@ -418,7 +420,7 @@ A release archive should verify at least:
 
 <div align="center">
 
-**OpenCode Agent Pack v30.65 beta**  
+**OpenCode Agent Pack v30.70 beta**  
 Semantic routing · bounded orchestration · evidence-grounded verification
 
 </div>

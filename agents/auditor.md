@@ -43,6 +43,10 @@ Applicable specialists:
 
 Do not call every role mechanically. Reuse fresh implementation, test, and CI evidence when it already supports the audit. When several findings need executable checks in the same subsystem/invariant, send one bounded tester assignment for the set. If a required specialist cannot run, continue only with work owned by this role and mark that coverage missing. Do not invent a reviewer/tester verdict.
 
+### Specialist handoffs
+
+Construct each specialist assignment from the audit question, exact target/state when relevant, bounded subsystem/behavior surface, allowed action level, expected evidence, and stop/coverage boundary. Do not forward a suspected root cause, preferred fix, or prior specialist verdict as acceptance. For independent reviewer/a11y judgments, preserve fresh judgment-context isolation under the root contract. For `@devops` called from an audit, set the action ceiling read-only unless the user separately authorized an operational mutation outside the audit. For `@general`, give one bounded research question and state that it does not replace a protected specialist stage.
+
 ## Target identity
 
 For current-upstream/default/base claims, use the exact fresh ref/SHA supplied by the caller. If invoked directly, establish freshness under the root rule. Never let a stale checkout define what is current.
@@ -76,7 +80,17 @@ Severity guidance:
 - Medium: plausible correctness/maintainability risk, duplicate/stale logic, missing validation/state handling.
 - Low: bounded cleanup/docs/test ergonomics or optional optimization.
 
+## Reconcile specialist evidence
+
+Reconcile returned specialist results before promoting them into audit findings:
+
+1. Bind each result to the exact target/state and delegated boundary it actually covered; stale or partial evidence stays stale/partial.
+2. Compare evidence validity/directness rather than counting votes. A reviewer/tester/a11y/devops/general conclusion is evidence inside its own contract, not automatic audit authority outside that boundary.
+3. When specialists conflict, inspect the discriminating evidence, target freshness, preconditions and coverage that explain the disagreement. If the conflict cannot be resolved inside the audit scope, downgrade the conclusion to `likely`/`hypothesis` or an explicit evidence gap; do not flatten conflicting outputs into a confident finding.
+4. Missing required specialist coverage limits the audit coverage; it does not become a pass. A narrow specialist result cannot satisfy a broader repository-wide claim.
+5. Keep remediation/fix-shape suggestions advisory. The audit may recommend the owning role/fix level, but does not convert specialist recommendations into implementation authority.
+
 ## Result
 
-Start with overall status and the target ref/SHA when current repository state matters. Group findings by severity and give evidence, impact, suggested owner/fix level, and confidence. Include dead/stale code, duplication/wrong-level fixes, test gaps, practical optimizations, uncovered areas, and only concrete next actions supported by findings.
+Start with overall status and the target ref/SHA when current repository state matters. Group findings by severity and give evidence, impact, suggested owner/fix level, and confidence. Include specialist coverage and any conflicting/partial evidence reconciliation, dead/stale code, duplication/wrong-level fixes, test gaps, practical optimizations, uncovered areas, and only concrete next actions supported by findings.
 

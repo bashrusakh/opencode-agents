@@ -61,6 +61,10 @@ if version_match:
         f"[`docs/releases/{release_slug}.md`](docs/releases/{release_slug}.md) | Current release notes" in readme_sem,
         "README.md: current release-notes link drift from AGENTS.md",
     )
+    check(
+        (ROOT / f"docs/releases/{release_slug}.md").is_file(),
+        "docs/releases: current release-notes file missing",
+    )
 for bad in [
     "requires separate authority or evidence of an established blocker",
     "require separate authority for the substitution or evidence of an established blocker",
@@ -448,17 +452,34 @@ check(
     "build: cross-class falsification/self-test blind-spot gate missing",
 )
 
+# Release-gate audit surfaces are separate from the legacy static presence harness.
+contract_audit = text("evals/contract-protocol-audit.py")
+contract_spec = text("evals/contract-protocol-spec.json")
+contract_selftest = text("evals/contract-protocol-selftest.py")
+release_gates = text("evals/run-release-gates.py")
+check("role-local executable method" in contract_spec and "producer output, parent transformation, consumer input" in contract_spec and "Keyword presence" in contract_spec, "contract/protocol spec missing v2 adversarial audit principles")
+check("CONTRACT / PROTOCOL AUDIT v3" in contract_audit and "missing essential profile core-loop capabilities" in contract_audit and "REVIEW is intentionally release-blocking" in contract_audit and "Prompt length is diagnostic only" in contract_audit, "contract audit v3 severity/core-loop/review gate missing")
+check("keyword-stuffed implementation role was not rejected" in contract_selftest and "thin ops role without diagnostic isolation" in contract_selftest and "compact executable discovery role" in contract_selftest and "audit orchestrator missing only reconciliation" in contract_selftest and "producer-side implementation certification" in contract_selftest and "new role without executable-contract audit profile did not block release" in contract_selftest and "stale role profile did not block release" in contract_selftest, "contract audit v3 synthetic anti-gaming/severity/lifecycle selftests missing")
+edge_audit = text("evals/role-handoff-audit.py")
+edge_selftest = text("evals/role-handoff-selftest.py")
+release_gates = text("evals/run-release-gates.py")
+check("Closed-world static audit" in edge_audit and "EDGE_CLASSIFICATION" in edge_audit and "UNCLASSIFIED EDGE" in edge_audit and "STALE EDGE" in edge_audit and "ui-orchestrator','a11y-reviewer" in edge_audit and "code-orchestrator','devops" in edge_audit and "auditor','specialists" in edge_audit, "role-handoff closed-world inventory/profiles missing")
+check("recipe-shaped devops handoff not rejected" in edge_selftest and "unbound a11y handoff not rejected" in edge_selftest and "preselected UI planning handoff not rejected" in edge_selftest and "unbounded auditor specialist handoff not rejected" in edge_selftest and "new unclassified handoff edge did not block release" in edge_selftest and "stale handoff classification did not block release" in edge_selftest, "role-handoff synthetic anti-gaming/inventory selftests missing")
+check("role-handoff selftest" in release_gates and "role-handoff edge audit" in release_gates, "release gate runner missing role-handoff checks")
+check("unresolved findings must not be waived merely to obtain PASS" in release_gates, "release gate aggregator may waive unresolved contract findings")
+check("Role lifecycle requalification" in text("docs/semantic-design-manual.md") and "method-preservation test" in text("docs/semantic-design-manual.md") and "closed-world discovered handoff inventory" in text("docs/semantic-design-manual.md"), "semantic-design manual missing role lifecycle/method-preservation/closed-world edge audit")
+
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 46, "semantic-transition suite must contain 46 cases")
+check(traces.count("### ST-") == 63, "semantic-transition suite must contain 63 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 46, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 63, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -488,6 +509,11 @@ for case in [
     "ST-44 — Semantic checkpoint authorization must not certify or forward an implementation recipe",
     "ST-45 — A confirmed finding must become a debugger defect contract, not a reviewer patch recipe",
     "ST-46 — A plan or audit must not become blanket mutation authority",
+    "ST-47 — A routed substantive role must have an executable role-local contract",
+    "ST-48 — Per-file correctness must not substitute for producer→transformer→consumer protocol compatibility",
+    "ST-49 — Role-contract keyword stuffing must not satisfy executability",
+    "ST-50 — Compact role contracts must be judged by executability, not byte count",
+    "ST-51 — Generic contract dimensions must not replace the role-specific core loop",
 ]:
     check(case in traces, f"semantic-transition suite missing reviewer regression: {case}")
 check(
@@ -584,6 +610,101 @@ check(
     and "actually adopted plan propositions/constraints" in traces
     and "whole artifact as correctness proof" in traces,
     "ST-46 plan/audit mutation-authority regression missing",
+)
+check(
+    "routed substantive role must have an executable role-local contract" in traces.lower()
+    and "role-owned procedure/decision sequence" in traces
+    and "role-specific exception solely to preserve PASS" in traces,
+    "ST-47 role-executability regression missing",
+)
+check(
+    "producer→transformer→consumer protocol compatibility" in traces.lower()
+    and "producer output semantics, parent transformation, consumer input semantics" in traces
+    and "per-file/static PASS hides an incompatible handoff" in traces,
+    "ST-48 cross-role protocol-composition regression missing",
+)
+check(
+    "role-contract keyword stuffing must not satisfy executability" in traces.lower()
+    and "matched vocabulary is not an executable method" in traces
+    and "profile-specific core-loop capabilities" in traces,
+    "ST-49 keyword-stuffing role-contract regression missing",
+)
+check(
+    "compact role contracts must be judged by executability, not byte count" in traces.lower()
+    and "byte/line count is reported only as diagnostic context" in traces
+    and "never changes status" in traces
+    and "fixed size/sparsity quota alone creates `FAIL` or `REVIEW`" in traces,
+    "ST-50 compact-role preservation/no-size-status regression missing",
+)
+check(
+    "generic contract dimensions must not replace the role-specific core loop" in traces.lower()
+    and "diagnostic isolation" in traces
+    and "generic dimensions are insufficient" in traces,
+    "ST-51 profile-specific core-loop regression missing",
+)
+check(
+    "contract-audit severity must distinguish non-executable roles from executable roles with a material gap" in traces.lower()
+    and "essential profile core-loop capability produces `FAIL`" in traces
+    and "material secondary branch gap produces release-blocking `REVIEW`" in traces
+    and "Prompt size never changes either status" in traces,
+    "ST-52 contract-audit severity calibration regression missing",
+)
+check(
+    "devops must isolate the failing layer before operational mutation" in traces.lower()
+    and "treat the suspicious setting as a hypothesis rather than root cause" in traces.lower()
+    and "authorization is treated as correctness evidence" in traces.lower(),
+    "ST-53 devops diagnose-before-mutation regression missing",
+)
+check(
+    "general fallback must research a bounded question without impersonating a specialist" in traces.lower()
+    and "fact/evidence" in traces.lower() and "inference/hypothesis" in traces.lower(),
+    "ST-54 general fallback research-discipline regression missing",
+)
+check(
+    "ui audit must diagnose the current user-job/state before recommending redesign" in traces.lower()
+    and "generic preference becomes a finding" in traces.lower(),
+    "ST-55 UI audit current-state/counterexample regression missing",
+)
+check(
+    "ui planning must derive from current ownership and preserve unresolved product decisions" in traces.lower()
+    and "unresolved product choices" in traces.lower(),
+    "ST-56 UI planning authority/ownership regression missing",
+)
+check(
+    "ui implementation must self-review the final state" in traces.lower()
+    and "representative changed and preserved/negative states" in traces.lower(),
+    "ST-57 UI implementation final-state self-review regression missing",
+)
+check(
+    "accessibility verdict must bind the exact target and affected interaction boundary" in traces.lower()
+    and "advisory vs stable-result mode" in traces.lower(),
+    "ST-58 a11y target/interaction-boundary regression missing",
+)
+check(
+    "broad auditor must reconcile conflicting/partial specialist evidence without voting" in traces.lower()
+    and "compares evidence validity/directness" in traces.lower(),
+    "ST-59 audit reconciliation regression missing",
+)
+check(
+    "caller handoff must satisfy the callee invocation contract" in traces.lower()
+    and "individual-role pass hides an under-specified or recipe-shaped edge" in traces.lower(),
+    "ST-60 caller-callee invocation-contract regression missing",
+)
+check(
+    "role topology promotion requires executable-contract requalification" in traces.lower()
+    and "prior pass is not inherited" in traces.lower(),
+    "ST-61 topology requalification regression missing",
+)
+check(
+    "canonical-owner deduplication must preserve an executable method" in traces.lower()
+    and "method-preservation audit" in traces.lower(),
+    "ST-62 owner-move/compaction preservation regression missing",
+)
+check(
+    "new pack-owned role relation must enter the closed-world handoff inventory" in traces.lower()
+    and "unknown relation fails" in traces.lower()
+    and "stale classification fails" in traces.lower(),
+    "ST-63 closed-world edge inventory regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | unverified`" in traces,

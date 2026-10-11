@@ -1,5 +1,47 @@
 # Changelog
 
+## v30.70 beta
+
+- Adds role lifecycle requalification to the existing semantic-design manual: topology/mode/caller expansion, substantive ownership transfer, and advisory→mutation/verdict changes invalidate inherited role PASS and require fresh role/edge audit.
+- Adds method-preservation checks for canonical-owner moves and prompt compaction so deduplication cannot delete the only executable procedure while leaving ownership labels intact.
+- Makes role-handoff inventory closed-world across every pack-owned root/agent `@role` relation; current topology is 54/54 discovered/classified and both unknown and stale relations fail release.
+- Extends role/edge synthetic selftests and static guards for new roles without profiles, unknown/stale edges, lifecycle/manual retention, and inventory anti-gaming.
+- Adds ST-61…ST-63; runtime agent contracts are unchanged from v30.69.
+
+See [`docs/releases/v30.70-beta.md`](docs/releases/v30.70-beta.md) and [`docs/contract-protocol-audit-v30.70.md`](docs/contract-protocol-audit-v30.70.md).
+
+## v30.69 beta
+
+- Repairs every unresolved role-contract finding from the frozen v30.68 audit baseline while keeping `contract-protocol-audit.py` v3 unchanged.
+- Adds role-owned execution methods for `a11y-reviewer`, `devops`, `general`, `ui-auditor`, `ui-implementer`, and `ui-planner`, plus explicit conflicting/partial specialist reconciliation in `auditor`.
+- Adds end-to-end caller-side invocation contracts in `code-orchestrator`, `ui-orchestrator`, and `auditor` so downstream roles receive the target/state/mode/action/evidence inputs their methods require without upstream recipe anchoring.
+- Adds a separate role-handoff edge audit/selftest; release gates now require both role executability and caller→callee compatibility.
+- Adds ST-53…ST-60 and manual-checklist coverage for the repaired capabilities and handoff edges.
+- Frozen role audit result is **17 PASS / 0 REVIEW / 0 FAIL**; edge audit is **11/11 PASS**. Fresh isolated behavioral replay remains pending.
+
+See [`docs/releases/v30.69-beta.md`](docs/releases/v30.69-beta.md) and [`docs/contract-protocol-audit-v30.69.md`](docs/contract-protocol-audit-v30.69.md).
+
+## v30.68 beta
+
+- Removes size/sparsity from role status decisions; prompt length is diagnostic only.
+- Separates essential non-executable core gaps (`FAIL`) from material gaps in otherwise executable roles (`REVIEW`).
+- Adds profile-specific false-success/adversarial challenges and ST-52 severity calibration.
+- Synthetic self-tests now require a compact executable discovery role to PASS and an otherwise executable audit orchestrator with missing conflict reconciliation to REVIEW.
+- Frozen pre-repair audit result is **6 FAIL / 1 REVIEW / 10 PASS**, exactly matching manual adjudication; runtime agents remain unchanged.
+
+See [`docs/releases/v30.68-beta.md`](docs/releases/v30.68-beta.md) and [`docs/contract-protocol-audit-v30.68.md`](docs/contract-protocol-audit-v30.68.md).
+
+## v30.67 beta
+
+- Tightens role-contract release gating so expected vocabulary or a shared-policy pointer cannot substitute for an executable role-local method.
+- Adds profile-specific core-loop checks, role-local action/decision/sequence evidence, and method-vs-result separation.
+- Adds release-blocking `REVIEW` for sparse contracts instead of silently granting PASS or imposing a fixed prompt-size quota.
+- Adds synthetic anti-gaming tests proving keyword stuffing fails, generic DevOps safety rules do not replace diagnostic isolation, and a compact executable discovery role is not hard-failed solely for size.
+- Adds ST-49…ST-51 and updates the semantic-design manual with the stricter role-executability gate.
+- Current audit result is **7 FAIL / 2 REVIEW / 8 PASS**; runtime agent contracts are intentionally unchanged so the detector is evaluated against the same object.
+
+See [`docs/releases/v30.67-beta.md`](docs/releases/v30.67-beta.md) and [`docs/contract-protocol-audit-v30.67.md`](docs/contract-protocol-audit-v30.67.md).
+
 ## v30.65 beta
 
 - Fixes cross-role handoff contamination: upstream plans/checkpoints/reviews no longer become binding mutation recipes merely because they are technically plausible or were returned by a specialist.
@@ -8,6 +50,7 @@
 - Reconstructs edit-capable handoffs from established outcome/constraints/evidence; correction handoffs to `@debugger` carry the defect/invariant/evidence rather than reviewer/tester patch recipes.
 - Adds matching protection for UI plan/audit → implementation handoffs and evaluator diagnostics.
 - Extends semantic regression/static guards for cross-role recipe laundering and correction-handoff anchoring.
+
 
 ## v30.64 beta
 
