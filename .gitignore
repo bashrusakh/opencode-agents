@@ -4,3 +4,7 @@
 .graymatter/vectors/
 .graymatter/daemon.log
 .graymatter/gray.db
+
+# Python eval harness artifacts
+__pycache__/
+*.pyc
