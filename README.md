@@ -1,282 +1,152 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.70 beta
+# OpenCode Agent Pack v30.73 beta
 
-### Model-agnostic routing · strict role boundaries · bounded multi-agent workflows · evidence-grounded verification
+### Model-agnostic routing · explicit workflow owners · bounded specialist delegation · evidence-grounded verification
 
 [![OpenCode](https://img.shields.io/badge/OpenCode-Agents-111827?style=for-the-badge)](#)
 [![Model Agnostic](https://img.shields.io/badge/Model--Agnostic-Yes-2563eb?style=for-the-badge)](#)
 [![Semantic Routing](https://img.shields.io/badge/Semantic--Routing-On-7c3aed?style=for-the-badge)](#)
-[![Regression Guard](https://img.shields.io/badge/Regression--Guard-On-f97316?style=for-the-badge)](#)
+[![Role Contracts](https://img.shields.io/badge/Role--Contracts-Audited-f97316?style=for-the-badge)](#)
 
 </div>
 
 ---
 
-## What changed in v30.70 beta
+## What this pack is
 
-- Hardens role lifecycle/requalification in the existing semantic-design manual: new delegation topology, ownership transfer, mode expansion, and compaction/deduplication must re-run role executability and handoff checks; an older PASS is not inherited from unchanged role bytes.
-- Adds a method-preservation rule for canonical-owner moves so removing duplicate upstream prose cannot leave the receiving role with policy/responsibility but no executable algorithm.
-- Upgrades `role-handoff-audit.py` to a closed-world inventory over all pack-owned root/agent `@role` relations: the current topology is **54 discovered / 54 classified**; unknown and stale edges are release failures.
-- Extends synthetic anti-gaming tests for unclassified/stale edge inventory and new roles without audit profiles.
-- Adds ST-61…ST-63 for role-topology requalification, owner-move/compaction method preservation, and closed-world handoff inventory. Runtime agent contracts remain byte-identical to v30.69.
-- Release gates pass structurally/contractually; isolated behavioral replay ST-01…ST-63 remains a separate unclaimed evidence class.
+This repository is an OpenCode agent pack with:
 
-See [`docs/releases/v30.70-beta.md`](docs/releases/v30.70-beta.md), [`docs/contract-protocol-audit-v30.70.md`](docs/contract-protocol-audit-v30.70.md), [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md), [`evals/contract-protocol-audit.py`](evals/contract-protocol-audit.py), [`evals/role-handoff-audit.py`](evals/role-handoff-audit.py), and [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md).
+- a canonical workflow policy in [`AGENTS.md`](AGENTS.md);
+- 17 role contracts in [`agents/`](agents/);
+- 22 conditional skills in [`skills/`](skills/);
+- semantic/contract release gates in [`evals/`](evals/);
+- design methodology and release evidence in [`docs/`](docs/).
 
-## Core model
+README is the usage and navigation map. Canonical workflow rules live in [`AGENTS.md`](AGENTS.md), role contracts, and skill contracts.
 
-`AGENTS.md` is the canonical workflow policy. Agent files add role-specific behavior; skills add conditional procedural guidance. README is an overview, not a second policy source.
+---
 
-### Semantic routing
+## Start here
 
-Routing follows the requested outcome, target, action level, current repository state, and authoritative project guidance — not magic keywords.
+For most multi-step coding work, start with **`code-orchestrator`**.
 
-| Request | Typical route |
+It is the main coordination role for work that may need several stages such as discovery, implementation, debugging, verification, review, PR follow-up, CI repair, or release preparation. It coordinates specialists; it does not edit repository files itself.
+
+Choose a different top-level workflow owner when the task is intentionally narrower:
+
+| You want to… | Start with | Mode |
+|---|---|---|
+| Carry a coding issue/bug/PR/release task through multiple specialist stages | **`code-orchestrator`** | `primary` |
+| Make one already-bounded code/config/tests/docs change | `build` | `all` |
+| Run a broad read-only repository audit | `auditor` | `primary` |
+| Produce an architecture/multi-file/deployment implementation plan | `project-planner` | `all` |
+| Coordinate UI/UX analysis, planning, and implementation | `ui-orchestrator` | `all` |
+
+OpenCode execution topology and the exact entry/delegation rules live in [`AGENTS.md`](AGENTS.md). `mode: all` means a role may be top-level or delegated subject to its own contract; it does not make every role interchangeable.
+
+### Typical topology
+
+```text
+user
+  ↓
+workflow owner
+  ├─ code-orchestrator
+  ├─ build
+  ├─ auditor
+  ├─ project-planner
+  └─ ui-orchestrator
+        ↓
+  bounded specialist stage(s)
+        ↓
+  evidence / result / blocker
+        ↓
+workflow owner
+```
+
+The workflow owner decides which specialist stage is needed. Users normally do not need to manually reproduce an internal specialist chain.
+
+---
+
+## Delegated specialists
+
+These roles normally own bounded stages inside a larger workflow rather than the overall user task:
+
+| Role | What it is for | Mode |
+|---|---|---|
+| `explore` | Read-only codebase discovery, symbol/call-path tracing, existing-pattern lookup | `subagent` |
+| `debugger` | Confirmed failures requiring root-cause diagnosis and a right-level bug fix | `subagent` |
+| `tester` | Independent reproduction, tests/builds/smoke checks, preserved-behavior evidence | `subagent` |
+| `reviewer` | Independent code/diff/PR/plan review; never applies fixes | `subagent` |
+| `devops` | Runtime/service/CI/deployment diagnostics and explicitly authorized operational changes | `subagent` |
+| `general` | Read-only bounded research when no more specific specialist owns the question | `subagent` |
+| `semantic-checkpoint` | Pre-mutation semantic gate used by `code-orchestrator` | `subagent` |
+| `session-evaluator` | Post-hoc semantic compliance diagnostic for completed orchestrated work | `subagent` |
+| `ui-auditor` | Read-only UI/UX analysis of an existing screen or flow | `subagent` |
+| `ui-planner` | Concrete implementable UI design/layout/theme plan | `subagent` |
+| `ui-implementer` | Bounded implementation of an accepted UI/web outcome | `subagent` |
+| `a11y-reviewer` | Independent accessibility/interaction verification | `subagent` |
+
+The exact invocation contract for each role is in its file under [`agents/`](agents/). A role description is not the policy for when the role must be called.
+
+---
+
+## Where the rules live
+
+| Surface | Canonical responsibility |
 |---|---|
-| “Where is this implemented?” | `explore` |
-| “Fix this runtime bug” | `debugger` |
-| “Implement this bounded code/config outcome” | `build` |
-| “Review this PR” | `reviewer` |
-| “Audit the project” | `auditor` |
-| “Plan a broad implementation” | `project-planner` |
-| “Redesign these settings” | `ui-orchestrator` |
-| “Why is this service failing?” | `devops` |
+| [`AGENTS.md`](AGENTS.md) | Shared workflow policy: authority, routing, topology, delegation, gated actions, evidence semantics, Startup, PR/publication behavior |
+| [`agents/`](agents/) | Role-local execution methods, decision loops, evidence/self-checks, stop/escalation, result semantics |
+| [`skills/`](skills/) | Conditional procedural/runtime guidance loaded by the role that owns that integration |
+| [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) | Method for designing, auditing, and releasing semantic prompt/role changes |
+| [`evals/`](evals/) | Structural, role-contract, handoff-protocol, and semantic-transition regression machinery |
+| [`docs/releases/`](docs/releases/) | Release-specific explanation and retained historical evidence |
+| `README.md` | Human-facing usage/navigation map only |
 
-The table shows the semantic owner. Actual primary/subagent execution still follows OpenCode agent mode and the pack's delegation rules.
-
-### Role and authority boundaries
-
-Roles are capability contracts:
-
-```text
-orchestrator
-  owns WHAT / SCOPE / NEXT / escalation / publication
-
-specialist
-  owns HOW inside the assigned boundary
-```
-
-A specialist may choose implementation details needed inside its assignment. It may not silently widen the task, strengthen acceptance, take another role's protected stage, change PR/publication state, or turn its own finding into new authority.
-
-A failed or unavailable specialist does not transfer its prohibited capabilities to the caller unless the policy defines an explicit authority-preserving fallback.
-
-### Claims, scope, and fix level
-
-The pack treats material decisions about framing, required behavior, scope, ownership, invariants, and fix level as claims that require evidence. Derived reasoning, review findings, tests, and prior-agent decisions do not become authority merely because later work depends on them.
-
-Implementation may cross files or layers when that is a necessary technical consequence of an already-established outcome. Complexity by itself is not permission to strengthen the required behavior or widen what the task authorizes.
-
-### Evidence belongs to the state it checked
-
-Tests and review verdicts apply to the actual state they inspected. Later changes invalidate only the evidence they can affect.
-
-A narrow test proves only its covered behavior. A fresh remote `ref@SHA` must not silently become stale-worktree evidence. Review and verification should identify the exact candidate state they support.
-
-### Gated actions stay explicit
-
-Public/external, destructive, publication, scope-authority, and other gated actions follow `AGENTS.md`. Already-authorized actions do not need repeated confirmation; a materially changed target, scope, destination, or risk does.
+A role may operationalize shared policy in its own execution contract; canonical workflow semantics remain outside README.
 
 ---
 
-## PR workflow
+## Notable integrations
 
-For confirmed **owned PRs**, implementation and readiness are separate states:
+### Open Code Review
 
-```text
-Draft
-  ↓ implementation / repair / intermediate CI
-local Candidate HEAD
-  ↓ final applicable local checks
-  ↓ @tester when independent verification adds value or is required
-  ↓ whole-PR @reviewer
-push exact reviewed SHA
-  ↓ reconcile remote head + applicable checks/dependencies
-Ready transition when authorized and its real preconditions hold
-```
+`reviewer` owns the Open Code Review integration. The pack includes:
 
-Key invariants:
+- `open-code-review-delegate` for deterministic local review preflight;
+- `open-code-review` for managed second-model review when applicable.
 
-- active owned PR implementation stays Draft;
-- the final reviewer covers the complete base-to-Candidate-HEAD change, not only the latest patch;
-- the reviewed SHA is pushed unchanged before Ready;
-- unchanged SHA does not require another full review solely because it was pushed;
-- unresolved required evidence blocks Ready; lifecycle-dependent evidence is checked when it can actually exist;
-- repository discussions/issues/RFCs are gates only when repository policy makes their state a prerequisite;
-- unowned or ambiguous PRs are not automatically moved between Draft and Ready.
+These are reviewer-owned specialist skills, not general workflow skills. See [`agents/reviewer.md`](agents/reviewer.md) and the corresponding skill files for their executable contracts.
 
-Detailed rules live in `AGENTS.md` and the `pr-readiness`, `git-provenance`, and review skills.
+### Persistent planning
 
----
+`project-planner` can use the bundled `persistent-planning` skill when durable planning is actually needed. The exact trigger and persistence policy are canonical elsewhere; README only identifies the capability.
 
-## Review and verification
+### UI component intelligence
 
-### Right-level implementation
-
-Choose the narrowest existing ownership boundary that can guarantee the established outcome across affected paths and states. Do not patch the first visible caller when the behavior belongs to a shared owner, and do not invent a broader invariant merely to justify a larger fix.
-
-### Regression guard
-
-For bugfixes and shared/existing behavior changes, verify both:
-
-- the behavior intentionally changed;
-- the closest applicable behavior or invariant that must remain unchanged.
-
-Shared/stateful changes receive proportionally broader checks. Tests, snapshots, lint/type rules, and coverage are not weakened merely to create a PASS.
-
-### Verification cadence
-
-Verification is proportional rather than a mandatory fixed chain:
-
-```text
-implementation role -> focused local evidence
-meaningful boundary -> @tester when independent verification adds value
-stable candidate -> final applicable validation + @reviewer
-published candidate -> remote CI/status
-```
-
-A work package ending does not automatically require `@tester`, and reviewer should not mechanically repeat a fresh broad test pass.
-
-### Open Code Review integration
-
-Alibaba `open-code-review` is optional review support:
-
-```text
-OCR delegate = deterministic local scope/rule preflight
-@reviewer    = host-model semantic review and verdict
-OCR managed  = optional/required independent second-model escalation
-```
-
-Managed OCR is not a universal Ready gate and review-only workflows do not auto-apply its suggestions.
-
----
-
-## Persistent planning
-
-Persistent planning is for work that genuinely needs durable coordination across broad scope, phases, agents, or sessions. Root keeps only the trigger and durable-state contract; when persistent planning applies, load `persistent-planning` and prefer the project's existing planning convention before the pack default.
-
-`project-planner` is intentionally separate from OpenCode's built-in `plan` agent so repository planning writes do not depend on the built-in plan agent's restricted edit policy. Read-only audits do not create repository plan files merely to maintain agent state.
-
----
-
-## Experimental semantic evaluation
-
-The pack currently uses two separate semantic roles because they answer different lifecycle questions.
-
-`semantic-checkpoint` is a **pre-mutation gate**. After relevant read-only discovery, `code-orchestrator` invokes it only when the candidate direction materially establishes or changes required behavior, acceptance, scope, ownership, invariant, fix level, or product/domain policy. `proceed` authorizes only the checked semantic boundary: the orchestrator still hands ordinary technical mechanics to the implementation role and does not turn optional mechanisms named by the checkpoint into acceptance. `hold` and `unverified` block mutation until their material blockers are addressed; an unchanged blocked candidate is not re-run merely to seek a different verdict. Routine technical mechanics under already-established acceptance do not trigger the checkpoint.
-
-Each checkpoint evaluation runs in a **fresh child session**. A re-check after new evidence or a materially revised candidate does not continue the previous checkpoint conversation; the new child reconstructs the current decision from authoritative task/session evidence. More generally, the pack reuses a child session only for deliberate continuation of the same specialist-owned assignment, not merely because the same role is called again.
-
-`session-evaluator` remains a **post-hoc diagnostic** and, while the temporary semantic-eval experiment is active, runs once only when `code-orchestrator` reaches a terminal successful outcome about to be reported: the normalized session goal is satisfied or an owned PR candidate reaches final readiness. It classifies confirmed findings as:
-
-- `instruction-violation`
-- `instruction-ambiguity`
-- `instruction-gap`
-- `execution-error`
-- `justified`
-
-`unverified` is an evidence status, not a finding class, and does not require a failure classification. The evaluator proposes prompt changes only for confirmed reusable instruction ambiguities or gaps.
-
-Both roles reconstruct relevant OpenChamber session history with read-only `session.list` / `session.messages`, use exact parent/participating session IDs supplied by `code-orchestrator` before any discovery, and fall back to `session.list` only for missing identities or relationships needed by the material evidence boundary. They prefer child-session history over parent summaries and do not turn diagnostic output into task authority. `session-evaluator` ignores prior evaluator diagnoses as workflow evidence and uses `semantic-checkpoint` only as gate-control evidence (for example, whether a `hold` was obeyed), not as proof of the underlying requirement.
-
----
-
-## Startup and resumability
-
-For workflows covered by the root Startup rule, the active agent emits one compact context block before normal tool work:
-
-```md
-### Startup
-- Route: `<route>`
-- Mode: `<read-only | options | edit-capable | publication-capable>`
-- Summary: <one sentence>
-- Scope: <target + boundary>
-- Gated: `<no | yes>` — <reason>
-- Next: <next action/tool>
-```
-
-Startup is the only routine pre-tool narration. A material finding, blocker, or route/mode/scope change may use a compact `### Update`; ordinary tool use and completed substeps are not narrated. Final reports lead with the result and include only material evidence needed by the recipient.
-
-### GrayMatter memory
-
-GrayMatter is an optional external MCP integration and is not bundled. When present, it can restore unfinished work and durable project context; repository code/docs/history/tool output remain authoritative over recalled memory.
-
----
-
-## UI workflow and component intelligence
-
-Existing project components, tokens, and design patterns come first. When relevant and available, UI work can use existing project components, official shadcn sources, compatible registries, optional secondary MCP references, and manual implementation when no source fits.
-
-UI UX Pro Max (UUPM) is optional design intelligence, not a component source and not permission to introduce a new design system.
-
-Human-facing setup references:
+UI roles can use bundled component/source and framework-specific skills. Human setup notes are in:
 
 - [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md)
 - [`docs/uupm_setup.md`](docs/uupm_setup.md)
 
-These setup docs are not runtime policy and installers do not copy them into OpenCode configuration.
-
 ---
 
-## Bundled agents
+## External integrations
 
-| Agent | Role |
-|---|---|
-| `build` | Focused implementation; direct primary or delegated leaf |
-| `code-orchestrator` | Multi-step coding/PR/bug/release coordination; never implements itself |
-| `debugger` | Root-cause bugfix implementation |
-| `explore` | Read-only codebase discovery/call-path tracing |
-| `tester` | Independent verification; never fixes failures |
-| `reviewer` | Independent code/diff/PR/plan review |
-| `auditor` | Broad read-only project audit orchestrator |
-| `project-planner` | Architecture/persistent planning; may write authorized plan artifacts, never source implementation |
-| `semantic-checkpoint` | Experimental pre-mutation semantic gate for material candidate decisions after discovery |
-| `session-evaluator` | Experimental post-hoc audit of completed orchestrator sessions and child-agent calls against governing instructions |
-| `devops` | Runtime/CI/deploy diagnostics and authorized operational changes |
-| `general` | Read-only bounded fallback research when no specialist fits |
-| `ui-orchestrator` | UI workflow coordination; never implements itself |
-| `ui-auditor` | Read-only UI/UX audit |
-| `ui-planner` | Concrete UI implementation planning |
-| `ui-implementer` | Focused UI implementation |
-| `a11y-reviewer` | Independent accessibility/interaction review |
-
-**Count:** 17 agents. No bundled agent has a provider-specific `model:` override.
-
-The pack ships no custom slash commands. Natural-language routing is owned by `AGENTS.md`; use OpenCode's explicit agent selection when you intentionally want a specific role.
-
----
-
-## Skills and integrations
-
-### Bundled skills
-
-```text
-api-designer          cpp-pro                  git-provenance
-golang-pro            graymatter-memory        open-code-review
-open-code-review-delegate output-formatting     persistent-planning
-playwright-expert      pr-readiness             python-pro
-react-expert           resource-lifecycle       rust-engineer
-session-evidence       secure-code-guardian    typescript-pro
-ui-component-sources   ui-ux-pro-max           verification-strategy
-vue-expert
-```
-
-**Count:** 22 skills. Skills are conditional/procedural guidance and remain subordinate to root/project authority, role boundaries, and gates.
-
-### External integrations
-
-These external projects provide optional integrations or source material referenced by bundled skills/docs:
+These external projects provide optional integrations or source material referenced by bundled skills and documentation:
 
 - GrayMatter memory: https://github.com/angelnicolasc/graymatter
 - Alibaba `open-code-review`: https://github.com/alibaba/open-code-review
 - Jeffallan `claude-skills` source material: https://github.com/Jeffallan/claude-skills
 - UI UX Pro Max: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
 
+These links document provenance and optional integration surfaces; executable triggers and ownership remain in the relevant role/skill contracts.
+
 ---
 
 ## Prompt and evaluation design references
 
-The pack is model-agnostic. The links below are **design references**, not runtime dependencies or model-routing requirements. Vendor-specific advice is adopted only when it generalizes to the pack's goals and survives pack-specific regression checks.
+The pack is model-agnostic. These are design references rather than runtime dependencies or model-routing requirements. Vendor-specific guidance is adopted only when it generalizes to the pack's goals and survives pack-specific review/regression checks.
 
 ### OpenAI
 
@@ -304,19 +174,25 @@ The pack is model-agnostic. The links below are **design references**, not runti
 - GLM-5.3 agent engineering/evaluation: executable and verifiable long-horizon environments, separate verifier/judge signals, realistic end-to-end task completion: https://z.ai/blog/glm-5.3
 - GLM-5.3 engineering feedback loops: turn ambiguous observations into testable hypotheses and validate changes against correctness/stability/performance criteria: https://z.ai/blog/glm-built-its-inference-infrastructure
 
-These references change as models and harnesses evolve. Re-evaluate inherited prompt scaffolding against current models rather than treating old vendor advice as permanent doctrine.
+These references may evolve with models and harnesses; inherited scaffolding should be re-evaluated rather than treated as permanent doctrine.
 
 ---
 
-## Runtime references
+## Package contents
 
-These links document runtime surfaces used by the pack; they are separate from the prompt-design references above.
+### Agents
 
-- OpenCode agent definitions, modes, permissions, and child-session behavior: https://opencode.ai/v2/docs/agents
-- OpenChamber agent-tool control surface, including `session.list` and `session.messages`: https://github.com/openchamber/openchamber/blob/main/packages/web/server/lib/openchamber-control/actions.js
-- OpenChamber control-service/runtime documentation: https://github.com/openchamber/openchamber/blob/main/packages/web/server/lib/openchamber-control/DOCUMENTATION.md
+The pack contains 17 agents:
 
-The experimental `semantic-checkpoint` and `session-evaluator` roles depend on those OpenChamber read-only session actions being exposed to the active agent environment.
+`a11y-reviewer`, `auditor`, `build`, `code-orchestrator`, `debugger`, `devops`, `explore`, `general`, `project-planner`, `reviewer`, `semantic-checkpoint`, `session-evaluator`, `tester`, `ui-auditor`, `ui-implementer`, `ui-orchestrator`, `ui-planner`.
+
+### Skills
+
+The pack contains 22 bundled skills:
+
+`api-designer`, `cpp-pro`, `git-provenance`, `golang-pro`, `graymatter-memory`, `open-code-review`, `open-code-review-delegate`, `output-formatting`, `persistent-planning`, `playwright-expert`, `pr-readiness`, `python-pro`, `react-expert`, `resource-lifecycle`, `rust-engineer`, `secure-code-guardian`, `session-evidence`, `typescript-pro`, `ui-component-sources`, `ui-ux-pro-max`, `verification-strategy`, `vue-expert`.
+
+Specialist/advisory skills are discovered through the runtime/project-visible skill surface and loaded by the role that owns their integration.
 
 ---
 
@@ -334,7 +210,7 @@ Installs under `~/.config/opencode/`:
 - `agents/`
 - `skills/`
 
-The global installer backs up the existing root `AGENTS.md` and obsolete package-owned paths before removing them. It also backs up and removes the obsolete package-owned `tools/session_trace.js` when upgrading from v30.27-v30.29. Current agent/skill files are copied in place; use the project-local installer or your own config backup when you need a full pre-install snapshot. Package documentation is not copied into OpenCode runtime.
+The installer backs up/replaces only the package-owned runtime surfaces described by the script. Package documentation is not copied into OpenCode runtime.
 
 ### Project-local
 
@@ -350,77 +226,31 @@ Installs:
 - `.opencode/agents/`
 - `.opencode/skills/`
 
-The installer backs up existing runtime surfaces before copying the pack and removes only explicitly listed obsolete package-owned paths, including the old `.opencode/tools/session_trace.js` when present. It does not install custom commands, tools, snippets, or docs.
+The project installer backs up existing runtime surfaces before copying the pack and removes only explicitly listed obsolete package-owned paths.
 
 ---
 
 ## Documentation map
 
-| Document | Purpose |
+| If you need… | Read… |
 |---|---|
-| [`AGENTS.md`](AGENTS.md) | Canonical behavioral/workflow policy |
-| [`CHANGELOG.md`](CHANGELOG.md) | Release history and links to retained release notes |
-| [`docs/releases/v30.70-beta.md`](docs/releases/v30.70-beta.md) | Current release notes |
-| [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) | Method for turning developer guidance and traces into durable semantic rules |
-| [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) | Source → generalized rule → reverse-action preservation audit |
-| [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md) | Fresh-session end-to-end semantic transition replay suite |
-| [`docs/releases/v30.32-beta.md`](docs/releases/v30.32-beta.md) | Claim-authority clarification |
-| [`docs/releases/v30.27-beta.md`](docs/releases/v30.27-beta.md) | `session-evaluator` introduction and compatibility notes |
-| [`docs/ui_mcp_setup.md`](docs/ui_mcp_setup.md) | Human-facing UI component MCP setup |
-| [`docs/uupm_setup.md`](docs/uupm_setup.md) | Human-facing UI UX Pro Max setup |
+| The actual runtime/workflow policy | [`AGENTS.md`](AGENTS.md) |
+| How one agent performs its role | the matching file in [`agents/`](agents/) |
+| Conditional tool/framework/review procedures | the matching file in [`skills/`](skills/) |
+| How semantic rules and role contracts should be designed/audited | [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) |
+| Release notes | [`docs/releases/v30.73-beta.md`](docs/releases/v30.73-beta.md) |
+| Release history | [`CHANGELOG.md`](CHANGELOG.md) |
+| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.73.md`](docs/contract-protocol-audit-v30.73.md) |
+| Semantic transition scenarios | [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md) |
+| Source-to-generalized-rule preservation method | [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) |
 
----
-
-## Release validation
-
-A release archive should verify at least:
-
-- exactly **17 agents**, **22 skills**, zero package custom commands, and zero package custom tools;
-- valid agent frontmatter and no provider-specific `model:` overrides;
-- every current role reference resolves and obsolete package-owned `plan.md` does not remain active after upgrade;
-- root stays below the pack's `<50 KiB` target;
-- run `python evals/contract-protocol-selftest.py` first; the audit criteria must reject synthetic thin-role and contaminated-handoff fixtures without depending on current-pack wording;
-- run `python evals/contract-protocol-audit.py`; every routed substantive role must have an executable role-local contract and every producer → transformer → consumer edge must compose without authority/proof/recipe laundering; unresolved findings keep promotion red;
-- run `python evals/run-release-gates.py` as the aggregate structural/contract gate; do not add candidate-specific waivers merely to recover PASS;
-- run a **fresh semantic prompt audit** over root `AGENTS.md` and every agent file as one corpus:
-  - each standing instruction must still prevent a concrete failure mode or encode a current product/workflow requirement;
-  - remove semantic duplicates, stale model-era scaffolding, unnecessary verification/subagent rituals, role↔root restatements, release-validation or “what did not change” narration in runtime prompts, and workaround rules whose cause no longer exists;
-  - retain a local reminder only when salience at that decision point materially reduces a known failure mode;
-  - after any prompt change, rerun semantic invariant checks that test the general rules rather than incident-specific wording;
-  - build a cross-layer ownership map for material state machines/procedures and verify root/roles/skills reference one owner instead of restating the same sequence;
-  - check gating consistency: diagnostic/non-gating instrumentation must remain non-gating when invocation is unavailable and must not inherit generic required-stage blocker semantics;
-  - scan semantic role prompts for provider/API/CLI mechanics that should live in a conditional skill/runtime adapter rather than the role itself;
-  - triage findings by ownership/provenance before changing anything: pack-owned policy/integration, external/vendor skill content, project-local policy, and historical documentation are different surfaces;
-  - audit literal semantic state/value vocabulary: each such literal must be a pack-defined semantic class/enum or an exact external value whose representation is contractual; otherwise express the underlying meaning and verify the rule still works if incidental local labels are renamed;
-  - verify reviewer depth is derived from actual candidate effects rather than issue framing alone; materially changed high-risk boundaries remain in review scope without creating implementation authority;
-  - for reviewer guard/classifier logic, require meaningful counterexamples on both material classification sides when applicable, and for changed work under contended critical resources trace reachable latency-bearing work plus qualitative fan-out/cardinality;
-  - treat an explicitly selected implementation mechanism as a proposition-scoped constraint rather than correctness evidence; reviewer still reports unaccepted correctness, regression, fix-level, maintainability, security, and performance/resource consequences, while separately accepted tradeoffs stay bounded to their exact accepted envelope;
-  - review material performance/resource regressions on performance-sensitive changed paths relative to Base or established expectations without inventing budgets or requiring benchmarks by ritual;
-  - for reconstruction/reconciliation of shared state, review relevant mutator composition and distinguish intentional state from accidental absence when material; for claimed fallback/recovery behavior, establish that representative supported inputs can actually reach the fallback through earlier guards/transformations/failure points;
-- agent/skill/install surfaces match the release manifest and unexpected runtime files are not introduced;
-- subagent session continuity follows assignment continuity: new specialist assignments/independent judgments use fresh child sessions, while continuation is explicit and limited to the same specialist-owned workstream;
-- `semantic-checkpoint` remains read-only/non-implementing, gates only material pre-mutation semantic decisions, runs each verdict in a fresh child session, and does not classify instruction failures or require post-mutation proof before edits;
-- `code-orchestrator` treats `proceed` as candidate-specific authorization, preserves optional mechanisms as implementation choices, keeps `hold`/`unverified` blocked until their stated blockers are materially addressed, does not re-run an unchanged blocked candidate for verdict-shopping, and never continues a prior checkpoint child for a new verdict;
-- `session-evaluator` remains post-hoc/diagnostic, uses only OpenChamber `session.list`/`session.messages`, consumes supplied parent/participating session IDs before fallback discovery, keeps `unverified` separate from finding classes, treats checkpoint verdicts only as gate-control evidence, and audits the original decision path independently;
-- session-aware delegated judgments do not enumerate the project merely to rediscover supplied session identities; `session.list` remains fallback only for missing identities/relationships, while OpenChamber pagination defects remain runtime defects rather than prompts for broader semantic crawling;
-- when a material user response cannot be retrieved by downstream semantic roles, the orchestrator preserves an exact contemporaneous provenance receipt before dependent handoff; downstream retrieval treats it as evidence of the interaction, not as authority created by the receipt or by a later paraphrase;
-- run the **end-to-end semantic transition trace suite** from `evals/semantic-transition-traces.md` in an isolated/fresh evaluation context: trace each material proposition across the complete applicable workflow, identify every semantic delta, record why it changed and the source/cause, and require sufficient authority/evidence for that exact transition;
-- the trace suite includes both adversarial and preservation cases, including synthetic regressions derived from real failure classes without repository-, incident-, provider-, or UI-specific details; existence/static inspection of the eval file does not count as a replay pass;
-- an executable semantic replay runner records policy/runtime identity as trace metadata (`pack_version`, package/root hashes, scenario ID, model/runtime identity) rather than adding it to user-visible Startup;
-- Startup/update/final communication remains compact: no duplicate prose plan around Startup, no routine tool narration, and no empty/repeated report sections;
-- the semantic design manual remains documentation rather than runtime policy, and its source-preservation audit still derives the tracked developer actions after abstraction;
-- all pack-owned agent frontmatter uses the declared OpenCode V2 `permissions` rule schema with V2 action names; schema migration must preserve the existing permission-policy intent unless a separate policy change is explicitly authorized;
-- `python evals/static-policy-regressions.py` passes only as a structural/retention guard; it cannot substitute for the contract/protocol audit or fresh isolated semantic-transition replay;
-- installer scripts pass `bash -n`, preserve unrelated user/project files, and match their documented backup/overwrite behavior;
-- external/setup docs remain documentation only and are not required runtime policy;
-- vendored/adapted skill content retains source/license attribution;
-- archive extraction is safe and the roundtrip manifest matches the working tree.
+Release validation is defined in **§21 of [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md)**.
 
 ---
 
 <div align="center">
 
-**OpenCode Agent Pack v30.70 beta**  
-Semantic routing · bounded orchestration · evidence-grounded verification
+**OpenCode Agent Pack v30.73 beta**  
+Workflow-owner first · bounded specialist delegation · canonical policy lives outside README
 
 </div>

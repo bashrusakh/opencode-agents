@@ -1,5 +1,38 @@
 # Changelog
 
+## v30.73 beta
+
+README provenance restoration:
+
+- restores `External integrations` links for external projects used by bundled skills/docs;
+- restores `Prompt and evaluation design references` for OpenAI, Anthropic, DeepSeek, and Z.ai/GLM sources used to shape the pack;
+- keeps README as a usage/navigation/provenance surface rather than duplicating runtime policy;
+- intentionally does not restore the former `Runtime references` section;
+- runtime agents, skills, and workflow semantics remain those of v30.72.
+
+See [`docs/releases/v30.73-beta.md`](docs/releases/v30.73-beta.md).
+
+## v30.72 beta
+
+README current-state cleanup:
+
+- removes the bottom `Current release` changelog-style section from README;
+- removes release-delta/meta wording from README so it describes current package usage rather than what changed from the previous version;
+- keeps release history and release-specific validation in `CHANGELOG.md` and `docs/releases/`;
+- runtime agents, skills, and workflow semantics remain those of v30.71.
+
+See [`docs/releases/v30.72-beta.md`](docs/releases/v30.72-beta.md).
+
+## v30.71 beta
+
+- Rebuilds README as a usage/navigation map rather than a second workflow policy.
+- Makes `code-orchestrator` explicit as the main top-level owner for multi-step coding/PR/bug/release workflows and separates entry owners from delegated specialists.
+- Removes duplicated Startup, PR lifecycle, verification cadence, semantic-role procedure, and release-validation policy from README; canonical details remain in `AGENTS.md`, role/skill contracts, and the semantic-design manual.
+- Runtime agents/skills are unchanged from v30.70; root semantic policy is unchanged apart from the version marker.
+- Makes the README current-release static guard layout-agnostic so it verifies the active release-note link rather than one historical table rendering.
+
+See [`docs/releases/v30.71-beta.md`](docs/releases/v30.71-beta.md).
+
 ## v30.70 beta
 
 - Adds role lifecycle requalification to the existing semantic-design manual: topology/mode/caller expansion, substantive ownership transfer, and advisory→mutation/verdict changes invalidate inherited role PASS and require fresh role/edge audit.

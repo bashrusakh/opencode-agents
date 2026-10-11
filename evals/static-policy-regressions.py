@@ -57,8 +57,9 @@ if version_match:
         "CHANGELOG.md: current release heading drift from AGENTS.md",
     )
     release_slug = pack_version.replace(" beta", "-beta").replace(".", ".")
+    current_release_link = f"docs/releases/{release_slug}.md"
     check(
-        f"[`docs/releases/{release_slug}.md`](docs/releases/{release_slug}.md) | Current release notes" in readme_sem,
+        current_release_link in readme_sem,
         "README.md: current release-notes link drift from AGENTS.md",
     )
     check(
