@@ -288,6 +288,27 @@ The audit question is not “is this prompt long enough?” It is:
 
 If not, treat that as a role-contract gap even when another role later catches the mistake.
 
+### Role contract semantic shape
+
+Standardize substantive role contracts by **semantic function**, not by mandatory Markdown headings or prompt length. A reviewer should be able to point to one primary locus for each of these functions:
+
+1. **Ownership** — what capability/stage the role owns, what it does not own, and which adjacent-role boundary matters.
+2. **Invocation** — what a valid assignment means for this role: target/state/mode/action ceiling plus which incoming items are authority, constraints, evidence, or hypotheses when material.
+3. **Method** — the characteristic role-owned action/decision loop, including the profile-specific false-success/adversarial defense needed to avoid the first plausible but wrong completion.
+4. **Boundaries** — stop/blocker/escalation/reroute behavior, unavailable-evidence handling, and conditions under which the role must not absorb another stage.
+5. **Result** — what the returned output proves, its target/evidence/coverage limits, what remains partial/unknown, and what the caller may safely infer.
+
+The preferred reading order is roughly `Ownership → Invocation → Method → Boundaries → Result`, after the shared contract. This is a semantic shape, **not a five-heading template**:
+
+- a simple role may combine Invocation or Boundaries with Role/Method when the primary locus remains obvious;
+- an orchestrator may split Method across routing, workflow, evidence, and escalation sections;
+- a verdict role may place target identity/evidence preconditions in a dedicated section instead of naming it `Invocation contract`;
+- do not add a summary/restatement merely to make all five labels appear. Duplicate wording is justified only when decision-point salience prevents a concrete failure mode.
+
+Standardization therefore asks two questions together: **is every semantic function present and easy to locate, and is each function expressed once at its strongest owner rather than copied for cosmetic uniformity?** A role can fail this shape despite having the expected headings, and can pass it without those headings when the functions are unambiguous.
+
+When creating or materially revising a role, use this shape before polishing wording. When auditing an existing role, prefer moving/merging existing semantics only when the current placement obscures ownership or execution; do not churn an already clear role solely for heading consistency.
+
 ### Role lifecycle requalification
 
 A prior PASS does not automatically survive a topology or ownership change. Re-run the role-executability and relevant handoff-interface tests whenever a change does any of the following:
@@ -899,6 +920,7 @@ Before shipping a prompt/harness semantic change, verify:
 - [ ] The rule has one canonical owner **across the full root → role → skill/runtime graph**, not merely within each file; consumers activate/reference the owner instead of restating its state machine or procedure.
 - [ ] Every real caller→callee edge satisfies the callee invocation contract: required target/state/mode/action/evidence inputs are supplied, caller-originated solutions remain hypotheses unless authoritative, and deleting an edge-specific handoff guard makes an edge-level regression test fail even if both roles still pass individually.
 - [ ] Every routed substantive role passes the role-executability test: shared/root policy may own common semantics, but the role itself contains enough role-owned procedure, profile-specific core loop, conditional decision logic, evidence/self-check, stop/escalation behavior, and result semantics to perform the delegated stage. Generic keywords alone are insufficient; prompt size is diagnostic only. `FAIL` and `REVIEW` follow semantic executability/severity, and PASS requires a characteristic false-success/adversarial defense in addition to the core loop.
+- [ ] Every substantive role is readable through the semantic shape `Ownership → Invocation → Method → Boundaries → Result`: each function has one clear primary locus, merged/specialized sections are allowed, and no duplicate summary is added merely to satisfy a heading/template.
 - [ ] Any role-topology/ownership change (new caller, `mode`/delegability expansion, responsibility/proof transfer, advisory→mutation/verdict transition) re-runs role qualification; an earlier PASS is not inherited merely because the role file itself was unchanged.
 - [ ] Any deduplication/compaction or canonical-owner move that removes procedural wording passes the method-preservation test: the receiving role still has an executable role-local algorithm, false-success defense, evidence threshold, stop/escalation, and result semantics after the deletion.
 - [ ] Every material producer → parent/transformation → consumer handoff is audited as one interface; individually valid files do not count as composition proof.

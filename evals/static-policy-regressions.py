@@ -458,9 +458,9 @@ contract_audit = text("evals/contract-protocol-audit.py")
 contract_spec = text("evals/contract-protocol-spec.json")
 contract_selftest = text("evals/contract-protocol-selftest.py")
 release_gates = text("evals/run-release-gates.py")
-check("role-local executable method" in contract_spec and "producer output, parent transformation, consumer input" in contract_spec and "Keyword presence" in contract_spec, "contract/protocol spec missing v2 adversarial audit principles")
+check("role-local executable method" in contract_spec and "Ownership -> Invocation -> Method -> Boundaries -> Result" in contract_spec and "producer output, parent transformation, consumer input" in contract_spec and "Keyword presence" in contract_spec, "contract/protocol spec missing semantic-shape/adversarial audit principles")
 check("CONTRACT / PROTOCOL AUDIT v3" in contract_audit and "missing essential profile core-loop capabilities" in contract_audit and "REVIEW is intentionally release-blocking" in contract_audit and "Prompt length is diagnostic only" in contract_audit, "contract audit v3 severity/core-loop/review gate missing")
-check("keyword-stuffed implementation role was not rejected" in contract_selftest and "thin ops role without diagnostic isolation" in contract_selftest and "compact executable discovery role" in contract_selftest and "audit orchestrator missing only reconciliation" in contract_selftest and "producer-side implementation certification" in contract_selftest and "new role without executable-contract audit profile did not block release" in contract_selftest and "stale role profile did not block release" in contract_selftest, "contract audit v3 synthetic anti-gaming/severity/lifecycle selftests missing")
+check("keyword-stuffed implementation role was not rejected" in contract_selftest and "thin ops role without diagnostic isolation" in contract_selftest and "five-heading shell without executable implementation method was not rejected" in contract_selftest and "compact executable discovery role" in contract_selftest and "without five standardized headings" in contract_selftest and "audit orchestrator missing only reconciliation" in contract_selftest and "producer-side implementation certification" in contract_selftest and "new role without executable-contract audit profile did not block release" in contract_selftest and "stale role profile did not block release" in contract_selftest, "contract audit v3 synthetic anti-gaming/severity/lifecycle/semantic-shape selftests missing")
 edge_audit = text("evals/role-handoff-audit.py")
 edge_selftest = text("evals/role-handoff-selftest.py")
 release_gates = text("evals/run-release-gates.py")
@@ -469,18 +469,19 @@ check("recipe-shaped devops handoff not rejected" in edge_selftest and "unbound 
 check("role-handoff selftest" in release_gates and "role-handoff edge audit" in release_gates, "release gate runner missing role-handoff checks")
 check("unresolved findings must not be waived merely to obtain PASS" in release_gates, "release gate aggregator may waive unresolved contract findings")
 check("Role lifecycle requalification" in text("docs/semantic-design-manual.md") and "method-preservation test" in text("docs/semantic-design-manual.md") and "closed-world discovered handoff inventory" in text("docs/semantic-design-manual.md"), "semantic-design manual missing role lifecycle/method-preservation/closed-world edge audit")
+check("Role contract semantic shape" in text("docs/semantic-design-manual.md") and "Ownership → Invocation → Method → Boundaries → Result" in text("docs/semantic-design-manual.md") and "not a five-heading template" in text("docs/semantic-design-manual.md"), "semantic-design manual missing semantic role-contract shape / anti-template rule")
 
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 63, "semantic-transition suite must contain 63 cases")
+check(traces.count("### ST-") == 64, "semantic-transition suite must contain 64 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 63, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 64, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -706,6 +707,12 @@ check(
     and "unknown relation fails" in traces.lower()
     and "stale classification fails" in traces.lower(),
     "ST-63 closed-world edge inventory regression missing",
+)
+check(
+    "role-contract standardization must preserve semantic function rather than enforce heading uniformity" in traces.lower()
+    and "five semantic functions" in traces.lower()
+    and "heading/template conformity substitutes for semantic executability" in traces.lower(),
+    "ST-64 semantic-shape/anti-template regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | unverified`" in traces,

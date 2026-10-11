@@ -1307,6 +1307,25 @@ A coarse checker maps every missing dimension to the same status. That either un
 **Expected result:** fail if a new edge is implicit PASS, if stale classifications silently accumulate, or if topology classification is treated as semantic compatibility proof; pass when discovery and classification are exact and material edges are separately validated.
 
 
+---
+
+### ST-64 — Role-contract standardization must preserve semantic function rather than enforce heading uniformity
+
+**Initial user/spec fixture:** Two routed roles provide the same five semantic functions: ownership, invocation meaning, characteristic method, stop/escalation boundaries, and result semantics. One uses five explicit headings; the other is a compact role whose Role/Workflow/Result sections combine those functions unambiguously.
+
+**Runtime/repository fixture:** A style cleanup proposes forcing every role into the same five Markdown headings and adding summary text where a function is already clear.
+
+**Injected intermediate output:** The cleanup claims the explicit-heading role is more compliant solely because its section names match the preferred shape.
+
+**Expected earliest observable stop/preservation point:** Semantic role-contract audit before prompt mutation.
+
+**Scenario:** Structural uniformity can create semantic duplicates, unnecessary prompt churn, and new drift without improving role executability. Conversely, a role can carry the right headings while the Method is only a checklist/label and no executable core loop exists.
+
+**Expected trace:** audit the five semantic functions, identify one primary locus for each, accept merged/specialized sections when meaning is unambiguous, reject missing/non-executable functions regardless of headings, and change layout only when current placement obscures ownership/execution or duplicates another owner.
+
+**Expected result:** fail if heading/template conformity substitutes for semantic executability or if cosmetic standardization adds duplicate policy; pass when the semantic shape is clear without requiring identical Markdown structure.
+
+
 ## Grading
 
 For each case record:

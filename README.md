@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.73 beta
+# OpenCode Agent Pack v30.75 beta
 
 ### Model-agnostic routing · explicit workflow owners · bounded specialist delegation · evidence-grounded verification
 
@@ -17,13 +17,11 @@
 
 This repository is an OpenCode agent pack with:
 
-- a canonical workflow policy in [`AGENTS.md`](AGENTS.md);
+- shared workflow policy;
 - 17 role contracts in [`agents/`](agents/);
 - 22 conditional skills in [`skills/`](skills/);
 - semantic/contract release gates in [`evals/`](evals/);
 - design methodology and release evidence in [`docs/`](docs/).
-
-README is the usage and navigation map. Canonical workflow rules live in [`AGENTS.md`](AGENTS.md), role contracts, and skill contracts.
 
 ---
 
@@ -43,7 +41,7 @@ Choose a different top-level workflow owner when the task is intentionally narro
 | Produce an architecture/multi-file/deployment implementation plan | `project-planner` | `all` |
 | Coordinate UI/UX analysis, planning, and implementation | `ui-orchestrator` | `all` |
 
-OpenCode execution topology and the exact entry/delegation rules live in [`AGENTS.md`](AGENTS.md). `mode: all` means a role may be top-level or delegated subject to its own contract; it does not make every role interchangeable.
+`mode: all` means a role may be top-level or delegated subject to its own contract; it does not make every role interchangeable.
 
 ### Typical topology
 
@@ -101,9 +99,6 @@ The exact invocation contract for each role is in its file under [`agents/`](age
 | [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) | Method for designing, auditing, and releasing semantic prompt/role changes |
 | [`evals/`](evals/) | Structural, role-contract, handoff-protocol, and semantic-transition regression machinery |
 | [`docs/releases/`](docs/releases/) | Release-specific explanation and retained historical evidence |
-| `README.md` | Human-facing usage/navigation map only |
-
-A role may operationalize shared policy in its own execution contract; canonical workflow semantics remain outside README.
 
 ---
 
@@ -120,7 +115,7 @@ These are reviewer-owned specialist skills, not general workflow skills. See [`a
 
 ### Persistent planning
 
-`project-planner` can use the bundled `persistent-planning` skill when durable planning is actually needed. The exact trigger and persistence policy are canonical elsewhere; README only identifies the capability.
+`project-planner` can use the bundled `persistent-planning` skill when durable planning is actually needed. See the role and skill contracts for its trigger and persistence procedure.
 
 ### UI component intelligence
 
@@ -140,7 +135,7 @@ These external projects provide optional integrations or source material referen
 - Jeffallan `claude-skills` source material: https://github.com/Jeffallan/claude-skills
 - UI UX Pro Max: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
 
-These links document provenance and optional integration surfaces; executable triggers and ownership remain in the relevant role/skill contracts.
+These links document provenance and optional integration surfaces.
 
 ---
 
@@ -230,17 +225,13 @@ The project installer backs up existing runtime surfaces before copying the pack
 
 ---
 
-## Documentation map
+## Release and design references
 
 | If you need… | Read… |
 |---|---|
-| The actual runtime/workflow policy | [`AGENTS.md`](AGENTS.md) |
-| How one agent performs its role | the matching file in [`agents/`](agents/) |
-| Conditional tool/framework/review procedures | the matching file in [`skills/`](skills/) |
-| How semantic rules and role contracts should be designed/audited | [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) |
-| Release notes | [`docs/releases/v30.73-beta.md`](docs/releases/v30.73-beta.md) |
+| Release notes | [`docs/releases/v30.75-beta.md`](docs/releases/v30.75-beta.md) |
 | Release history | [`CHANGELOG.md`](CHANGELOG.md) |
-| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.73.md`](docs/contract-protocol-audit-v30.73.md) |
+| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.75.md`](docs/contract-protocol-audit-v30.75.md) |
 | Semantic transition scenarios | [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md) |
 | Source-to-generalized-rule preservation method | [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) |
 
@@ -250,7 +241,7 @@ Release validation is defined in **§21 of [`docs/semantic-design-manual.md`](do
 
 <div align="center">
 
-**OpenCode Agent Pack v30.73 beta**  
-Workflow-owner first · bounded specialist delegation · canonical policy lives outside README
+**OpenCode Agent Pack v30.75 beta**  
+Workflow-owner first · bounded specialist delegation · evidence-grounded verification
 
 </div>

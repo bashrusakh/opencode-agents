@@ -6,7 +6,8 @@ The fixtures deliberately avoid current-pack wording. They test properties:
 - a compact but genuinely executable role can pass (no size quota);
 - a mutation role without its characteristic diagnostic core loop fails;
 - an executable audit-orchestrator with missing reconciliation is REVIEW, not FAIL;
-- producer-side recipe contamination is rejected.
+- producer-side recipe contamination is rejected;
+- semantic role-contract shape is enforced by function, not by five matching headings.
 """
 from __future__ import annotations
 import importlib.util
@@ -60,6 +61,24 @@ check(a.status == "FAIL", "thin ops role without diagnostic isolation was not re
 check(any("isolate_before_mutation" in f for f in a.findings),
       "ops role did not fail on missing diagnostic isolation core loop")
 
+
+# Heading-perfect shell: the preferred semantic shape is not a five-heading template.
+# Matching labels cannot compensate for a missing executable method/core loop.
+heading_shell = """
+## Role
+Own implementation work.
+## Invocation contract
+Receive scope and evidence.
+## Method
+Implement the change.
+## Boundaries
+Stop when blocked.
+## Result
+Return the result.
+"""
+a = audit("fake-heading-shell", "implementation", heading_shell)
+check(a.status == "FAIL", "five-heading shell without executable implementation method was not rejected")
+
 # Compact discovery role: intentionally short, but it contains an actual search/trace
 # method, decision rules, evidence discipline, bounded stop/handoff and result contract.
 compact_discovery = """
@@ -75,7 +94,7 @@ Answer the bounded repository-discovery question without editing anything.
 Return exact paths/symbols, supported findings, relevant call/data-flow links, unknowns, and the next role when needed.
 """
 a = audit("fake-explore", "discovery", compact_discovery)
-check(a.status == "PASS", f"compact executable discovery role should PASS regardless of size: {a.status} {a.findings} {a.review_reasons}")
+check(a.status == "PASS", f"compact executable discovery role should PASS without five standardized headings: {a.status} {a.findings} {a.review_reasons}")
 check(not a.findings and not a.review_reasons, f"compact discovery role has unexpected findings: {a.findings} {a.review_reasons}")
 
 complete_ops = """

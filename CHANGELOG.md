@@ -1,5 +1,30 @@
 # Changelog
 
+## v30.75 beta
+
+README navigation deduplication:
+
+- removes repeated explanations that `AGENTS.md` is the canonical workflow-policy surface from `What this pack is`, `Start here`, the documentation map, and footer;
+- removes the meta sentence `README is the usage and navigation map` and related narration about policy living outside README;
+- keeps a single ownership/navigation table under `Where the rules live`;
+- narrows the bottom documentation table to release/design evidence instead of repeating the runtime-policy/agent/skill map;
+- preserves `AGENTS.md` mentions that are operational rather than architectural duplication: install paths and the title of an external reference;
+- runtime agent/skill contracts and workflow semantics remain unchanged from v30.74.
+
+See [`docs/releases/v30.75-beta.md`](docs/releases/v30.75-beta.md) and [`docs/contract-protocol-audit-v30.75.md`](docs/contract-protocol-audit-v30.75.md).
+
+## v30.74 beta
+
+Role-contract semantic-shape standardization:
+
+- standardizes substantive role contracts by semantic function — `Ownership → Invocation → Method → Boundaries → Result` — without imposing identical Markdown headings or prompt length;
+- audits all 17 current roles against that shape and finds no runtime rewrite necessary: each function already has a clear primary locus;
+- adds ST-64 so heading/template conformity cannot substitute for executable role semantics and cosmetic standardization cannot justify duplicate policy;
+- records a deferred `librarian` / external-technical-evidence capability TODO for future design, without adding a runtime role in this release;
+- runtime agent and skill contracts remain unchanged from v30.73.
+
+See [`docs/releases/v30.74-beta.md`](docs/releases/v30.74-beta.md) and [`docs/contract-protocol-audit-v30.74.md`](docs/contract-protocol-audit-v30.74.md).
+
 ## v30.73 beta
 
 README provenance restoration:
