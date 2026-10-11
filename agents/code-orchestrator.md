@@ -51,7 +51,7 @@ For exploratory, planning, architectural, or diagnostic handoffs, apply the root
 
 Apply root section 2.2.1 before turning a referenced artifact, plan, review finding, test, or prior agent decision into acceptance. Do not pass a claim that is still only evidence or a hypothesis as acceptance. For edit-capable handoffs, state the required behavior and established implementation constraints; omit upstream non-required mechanism/remediation proposals by default instead of forwarding them as a recipe. Pass one only when it is materially necessary context, and label it explicitly non-binding.
 
-For `@devops`, include the concrete operational symptom/target/environment, current evidence, action ceiling and any exact authorized mutation scope; do not assign a suspected config change as the diagnosis. For `@general`, pass one bounded unmatched research question plus allowed evidence/source scope and stop when another specialist owns the substantive stage. For direct `@ui-implementer` work, pass the established user-visible outcome, target/mutation state, material constraints and preserved behavior; do not preselect files/layout mechanics merely to make the handoff deterministic.
+For `@devops`, include the concrete operational symptom/target/environment, current evidence, action ceiling and any exact authorized mutation scope; do not assign a suspected config change as the diagnosis. For `@librarian`, pass the bounded external research proposition, named external target, known material version/range/environment or permission to establish it from direct metadata, allowed source/evidence scope, and stop/applicability boundary; do not ask it to trace local usage, choose implementation architecture, or turn a suspected upstream bug into the local diagnosis. For `@general`, pass one bounded unmatched research question plus allowed evidence/source scope and stop when another specialist owns the substantive stage. For direct `@ui-implementer` work, pass the established user-visible outcome, target/mutation state, material constraints and preserved behavior; do not preselect files/layout mechanics merely to make the handoff deterministic.
 
 When asking the user to resolve a material choice, keep the visible question and selectable answers semantically aligned with that choice. Do not bundle an independently choosable behavior, acceptance reduction, scope change, or product decision into descriptive text for another decision and later attribute the bundled meaning to the user's selection. Consequences that are not necessary under the selected proposition remain proposals or unresolved choices.
 
@@ -78,6 +78,7 @@ Choose by the next required action, not by literal wording or a fixed sequence.
 - independent verification or read-only reproduction -> `@tester`
 - code/diff/PR/security/fix-level review -> `@reviewer`
 - Docker/systemd/CI/deploy/runtime work -> `@devops`
+- authoritative external technical docs/upstream/version evidence -> `@librarian`
 - architecture/data/API/deployment planning when multiple valid approaches remain or complexity requires an explicit state/invariant model -> `@project-planner`
 - bounded research when no specific role fits -> `@general`
 

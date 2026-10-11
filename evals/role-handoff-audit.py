@@ -38,6 +38,7 @@ EDGE_CLASSIFICATION = {
     ('root','devops'): 'routing_policy',
     ('root','explore'): 'routing_policy',
     ('root','general'): 'routing_policy',
+    ('root','librarian'): 'routing_policy',
     ('root','project-planner'): 'routing_policy',
     ('root','reviewer'): 'routing_policy',
     ('root','session-evaluator'): 'routing_policy',
@@ -49,6 +50,7 @@ EDGE_CLASSIFICATION = {
     ('auditor','devops'): 'delegation',
     ('auditor','explore'): 'delegation',
     ('auditor','general'): 'delegation',
+    ('auditor','librarian'): 'delegation',
     ('auditor','reviewer'): 'delegation',
     ('auditor','tester'): 'delegation',
     ('auditor','ui-auditor'): 'delegation',
@@ -62,6 +64,7 @@ EDGE_CLASSIFICATION = {
     ('code-orchestrator','devops'): 'delegation',
     ('code-orchestrator','explore'): 'delegation',
     ('code-orchestrator','general'): 'delegation',
+    ('code-orchestrator','librarian'): 'delegation',
     ('code-orchestrator','project-planner'): 'delegation',
     ('code-orchestrator','reviewer'): 'delegation',
     ('code-orchestrator','semantic-checkpoint'): 'delegation',
@@ -130,6 +133,10 @@ EDGE = {
  ('code-orchestrator','general'): [
    [r'bounded .*research question|one bounded .*question'], [r'evidence/source scope|source scope|allowed evidence'], [r'specialist owns|another specialist|stop'],
  ],
+ ('code-orchestrator','librarian'): [
+   [r'bounded external research proposition'], [r'named external target'], [r'version/range/environment|material version'],
+   [r'allowed source/evidence scope'], [r'stop/applicability boundary'], [r'do not ask .*trace local usage|do not .*local diagnosis'],
+ ],
  ('code-orchestrator','ui-implementer'): [
    [r'established user-visible outcome'], [r'target/mutation state|target.*state'], [r'material constraints'], [r'preserved behavior'],
    [r'do not preselect .*layout|do not preselect .*files|omit .*mechanism'],
@@ -152,6 +159,7 @@ EDGE = {
  ],
  ('auditor','devops'): [[r'@devops'], [r'action ceiling read-only|set the action ceiling read-only']],
  ('auditor','general'): [[r'@general'], [r'one bounded research question'], [r'does not replace .*specialist stage']],
+ ('auditor','librarian'): [[r'@librarian'], [r'exact external technical proposition'], [r'named external target'], [r'version/range/environment|material version'], [r'allowed source/evidence scope'], [r'applicability/coverage boundary'], [r'not itself an audit finding|not .*project requirement|not .*local root cause']],
  ('auditor','independent-judgment'): [[r'independent reviewer/a11y'], [r'fresh judgment-context isolation|judgment-context isolation']],
 }
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.75
+# OpenCode Agent Pack v30.77 beta
 
 ### Model-agnostic routing · explicit workflow owners · bounded specialist delegation · evidence-grounded verification
 
@@ -18,7 +18,7 @@
 This repository is an OpenCode agent pack with:
 
 - shared workflow policy;
-- 17 role contracts in [`agents/`](agents/);
+- 18 role contracts in [`agents/`](agents/);
 - 22 conditional skills in [`skills/`](skills/);
 - semantic/contract release gates in [`evals/`](evals/);
 - design methodology and release evidence in [`docs/`](docs/).
@@ -39,6 +39,7 @@ Choose a different top-level workflow owner when the task is intentionally narro
 | Make one already-bounded code/config/tests/docs change | `build` | `all` |
 | Run a broad read-only repository audit | `auditor` | `primary` |
 | Produce an architecture/multi-file/deployment implementation plan | `project-planner` | `all` |
+| Establish a bounded external technical docs/upstream/version fact | `librarian` | `all` |
 | Coordinate UI/UX analysis, planning, and implementation | `ui-orchestrator` | `all` |
 
 `mode: all` means a role may be top-level or delegated subject to its own contract; it does not make every role interchangeable.
@@ -53,6 +54,7 @@ workflow owner
   ├─ build
   ├─ auditor
   ├─ project-planner
+  ├─ librarian
   └─ ui-orchestrator
         ↓
   bounded specialist stage(s)
@@ -68,10 +70,14 @@ The workflow owner decides which specialist stage is needed. Users normally do n
 
 ## Delegated specialists
 
-These roles normally own bounded stages inside a larger workflow rather than the overall user task:
+These roles can own bounded delegated stages inside a larger workflow. A `mode: all` role may also be selected directly for the narrower top-level task described above; delegation does not change its role contract.
 
 | Role | What it is for | Mode |
 |---|---|---|
+| `build` | Bounded implementation of an already-established non-UI code/config/tests/docs outcome | `all` |
+| `project-planner` | Architecture, sequencing, state/invariant modeling, and implementation planning | `all` |
+| `librarian` | Read-only authoritative external technical docs/upstream/version evidence | `all` |
+| `ui-orchestrator` | Bounded coordination of a delegated UI/UX subworkflow | `all` |
 | `explore` | Read-only codebase discovery, symbol/call-path tracing, existing-pattern lookup | `subagent` |
 | `debugger` | Confirmed failures requiring root-cause diagnosis and a right-level bug fix | `subagent` |
 | `tester` | Independent reproduction, tests/builds/smoke checks, preserved-behavior evidence | `subagent` |
@@ -177,9 +183,9 @@ These references may evolve with models and harnesses; inherited scaffolding sho
 
 ### Agents
 
-The pack contains 17 agents:
+The pack contains 18 agents:
 
-`a11y-reviewer`, `auditor`, `build`, `code-orchestrator`, `debugger`, `devops`, `explore`, `general`, `project-planner`, `reviewer`, `semantic-checkpoint`, `session-evaluator`, `tester`, `ui-auditor`, `ui-implementer`, `ui-orchestrator`, `ui-planner`.
+`a11y-reviewer`, `auditor`, `build`, `code-orchestrator`, `debugger`, `devops`, `explore`, `general`, `librarian`, `project-planner`, `reviewer`, `semantic-checkpoint`, `session-evaluator`, `tester`, `ui-auditor`, `ui-implementer`, `ui-orchestrator`, `ui-planner`.
 
 ### Skills
 
@@ -229,9 +235,9 @@ The project installer backs up existing runtime surfaces before copying the pack
 
 | If you need… | Read… |
 |---|---|
-| Release notes | [`docs/releases/v30.75.md`](docs/releases/v30.75.md) |
+| Release notes | [`docs/releases/v30.77-beta.md`](docs/releases/v30.77-beta.md) |
 | Release history | [`CHANGELOG.md`](CHANGELOG.md) |
-| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.75.md`](docs/contract-protocol-audit-v30.75.md) |
+| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.77.md`](docs/contract-protocol-audit-v30.77.md) |
 | Semantic transition scenarios | [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md) |
 | Source-to-generalized-rule preservation method | [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) |
 
@@ -241,7 +247,7 @@ Release validation is defined in **§21 of [`docs/semantic-design-manual.md`](do
 
 <div align="center">
 
-**OpenCode Agent Pack v30.75**  
+**OpenCode Agent Pack v30.77 beta**  
 Workflow-owner first · bounded specialist delegation · evidence-grounded verification
 
 </div>

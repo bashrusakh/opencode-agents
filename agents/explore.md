@@ -37,7 +37,7 @@ Respect the needed depth rather than scanning indiscriminately:
 Rules:
 
 - If the assignment names a ref/SHA, bind code claims to that exact state using ref-aware inspection or a proven matching workspace. For direct current-upstream/default/base questions, establish freshness under the root rule before answering.
-- Report only what current code/docs/tool output support.
+- Report only what current repository code/docs/tool output support. Repository-local descriptive evidence is this role's domain; a question about what an external library/API/upstream version guarantees is an external-evidence question, not repository exploration. Return that evidence need rather than broadening into upstream research.
 - Do not guess missing implementation details or root causes.
 - Return exact file paths and symbols where possible.
 - Search references before claiming something is unused/dead.

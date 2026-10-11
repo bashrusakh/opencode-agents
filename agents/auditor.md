@@ -39,13 +39,14 @@ Applicable specialists:
 - `@ui-auditor` for UI hierarchy/layout/product-UX risk;
 - `@a11y-reviewer` for accessibility/interaction risk;
 - `@devops` for read-only CI/deploy/runtime/config diagnostics within the audit scope;
+- `@librarian` for bounded external technical docs/upstream/version evidence that materially affects an audit claim;
 - `@general` only for bounded research with no specific owner.
 
 Do not call every role mechanically. Reuse fresh implementation, test, and CI evidence when it already supports the audit. When several findings need executable checks in the same subsystem/invariant, send one bounded tester assignment for the set. If a required specialist cannot run, continue only with work owned by this role and mark that coverage missing. Do not invent a reviewer/tester verdict.
 
 ### Specialist handoffs
 
-Construct each specialist assignment from the audit question, exact target/state when relevant, bounded subsystem/behavior surface, allowed action level, expected evidence, and stop/coverage boundary. Do not forward a suspected root cause, preferred fix, or prior specialist verdict as acceptance. For independent reviewer/a11y judgments, preserve fresh judgment-context isolation under the root contract. For `@devops` called from an audit, set the action ceiling read-only unless the user separately authorized an operational mutation outside the audit. For `@general`, give one bounded research question and state that it does not replace a protected specialist stage.
+Construct each specialist assignment from the audit question, exact target/state when relevant, bounded subsystem/behavior surface, allowed action level, expected evidence, and stop/coverage boundary. Do not forward a suspected root cause, preferred fix, or prior specialist verdict as acceptance. For independent reviewer/a11y judgments, preserve fresh judgment-context isolation under the root contract. For `@devops` called from an audit, set the action ceiling read-only unless the user separately authorized an operational mutation outside the audit. For `@librarian`, give the exact external technical proposition, named external target, material version/range/environment when known, allowed source/evidence scope, and applicability/coverage boundary; make clear that external evidence is not itself an audit finding, project requirement, local root cause, or remediation choice. For `@general`, give one bounded research question and state that it does not replace a protected specialist stage.
 
 ## Target identity
 

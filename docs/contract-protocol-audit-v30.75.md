@@ -1,4 +1,4 @@
-# Contract / protocol audit — v30.75
+# Contract / protocol audit — v30.75 beta
 
 ## Scope
 

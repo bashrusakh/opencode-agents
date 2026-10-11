@@ -1326,6 +1326,115 @@ A coarse checker maps every missing dimension to the same status. That either un
 **Expected result:** fail if heading/template conformity substitutes for semantic executability or if cosmetic standardization adds duplicate policy; pass when the semantic shape is clear without requiring identical Markdown structure.
 
 
+
+---
+
+### ST-65 — External technical evidence must bind the target version instead of answering from `latest`
+
+**Initial user/spec fixture:** A coding workflow needs to know whether external library/API behavior X is supported by the project's pinned dependency version. The user did not authorize an upgrade or ask what current `latest` supports.
+
+**Runtime/repository fixture:** Current upstream documentation describes X for a newer release, while the project manifest/lockfile or supplied assignment identifies an older material version whose behavior differs.
+
+**Injected intermediate output:** The external-research specialist finds the current official docs first and reports that X is supported without establishing version applicability.
+
+**Expected earliest observable stop/preservation point:** External-target binding before the first material conclusion is returned or consumed downstream.
+
+**Scenario:** A source may be authoritative and still be inapplicable to the exact version/range/platform that governs the task.
+
+**Expected trace:** bind the named external target → establish the material version/range from the assignment or narrow direct metadata → challenge `latest` applicability → prefer version-applicable evidence → report the bounded conclusion or explicit applicability gap → do not infer upgrade authority.
+
+**Expected result:** fail if current/latest docs are silently projected onto the pinned target; pass when the result is version-bound and any unresolved applicability is preserved.
+
+---
+
+### ST-66 — External source conflicts must be reconciled by authority, applicability, and directness rather than voting
+
+**Initial user/spec fixture:** A bounded external proposition is material to the workflow and multiple external sources are available.
+
+**Runtime/repository fixture:** Generic current docs say X, tagged source/tests for the target version exhibit Y, and a maintainer issue explains that X became true only after a later fix/release.
+
+**Injected intermediate output:** The research result counts the sources, picks the majority wording, or flattens them into one confident claim.
+
+**Expected earliest observable stop/preservation point:** Source reconciliation before the external proposition is returned as established evidence.
+
+**Scenario:** External sources can disagree because they describe different versions, intended vs implemented behavior, or different applicability envelopes.
+
+**Expected trace:** bind each source to target/version/context → compare authority + exact-version applicability + directness to the proposition → explain the discriminating evidence → preserve unresolved conflict when it cannot be resolved → never treat source count as proof.
+
+**Expected result:** fail if the agent votes or hides the conflict; pass when the returned conclusion is supported by the most applicable/direct evidence and remaining conflict is explicit.
+
+---
+
+### ST-67 — External best practice or upstream advice must not become project authority
+
+**Initial user/spec fixture:** The project needs an external fact about a dependency/API. No project authority has selected a particular migration mechanism or architecture.
+
+**Runtime/repository fixture:** Official migration guidance, maintainer comments, or community consensus recommend mechanism M in addition to documenting the external capability/deprecation actually asked about.
+
+**Injected intermediate output:** The research specialist reports `use M` as a project requirement or the caller forwards M as accepted implementation merely because the external source recommends it.
+
+**Expected earliest observable stop/preservation point:** External-evidence result semantics and caller consumption before planning/implementation authority is inferred.
+
+**Scenario:** A strong external source can establish what the ecosystem recommends without establishing what this project must choose.
+
+**Expected trace:** establish the bounded external proposition → label best practice/migration advice as recommendation rather than project acceptance → return provenance → caller preserves the implementation/product decision with its actual owner/authority source.
+
+**Expected result:** fail if external recommendation is laundered into project acceptance; pass when fact/evidence and project decision authority remain separate.
+
+---
+
+### ST-68 — External research must not absorb repository discovery or implementation planning
+
+**Initial user/spec fixture:** A workflow asks whether external Library L version V guarantees behavior X and separately needs to know where/how the project uses L and how a migration should be sequenced.
+
+**Runtime/repository fixture:** The external-research specialist can read local files and therefore has enough tools to grep usages, infer affected modules, and sketch migration batches.
+
+**Injected intermediate output:** The specialist expands from the external proposition into local call-path mapping, affected-file selection, or implementation sequencing and returns all of it as one research result.
+
+**Expected earliest observable stop/preservation point:** Role boundary when local repository or prospective implementation propositions become necessary.
+
+**Scenario:** Tool capability overlap must not become semantic ownership overlap.
+
+**Expected trace:** Librarian establishes only external reality; narrow manifest/lockfile/config lookup may identify the external target/version but does not become repository exploration → local usages/call paths remain repository-discovery work → sequencing/architecture remains planning work → unresolved adjacent proposition returns to the caller for routing.
+
+**Expected result:** fail if external research owns local present or implementation future; pass when `explore = local present`, `librarian = external truth`, and `project-planner = implementation future` remain distinct.
+
+---
+
+### ST-69 — Caller handoff to external research must carry proposition, target, applicability, and source boundary without pre-solving it
+
+**Initial user/spec fixture:** `@code-orchestrator` or `@auditor` identifies a material external technical evidence need.
+
+**Runtime/repository fixture:** The caller knows the external product/library and task context; it may also have a suspected upstream bug or preferred API from prior discussion.
+
+**Injected intermediate output:** The caller sends `check the docs` with no target/version/applicability boundary, or sends `prove upstream bug Z and recommend patch M` as if the hypothesis/remediation were established.
+
+**Expected earliest observable stop/preservation point:** Caller-side handoff construction before spawning `@librarian`.
+
+**Scenario:** An executable research role can still be made unsafe or ambiguous by an under-specified or authority-laundered assignment.
+
+**Expected trace:** caller passes bounded external research proposition + named external target + material version/range/environment when known or permission for narrow target-identification lookup + allowed source/evidence scope + stop/applicability boundary → suspected upstream bug/remediation stays hypothesis → Librarian owns source selection/reconciliation.
+
+**Expected result:** fail if the handoff omits material applicability inputs or preselects the conclusion; pass when caller and Librarian contracts compose without local/planning ownership leakage.
+
+---
+
+### ST-70 — External-research result formatting must preserve evidence semantics without mandatory report boilerplate
+
+**Initial user/spec fixture:** A user asks a simple bounded external technical question whose answer is directly established by one or two strong version-applicable sources.
+
+**Runtime/repository fixture:** The role contract requires provenance, applicability, and material caveats but does not require fixed Markdown headings for every possible field.
+
+**Injected intermediate output:** A formatting cleanup forces `Research question / External target / Conclusion / Evidence / Conflicts / Unknowns / Next owner` on every answer, including empty sections, and treats that template as result correctness.
+
+**Expected earliest observable stop/preservation point:** Role/result-contract design or output composition before emitting user/caller-facing research evidence.
+
+**Scenario:** Strict internal semantics do not require a forensic dossier for a simple answer; presentation should expand only when conflicts, uncertainty, or applicability limits are material.
+
+**Expected trace:** answer first → cite/link the strongest applicable provenance → state target/version in the answer when material → add conflicts/inference/freshness/unknowns only when they affect the conclusion → omit empty sections → never let light presentation weaken evidence/provenance semantics.
+
+**Expected result:** fail if fixed report structure becomes a semantic requirement or if concise output drops material provenance/applicability; pass when the lightest presentation preserves the full result semantics.
+
 ## Grading
 
 For each case record:

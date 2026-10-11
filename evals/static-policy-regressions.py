@@ -20,7 +20,7 @@ def text(rel):
 
 # OpenCode V2 frontmatter generation: one schema across all pack-owned agents.
 agents = sorted((ROOT / "agents").glob("*.md"))
-check(len(agents) == 17, f"expected 17 agents, found {len(agents)}")
+check(len(agents) == 18, f"expected 18 agents, found {len(agents)}")
 for path in agents:
     raw = path.read_text(encoding="utf-8")
     end = raw.find("\n---\n", 4)
@@ -65,6 +65,30 @@ if version_match:
     check(
         (ROOT / f"docs/releases/{release_slug}.md").is_file(),
         "docs/releases: current release-notes file missing",
+    )
+
+# README delegated-specialist inventory must reflect the actual closed-world topology,
+# not just agent mode. Any role that is the target of a direct or conditional delegation
+# edge belongs in the inventory, including mode: all roles that can also be top-level.
+edge_inventory_sem = text("evals/role-handoff-audit.py")
+delegated_targets = {
+    target
+    for _, target, kind in re.findall(
+        r"\('([^']+)'\s*,\s*'([^']+)'\)\s*:\s*'(delegation|conditional_delegate)'",
+        edge_inventory_sem,
+    )
+}
+delegated_section = re.search(
+    r"(?ms)^## Delegated specialists\s*(.*?)(?=^---\s*$|^## )",
+    readme_sem,
+)
+check(delegated_section is not None, "README.md: Delegated specialists section missing")
+if delegated_section:
+    documented_targets = set(re.findall(r"(?m)^\|\s*`([^`]+)`\s*\|", delegated_section.group(1)))
+    check(
+        documented_targets == delegated_targets,
+        "README.md: delegated-specialist inventory drift from classified delegation topology "
+        f"(missing={sorted(delegated_targets - documented_targets)}, stale={sorted(documented_targets - delegated_targets)})",
     )
 for bad in [
     "requires separate authority or evidence of an established blocker",
@@ -453,6 +477,45 @@ check(
     "build: cross-class falsification/self-test blind-spot gate missing",
 )
 
+# External technical evidence has a distinct owner from repository discovery, generic fallback, and planning.
+librarian_sem = text("agents/librarian.md")
+explore_sem = text("agents/explore.md")
+general_sem = text("agents/general.md")
+planner_sem = text("agents/project-planner.md")
+check(
+    "read-only external technical evidence specialist" in librarian_sem.lower()
+    and "authority + exact-version applicability + directness" in librarian_sem
+    and "Do not vote by number of sources" in librarian_sem
+    and "do not emit empty report sections" in librarian_sem
+    and "does not by itself establish local repository usage" in librarian_sem,
+    "librarian: external-evidence ownership/boundary contract missing",
+)
+check(
+    "Repository-local descriptive evidence is this role's domain" in explore_sem
+    and "not repository exploration" in explore_sem,
+    "explore: local-repository boundary against external research missing",
+)
+check(
+    "no dedicated external-technical-evidence owner applies" in general_sem
+    and "external library/API/upstream/version evidence research" in general_sem,
+    "general: fallback still overlaps external technical evidence owner",
+)
+check(
+    "do not absorb authoritative external technical research into planning" in planner_sem
+    and "return the evidence need to the caller" in planner_sem,
+    "project-planner: external-evidence boundary missing",
+)
+check(
+    "@librarian" not in explore_sem and "@librarian" not in general_sem and "@librarian" not in planner_sem,
+    "leaf roles gained direct librarian routing instead of returning the adjacent evidence need to the caller",
+)
+check(
+    "@librarian" in root_sem
+    and "@librarian" in text("agents/code-orchestrator.md")
+    and "@librarian" in text("agents/auditor.md"),
+    "librarian: intended root/orchestrator/auditor routing surfaces missing",
+)
+
 # Release-gate audit surfaces are separate from the legacy static presence harness.
 contract_audit = text("evals/contract-protocol-audit.py")
 contract_spec = text("evals/contract-protocol-spec.json")
@@ -460,12 +523,12 @@ contract_selftest = text("evals/contract-protocol-selftest.py")
 release_gates = text("evals/run-release-gates.py")
 check("role-local executable method" in contract_spec and "Ownership -> Invocation -> Method -> Boundaries -> Result" in contract_spec and "producer output, parent transformation, consumer input" in contract_spec and "Keyword presence" in contract_spec, "contract/protocol spec missing semantic-shape/adversarial audit principles")
 check("CONTRACT / PROTOCOL AUDIT v3" in contract_audit and "missing essential profile core-loop capabilities" in contract_audit and "REVIEW is intentionally release-blocking" in contract_audit and "Prompt length is diagnostic only" in contract_audit, "contract audit v3 severity/core-loop/review gate missing")
-check("keyword-stuffed implementation role was not rejected" in contract_selftest and "thin ops role without diagnostic isolation" in contract_selftest and "five-heading shell without executable implementation method was not rejected" in contract_selftest and "compact executable discovery role" in contract_selftest and "without five standardized headings" in contract_selftest and "audit orchestrator missing only reconciliation" in contract_selftest and "producer-side implementation certification" in contract_selftest and "new role without executable-contract audit profile did not block release" in contract_selftest and "stale role profile did not block release" in contract_selftest, "contract audit v3 synthetic anti-gaming/severity/lifecycle/semantic-shape selftests missing")
+check("keyword-stuffed implementation role was not rejected" in contract_selftest and "thin ops role without diagnostic isolation" in contract_selftest and "five-heading shell without executable implementation method was not rejected" in contract_selftest and "compact executable discovery role" in contract_selftest and "without five standardized headings" in contract_selftest and "audit orchestrator missing only reconciliation" in contract_selftest and "producer-side implementation certification" in contract_selftest and "new role without executable-contract audit profile did not block release" in contract_selftest and "stale role profile did not block release" in contract_selftest and "thin external research role without version/conflict applicability loop was not rejected" in contract_selftest and "complete external-research contract should PASS" in contract_selftest, "contract audit v3 synthetic anti-gaming/severity/lifecycle/semantic-shape/external-research selftests missing")
 edge_audit = text("evals/role-handoff-audit.py")
 edge_selftest = text("evals/role-handoff-selftest.py")
 release_gates = text("evals/run-release-gates.py")
-check("Closed-world static audit" in edge_audit and "EDGE_CLASSIFICATION" in edge_audit and "UNCLASSIFIED EDGE" in edge_audit and "STALE EDGE" in edge_audit and "ui-orchestrator','a11y-reviewer" in edge_audit and "code-orchestrator','devops" in edge_audit and "auditor','specialists" in edge_audit, "role-handoff closed-world inventory/profiles missing")
-check("recipe-shaped devops handoff not rejected" in edge_selftest and "unbound a11y handoff not rejected" in edge_selftest and "preselected UI planning handoff not rejected" in edge_selftest and "unbounded auditor specialist handoff not rejected" in edge_selftest and "new unclassified handoff edge did not block release" in edge_selftest and "stale handoff classification did not block release" in edge_selftest, "role-handoff synthetic anti-gaming/inventory selftests missing")
+check("Closed-world static audit" in edge_audit and "EDGE_CLASSIFICATION" in edge_audit and "UNCLASSIFIED EDGE" in edge_audit and "STALE EDGE" in edge_audit and "ui-orchestrator','a11y-reviewer" in edge_audit and "code-orchestrator','devops" in edge_audit and "auditor','specialists" in edge_audit and "code-orchestrator','librarian" in edge_audit and "auditor','librarian" in edge_audit, "role-handoff closed-world inventory/profiles missing")
+check("recipe-shaped devops handoff not rejected" in edge_selftest and "unbound a11y handoff not rejected" in edge_selftest and "preselected UI planning handoff not rejected" in edge_selftest and "unbounded auditor specialist handoff not rejected" in edge_selftest and "new unclassified handoff edge did not block release" in edge_selftest and "stale handoff classification did not block release" in edge_selftest and "unbound librarian handoff not rejected" in edge_selftest and "auditor librarian authority/applicability omission not rejected" in edge_selftest, "role-handoff synthetic anti-gaming/inventory/external-research selftests missing")
 check("role-handoff selftest" in release_gates and "role-handoff edge audit" in release_gates, "release gate runner missing role-handoff checks")
 check("unresolved findings must not be waived merely to obtain PASS" in release_gates, "release gate aggregator may waive unresolved contract findings")
 check("Role lifecycle requalification" in text("docs/semantic-design-manual.md") and "method-preservation test" in text("docs/semantic-design-manual.md") and "closed-world discovered handoff inventory" in text("docs/semantic-design-manual.md"), "semantic-design manual missing role lifecycle/method-preservation/closed-world edge audit")
@@ -474,14 +537,14 @@ check("Role contract semantic shape" in text("docs/semantic-design-manual.md") a
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 64, "semantic-transition suite must contain 64 cases")
+check(traces.count("### ST-") == 70, "semantic-transition suite must contain 70 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 64, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 70, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -713,6 +776,39 @@ check(
     and "five semantic functions" in traces.lower()
     and "heading/template conformity substitutes for semantic executability" in traces.lower(),
     "ST-64 semantic-shape/anti-template regression missing",
+)
+check(
+    "external technical evidence must bind the target version instead of answering from `latest`" in traces.lower()
+    and "challenge `latest` applicability" in traces.lower(),
+    "ST-65 external target/version applicability regression missing",
+)
+check(
+    "external source conflicts must be reconciled by authority, applicability, and directness rather than voting" in traces.lower()
+    and "never treat source count as proof" in traces.lower(),
+    "ST-66 external source-conflict reconciliation regression missing",
+)
+check(
+    "external best practice or upstream advice must not become project authority" in traces.lower()
+    and "recommendation rather than project acceptance" in traces.lower(),
+    "ST-67 external-advice authority regression missing",
+)
+check(
+    "external research must not absorb repository discovery or implementation planning" in traces.lower()
+    and "explore = local present" in traces.lower()
+    and "librarian = external truth" in traces.lower()
+    and "project-planner = implementation future" in traces.lower(),
+    "ST-68 librarian/explore/planner ownership-boundary regression missing",
+)
+check(
+    "caller handoff to external research must carry proposition, target, applicability, and source boundary" in traces.lower()
+    and "bounded external research proposition" in traces.lower(),
+    "ST-69 librarian caller-handoff regression missing",
+)
+check(
+    "external-research result formatting must preserve evidence semantics without mandatory report boilerplate" in traces.lower()
+    and "omit empty sections" in traces.lower()
+    and "lightest presentation" in traces.lower(),
+    "ST-70 librarian result-format semantics regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | unverified`" in traces,

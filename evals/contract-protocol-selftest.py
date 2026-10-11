@@ -112,6 +112,43 @@ Return target, observed evidence, diagnosis, authorized change, exact commands/r
 a = audit("fake-devops-good", "ops_mutation", complete_ops)
 check(not a.findings, f"complete synthetic ops contract falsely hard-failed: {a.findings}")
 
+
+# External technical research is not generic lookup: it must bind applicability,
+# challenge a plausible-but-wrong version/source, reconcile conflict, and return
+# provenance without converting external evidence into project authority.
+complete_external = """
+## Role
+Own a bounded external library/API proposition and remain read-only; do not decide the project implementation or local root cause.
+## Invocation contract
+Receive the external target and question. Bind the product/library/API plus material version/range, branch/tag, platform or environment; if applicability cannot be established, report the gap instead of answering for latest.
+## Research method
+1. Establish the exact target/version and split the question into checkable claims.
+2. Search official version-specific documentation, tagged upstream source/tests, release or migration notes, maintainer issues/PRs, then community evidence as needed.
+3. Choose sources by authority, exact-version applicability and directness, preserving source provenance/links.
+4. If the first answer is from latest docs, another major/minor version or another platform, challenge its applicability before using it.
+5. When sources conflict, reconcile by authority, version applicability and directness; do not vote. If they cannot be resolved, preserve an unresolved evidence gap.
+6. Distinguish direct evidence, inference and community workaround. External best practice is not project authority and an upstream issue is not the local root cause.
+7. Stop when the bounded proposition is supported, disproved or unresolved; return repository tracing/planning/review needs to the caller.
+## Result
+Answer the proposition first, cite the strongest applicable source/provenance, report only material version/freshness/conflict limitations, and do not claim a project requirement, local root cause, implementation choice or candidate correctness.
+"""
+a = audit("fake-librarian-good", "external_research", complete_external)
+check(a.status == "PASS", f"complete external-research contract should PASS: {a.status} {a.findings} {a.review_reasons}")
+
+thin_external = """
+## Role
+Research external library documentation and provide evidence.
+## Method
+- Search official documentation.
+- Return the best answer and source.
+## Result
+Return the result with evidence.
+"""
+a = audit("fake-librarian-thin", "external_research", thin_external)
+check(a.status == "FAIL", "thin external research role without version/conflict applicability loop was not rejected")
+check(any("core-loop" in f or "external" in f for f in a.findings),
+      "thin external research role did not fail for its characteristic core loop")
+
 # Executable audit orchestrator with good scope/risk/evidence/result semantics but no
 # explicit conflict reconciliation is usable yet materially incomplete: REVIEW, not FAIL.
 partial_auditor = """

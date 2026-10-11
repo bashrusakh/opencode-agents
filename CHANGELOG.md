@@ -1,6 +1,34 @@
 # Changelog
 
-## v30.75
+## v30.77 beta
+
+Delegated-specialist README/topology consistency:
+
+- corrects `README.md` so `## Delegated specialists` reflects actual classified delegation targets rather than only `mode: subagent` roles;
+- includes delegated `mode: all` roles (`build`, `project-planner`, `librarian`, `ui-orchestrator`) alongside subagent-only specialists;
+- adds a generic release guard that derives the expected delegated-specialist set from `delegation` / `conditional_delegate` edges in the closed-world topology and fails on missing or stale README entries;
+- leaves all 18 runtime agent contracts, 22 skill contracts, and the 57-edge runtime topology unchanged from v30.76.
+
+Fresh isolated behavioral replay of ST-01…ST-70 remains separate evidence and is not claimed by this documentation/eval consistency release.
+
+See [`docs/releases/v30.77-beta.md`](docs/releases/v30.77-beta.md) and [`docs/contract-protocol-audit-v30.77.md`](docs/contract-protocol-audit-v30.77.md).
+
+## v30.76 beta
+
+External technical evidence specialist:
+
+- adds `librarian` as the 18th model-agnostic role, `mode: all`, read-only, owning bounded external product/library/API/upstream propositions with exact version/applicability and inspectable provenance;
+- keeps semantic ownership disjoint: `explore` owns repository-local descriptive evidence, `librarian` owns external technical evidence, and `project-planner` owns prospective implementation structure; `general` remains only the unmatched fallback;
+- adds direct/top-level routing plus `code-orchestrator -> librarian` and `auditor -> librarian` delegation contracts; leaf roles return adjacent external-evidence needs to the caller rather than spawning a new chain;
+- adds an `external_research` contract-audit profile covering target/version binding, source authority/applicability/directness, conflict reconciliation, false-success handling, and bounded result semantics;
+- keeps Librarian output human: answer first, strongest applicable sources/provenance, and conflicts/limitations only when material; no mandatory empty report sections;
+- expands the closed-world topology from 54 to 57 relations and the semantic-transition suite from ST-01…ST-64 to ST-01…ST-70.
+
+Fresh isolated behavioral replay of ST-01…ST-70 remains separate evidence and is not claimed by static/contract/package validation.
+
+See [`docs/releases/v30.76-beta.md`](docs/releases/v30.76-beta.md) and [`docs/contract-protocol-audit-v30.76.md`](docs/contract-protocol-audit-v30.76.md).
+
+## v30.75 beta
 
 README navigation deduplication:
 
@@ -11,7 +39,7 @@ README navigation deduplication:
 - preserves `AGENTS.md` mentions that are operational rather than architectural duplication: install paths and the title of an external reference;
 - runtime agent/skill contracts and workflow semantics remain unchanged from v30.74.
 
-See [`docs/releases/v30.75.md`](docs/releases/v30.75.md) and [`docs/contract-protocol-audit-v30.75.md`](docs/contract-protocol-audit-v30.75.md).
+See [`docs/releases/v30.75-beta.md`](docs/releases/v30.75-beta.md) and [`docs/contract-protocol-audit-v30.75.md`](docs/contract-protocol-audit-v30.75.md).
 
 ## v30.74 beta
 
