@@ -1580,6 +1580,24 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 **Expected result:** fail if the planner attributes the fallback layout to root, mutates an unauthorized project document, or creates a parallel source of truth merely to stay inside its own write paths.
 
+---
+
+### ST-79 — Unresolved UI direction must not be fabricated into a settled direct-implementation handoff
+
+**Initial user/spec fixture:** The user rejects the current presentation of an existing UI treatment. The functional requirement is established — important constraints must be visible without hover and upload failures must have clear field-level UX — but the user asks the workflow to decide how to present that information cleanly rather than adopting a replacement layout/interaction treatment.
+
+**Runtime/repository fixture:** The current frontend has more than one coherent way to satisfy the requirement (for example helper text, compact disclosure, or another existing project pattern). `@code-orchestrator` can either delegate the bounded UI domain to `@ui-orchestrator` for the unresolved UI decision or call `@ui-implementer` directly when the material presentation/interaction choice is already settled.
+
+**Injected intermediate output:** The code orchestrator chooses exact helper placement, disclosure behavior, wording structure, and error-state treatment itself, labels that parent-authored design as the settled outcome, and sends it directly to `@ui-implementer` as a deterministic implementation recipe.
+
+**Expected earliest observable stop/preservation point:** UI role selection and handoff construction, before a direct edit-capable `@ui-implementer` assignment is issued.
+
+**Scenario:** A functional requirement alone does not settle the UI outcome when materially different presentation/interaction choices remain. The workflow owner must not collapse coordinated UI work into focused implementation by inventing the missing design direction upstream.
+
+**Expected trace:** preserve the established functional/user-visible requirements and target/state → recognize the remaining material presentation/interaction choice as unresolved → delegate the bounded UI domain to `@ui-orchestrator` with the inherited target/state, constraints and evidence, without pre-solving the UI method → let the UI workflow select any needed audit/planning stage and return a bounded implementation handoff once the outcome is actually settled → then dispatch `@ui-implementer`. Counterexample/preservation: when the user explicitly chooses the treatment, an adopted plan already establishes it, or a sufficiently specific existing project pattern resolves the material choice so that only focused mechanics remain, direct `@ui-implementer` is valid and no ceremonial UI orchestration is required.
+
+**Expected result:** fail if the code orchestrator invents the unresolved UI direction and presents it as an established direct-implementation outcome; pass when unresolved direction routes through `@ui-orchestrator`, while genuinely settled or project-pattern-determined focused UI work may still go directly to `@ui-implementer`.
+
 ## Grading
 
 For each case record:

@@ -11,7 +11,6 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 GLOBAL=ROOT/'install/install-global.sh'
 PROJECT=ROOT/'install/install-project.sh'
-PACK_VERSION_LINE=next(l for l in (ROOT/'AGENTS.md').read_text().splitlines() if l.startswith('**Pack version:'))
 
 def run(script: Path, cwd: Path, home: Path, extra=None):
     env=os.environ.copy(); env['HOME']=str(home)
@@ -69,7 +68,7 @@ with tempfile.TemporaryDirectory(prefix='opencode-installer-selftest-') as td:
     legacy='personal review command\n'; (base/'commands/review.md').write_text(legacy)
     p=run(GLOBAL, t, home)
     check(p.returncode==0, f'global upgrade failed: {p.returncode} {p.stderr}')
-    check(PACK_VERSION_LINE in (base/'AGENTS.md').read_text(), 'global pack root not updated')
+    check('**Pack version: v30.81 beta**' in (base/'AGENTS.md').read_text(), 'global pack root not updated')
     check((base/'commands/review.md').read_text()==legacy, 'ambiguous global command was deactivated')
     receipt=base/'.agent-pack/managed-files.sha256'; check(receipt.is_file(), 'global ownership receipt missing')
     backups=list((base/'.agent-pack/backups').glob('*/agents/reviewer.md'))

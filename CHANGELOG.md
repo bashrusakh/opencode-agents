@@ -1,5 +1,28 @@
 # Changelog
 
+## v30.81 beta
+
+UI routing discriminator hardening:
+
+- fixes a `code-orchestrator` routing gap between already-good `@ui-orchestrator` and direct `@ui-implementer` handoffs;
+- makes a known functional requirement insufficient by itself to classify a UI outcome as settled when material layout/information-hierarchy/disclosure/interaction/error-state choices remain;
+- routes rejected-but-not-replaced UI treatments through the bounded UI workflow owner instead of letting the code orchestrator invent the replacement and launder it as an implementation recipe;
+- preserves direct focused `@ui-implementer` work when the user, an adopted plan, or a sufficiently specific existing project pattern has already settled the material UI treatment;
+- adds a high-risk `code-orchestrator → ui-orchestrator` handoff profile, a synthetic negative selftest, static ownership guards, and ST-79 with a direct-implementation preservation counterexample.
+
+Fresh isolated behavioral replay of ST-01…ST-79 remains separate evidence and is not claimed by static/contract/package validation.
+
+See [`docs/releases/v30.81-beta.md`](docs/releases/v30.81-beta.md) and [`docs/contract-protocol-audit-v30.81.md`](docs/contract-protocol-audit-v30.81.md).
+
+## v30.80
+
+- Promotes the validated v30.80 beta candidate to stable.
+- Runtime semantics, role permissions, skills, installer behavior, and licensing are unchanged from the beta candidate.
+- Updates the pack version marker, installer receipt identity, and current-release documentation links to stable `v30.80` / `docs/releases/v30.80.md`.
+- Fresh isolated behavioral replay of ST-01…ST-78 remains separate evidence and is still not claimed by this promotion.
+
+See [`docs/releases/v30.80.md`](docs/releases/v30.80.md) and [`docs/contract-protocol-audit-v30.80.md`](docs/contract-protocol-audit-v30.80.md).
+
 ## v30.80 beta
 
 Semantic ownership, discovery, installer-safety, and licensing hardening:

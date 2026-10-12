@@ -141,6 +141,14 @@ EDGE = {
    [r'established user-visible outcome'], [r'target/mutation state|target.*state'], [r'material constraints'], [r'preserved behavior'],
    [r'do not preselect .*layout|do not preselect .*files|omit .*mechanism'],
  ],
+ ('code-orchestrator','ui-orchestrator'): [
+   [r'settled user-visible outcome'], [r'unresolved presentation/interaction direction'],
+   [r'materially different layout|information-hierarchy|disclosure|interaction|error-state'],
+   [r'user feedback rejects .* without adopting .* replacement|rejects the current treatment without adopting its replacement'],
+   [r'delegate .*UI domain to `?@?ui-orchestrator|delegate the bounded UI domain to `@ui-orchestrator`'],
+   [r'do not invent .* UI direction|do not .*pass it downstream as an established outcome'],
+   [r'Direct `@ui-implementer` work is appropriate|direct .*ui-implementer.*appropriate'],
+ ],
  ('ui-orchestrator','ui-auditor'): [
    [r'current screen/flow'], [r'primary user job'], [r'audit question/boundary'], [r'current-state evidence'], [r'do not preselect .*redesign'],
  ],

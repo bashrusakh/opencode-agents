@@ -456,6 +456,16 @@ check(
     and "non-required mechanism/layout recommendations remain hypotheses" in ui_impl_sem,
     "UI mutation handoff: plan/audit recipe-laundering guard missing",
 )
+check(
+    "settled user-visible outcome" in orch
+    and "unresolved presentation/interaction direction" in orch
+    and "A functional requirement alone does not make the UI outcome settled" in orch
+    and "user feedback rejects the current treatment without adopting its replacement" in orch
+    and "delegate the bounded UI domain to `@ui-orchestrator`" in orch
+    and "do not invent the missing UI direction yourself" in orch
+    and "Direct `@ui-implementer` work is appropriate" in orch,
+    "code-orchestrator: unresolved UI direction can still be fabricated into a direct implementation handoff",
+)
 
 
 # A returned build package that independent evidence proves defective must not
@@ -637,14 +647,14 @@ check(
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 78, "semantic-transition suite must contain 78 cases")
+check(traces.count("### ST-") == 79, "semantic-transition suite must contain 79 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 78, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 79, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -959,6 +969,14 @@ check(
     and "roadmap.md" in traces.lower()
     and "persistent-planning" in traces.lower(),
     "ST-78 persistent-planning composition regression missing",
+)
+check(
+    "unresolved ui direction must not be fabricated into a settled direct-implementation handoff" in traces.lower()
+    and "functional requirement alone" in traces.lower()
+    and "delegate the bounded ui domain to `@ui-orchestrator`" in traces.lower()
+    and "direct `@ui-implementer`" in traces.lower()
+    and "existing project pattern" in traces.lower(),
+    "ST-79 UI routing discriminator regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | indeterminate`" in traces,
