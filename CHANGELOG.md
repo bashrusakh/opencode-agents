@@ -1,5 +1,20 @@
 # Changelog
 
+## v30.79 beta
+
+Reviewer / managed-OCR independence hardening:
+
+- makes managed OCR explicitly additional independent evidence rather than a substitute for host-review coverage or reasoning;
+- requires `@reviewer` to maintain its own authoritative changed/effective-diff ledger even when OCR selects, completes, or comments on the same files;
+- separates result evidence into host structural coverage and managed-OCR selected/completed/failed scope, so `OCR coverage ∪ host coverage` cannot be reported as host `full PR` coverage;
+- requires host reconciliation of material OCR comments and states explicitly that zero OCR findings do not establish correctness;
+- adds a reviewer-specific protocol/selftest guard and ST-75 for the complement-coverage failure class observed in a fresh whole-PR trace;
+- updates the Semantic Design Manual with the general owner-coverage rule without changing delegation topology, permissions, or managed-OCR invocation mechanics.
+
+Fresh isolated behavioral replay of ST-01…ST-75 remains separate evidence and is not claimed by static/contract/package validation.
+
+See [`docs/releases/v30.79-beta.md`](docs/releases/v30.79-beta.md) and [`docs/contract-protocol-audit-v30.79.md`](docs/contract-protocol-audit-v30.79.md).
+
 ## v30.78 beta
 
 Orchestrator communication and decision-context hardening:

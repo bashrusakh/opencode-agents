@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.78 beta
+# OpenCode Agent Pack v30.79 beta
 
 ### Model-agnostic routing · explicit workflow owners · bounded specialist delegation · evidence-grounded verification
 
@@ -237,9 +237,9 @@ The project installer backs up existing runtime surfaces before copying the pack
 
 | If you need… | Read… |
 |---|---|
-| Release notes | [`docs/releases/v30.78-beta.md`](docs/releases/v30.78-beta.md) |
+| Release notes | [`docs/releases/v30.79-beta.md`](docs/releases/v30.79-beta.md) |
 | Release history | [`CHANGELOG.md`](CHANGELOG.md) |
-| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.78.md`](docs/contract-protocol-audit-v30.78.md) |
+| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.79.md`](docs/contract-protocol-audit-v30.79.md) |
 | Semantic transition scenarios | [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md) |
 | Source-to-generalized-rule preservation method | [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) |
 
@@ -249,7 +249,7 @@ Release validation is defined in **§21 of [`docs/semantic-design-manual.md`](do
 
 <div align="center">
 
-**OpenCode Agent Pack v30.78 beta**  
+**OpenCode Agent Pack v30.79 beta**  
 Workflow-owner first · bounded specialist delegation · evidence-grounded verification
 
 </div>

@@ -438,6 +438,8 @@ Separate coverage dimensions when they matter:
 
 Full structural coverage does not imply full behavioral or evidentiary coverage.
 
+When a role owns a judgment, auxiliary or independent integration evidence does not silently satisfy that role's own coverage. Keep the owner's inspection/judgment ledger separate from the integration's selected/completed scope. The integration can add evidence, counterexamples, or confidence and its findings must be reconciled, but `owner coverage ∪ integration coverage` is not owner coverage unless the workflow explicitly transfers that judgment responsibility. A zero-finding auxiliary pass is likewise not evidence that the owner completed or passed its own review.
+
 ### Derive review depth from the actual candidate
 
 Acceptance/task scope and review surface are different objects. Acceptance scope establishes what change is requested; the actual candidate establishes which changed behaviors must be judged for correctness. If a nominally local patch materially alters a destructive boundary, authorization, ownership/reservation, lifecycle, concurrency/locking, persistence/migration, or another high-risk behavior, reviewing that boundary is not scope expansion. It increases review depth inside the candidate without creating implementation authority for unrelated fixes.

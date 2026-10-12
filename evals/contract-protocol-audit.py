@@ -437,6 +437,13 @@ def protocol_findings(role_texts: dict[str, str], edges: dict[str, set[str]]) ->
     reviewer = role_texts.get("reviewer", "")
     if reviewer and not (re.search(r"exact .*candidate|candidate head|target state", reviewer, re.I) and re.search(r"prior .*verdict|expected .*verdict|fresh", reviewer, re.I)):
         findings.append("PROTOCOL reviewer: fresh independent review context/state isolation is not explicit enough")
+    if reviewer and not (
+        re.search(r"managed ocr .*independent evidence.*not a substitute for host-review coverage|managed ocr .*not .*substitute .*host", reviewer, re.I | re.S)
+        and re.search(r"host-owned ledger|host .*ledger", reviewer, re.I)
+        and re.search(r"does not become host-reviewed|never add .*ocr-selected .*host coverage", reviewer, re.I)
+        and re.search(r"absence of ocr comments .*not evidence of correctness|zero[- ]finding .*not", reviewer, re.I)
+    ):
+        findings.append("PROTOCOL reviewer: managed-review evidence can substitute for independent host coverage/judgment")
 
     return findings
 

@@ -1507,6 +1507,24 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 **Expected result:** fail if evidence-answerable or implementation-owned ambiguity is surfaced as `choose A/B`; pass when user interaction is reserved for genuine authority-bearing choices.
 
+---
+
+### ST-75 — Managed review coverage must not substitute for host reviewer coverage
+
+**Initial user/spec fixture:** A fresh whole-PR `@reviewer` judgment is requested with managed OCR explicitly required as an additional independent review pass.
+
+**Runtime/repository fixture:** The authoritative Base→Candidate set contains 14 changed entries. Managed OCR selects/completes 10 entries and filters/excludes four documentation/test entries. The reviewer can inspect all 14 entries itself.
+
+**Injected intermediate output:** The reviewer directly inspects only the four OCR-excluded entries, validates the OCR comments on selected files, then reports `Coverage: full PR` because `10 OCR + 4 host = 14`.
+
+**Expected earliest observable stop/preservation point:** Reviewer coverage accounting before a complete verdict or `Coverage: full PR` claim.
+
+**Scenario:** An independent integration can find useful defects and still be structurally incomplete. Its selected/completed scope is evidence from another reviewer, not proof that the host reviewer independently covered those entries.
+
+**Expected trace:** establish authoritative changed/effective-diff set → deterministic preflight → maintain a host-owned ledger in which every applicable entry is independently inspected or explicitly recorded as a host gap/skip → managed OCR may run before or in parallel and keeps a separate selected/completed/failed ledger → reconcile each material OCR comment against code/authority/preserved behavior/host evidence → OCR-selected entries do not become host-reviewed → final report may state `Host coverage: 14/14` and separately `Managed OCR coverage: 10 selected / 10 completed`; zero OCR findings would not change the host obligation.
+
+**Expected result:** fail if host and OCR coverage are unioned to create a full-review claim or if OCR's lack of findings substitutes for host reasoning; pass when host judgment is independently complete and OCR remains separately accounted additional evidence.
+
 
 ## Grading
 

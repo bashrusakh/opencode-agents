@@ -232,6 +232,21 @@ clean_findings = mod.protocol_findings(clean, {"code-orchestrator":{"build","deb
 check(not any("semantic-checkpoint" in f for f in clean_findings),
       "protocol audit falsely rejected clean semantic-boundary handoff")
 
+reviewer_good = """
+Use a fresh independent review bound to the exact Candidate target state; omit prior verdict framing.
+Managed OCR is independent evidence, not a substitute for host-review coverage. Maintain a host-owned ledger across the authoritative changed/effective-diff set; an OCR-selected entry does not become host-reviewed. Absence of OCR comments is not evidence of correctness. In the result, never add OCR-selected entries to host coverage.
+"""
+reviewer_bad = """
+Use a fresh independent review bound to the exact Candidate target state; omit prior verdict framing.
+Run managed OCR. Review only files OCR excludes, then combine OCR-selected files with those host-inspected files and report full PR coverage. Validate any OCR comments before returning the verdict.
+"""
+findings = mod.protocol_findings({"reviewer": reviewer_good}, {})
+check(not any("managed-review evidence" in f for f in findings),
+      "protocol audit falsely rejected independent host/OCR coverage separation")
+findings = mod.protocol_findings({"reviewer": reviewer_bad}, {})
+check(any("managed-review evidence" in f for f in findings),
+      "protocol audit failed to reject OCR+host complement coverage laundering")
+
 if failures:
     print("CONTRACT / PROTOCOL SELFTEST v3: FAIL")
     for f in failures:

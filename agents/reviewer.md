@@ -38,6 +38,8 @@ For every code/diff/commit/branch/workspace/PR review, after establishing the au
 
 Managed `open-code-review` / `ocr review` is separate from mandatory delegation. Use that external/managed review pass only when user/project policy requires it or when it materially improves confidence for the current risk. External-provider/tool unavailability does not invalidate an otherwise complete host review unless that managed integration was explicitly required. Review-only work never applies integration suggestions or fixes.
 
+Managed OCR is independent evidence, not a substitute for host-review coverage or reasoning. Account for the authoritative changed/effective-diff set in a host-owned ledger independently of OCR selection: for each entry, inspect the exact diff/content and affected behavior with depth proportional to risk, or record a defensible host skip/coverage gap. An entry selected, completed, or commented on by OCR does not become host-reviewed merely because OCR covered it. Host review may run before or in parallel with managed OCR, but the reviewer must complete its own applicable coverage and judgment before issuing a complete verdict. Reconcile material OCR comments against the code, authority, preserved behavior, and host evidence; absence of OCR comments is not evidence of correctness.
+
 ## Review focus
 
 Prioritize material findings:
@@ -119,5 +121,5 @@ Bind the verdict to the exact reviewed target/state under root section 7.4. For 
 
 Use `pass`, `pass with notes`, or `changes required`. State the exact reviewed target/state identity when a ref/SHA/Candidate governed the review. Group material findings by severity and shared invariant/root cause with precise evidence and recommended direction. Include wrong-fix-level/test gaps only when present. Distinguish blocking current-scope findings from report-only latent/unrelated findings.
 
-If the target is a PR, include its canonical PR URL when resolvable, `Reviewed Base: <ref@sha>`, Candidate HEAD when known, and `Coverage: full PR | partial — <gap>` for structural review coverage. When acceptance-critical evidentiary coverage is materially incomplete, also state `Acceptance proof: partial — <gap>` rather than letting structural coverage imply proof completeness. End with the next action for the caller; never imply that you applied fixes yourself.
+If the target is a PR, include its canonical PR URL when resolvable, `Reviewed Base: <ref@sha>`, Candidate HEAD when known, and `Coverage: full PR | partial — <gap>` for **host** structural review coverage. When managed OCR ran, report its selected/completed/failed/waived scope separately (for example `Managed OCR coverage: ...`) and summarize reconciliation of material comments separately; never add OCR-selected entries to host coverage. When acceptance-critical evidentiary coverage is materially incomplete, also state `Acceptance proof: partial — <gap>` rather than letting structural coverage imply proof completeness. End with the next action for the caller; never imply that you applied fixes yourself.
 

@@ -376,6 +376,14 @@ check(
     and "Managed `open-code-review` / `ocr review` is separate from mandatory delegation" in reviewer,
     "reviewer: mandatory deterministic OCR delegate preflight contract missing",
 )
+check(
+    "Managed OCR is independent evidence, not a substitute for host-review coverage or reasoning" in reviewer
+    and "host-owned ledger" in reviewer
+    and "does not become host-reviewed merely because OCR covered it" in reviewer
+    and "absence of OCR comments is not evidence of correctness" in reviewer
+    and "never add OCR-selected entries to host coverage" in reviewer,
+    "reviewer: managed OCR independence/host coverage contract missing",
+)
 
 # Material user decisions that are not retrievable downstream need provenance
 # preservation, but the receipt itself must not become a new authority source.
@@ -555,14 +563,14 @@ check("Role contract semantic shape" in text("docs/semantic-design-manual.md") a
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 74, "semantic-transition suite must contain 74 cases")
+check(traces.count("### ST-") == 75, "semantic-transition suite must contain 75 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 74, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 75, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -851,6 +859,13 @@ check(
     and "resolve factual/technical part" in traces.lower()
     and "continue without user choice" in traces.lower(),
     "ST-74 evidence-before-user-choice regression missing",
+)
+check(
+    "managed review coverage must not substitute for host reviewer coverage" in traces.lower()
+    and "ocr-selected entries do not become host-reviewed" in traces.lower()
+    and "host coverage: 14/14" in traces.lower()
+    and "managed ocr coverage: 10 selected / 10 completed" in traces.lower(),
+    "ST-75 host/OCR coverage-independence regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | unverified`" in traces,

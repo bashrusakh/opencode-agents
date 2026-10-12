@@ -168,6 +168,19 @@ This preserves OpenAI's clarification-after-concrete-work action while keeping p
 
 **PASS**
 
+### Case K — an independent review integration covers most changed files
+
+From manual §9:
+
+- the judgment-owning reviewer keeps its own changed/effective-diff coverage ledger;
+- auxiliary/OCR-selected coverage is reported separately and cannot mark a host entry reviewed;
+- material integration findings are reconciled against the host's own code/authority/evidence judgment;
+- a zero-finding integration pass does not establish host correctness or host completion.
+
+This preserves the existing independent-review principle while preventing an integration from silently becoming the reviewer for the files it selected.
+
+**PASS**
+
 ## Abstraction choices that were intentionally not copied
 
 The manual does not universalize:
