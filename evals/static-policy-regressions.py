@@ -123,7 +123,8 @@ check(
     "semantic-design-manual: blocker/replacement parity missing",
 )
 check(
-    "a blocker may invalidate the original path but does not itself establish the replacement" in checkpoint_sem,
+    "A blocker to the prior path remains evidence, not replacement authority" in checkpoint_sem
+    and "apply root section 2.2.1's relation/authority semantics" in checkpoint_sem,
     "semantic-checkpoint: blocker/replacement enforcement missing",
 )
 check(
@@ -560,17 +561,90 @@ check("unresolved findings must not be waived merely to obtain PASS" in release_
 check("Role lifecycle requalification" in text("docs/semantic-design-manual.md") and "method-preservation test" in text("docs/semantic-design-manual.md") and "closed-world discovered handoff inventory" in text("docs/semantic-design-manual.md"), "semantic-design manual missing role lifecycle/method-preservation/closed-world edge audit")
 check("Role contract semantic shape" in text("docs/semantic-design-manual.md") and "Ownership → Invocation → Method → Boundaries → Result" in text("docs/semantic-design-manual.md") and "not a five-heading template" in text("docs/semantic-design-manual.md"), "semantic-design manual missing semantic role-contract shape / anti-template rule")
 
+# Current semantic literal axes must remain type-distinct.
+check(
+    "exactly `proceed`, `hold`, or `insufficient-context`" in checkpoint_sem
+    and "`unverified` — available evidence is insufficient" in checkpoint_sem
+    and "`indeterminate`" in checkpoint_sem
+    and "distinct from `unverified` evidence status and `indeterminate` proposition relation" in checkpoint_sem
+    and "`hold` or `insufficient-context` blocks mutation" in code_orchestrator_sem,
+    "semantic-checkpoint/code-orchestrator: verdict, evidence status, and proposition relation are not type-stable",
+)
+check(
+    "`preserved`, `refined`, `strengthened`, `weakened`, `substituted`, or `indeterminate`" in evaluator_sem
+    and "mark only conclusions depending on that branch `unverified`" in evaluator_sem,
+    "session-evaluator: proposition relation still conflates with evidence uncertainty",
+)
+
+# Project planning representation belongs to persistent-planning; an unwritable project canonical owner must not fork.
+check(
+    "root section 2.3 owns activation/canonical-state policy" in planner_sem
+    and "load `persistent-planning` for the fallback representation and resume procedure" in planner_sem
+    and "Read that artifact as authoritative state" in planner_sem
+    and "instead of creating a parallel plan solely because the canonical owner is not writable here" in planner_sem,
+    "project-planner: persistent-planning ownership or unwritable canonical-owner composition missing",
+)
+
+# Explore must defend against false absence/flow claims rather than passing on size/keywords alone.
+check(
+    "not found within <searched scope>" in explore_sem
+    and "never collapse `not searched` into `not found`" in explore_sem
+    and "corroborate the actual edge" in explore_sem
+    and "similar names, nearby files" in explore_sem,
+    "explore: negative-claim/flow corroboration false-success defense missing",
+)
+
+# Installer ownership/preservation and licensing surfaces are release-critical package semantics.
+global_installer = text("install/install-global.sh")
+project_installer = text("install/install-project.sh")
+release_runner = text("evals/run-release-gates.py")
+license_text = text("LICENSE")
+third_party = text("THIRD_PARTY_NOTICES.md")
+check(
+    "Copyright (c) 2026 bashrusakh (https://github.com/bashrusakh)" in license_text
+    and "MIT License" in license_text
+    and "Jeffallan" in third_party
+    and "open-code-review" in third_party
+    and "ui-ux-pro-max" in third_party,
+    "package licensing/third-party attribution surfaces missing",
+)
+check(
+    "OPENCODE_AGENT_PACK_REPLACE_GLOBAL_AGENTS" in global_installer
+    and "Refusing to replace an existing global" in global_installer
+    and "managed-files.sha256" in global_installer
+    and "filename is not ownership proof" in global_installer,
+    "global installer: ownership/backup/preserve semantics missing",
+)
+check(
+    "project-owned ./AGENTS.md" in project_installer
+    and "no recognizable global OpenCode Agent Pack root" in project_installer
+    and "Preserved existing project-owned AGENTS.md" in project_installer
+    and "managed-files.sha256" in project_installer
+    and "filename is not ownership proof" in project_installer,
+    "project installer: project-root preservation/ownership semantics missing",
+)
+check(
+    "installer-safety-selftest.py" in release_runner,
+    "release gates: installer safety selftest not wired into aggregate gates",
+)
+check(
+    "package runner such as `npx`/`bunx`" in root_sem
+    and "fetching or installing a missing package requires the normal tooling authorization" in root_sem
+    and "installation remains a root section 4 new-tooling gate" in text("skills/open-code-review/SKILL.md"),
+    "new-tooling gate: package-runner/managed-OCR install path can bypass authorization",
+)
+
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 75, "semantic-transition suite must contain 75 cases")
+check(traces.count("### ST-") == 78, "semantic-transition suite must contain 78 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 75, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 78, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -868,8 +942,27 @@ check(
     "ST-75 host/OCR coverage-independence regression missing",
 )
 check(
-    "proposition relation: `preserved | refined | strengthened | weakened | substituted | unverified`" in traces,
-    "semantic-transition suite proposition-relation axis missing",
+    "gate verdict, evidence status, and proposition relation must remain type-distinct" in traces.lower()
+    and "insufficient-context" in traces
+    and "proposition relation is `indeterminate`" in traces,
+    "ST-76 typed semantic-state regression missing",
+)
+check(
+    "repository discovery must falsify material negative and flow claims" in traces.lower()
+    and "not found within <searched scope>" in traces
+    and "not searched" in traces
+    and "actual caller/reference/consumer/transition edge" in traces,
+    "ST-77 discovery negative/flow regression missing",
+)
+check(
+    "canonical project planning state outside planner write paths must not fork into a parallel plan" in traces.lower()
+    and "roadmap.md" in traces.lower()
+    and "persistent-planning" in traces.lower(),
+    "ST-78 persistent-planning composition regression missing",
+)
+check(
+    "proposition relation: `preserved | refined | strengthened | weakened | substituted | indeterminate`" in traces,
+    "semantic-transition suite proposition-relation axis missing or still conflated with evidence status",
 )
 check(
     "transition class: `preserved | refined | strengthened | weakened | substituted | uncertainty-resolved | unverified`" not in traces,

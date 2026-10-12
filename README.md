@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.79 beta
+# OpenCode Agent Pack v30.80 beta
 
 ### Model-agnostic routing · explicit workflow owners · bounded specialist delegation · evidence-grounded verification
 
@@ -199,6 +199,16 @@ Specialist/advisory skills are discovered through the runtime/project-visible sk
 
 ---
 
+## License
+
+Pack-authored material is licensed under the **MIT License**. The copyright notice intentionally includes the project author's GitHub profile and must be retained with the license notice in copies or substantial portions:
+
+`Copyright (c) 2026 bashrusakh (https://github.com/bashrusakh)`
+
+Bundled third-party material keeps its upstream license. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and [`LICENSES/`](LICENSES/).
+
+---
+
 ## Install
 
 ### Global
@@ -213,7 +223,7 @@ Installs under `~/.config/opencode/`:
 - `agents/`
 - `skills/`
 
-The installer backs up/replaces only the package-owned runtime surfaces described by the script. Package documentation is not copied into OpenCode runtime.
+Every colliding managed destination is backed up before replacement and the installer writes an ownership receipt under `~/.config/opencode/.agent-pack/`. An existing global `AGENTS.md` that is not recognizable as a prior pack root is **not** replaced by default; the installer stops before mutation. Explicit replacement is available with `OPENCODE_AGENT_PACK_REPLACE_GLOBAL_AGENTS=1` and still keeps a backup. Ambiguous legacy command/doc/tool names are preserved unless a prior receipt proves package ownership.
 
 ### Project-local
 
@@ -223,13 +233,13 @@ From the target repository root:
 /path/to/opencode-agent-pack/install/install-project.sh
 ```
 
-Installs:
+Installs `.opencode/agents/` and `.opencode/skills/`. For the root policy:
 
-- `./AGENTS.md`
-- `.opencode/agents/`
-- `.opencode/skills/`
+- if the project has no `./AGENTS.md`, the installer may install the pack root there;
+- if `./AGENTS.md` is a recognizable prior pack root, it is backed up and upgraded;
+- if the repository already owns `./AGENTS.md`, it is preserved. A recognizable global pack root must already be installed; otherwise the project installer stops before mutation rather than replacing project rules or creating a parallel policy owner.
 
-The project installer backs up existing runtime surfaces before copying the pack and removes only explicitly listed obsolete package-owned paths.
+Project-local collisions are backed up under `.opencode/.agent-pack/backups/`, an ownership receipt is recorded, and ambiguous legacy names are preserved unless ownership is proven.
 
 ---
 
@@ -237,9 +247,9 @@ The project installer backs up existing runtime surfaces before copying the pack
 
 | If you need… | Read… |
 |---|---|
-| Release notes | [`docs/releases/v30.79-beta.md`](docs/releases/v30.79-beta.md) |
+| Release notes | [`docs/releases/v30.80-beta.md`](docs/releases/v30.80-beta.md) |
 | Release history | [`CHANGELOG.md`](CHANGELOG.md) |
-| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.79.md`](docs/contract-protocol-audit-v30.79.md) |
+| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.80.md`](docs/contract-protocol-audit-v30.80.md) |
 | Semantic transition scenarios | [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md) |
 | Source-to-generalized-rule preservation method | [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) |
 
@@ -249,7 +259,7 @@ Release validation is defined in **§21 of [`docs/semantic-design-manual.md`](do
 
 <div align="center">
 
-**OpenCode Agent Pack v30.79 beta**  
+**OpenCode Agent Pack v30.80 beta**  
 Workflow-owner first · bounded specialist delegation · evidence-grounded verification
 
 </div>

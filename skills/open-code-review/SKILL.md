@@ -33,7 +33,7 @@ Analyze the review target (commits, branch, or changes) to extract concise busin
 
 ### Step 2: Run Code Review
 
-**Do not pre-check OCR availability on the managed-review common path.** Skip probes such as `command -v ocr`, `which ocr`, or `ocr --version`; run the requested `ocr review` directly. Enter the installation path only if that invocation fails because `ocr` is not found.
+**Do not pre-check OCR availability on the managed-review common path.** Skip probes such as `command -v ocr`, `which ocr`, or `ocr --version`; run the requested `ocr review` directly. Enter the installation path only if that invocation fails because `ocr` is not found; installation remains a root section 4 new-tooling gate and must not happen automatically.
 
 Run the OCR command with appropriate flags. **Always pass business context when available:**
 
@@ -295,7 +295,7 @@ Do not infer a complete successful review merely from partial output.
 
 ### `ocr: command not found`
 
-Install the CLI:
+Installing the CLI is a root section 4 new-tooling action. Do not install it automatically. Ask for authorization first; when authorized, the upstream install command is:
 
 ```bash
 npm install -g @alibaba-group/open-code-review

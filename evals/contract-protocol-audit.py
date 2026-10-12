@@ -108,6 +108,8 @@ CORE = {
     "discovery": {
         "question_to_trace": [[r"find|identify|locate|search|trace|inspect"], [r"files?|symbols?|call paths?|callers?|references?|data flow|state flow|similar implementations?|patterns?"], [r"adjacent|related|nearby|tests?/docs?|boundar"]],
         "corroborate_not_infer": [[r"support|evidence|current code|tool output|exact file paths?|symbols?"], [r"do not guess|unknown|gap|not .*root cause|cannot establish"]],
+        "negative_claim_scope": [[r"not found|unused|no caller|no implementation|negative .*claim"], [r"naming|alias|variant|references?|callers?|generated|config"], [r"searched scope|does not exist|not searched"]],
+        "flow_edge_corroboration": [[r"call/data/state flow|call.*flow|data.*flow|state.*flow"], [r"actual edge|caller|reference|consumer|transition"], [r"similar names|nearby files|adjacency|infer"]],
         "bounded_handoff": [[r"bounded|scope|depth|quick|medium|thorough"], [r"handoff|right role|appropriate role|do not .*implement|do not .*verify"]],
     },
     "analysis_fallback": {
@@ -151,6 +153,7 @@ CORE = {
     },
     "semantic_gate": {
         "bind_and_classify": [[r"claim|proposition|candidate|target .*state"], [r"authority|evidence|authoritative"], [r"preserv|refin|strengthen|weaken|contradict|classif"]],
+        "typed_state_axes": [[r"proceed.*hold.*insufficient-context|insufficient-context.*workflow verdict"], [r"evidence status|`unverified`.*evidence"], [r"proposition relation|`indeterminate`.*relation"], [r"workflow verdict[^.\n]{0,180}distinct from[^.\n]{0,180}`unverified` evidence status[^.\n]{0,180}`indeterminate` proposition relation"]],
         "boundary_not_recipe": [[r"mutation boundary|semantic boundary|proceed"], [r"non-binding|not .*recipe|does not certify|not .*implementation .*adequacy|mechanism .*hypothesis"]],
         "bounded_result": [[r"evidence|proof|confidence"], [r"stop|blocked|cannot .*proceed|return .*parent|escalat"], [r"result|verdict|handoff"]],
     },
@@ -171,7 +174,7 @@ CORE_SEVERITY = {
     "ops_mutation": {"observe_before_action": "FAIL", "isolate_before_mutation": "FAIL", "authorized_reversible_action": "FAIL", "postchange_proof": "FAIL"},
     "independent_review": {"bind_exact_target": "FAIL", "derive_attack_surface": "FAIL", "bounded_judgment": "FAIL"},
     "verification": {"bind_and_plan": "FAIL", "discriminating_evidence": "FAIL", "classify_and_bound": "FAIL"},
-    "discovery": {"question_to_trace": "FAIL", "corroborate_not_infer": "FAIL", "bounded_handoff": "FAIL"},
+    "discovery": {"question_to_trace": "FAIL", "corroborate_not_infer": "FAIL", "negative_claim_scope": "FAIL", "flow_edge_corroboration": "FAIL", "bounded_handoff": "FAIL"},
     "analysis_fallback": {"question_to_evidence": "FAIL", "separate_known_unknown": "FAIL", "bounded_handoff": "FAIL"},
     "external_research": {"bind_external_target": "FAIL", "source_and_applicability": "FAIL", "reconcile_conflicts": "FAIL", "bounded_external_result": "FAIL"},
     "planning": {"inspect_before_plan": "FAIL", "ownership_and_choices": "FAIL", "execution_and_verification_plan": "FAIL"},
@@ -179,7 +182,7 @@ CORE_SEVERITY = {
     "audit_orchestrator": {"scope_and_specialists": "FAIL", "risk_and_evidence": "FAIL", "reconcile_specialists": "REVIEW", "bounded_audit_result": "FAIL"},
     "orchestrator": {"normalize_and_route": "FAIL", "clean_handoff": "FAIL", "consume_without_overclaim": "FAIL"},
     "code_orchestrator": {"normalize_and_route": "FAIL", "clean_handoff": "FAIL", "consume_without_overclaim": "FAIL", "workflow_state_visibility": "REVIEW", "decision_context": "REVIEW"},
-    "semantic_gate": {"bind_and_classify": "FAIL", "boundary_not_recipe": "FAIL", "bounded_result": "FAIL"},
+    "semantic_gate": {"bind_and_classify": "FAIL", "typed_state_axes": "FAIL", "boundary_not_recipe": "FAIL", "bounded_result": "FAIL"},
     "evaluation": {"trace_contract": "FAIL", "classify_failure": "FAIL", "bound_conclusion": "FAIL"},
 }
 
@@ -192,7 +195,7 @@ CHALLENGE = {
     "ops_mutation": [[r"isolate|distinguish|which .*layer|whether .*failure|identify .*cause"], [r"before .*chang|before .*propos|read-only diagnos|evidence"]],
     "independent_review": [[r"counterexample|adversarial|negative|preserv|regression"], [r"not .*correctness|constraint .*not|prior .*verdict|fresh|independent"]],
     "verification": [[r"preserv|negative control|precondition|qualifier|could .*false"], [r"environment|setup|tooling|not .*verified|valid evidence"]],
-    "discovery": [[r"references?|callers?|adjacent|similar implementation|data flow|state flow"], [r"do not guess|unknown|cannot establish|not .*root cause"]],
+    "discovery": [[r"references?|callers?|adjacent|similar implementation|data flow|state flow|searched scope"], [r"do not guess|unknown|cannot establish|not .*root cause|not searched"]],
     "analysis_fallback": [[r"fact|evidence|hypothesis|inference"], [r"unknown|gap|cannot establish|do not guess"]],
     "external_research": [[r"latest|another .*version|major/minor version|platform|fix released after|wrong .*version|applicability"], [r"conflict|do not vote|unresolved evidence gap|cannot be resolved"]],
     "planning": [[r"existing .*owner|ownership|alternative|tradeoff|decision"], [r"authority|do not choose|unresolved|hypothesis"]],

@@ -59,9 +59,10 @@ Do not choose between materially different product/architecture directions unles
 
 Normalize plan lifecycle intent by meaning: create, resume, update, implementation-plan authoring, review handoff, or session handover.
 
-When durable repository plan artifacts are authorized, use the canonical layout and resume semantics defined by root section 2.3 rather than restating or inventing a parallel layout.
+When durable repository plan artifacts are authorized, root section 2.3 owns activation/canonical-state policy; load `persistent-planning` for the fallback representation and resume procedure rather than attributing that layout to root or inventing a parallel one.
 
 - Do not create repository plan artifacts merely because the task is broad if file mutation for planning is not authorized; return the plan in chat instead.
+- Prefer the project's existing canonical planning owner/convention even when it is outside this role's writable planning paths. Read that artifact as authoritative state; if it must be updated, return the exact update need to the caller for an authorized writer instead of creating a parallel plan solely because the canonical owner is not writable here.
 - Update only canonical planning artifacts within the permitted planning paths. Product/project documentation outside those paths is a separate persistent-file mutation and requires an implementation-capable role or another policy path that explicitly authorizes that documentation change.
 
 ## Result

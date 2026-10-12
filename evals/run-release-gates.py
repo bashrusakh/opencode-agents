@@ -13,6 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 checks=[
     ("contract audit selftest", [sys.executable, str(ROOT/'evals/contract-protocol-selftest.py')]),
     ("static policy regressions", [sys.executable, str(ROOT/'evals/static-policy-regressions.py')]),
+    ("installer safety selftest", [sys.executable, str(ROOT/'evals/installer-safety-selftest.py')]),
     ("contract/protocol audit", [sys.executable, str(ROOT/'evals/contract-protocol-audit.py')]),
     ("role-handoff selftest", [sys.executable, str(ROOT/'evals/role-handoff-selftest.py')]),
     ("role-handoff edge audit", [sys.executable, str(ROOT/'evals/role-handoff-audit.py')]),

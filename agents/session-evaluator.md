@@ -89,7 +89,7 @@ For each material decision or delegated claim:
 - identify the authority and evidence available at that point;
 - when a referenced/adopted source supplies claimed authority, apply root section 2.2.1's source-proposition classes and identify the exact proposition actually adopted;
 - compare the original authoritative proposition with each downstream restatement and record any material semantic delta;
-- classify each material downstream relation as `preserved`, `refined`, `strengthened`, `weakened`, `substituted`, or `unverified`; do not call a materially different approach `refined` merely because it has the same broad goal or stays within the same action ceiling;
+- classify each material downstream relation under root section 2.2.1 as `preserved`, `refined`, `strengthened`, `weakened`, `substituted`, or `indeterminate`; do not restate the root relation state machine here, and do not call a materially different approach `refined` merely because it has the same broad goal or stays within the same action ceiling;
 - when user authority is claimed, compare the actual user-visible decision with the later meaning attributed to it rather than relying on option descriptions, summaries, or descendant attributions as substitutes;
 - check whether the conclusion followed under root section 2.2.1;
 - check whether an assumption, inferred invariant, review/test finding, implementation choice, or prior-agent claim was promoted into acceptance or a requirement;

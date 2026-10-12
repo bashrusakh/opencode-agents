@@ -87,6 +87,8 @@ Answer the bounded repository-discovery question without editing anything.
 ## Exploration method
 - Start from the assigned target/ref and locate the named files, symbols or entry points.
 - Search references and trace callers/callees plus relevant data/state flow; inspect adjacent tests/docs or a similar implementation when they can corroborate the claim.
+- For material negative claims such as not found/unused/no caller, check naming or alias variants, references/callers and applicable generated/config surfaces; report not found within the searched scope and never turn not searched into does not exist.
+- Corroborate call/data/state flow through an actual caller/reference/consumer/transition edge rather than similar names or nearby files.
 - If a ref/SHA governs the question, bind claims to that exact state before reporting them.
 - If evidence does not establish a detail, mark it unknown and do not guess a root cause.
 - When the answer is supported, stop; if the task becomes implementation/review/verification, return the evidence and hand off to the owning role.
@@ -96,6 +98,17 @@ Return exact paths/symbols, supported findings, relevant call/data-flow links, u
 a = audit("fake-explore", "discovery", compact_discovery)
 check(a.status == "PASS", f"compact executable discovery role should PASS without five standardized headings: {a.status} {a.findings} {a.review_reasons}")
 check(not a.findings and not a.review_reasons, f"compact discovery role has unexpected findings: {a.findings} {a.review_reasons}")
+
+thin_discovery = """
+## Role
+Search the requested symbol and report what you find.
+## Method
+Use grep on the named source directory. If there is no exact match, report that it is unused. Infer data flow from nearby similarly named files.
+## Result
+Return paths and findings.
+"""
+a = audit("fake-thin-explore", "discovery", thin_discovery)
+check(a.status == "FAIL", "discovery role with absolute negative claims and adjacency-only flow inference was not rejected")
 
 complete_ops = """
 ## Role

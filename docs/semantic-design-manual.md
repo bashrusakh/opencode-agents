@@ -149,9 +149,11 @@ Authority bounds more than the maximum action level. Compare a candidate with th
 - **refined** — only implementation mechanics become more specific;
 - **strengthened / weakened** — the force or result changes;
 - **substituted** — a materially different approach, outcome, or constraint replaces the established one;
-- **unverified** — available evidence cannot establish the relation.
+- **indeterminate** — available authority/evidence cannot establish the proposition relation.
 
 A replacement is not merely a refinement because it is safer, narrower, technically better, lower-permission, or aimed at the same broad goal. Evidence may establish that the original proposition is blocked or non-viable, but that does not itself authorize a materially different replacement. Semantic substitution needs separate proposition-scoped authority unless the replacement was already established as a conditional alternative and evidence establishes that condition. Adequacy of the replacement does not create that authority.
+
+Keep semantic axes type-stable. A workflow verdict, an evidence/verification status, and a proposition relation must not reuse one literal for different meanings merely because downstream behavior currently happens to be the same. Prefer distinct vocabularies such as `insufficient-context` for a gate verdict, `unverified` for evidence state, and `indeterminate` for proposition relation.
 
 ### Evidence-fidelity test
 
@@ -604,6 +606,8 @@ For routed-role executability, do not reduce the contract check to prompt size o
 - **profile-specific core loop** — the characteristic method that makes that capability distinct (for example symptom→cause→fix→rerun for debugging, current-state→fault-layer isolation→authorized reversible action→postcondition for operations, or target→reference/call-flow trace→corroboration→bounded handoff for discovery).
 
 A role that merely mentions the right nouns can still be non-executable. Conversely a compact role can be sufficient. Prompt length is diagnostic only and must never create PASS, REVIEW, or FAIL. Severity follows semantics: **FAIL** means the role lacks a foundational boundary or essential characteristic core-loop capability needed to execute safely; **REVIEW** means the core loop is executable but a material correctness/coverage branch remains under-specified. PASS additionally requires a characteristic false-success/adversarial defense, not just generic vocabulary. REVIEW is resolved only by strengthening the generic criterion/role contract or by a documented semantic adjudication with an overreach/preservation case; it is not a candidate-specific waiver.
+
+For discovery roles, negative claims are a characteristic false-success surface: distinguish `not found within the searched scope` from `does not exist`, and distinguish `not searched` from `not found`. Material call/data/state-flow claims should be corroborated by an actual caller/reference/consumer/transition edge rather than inferred from naming or file adjacency alone.
 
 The checker itself needs synthetic anti-gaming fixtures: keyword-stuffed thin roles must fail, profile-specific method gaps must fail even when generic dimensions are present, and a compact executable role must not hard-fail solely for size.
 

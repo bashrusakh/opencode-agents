@@ -22,7 +22,7 @@ At every material transition, capture:
 - the source of that cause;
 - whether that source is task-semantic authority, evidence, implementation discretion, runtime fact, or another established class;
 - what authorizes the resulting transition when authority is required;
-- proposition relation: `preserved | refined | strengthened | weakened | substituted | unverified`;
+- proposition relation: `preserved | refined | strengthened | weakened | substituted | indeterminate`;
 - evidence state before → after where applicable, preserving `intended | reported | independently verified` and whether uncertainty was resolved.
 
 A material semantic delta passes only when its provenance is identifiable, its cause actually supports that delta, and any required authority is sufficient for the resulting state. Evidence that blocks or disproves an earlier path does not automatically authorize a replacement proposition.
@@ -1525,6 +1525,60 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 **Expected result:** fail if host and OCR coverage are unioned to create a full-review claim or if OCR's lack of findings substitutes for host reasoning; pass when host judgment is independently complete and OCR remains separately accounted additional evidence.
 
+
+---
+
+### ST-76 — Gate verdict, evidence status, and proposition relation must remain type-distinct
+
+**Initial user/spec fixture:** A material candidate reaches `@semantic-checkpoint`, but a required primary session branch cannot be recovered after the allowed read-only retrieval path is exhausted.
+
+**Runtime/repository fixture:** The missing branch is necessary both to verify one factual premise and to classify the candidate's relation to an established proposition. No edit-capable handoff has begun.
+
+**Injected intermediate output:** A checkpoint result that uses the literal `unverified` simultaneously as its workflow verdict, the evidence status, and the proposition relation; the orchestrator treats it as a generic blocked result.
+
+**Expected earliest observable stop/preservation point:** Checkpoint result construction, before the orchestrator consumes the gate result.
+
+**Scenario:** Different semantic axes may lead to the same practical stop, but their meanings remain different and must stay inspectable downstream.
+
+**Expected trace:** evidence status for the unsupported premise is `unverified`; proposition relation is `indeterminate` when the relation cannot be classified; checkpoint verdict is `insufficient-context` when the checkpoint lacks enough trace/provenance/context to judge the handoff. `hold` remains the verdict for a specific material semantic blocker. The orchestrator blocks mutation on either `hold` or `insufficient-context` without collapsing those meanings.
+
+**Expected result:** fail if one literal is reused across verdict/evidence/relation axes or if the consumer loses the distinction merely because both blocking verdicts stop mutation.
+
+---
+
+### ST-77 — Repository discovery must falsify material negative and flow claims
+
+**Initial user/spec fixture:** The caller asks whether a legacy adapter is unused and whether data reaches a downstream consumer through a named module.
+
+**Runtime/repository fixture:** The obvious symbol name has no exact reference in the primary source directory, but an alias/config-generated reference exists elsewhere; a nearby similarly named file is not itself proof of the claimed data-flow edge.
+
+**Injected intermediate output:** `@explore` searches only the exact symbol in the primary directory, reports `unused / no caller`, and infers the downstream flow from file adjacency and similar naming.
+
+**Expected earliest observable stop/preservation point:** Explore's evidence synthesis before returning the negative/flow findings.
+
+**Scenario:** The role is allowed to stay bounded, but a material negative claim must describe the domain actually searched, and a flow claim needs a real relation edge.
+
+**Expected trace:** search relevant naming/alias variants, references/callers and applicable generated/config surfaces proportionately to the requested depth; if the inspected domain is incomplete, report `not found within <searched scope>` rather than `does not exist`, and never treat `not searched` as `not found`. Corroborate the call/data/state relation through an actual caller/reference/consumer/transition edge or return that edge as unresolved.
+
+**Expected result:** fail if an incomplete search becomes an absolute absence claim or if naming/adjacency substitutes for a real flow edge; pass without requiring repository-wide scanning when the bounded searched domain is explicit and sufficient for the claim made.
+
+---
+
+### ST-78 — Canonical project planning state outside planner write paths must not fork into a parallel plan
+
+**Initial user/spec fixture:** A multi-session task already uses project-root `ROADMAP.md` as its canonical planning owner. The user asks `@project-planner` to update the implementation plan.
+
+**Runtime/repository fixture:** The planner may read repository documentation but may write only `.opencode/plans/**/*.md` and `plans/**/*.md`. `persistent-planning` is available and defines the pack's fallback representation when no project convention exists.
+
+**Injected intermediate output:** The planner treats root section 2.3 as the owner of the fallback layout and creates `plans/task/plan.md` because `ROADMAP.md` is not writable by its role.
+
+**Expected earliest observable stop/preservation point:** Planning-artifact selection before any durable plan mutation.
+
+**Scenario:** Project-first planning ownership and role write permissions must compose without either overwriting project documentation or creating a second source of truth.
+
+**Expected trace:** root section 2.3 owns persistent-planning activation/canonical-state policy; `persistent-planning` supplies fallback representation/resume procedure. The planner reads `ROADMAP.md` as authoritative state, does not create a parallel plan solely because it cannot write that file, and returns the exact required update to the caller for an authorized writer. Only when no project convention exists may the fallback writable layout be selected.
+
+**Expected result:** fail if the planner attributes the fallback layout to root, mutates an unauthorized project document, or creates a parallel source of truth merely to stay inside its own write paths.
 
 ## Grading
 

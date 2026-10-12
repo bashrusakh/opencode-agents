@@ -1,5 +1,22 @@
 # Changelog
 
+## v30.80 beta
+
+Semantic ownership, discovery, installer-safety, and licensing hardening:
+
+- fixes `project-planner` attribution so root §2.3 owns persistent-planning activation/canonical-state policy while `persistent-planning` owns fallback representation/resume procedure; an unwritable project canonical plan is read as authority and returned to an authorized writer instead of forking into a parallel plan;
+- separates checkpoint workflow verdict (`proceed | hold | insufficient-context`), evidence status (`established | unverified | contradicted`), and proposition relation (`preserved | refined | strengthened | weakened | substituted | indeterminate`);
+- deduplicates root-owned weaken/substitute semantics from `semantic-checkpoint` / `session-evaluator` while preserving their role-specific gate/diagnostic actions;
+- strengthens `explore` against false negative and inferred-flow success: scoped absence claims, alias/reference/generated/config search, and actual call/data/state relation edges;
+- makes package runners that may fetch missing tooling subject to the existing new-tooling gate and makes the managed OCR install path explicitly approval-gated;
+- hardens both installers: project-owned `AGENTS.md` is never silently replaced, unknown global `AGENTS.md` blocks before mutation, collisions are backed up, ownership receipts support safe stale cleanup, and filename-only legacy cleanup is replaced with preserve-and-warn unless ownership is proven;
+- licenses pack-authored material under MIT with retained GitHub attribution and adds third-party license/notices for established bundled provenance;
+- adds ST-76…ST-78 plus installer behavioral selftests and stronger discovery/semantic-gate contract checks.
+
+Fresh isolated behavioral replay of ST-01…ST-78 remains separate evidence and is not claimed by static/contract/package validation.
+
+See [`docs/releases/v30.80-beta.md`](docs/releases/v30.80-beta.md) and [`docs/contract-protocol-audit-v30.80.md`](docs/contract-protocol-audit-v30.80.md).
+
 ## v30.79 beta
 
 Reviewer / managed-OCR independence hardening:
