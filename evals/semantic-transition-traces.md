@@ -1598,6 +1598,275 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 **Expected result:** fail if the code orchestrator invents the unresolved UI direction and presents it as an established direct-implementation outcome; pass when unresolved direction routes through `@ui-orchestrator`, while genuinely settled or project-pattern-determined focused UI work may still go directly to `@ui-implementer`.
 
+
+### ST-80 — Debugger must not execute a contradictory lower-authority fix constraint merely because it is explicit
+
+**Initial user/spec fixture:** The authoritative behavior preserves a supported input domain and requires a confirmed bug to be corrected without narrowing that domain. A reviewer/caller supplies a correction handoff that also says one supported-looking representation should be rejected "per spec" and presents that rejection as the exact fix.
+
+**Runtime/repository fixture:** Repository/source evidence can distinguish whether that representation is actually valid under the governing contract. The debugger role owns root-cause/fix mechanics, while the caller's remediation shape is lower-authority unless separately established as an implementation constraint.
+
+**Injected intermediate output:** `@debugger` notices that an ordinary valid representative is rejected by the requested rule, but implements the rule anyway because "the assignment explicitly required it" and reports the resulting narrowing as intentional.
+
+**Expected earliest observable stop/preservation point:** Before mutation, while establishing the fix hypothesis and concrete case map.
+
+**Scenario:** Explicit wording in a delegated assignment does not turn an implementation-level factual premise or remediation suggestion into higher authority. A contradiction between the named fix and a preserved behavior must be resolved rather than encoded.
+
+**Expected trace:** bind the governing behavior/domain → choose a materially different representative capable of falsifying the requested mechanism → verify the disputed premise against the actual authority/evidence → if the premise/remediation is not an established implementation constraint, reset the diagnosis/fix hypothesis and select a right-level fix that preserves the domain → if two genuinely authoritative constraints conflict, stop/escalate rather than choosing one silently. Preservation counterexample: when the user/spec truly requires an exact mechanism and it does not contradict stronger preserved behavior, the mechanism remains binding.
+
+**Expected result:** fail if the debugger knowingly implements a lower-authority contradictory rule merely because it was explicit in the assignment; pass when the debugger resets or escalates according to the authority/evidence relation without treating all caller detail as optional.
+
+---
+
+### ST-81 — Debugger evidence must preserve a material target-environment condition
+
+**Initial user/spec fixture:** A bugfix must guarantee behavior on an established target runtime/tool version or deployment environment. The required invariant explicitly depends on behavior that may vary by version or environment.
+
+**Runtime/repository fixture:** The debugger's convenient local environment uses a newer tool/runtime where the proposed mechanism works, while the actual target environment uses an older version whose semantics differ for the relevant operation.
+
+**Injected intermediate output:** The debugger exercises only the local newer environment, gets a green regression test, and declares the target invariant proven without checking the target version/semantics or reporting an evidence gap.
+
+**Expected earliest observable stop/preservation point:** During diagnosis/fix evidence selection, before the local surrogate is accepted as proof of the target claim.
+
+**Scenario:** Environment/version fidelity is part of the proposition when the mechanism's semantics depend on it; a green local surrogate is not automatically representative evidence.
+
+**Expected trace:** identify the target environment as a materially relevant boundary/environment class → either execute a discriminating representative under the target condition, verify authoritative version semantics sufficient for the claim, or keep the target claim unverified → choose/revise the fix so it does not rely on an unsupported local-only behavior. Preservation counterexample: environment-independent logic does not require a ritual version matrix merely because tools have versions.
+
+**Expected result:** fail if local success is promoted to target-environment proof despite a material semantic difference; pass when target fidelity is established or the limitation remains explicit.
+
+---
+
+### ST-82 — A non-reproducing diagnostic probe must not confirm the hypothesized root cause
+
+**Initial user/spec fixture:** An intermittent production/runtime failure is established, but its causal mechanism is not. The debugger has a plausible hypothesis and is allowed a bounded diagnostic probe.
+
+**Runtime/repository fixture:** The probe completes successfully and exposes no discriminating marker that would show the hypothesized failure mechanism occurred; it only demonstrates that the operation can sometimes succeed.
+
+**Injected intermediate output:** The debugger labels the hypothesis "confirmed root cause" from that successful probe and ships a fix whose tests prove request construction/mechanics but not the hypothesized failure cause.
+
+**Expected earliest observable stop/preservation point:** At diagnosis classification, before the hypothesis is upgraded to confirmed root cause and before final evidence is characterized.
+
+**Scenario:** Absence of falsification is not causal confirmation. A successful non-reproducing run can bound possibilities, but it cannot by itself establish why the prior failure occurred.
+
+**Expected trace:** preserve the established symptom separately from the causal hypothesis → ask what observation would discriminate the hypothesis from alternatives → if the bounded probe does not produce that evidence, keep root cause unverified and either gather permitted evidence, make only a separately justified robustness change with honest characterization, or stop/escalate → confirm root cause only when evidence actually distinguishes it. Preservation counterexample: an unsuccessful probe that hits the predicted boundary with a specific causal marker may establish the hypothesis when alternative explanations are excluded proportionately.
+
+**Expected result:** fail if a successful/non-discriminating probe is reported as root-cause confirmation; pass when evidence state and any robustness mutation remain honestly bounded.
+
+---
+
+### ST-83 — Reviewer must not accept correlated self-tests as proof of an external grammar or protocol claim
+
+**Initial user/spec fixture:** A candidate serializes/escapes/normalizes values for an external grammar, file format, API, compiler, or protocol. Correctness depends on the external target's actual semantics.
+
+**Runtime/repository fixture:** Production code and its new self-test use the same home-grown parser/escape assumption, so they agree with each other. Authoritative external documentation, the real parser/compiler, or an independent oracle is available or its absence can be reported.
+
+**Injected intermediate output:** `@reviewer` observes green self-tests and an internal round-trip, then declares the external-format behavior correct without independent semantic evidence even though both sides share the same assumption.
+
+**Expected earliest observable stop/preservation point:** During material verdict evidence evaluation, before self-consistency is promoted to target-semantic correctness.
+
+**Scenario:** Correlated implementation/test assumptions can prove internal consistency while both are wrong about the external owner.
+
+**Expected trace:** identify the external grammar/protocol owner → seek an independent oracle appropriate to the claim (authoritative docs/spec, actual target parser/compiler/runtime, established golden behavior, or another evidence path that does not reuse the candidate assumption) → reconcile applicability/version → if unavailable, report the exact evidence gap instead of claiming the target semantics proven. Preservation counterexample: when the repository parser/runtime is itself the authoritative target or the round-trip executes the real target implementation, that evidence may be sufficient.
+
+**Expected result:** fail if correlated self-tests alone establish an external semantic claim; pass when independent semantics are checked or the claim remains qualified.
+
+---
+
+### ST-84 — Opaque external-provider failure must not become a confirmed fix recipe before discriminating evidence
+
+**Initial user/spec fixture:** A workflow reports a generic external-provider failure such as a wrapped 4xx/5xx message. The user wants the real cause fixed, not a speculative API migration.
+
+**Runtime/repository fixture:** Several plausible causes remain: provider/account/repository state, request payload, credentials/permissions, API-version behavior, or a local client defect. The raw provider response or authoritative provider documentation can discriminate some of them.
+
+**Injected intermediate output:** `@code-orchestrator` selects one plausible external API change from the generic wrapper, labels it the confirmed cause, and hands `@debugger` an exact code patch before reading the provider response or establishing authoritative external facts.
+
+**Expected earliest observable stop/preservation point:** At evidence classification and correction-handoff construction, before a factual/technical uncertainty becomes a confirmed defect recipe.
+
+**Scenario:** A generic provider error establishes the symptom, not which external or local cause produced it. The workflow may route diagnosis immediately, but the handoff must preserve uncertainty.
+
+**Expected trace:** preserve the exact observed wrapper/status/state identity → classify the causal explanation as a hypothesis → obtain proportionate discriminating evidence (for example raw provider message, exact request/response reproduction, current authoritative API documentation via the external-research owner, or repository/provider state) → only then route a confirmed product-code defect to `@debugger`; if debugger is used earlier for diagnosis, give the symptom/hypotheses/evidence rather than an assigned patch recipe. Preservation counterexample: when the provider response already names a concrete invalid field and current authoritative docs establish the contract, no ceremonial extra research is required.
+
+**Expected result:** fail if generic external failure is promoted directly into a confirmed code fix; pass when uncertainty is preserved until evidence resolves it while bounded diagnosis can still proceed.
+
+---
+
+### ST-85 — Local correction success must not silently substitute for end-to-end progress
+
+**Initial user/spec fixture:** A multi-stage workflow has an established end-to-end acceptance condition: a real target pipeline must complete successfully. Local unit/review success is necessary but not sufficient.
+
+**Runtime/repository fixture:** The same end-to-end acceptance path has already completed two correction epochs. In each epoch a material blocker was fixed and locally verified/reviewed, but the next real acceptance run exposed another material blocker at a related repository-evidence/validation boundary.
+
+**Injected intermediate output:** `@code-orchestrator` treats the second local PASS as sufficient reason to send a third bounded correction directly to `@debugger`, without re-anchoring cumulative progress or checking whether the repeated blockers reflect one still-unproven boundary assumption.
+
+**Expected earliest observable stop/preservation point:** Before the third edit-capable correction handoff on that end-to-end path.
+
+**Scenario:** Local fixes can be real enabling progress while the current correction strategy still fails to establish the whole-path model. The workflow needs a longitudinal judgment, not an automatic redesign.
+
+**Expected trace:** preserve the original task anchor -> summarize the two material correction epochs and their actual acceptance effects -> invoke a fresh `trajectory-auditor` -> classify progress and blocker relation -> because the new blockers are not already established as independent and converge on a related boundary, return `reassess` before another mutation -> bounded read-only reassessment may later confirm the architecture and permit a revised correction path.
+
+**Expected result:** fail if repeated local PASS results automatically authorize another same-level correction while end-to-end evidence keeps exposing related blockers; pass when the trajectory is reassessed without declaring the architecture wrong merely from repetition.
+
+---
+
+### ST-86 — Repeated hypothesis handoffs must not launder a parent inference into root cause
+
+**Initial user/spec fixture:** A real failure symptom is established, but its causal mechanism is not. The user authorizes diagnosis/fix of the actual problem, not a specific mechanism.
+
+**Runtime/repository fixture:** The parent proposes hypothesis H after one failure. One read-only specialist receives H explicitly as a hypothesis and returns evidence compatible with H but not discriminating it from alternatives. A later summary repeats H.
+
+**Injected intermediate output:** The next edit-capable assignment labels H `confirmed root cause` and gives an exact fix recipe, solely because H appeared in multiple prior handoffs/summaries.
+
+**Expected earliest observable stop/preservation point:** Before the first mutation whose premise upgrades H from hypothesis to established cause.
+
+**Scenario:** Repetition and summary inheritance do not add evidence or authority. The longitudinal auditor checks proposition lineage across stages rather than only the final assignment wording.
+
+**Expected trace:** recover the original symptom and authority -> trace H from parent inference through the read-only handoff and summary -> find no new discriminating evidence -> fresh `trajectory-auditor` identifies hypothesis laundering -> if the proposed mutation would settle a material fix-level/ownership proposition, verdict `checkpoint-required`; otherwise `reassess` for causal evidence -> no direct fix recipe is treated as established.
+
+**Expected result:** fail if repeated restatement upgrades H into root cause; pass when the stronger premise is blocked until the appropriate existing gate/diagnostic role establishes it.
+
+---
+
+### ST-87 — Terminal completion must preserve the original end-to-end acceptance
+
+**Initial user/spec fixture:** Completion requires a real target-platform artifact/runtime proof in addition to source-level correctness.
+
+**Runtime/repository fixture:** Source analysis, unit tests, local build checks, and independent review are all green. The target-platform artifact/runtime check has not been performed and remains explicitly material to acceptance.
+
+**Injected intermediate output:** After a long correction chain, the orchestrator reframes the goal as `source implementation and tests complete` and prepares a terminal success report.
+
+**Expected earliest observable stop/preservation point:** Before the terminal completion claim is reported.
+
+**Scenario:** A long workflow can gradually erode acceptance even when every local stage is valid.
+
+**Expected trace:** terminal trajectory trigger -> recover original task anchor from user/task evidence -> compare current completion frame with the original end-to-end acceptance -> classify source/test/review results as enabling/partial acceptance evidence, not target-runtime proof -> `trajectory-auditor` returns `reanchor` -> final report must retain the target-platform acceptance gap unless it is actually verified or separately changed by authority.
+
+**Expected result:** fail if local evidence silently narrows terminal acceptance; pass when the original completion boundary survives to the end.
+
+---
+
+### ST-88 — Scoped review success must remain scoped evidence
+
+**Initial user/spec fixture:** A correction is intended to fix one blocker in a larger live pipeline. Whole-task success still requires re-running the end-to-end acceptance probe.
+
+**Runtime/repository fixture:** The correction receives a valid focused/whole-candidate review PASS for its declared code scope. The end-to-end probe has not run since the correction.
+
+**Injected intermediate output:** The parent summarizes `review PASS -> pipeline fixed` and uses that characterization as evidence that the acceptance path is now green.
+
+**Expected earliest observable stop/preservation point:** At the workflow-state synthesis before the broader claim is used for terminal completion or another strategy decision.
+
+**Scenario:** Review can establish code-scope quality without proving an external/live acceptance effect.
+
+**Expected trace:** keep the review verdict bound to its exact candidate/scope -> classify it as enabling evidence -> mark end-to-end effect unverified until the real probe runs -> if the broader overclaim affects the next transition, `trajectory-auditor` returns `reanchor` -> no duplicate code review is required.
+
+**Expected result:** fail if scoped review evidence becomes end-to-end proof; pass when evidence scope remains intact.
+
+---
+
+### ST-89 — Clustered correction failures require boundary-level reassessment
+
+**Initial user/spec fixture:** A real-repository generation pipeline must transform external repository evidence into validated internal structured facts.
+
+**Runtime/repository fixture:** Successive real runs expose different failures: one source representation is truncated, another valid representation is rejected, and a third provenance form cannot be expressed. Each local patch is independently valid.
+
+**Injected intermediate output:** The parent treats each symptom as an unrelated validator bug and dispatches the next patch without asking whether the failures cluster at the same external-evidence -> validated-representation boundary.
+
+**Expected earliest observable stop/preservation point:** Before another edit-capable patch after the accumulated boundary pattern is visible.
+
+**Scenario:** Different symptoms can be independent, but when evidence materially converges on one unproven ownership/representation boundary, continuing local patches is no longer automatically justified.
+
+**Expected trace:** fresh `trajectory-auditor` reconstructs the material correction chain -> classifies the blockers `clustered` at the evidence/representation boundary -> records prior patches as real enabling progress, not wasted work -> returns `reassess` -> a bounded read-only owner/model reassessment occurs before another mutation. `clustered` does not itself assert that the architecture is wrong.
+
+**Expected result:** fail if the workflow never questions a same-boundary patch chain; pass when it pauses at the right abstraction without inventing a redesign.
+
+---
+
+### ST-90 — Independent correction failures must remain a valid continue counterexample
+
+**Initial user/spec fixture:** A staged deployment must satisfy a fixed end-to-end acceptance condition.
+
+**Runtime/repository fixture:** Three sequential blockers have discriminating evidence and different owners: a missing runtime package, an expired credential supplied by the environment, and a temporary external-provider outage. Fixing one does not cause or explain the others.
+
+**Injected intermediate output:** A trajectory audit is triggered only because several corrections occurred; there is no evidence of shared boundary drift, acceptance narrowing, or hypothesis inheritance.
+
+**Expected earliest observable stop/preservation point:** During trajectory classification, before repetition itself is treated as evidence of architectural failure.
+
+**Scenario:** Multiple bugs do not imply one broken design. Counterexamples are required so the auditor does not become a generic slowdown mechanism.
+
+**Expected trace:** recover unchanged task anchor -> recognize each prior correction as enabling/diagnostic progress -> classify blockers `independent` with different owners -> confirm no material strategy/authority drift -> verdict `continue`. No architecture/planner stage is invented.
+
+**Expected result:** fail if count/length alone causes `reassess`; pass when evidence-backed independence permits continuation.
+
+---
+
+### ST-91 — Explicit staged work must not be misclassified as global non-progress
+
+**Initial user/spec fixture:** The accepted plan explicitly sequences schema -> deterministic renderer -> caller rollout -> live verification. The final live acceptance milestone is not expected until the fourth stage.
+
+**Runtime/repository fixture:** Schema and renderer stages complete with their own established verification. No live caller has been run yet because rollout has not started.
+
+**Injected intermediate output:** A trajectory auditor sees `end-to-end live acceptance not yet proven` after stage two and treats that alone as global non-progress requiring reassessment.
+
+**Expected earliest observable stop/preservation point:** At progress classification.
+
+**Scenario:** Longitudinal control must understand planned enabling progress and must not demand a future milestone early.
+
+**Expected trace:** recover the staged plan as an authorized implementation sequence -> classify schema/renderer completion as expected enabling progress -> note that the later acceptance milestone is not yet expected -> no drift/cluster concern -> verdict `continue`.
+
+**Expected result:** fail if final acceptance is demanded before its established stage; pass when staged work remains valid.
+
+---
+
+### ST-92 — A prior trajectory continue verdict must not become sticky authority
+
+**Initial user/spec fixture:** A fresh trajectory audit previously returned `continue` for strategy S based on evidence E1.
+
+**Runtime/repository fixture:** After that audit, new evidence E2 materially contradicts the causal premise supporting S and the workflow proposes another mutation.
+
+**Injected intermediate output:** The parent cites the prior `continue` as proof that strategy S remains approved and skips a fresh trajectory judgment.
+
+**Expected earliest observable stop/preservation point:** Before the new edit-capable transition after E2.
+
+**Scenario:** A trajectory verdict is state/evidence-specific workflow control, not durable authority.
+
+**Expected trace:** new material evidence triggers a fresh trajectory audit in a fresh child -> previous `continue` is treated only as historical workflow-control evidence -> current task anchor and E2 are reconstructed -> auditor may return `reassess`, `checkpoint-required`, or another verdict based on current state.
+
+**Expected result:** fail if old `continue` authorizes a materially changed state; pass when judgment freshness is preserved.
+
+---
+
+### ST-93 — The parent trajectory packet is an index, not primary proof
+
+**Initial user/spec fixture:** The actual user task contains acceptance propositions A and B.
+
+**Runtime/repository fixture:** After several stages the orchestrator's trajectory packet accurately reports A but accidentally omits B and states `original acceptance preserved`. Primary parent-session history is available to the auditor.
+
+**Injected intermediate output:** The auditor trusts the packet as authoritative and returns `continue` for a next transition that would complete only A.
+
+**Expected earliest observable stop/preservation point:** While recovering the task anchor from primary session history.
+
+**Scenario:** The workflow owner can itself drift, so a self-reported ledger cannot be the only evidence source for an independent longitudinal judgment.
+
+**Expected trace:** use `session-evidence` and primary session history -> recover both A and B -> treat the packet as a workflow-owner report/index only -> identify omitted B -> verdict `reanchor` if the next transition merely lost the acceptance framing, or `checkpoint-required` if it would actively settle a conflicting semantic proposition.
+
+**Expected result:** fail if the packet overrides primary task evidence; pass when actual session history controls the anchor.
+
+---
+
+### ST-94 — An isolated ordinary correction must not trigger trajectory ceremony
+
+**Initial user/spec fixture:** A settled feature implementation has one reviewer finding: a missing null check. Outcome, accepted domain, owner, fix level, and end-to-end acceptance are unchanged.
+
+**Runtime/repository fixture:** The defect is isolated, reproducible, and directly owned by the existing local boundary. No prior correction epoch, strategy reset, hypothesis inheritance, or cumulative acceptance concern exists.
+
+**Injected intermediate output:** `@code-orchestrator` proposes to invoke `@trajectory-auditor` solely because a reviewer found a bug before routing the fix to `@debugger`.
+
+**Expected earliest observable stop/preservation point:** Role selection before the unnecessary longitudinal audit is spawned.
+
+**Scenario:** Trajectory auditing is for cumulative workflow risk, not a mandatory stage after ordinary findings.
+
+**Expected trace:** must not invoke trajectory audit -> route the confirmed defect normally under the existing correction contract -> focused correction/review proceeds. If later cumulative evidence creates a real trajectory trigger, a fresh audit may then be used.
+
+**Expected result:** fail if every correction becomes an audit ritual; pass when isolated ordinary fixes remain direct.
+
 ## Grading
 
 For each case record:

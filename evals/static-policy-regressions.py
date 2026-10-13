@@ -20,7 +20,7 @@ def text(rel):
 
 # OpenCode V2 frontmatter generation: one schema across all pack-owned agents.
 agents = sorted((ROOT / "agents").glob("*.md"))
-check(len(agents) == 18, f"expected 18 agents, found {len(agents)}")
+check(len(agents) == 19, f"expected 19 agents, found {len(agents)}")
 for path in agents:
     raw = path.read_text(encoding="utf-8")
     end = raw.find("\n---\n", 4)
@@ -39,6 +39,7 @@ manual_sem = text("docs/semantic-design-manual.md")
 checkpoint_sem = text("agents/semantic-checkpoint.md")
 evaluator_sem = text("agents/session-evaluator.md")
 code_orchestrator_sem = text("agents/code-orchestrator.md")
+trajectory_sem = text("agents/trajectory-auditor.md")
 semantic_runtime = "\n".join([root_sem, checkpoint_sem, evaluator_sem])
 
 # Release identity must stay consistent across canonical/root and overview surfaces.
@@ -231,9 +232,9 @@ for agent_path in agents:
                 effect = effective_permission(rel, "skill", skill_id)
                 check(effect != "deny", f"{rel}: referenced skill {skill_id} is effectively denied")
 
-# Incident-independent regression for the two semantic roles whose active contract
+# Incident-independent regression for semantic roles whose active contract
 # requires the canonical session-evidence owner.
-for rel in ["agents/semantic-checkpoint.md", "agents/session-evaluator.md"]:
+for rel in ["agents/semantic-checkpoint.md", "agents/session-evaluator.md", "agents/trajectory-auditor.md"]:
     check(
         effective_permission(rel, "skill", "session-evidence") == "allow",
         f"{rel}: required skill session-evidence is not effectively allowed",
@@ -416,6 +417,45 @@ check(
 )
 
 
+# Longitudinal trajectory auditing is a separate mid-workflow lifecycle: it binds to
+# primary session evidence, judges cumulative task progress, and must not become a second
+# reviewer/planner/evaluator or a fixed-frequency ceremony.
+check(
+    "current user-authorized task anchor" in trajectory_sem
+    and "Treat this packet as a **workflow-owner report and index, not independent proof**" in trajectory_sem
+    and "acceptance progress" in trajectory_sem
+    and "enabling progress" in trajectory_sem
+    and "diagnostic progress" in trajectory_sem
+    and "hypothesis laundering" in trajectory_sem
+    and "`independent`, `clustered`, or `unverified`" in trajectory_sem
+    and "does **not** mean the architecture is wrong" in trajectory_sem,
+    "trajectory-auditor: anchor/primary-evidence/progress/cluster method missing",
+)
+check(
+    "Return exactly one workflow verdict" in trajectory_sem
+    and "`continue` — the proposed next transition is consistent" in trajectory_sem
+    and "`reanchor` — the current workflow framing has materially" in trajectory_sem
+    and "`reassess` — cumulative evidence no longer justifies" in trajectory_sem
+    and "`checkpoint-required` — the proposed next transition would treat" in trajectory_sem
+    and "`unverified` — available primary session evidence is insufficient" in trajectory_sem
+    and "Do not propose replacement implementation" in trajectory_sem
+    and "Do not classify prompt/instruction defects" in trajectory_sem
+    and "Audit the trajectory, not the repository" in trajectory_sem
+    and "`proceed/hold/insufficient-context`" in trajectory_sem,
+    "trajectory-auditor: bounded verdict/ownership/checkpoint-contract missing",
+)
+check(
+    "retain a compact **task anchor** across stages" in code_orchestrator_sem
+    and "correction epoch" in code_orchestrator_sem
+    and "successive locally successful correction epochs" in code_orchestrator_sem
+    and "fresh `@trajectory-auditor`" in code_orchestrator_sem
+    and "Do **not** invoke trajectory audit for an isolated ordinary correction" in code_orchestrator_sem
+    and "Length, turn count, commit count, and number of reviewers are not triggers" in code_orchestrator_sem
+    and "packet is a workflow-owner report, not proof" in code_orchestrator_sem
+    and "`checkpoint-required` routes the material candidate to fresh `@semantic-checkpoint`" in code_orchestrator_sem,
+    "code-orchestrator: longitudinal trajectory trigger/anti-ritual/verdict-consumption contract missing",
+)
+
 # Cross-role mutation handoffs must preserve role ownership instead of laundering
 # upstream planning/checkpoint/review recommendations into implementation recipes.
 checkpoint_sem = text("agents/semantic-checkpoint.md")
@@ -443,6 +483,16 @@ check(
     "Treat any caller/reviewer/tester proposed remediation or patch shape as a hypothesis" in debugger_sem
     and "diagnose the root cause from the governing behavior and evidence" in debugger_sem,
     "debugger: caller/remediation recipe anchoring guard missing",
+)
+check(
+    "case-to-verification map concrete **before selecting the fix**" in debugger_sem
+    and "materially different representative capable of falsifying the current root-cause/fix hypothesis" in debugger_sem
+    and "external grammar/API/tool/runtime or target environment" in debugger_sem
+    and "do not implement it merely because the assignment says so" in debugger_sem
+    and "multiple self-authored tests that share the same implementation assumption" in debugger_sem
+    and "as closure" in debugger_sem
+    and "target-condition evidence" in debugger_sem,
+    "debugger: cross-class falsification/contradictory-handoff/target-fidelity gate missing",
 )
 check(
     "upstream plan/checkpoint/review recommendations were not laundered into a binding implementation recipe" in evaluator_sem
@@ -647,14 +697,14 @@ check(
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 79, "semantic-transition suite must contain 79 cases")
+check(traces.count("### ST-") == 94, "semantic-transition suite must contain 94 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 79, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 94, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -977,6 +1027,87 @@ check(
     and "direct `@ui-implementer`" in traces.lower()
     and "existing project pattern" in traces.lower(),
     "ST-79 UI routing discriminator regression missing",
+)
+check(
+    "debugger must not execute a contradictory lower-authority fix constraint merely because it is explicit" in traces.lower()
+    and "reset the diagnosis/fix hypothesis" in traces.lower()
+    and "preservation counterexample" in traces.lower(),
+    "ST-80 debugger contradictory-handoff regression missing",
+)
+check(
+    "debugger evidence must preserve a material target-environment condition" in traces.lower()
+    and "green local surrogate" in traces.lower()
+    and "target fidelity" in traces.lower(),
+    "ST-81 debugger target-environment fidelity regression missing",
+)
+check(
+    "non-reproducing diagnostic probe must not confirm the hypothesized root cause" in traces.lower()
+    and "absence of falsification is not causal confirmation" in traces.lower()
+    and "keep root cause unverified" in traces.lower(),
+    "ST-82 debugger non-reproducing-diagnosis regression missing",
+)
+check(
+    "reviewer must not accept correlated self-tests as proof of an external grammar or protocol claim" in traces.lower()
+    and "independent oracle" in traces.lower()
+    and "correlated self-tests alone" in traces.lower(),
+    "ST-83 reviewer correlated-evidence regression missing",
+)
+check(
+    "opaque external-provider failure must not become a confirmed fix recipe before discriminating evidence" in traces.lower()
+    and "generic provider error establishes the symptom" in traces.lower()
+    and "preserve uncertainty" in traces.lower(),
+    "ST-84 orchestrator opaque-provider-failure regression missing",
+)
+check(
+    "st-85 — local correction success must not silently substitute for end-to-end progress" in traces.lower()
+    and "trajectory-auditor" in traces.lower()
+    and "reassess" in traces.lower(),
+    "ST-85 longitudinal local-success/global-nonprogress regression missing",
+)
+check(
+    "st-86 — repeated hypothesis handoffs must not launder a parent inference into root cause" in traces.lower()
+    and "checkpoint-required" in traces.lower(),
+    "ST-86 longitudinal hypothesis-laundering regression missing",
+)
+check(
+    "st-87 — terminal completion must preserve the original end-to-end acceptance" in traces.lower()
+    and "reanchor" in traces.lower(),
+    "ST-87 completion-erosion regression missing",
+)
+check(
+    "st-88 — scoped review success must remain scoped evidence" in traces.lower()
+    and "end-to-end probe has not run" in traces.lower(),
+    "ST-88 scoped-review/e2e evidence regression missing",
+)
+check(
+    "st-89 — clustered correction failures require boundary-level reassessment" in traces.lower()
+    and "clustered" in traces.lower(),
+    "ST-89 clustered-correction regression missing",
+)
+check(
+    "st-90 — independent correction failures must remain a valid continue counterexample" in traces.lower()
+    and "different owners" in traces.lower(),
+    "ST-90 independent-defects anti-overreach regression missing",
+)
+check(
+    "st-91 — explicit staged work must not be misclassified as global non-progress" in traces.lower()
+    and "later acceptance milestone is not yet expected" in traces.lower(),
+    "ST-91 staged-work anti-overreach regression missing",
+)
+check(
+    "st-92 — a prior trajectory continue verdict must not become sticky authority" in traces.lower()
+    and "fresh trajectory audit" in traces.lower(),
+    "ST-92 fresh-trajectory-judgment regression missing",
+)
+check(
+    "st-93 — the parent trajectory packet is an index, not primary proof" in traces.lower()
+    and "primary session history" in traces.lower(),
+    "ST-93 parent-packet evidence regression missing",
+)
+check(
+    "st-94 — an isolated ordinary correction must not trigger trajectory ceremony" in traces.lower()
+    and "must not invoke" in traces.lower(),
+    "ST-94 anti-ritual routing regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | indeterminate`" in traces,

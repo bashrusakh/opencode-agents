@@ -157,6 +157,13 @@ CORE = {
         "boundary_not_recipe": [[r"mutation boundary|semantic boundary|proceed"], [r"non-binding|not .*recipe|does not certify|not .*implementation .*adequacy|mechanism .*hypothesis"]],
         "bounded_result": [[r"evidence|proof|confidence"], [r"stop|blocked|cannot .*proceed|return .*parent|escalat"], [r"result|verdict|handoff"]],
     },
+    "trajectory_audit": {
+        "recover_task_anchor": [[r"task anchor|user-authorized outcome|end-to-end acceptance"], [r"actual user|primary session|session history|primary evidence"], [r"parent.*report|packet.*not.*proof|summary.*not.*proof"]],
+        "material_transition_chain": [[r"evidence.*interpretation|interpretation.*action|hypothesis.*action"], [r"scoped result|acceptance effect|end-to-end acceptance"], [r"material trajectory|material transitions"]],
+        "progress_without_false_stall": [[r"acceptance progress"], [r"enabling progress"], [r"diagnostic progress"], [r"planned staged work|later milestone.*not expected|not global non-progress"], [r"independent defects?.*external outage|external outage.*independent defects?"]],
+        "drift_and_cluster_test": [[r"hypothesis laundering|acceptance erosion|scoped evidence"], [r"independent.*clustered.*unverified|clustered.*independent"], [r"does not mean.*architecture|do not infer.*multiple fixes|not .*bad design"]],
+        "bounded_next_transition": [[r"return exactly one workflow verdict"], [r"continue.*proposed next transition|proposed next transition.*continue"], [r"reanchor.*workflow framing|workflow framing.*reanchor"], [r"reassess.*cumulative evidence|cumulative evidence.*reassess"], [r"checkpoint-required.*semantic-checkpoint|semantic-checkpoint.*checkpoint-required"], [r"unverified.*primary session evidence|primary session evidence.*unverified"], [r"do not choose.*replacement|does not.*choose.*architecture|never chooses.*fix"]],
+    },
     "evaluation": {
         "trace_contract": [[r"trace|session|assignment|handoff"], [r"standing .*contract|role .*contract|authority|scope"]],
         "classify_failure": [[r"instruction-violation|instruction-ambiguity|instruction-gap|execution-error|classif"], [r"evidence|exact .*message|tool .*output|trace"]],
@@ -183,6 +190,7 @@ CORE_SEVERITY = {
     "orchestrator": {"normalize_and_route": "FAIL", "clean_handoff": "FAIL", "consume_without_overclaim": "FAIL"},
     "code_orchestrator": {"normalize_and_route": "FAIL", "clean_handoff": "FAIL", "consume_without_overclaim": "FAIL", "workflow_state_visibility": "REVIEW", "decision_context": "REVIEW"},
     "semantic_gate": {"bind_and_classify": "FAIL", "typed_state_axes": "FAIL", "boundary_not_recipe": "FAIL", "bounded_result": "FAIL"},
+    "trajectory_audit": {"recover_task_anchor": "FAIL", "material_transition_chain": "FAIL", "progress_without_false_stall": "FAIL", "drift_and_cluster_test": "FAIL", "bounded_next_transition": "FAIL"},
     "evaluation": {"trace_contract": "FAIL", "classify_failure": "FAIL", "bound_conclusion": "FAIL"},
 }
 
@@ -204,6 +212,7 @@ CHALLENGE = {
     "orchestrator": [[r"omit|non-binding|do not forward|not blanket authority|do not replace .*specialist|do not skip .*stage"], [r"partial|full .*verdict|stale|fresh|over[- ]claim|required .*cannot run|implementation is blocked|return .*parent|unresolved .*direction"]],
     "code_orchestrator": [[r"omit|non-binding|do not forward|not blanket authority|do not replace .*specialist|do not skip .*stage"], [r"partial|full .*verdict|stale|fresh|over[- ]claim|required .*cannot run|implementation is blocked|return .*parent|unresolved .*direction"]],
     "semantic_gate": [[r"non-binding|not .*recipe|does not certify|not .*adequacy|hypothesis"], [r"authority|evidence|proposition|claim"]],
+    "trajectory_audit": [[r"local.*success|locally successful|correction epoch|global non-progress|end-to-end"], [r"planned staged|independent|different owners|not .*turn count|not .*multiple fixes|does not mean.*architecture"], [r"packet.*not.*proof|parent.*report.*not.*proof|primary session"]],
     "evaluation": [[r"instruction-violation|instruction-ambiguity|instruction-gap|execution-error|classif"], [r"evidence|trace|exact .*message|tool .*output"]],
 }
 
@@ -228,6 +237,7 @@ PROFILE_MIN = {
     "orchestrator": (6, 3),
     "code_orchestrator": (6, 3),
     "semantic_gate": (6, 2),
+    "trajectory_audit": (8, 3),
     "evaluation": (6, 2),
 }
 

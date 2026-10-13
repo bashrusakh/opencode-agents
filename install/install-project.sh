@@ -137,7 +137,7 @@ else
 fi
 
 cp "$NEW_MANIFEST" "$RECEIPT"
-printf 'pack_version=v30.81 beta\ninstalled_at=%s\n' "$STAMP" > "$STATE/install-info"
+printf 'pack_version=v30.83 beta\ninstalled_at=%s\n' "$STAMP" > "$STATE/install-info"
 
 echo "Installed project-local OpenCode agents/skills into $BASE/.opencode"
 if [ -d "$BACKUP" ]; then echo "Backed up replaced/stale managed files under $BACKUP"; fi

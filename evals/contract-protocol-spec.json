@@ -24,7 +24,8 @@
     "ui-implementer": "implementation",
     "ui-orchestrator": "orchestrator",
     "ui-planner": "planning",
-    "librarian": "external_research"
+    "librarian": "external_research",
+    "trajectory-auditor": "trajectory_audit"
   },
   "profiles": {
     "implementation": {
@@ -200,6 +201,19 @@
         "routing",
         "handoff_construction",
         "procedure",
+        "result_interpretation",
+        "stop_escalation",
+        "result_semantics"
+      ]
+    },
+    "trajectory_audit": {
+      "critical": [
+        "scope_input",
+        "state_binding",
+        "procedure",
+        "evidence",
+        "authority_boundary",
+        "coverage_limits",
         "result_interpretation",
         "stop_escalation",
         "result_semantics"

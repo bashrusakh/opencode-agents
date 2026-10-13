@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.81 beta**
+**Pack version: v30.83 beta**
 
 **These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -289,6 +289,7 @@ Leaf semantics do not imply a top-level reroute. If the active primary remains a
 Delegation-routing defaults:
 
 - discovery/tracing -> `@explore`; confirmed root-cause bug fix -> `@debugger`;
+- longitudinal in-progress trajectory audit owned by the active code workflow -> `@trajectory-auditor`;
 - focused non-UI implementation -> delegated `@build`; architecture/sequencing stage -> delegated `@project-planner`;
 - verification/reproduction -> `@tester`; review -> `@reviewer`;
 - Docker/systemd/CI/deploy/runtime -> `@devops`; external technical evidence -> `@librarian`; bounded unmatched research -> `@general`;

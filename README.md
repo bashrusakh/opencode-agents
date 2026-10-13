@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.81 beta
+# OpenCode Agent Pack v30.83 beta
 
 ### Model-agnostic routing · explicit workflow owners · bounded specialist delegation · evidence-grounded verification
 
@@ -18,7 +18,7 @@
 This repository is an OpenCode agent pack with:
 
 - shared workflow policy;
-- 18 role contracts in [`agents/`](agents/);
+- 19 role contracts in [`agents/`](agents/);
 - 22 conditional skills in [`skills/`](skills/);
 - semantic/contract release gates in [`evals/`](evals/);
 - design methodology and release evidence in [`docs/`](docs/).
@@ -86,6 +86,7 @@ These roles can own bounded delegated stages inside a larger workflow. A `mode: 
 | `general` | Read-only bounded research when no more specific specialist owns the question | `subagent` |
 | `semantic-checkpoint` | Pre-mutation semantic gate used by `code-orchestrator` | `subagent` |
 | `session-evaluator` | Post-hoc semantic compliance diagnostic for completed orchestrated work | `subagent` |
+| `trajectory-auditor` | Mid-workflow longitudinal audit of task-anchor preservation and cumulative progress | `subagent` |
 | `ui-auditor` | Read-only UI/UX analysis of an existing screen or flow | `subagent` |
 | `ui-planner` | Concrete implementable UI design/layout/theme plan | `subagent` |
 | `ui-implementer` | Bounded implementation of an accepted UI/web outcome | `subagent` |
@@ -185,9 +186,9 @@ These references may evolve with models and harnesses; inherited scaffolding sho
 
 ### Agents
 
-The pack contains 18 agents:
+The pack contains 19 agents:
 
-`a11y-reviewer`, `auditor`, `build`, `code-orchestrator`, `debugger`, `devops`, `explore`, `general`, `librarian`, `project-planner`, `reviewer`, `semantic-checkpoint`, `session-evaluator`, `tester`, `ui-auditor`, `ui-implementer`, `ui-orchestrator`, `ui-planner`.
+`a11y-reviewer`, `auditor`, `build`, `code-orchestrator`, `debugger`, `devops`, `explore`, `general`, `librarian`, `project-planner`, `reviewer`, `semantic-checkpoint`, `session-evaluator`, `tester`, `trajectory-auditor`, `ui-auditor`, `ui-implementer`, `ui-orchestrator`, `ui-planner`.
 
 ### Skills
 
@@ -247,9 +248,9 @@ Project-local collisions are backed up under `.opencode/.agent-pack/backups/`, a
 
 | If you need… | Read… |
 |---|---|
-| Release notes | [`docs/releases/v30.81-beta.md`](docs/releases/v30.81-beta.md) |
+| Release notes | [`docs/releases/v30.83-beta.md`](docs/releases/v30.83-beta.md) |
 | Release history | [`CHANGELOG.md`](CHANGELOG.md) |
-| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.81.md`](docs/contract-protocol-audit-v30.81.md) |
+| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.83.md`](docs/contract-protocol-audit-v30.83.md) |
 | Semantic transition scenarios | [`evals/semantic-transition-traces.md`](evals/semantic-transition-traces.md) |
 | Source-to-generalized-rule preservation method | [`docs/semantic-design-source-audit.md`](docs/semantic-design-source-audit.md) |
 
@@ -259,7 +260,7 @@ Release validation is defined in **§21 of [`docs/semantic-design-manual.md`](do
 
 <div align="center">
 
-**OpenCode Agent Pack v30.81 beta**  
+**OpenCode Agent Pack v30.83 beta**  
 Workflow-owner first · bounded specialist delegation · evidence-grounded verification
 
 </div>

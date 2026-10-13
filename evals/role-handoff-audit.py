@@ -42,6 +42,7 @@ EDGE_CLASSIFICATION = {
     ('root','project-planner'): 'routing_policy',
     ('root','reviewer'): 'routing_policy',
     ('root','session-evaluator'): 'routing_policy',
+    ('root','trajectory-auditor'): 'routing_policy',
     ('root','tester'): 'routing_policy',
     ('root','ui-implementer'): 'routing_policy',
     ('root','ui-orchestrator'): 'routing_policy',
@@ -69,6 +70,7 @@ EDGE_CLASSIFICATION = {
     ('code-orchestrator','reviewer'): 'delegation',
     ('code-orchestrator','semantic-checkpoint'): 'delegation',
     ('code-orchestrator','session-evaluator'): 'delegation',
+    ('code-orchestrator','trajectory-auditor'): 'delegation',
     ('code-orchestrator','tester'): 'delegation',
     ('code-orchestrator','ui-implementer'): 'delegation',
     ('code-orchestrator','ui-orchestrator'): 'delegation',
@@ -136,6 +138,14 @@ EDGE = {
  ('code-orchestrator','librarian'): [
    [r'bounded external research proposition'], [r'named external target'], [r'version/range/environment|material version'],
    [r'allowed source/evidence scope'], [r'stop/applicability boundary'], [r'do not ask .*trace local usage|do not .*local diagnosis'],
+ ],
+ ('code-orchestrator','trajectory-auditor'): [
+   [r'task anchor'], [r'correction epoch|successive locally successful correction'],
+   [r'end-to-end acceptance path'], [r'fresh `?@?trajectory-auditor|fresh .*trajectory'],
+   [r'parent session ID|current parent session'], [r'material transitions'],
+   [r'packet .*not proof|workflow-owner report, not proof'],
+   [r'continue.*reanchor.*reassess.*checkpoint-required.*unverified'],
+   [r'do not .*isolated ordinary correction|Do \*\*not\*\* invoke trajectory audit for an isolated ordinary correction'],
  ],
  ('code-orchestrator','ui-implementer'): [
    [r'established user-visible outcome'], [r'target/mutation state|target.*state'], [r'material constraints'], [r'preserved behavior'],

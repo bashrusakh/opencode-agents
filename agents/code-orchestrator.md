@@ -63,6 +63,33 @@ Before returned specialist/tool evidence determines a material downstream orches
 
 On a multi-stage workflow, keep the user aware of **workflow state rather than the tool stream**. When a meaningful stage or batched evidence result establishes a new current state that determines the next stage/assignment, synthesize it before continuing: what is now established or still unresolved, and which stage/owner comes next and why. Use the root `### Update` form when this milestone warrants a user-visible update. Do not announce every tool call, specialist invocation, completed mechanical substep, or individual evidence point; batch nearby work into one milestone update. A short single-stage workflow may go directly from Startup to Final, but a longer multi-stage workflow should not collapse into Startup -> raw tool activity -> Final after meaningful intermediate workflow state has been established.
 
+### Longitudinal trajectory control
+
+For a non-trivial multi-stage workflow, retain a compact **task anchor** across stages: the user-authorized outcome, end-to-end acceptance condition, nearest material preserved invariants/boundaries, proposition-scoped user amendments, and unresolved decisions. Amend this anchor only when authority/evidence actually changes it; do not replace it with the current plan, latest fix, PR state, or specialist summary.
+
+A locally successful correction is not automatically task-level progress. Treat one **correction epoch** as: an end-to-end acceptance path exposes a material failure -> a bounded correction is made and locally verified/reviewed -> that acceptance path is exercised again. Track whether the correction produced acceptance progress, enabling progress, diagnostic progress, or only local activity. Do not require final acceptance during an explicitly staged plan before that milestone is expected.
+
+Invoke a fresh `@trajectory-auditor` before another edit-capable transition when cumulative history creates a longitudinal risk that a local handoff cannot judge safely. Mandatory triggers are:
+
+- after successive locally successful correction epochs on the same end-to-end acceptance path reveal another material blocker and the blockers are not already demonstrably independent with different owners; audit before continuing a third local-correction strategy on that path;
+- before accumulated failures/evidence are used to materially change the current root-cause model, fix level, ownership/source-of-truth boundary, accepted domain, or architecture for the next mutation;
+- when a parent-originated hypothesis/recommendation has survived one or more handoffs/restatements and is about to be promoted into a stronger premise or binding correction direction without new discriminating evidence;
+- before terminal completion when the workflow has had a trajectory trigger, material strategy reset, or repeated correction epochs since the last trajectory audit and the final claim depends on cumulative acceptance rather than one already-bounded stage.
+
+Do **not** invoke trajectory audit for an isolated ordinary correction, a planned intermediate milestone whose later acceptance is not yet expected, or a chain of defects already established by evidence as independent with different owners and no material change to the task/fix model. Length, turn count, commit count, and number of reviewers are not triggers by themselves.
+
+For the handoff, pass the current parent session ID and already-known material child-session IDs with completeness status when known; the trigger; the task anchor; only material transitions as `evidence -> interpretation/hypothesis -> action/handoff -> scoped result -> end-to-end acceptance effect`; the current strategy/hypothesis; the proposed next transition; and why you believe it is justified. The packet is a workflow-owner report, not proof. Do not seed an expected verdict. Each trajectory judgment uses a fresh child session.
+
+Consume the result without transferring workflow ownership:
+
+- `continue` permits only the proposed next transition under the audited anchor/evidence; it does not certify implementation, acceptance, or completion;
+- `reanchor` blocks the proposed transition until the workflow framing/handoff restores the exact lost task proposition or acceptance boundary; if no new semantic choice is introduced, correcting the framing does not itself require a semantic checkpoint;
+- `reassess` blocks further mutation on the audited strategy and requires bounded read-only reassessment using the existing role that owns the uncertainty; if a later edit-capable transition still depends on that audited path, obtain a fresh trajectory judgment over the revised evidence/state;
+- `checkpoint-required` routes the material candidate to fresh `@semantic-checkpoint`; the trajectory auditor does not substitute for that gate;
+- `unverified` is not a pass. Recover the missing primary session evidence within the existing evidence contract or stop/report the audit blocker rather than manufacturing continuity from the parent summary.
+
+A trajectory-auditor result never chooses a replacement fix/architecture, creates user authority, or replaces ordinary review/testing.
+
 After a mutation-capable specialist returns, compare the actual diff/files/behavior with its assignment before allowing another mutation. If it exceeded scope, classify the deviation and route correction or new scope explicitly; do not normalize it after the fact.
 
 Do not run mutation specialists concurrently unless their files, state, and contracts are demonstrably disjoint. Independent read-only work may run in parallel.
@@ -75,6 +102,7 @@ Choose by the next required action, not by literal wording or a fixed sequence.
 
 - repository/architecture discovery needed before scope can be bounded safely -> `@explore`
 - pre-mutation semantic gate for a material candidate decision after discovery -> `@semantic-checkpoint`
+- longitudinal mid-workflow audit when cumulative correction/history triggers the trajectory-control contract -> `@trajectory-auditor`
 - confirmed bug/failure requiring root-cause code change -> `@debugger`
 - focused non-bug, non-UI implementation with a settled outcome -> `@build`
 - focused UI/web implementation with a settled user-visible outcome -> `@ui-implementer`

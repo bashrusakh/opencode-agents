@@ -1,5 +1,37 @@
 # Changelog
 
+## v30.83 beta
+
+Longitudinal trajectory auditing:
+
+- adds read-only `trajectory-auditor` for mid-workflow cumulative task-anchor/progress checks without taking workflow, implementation, review, planning, or post-hoc diagnostic ownership;
+- makes `code-orchestrator` retain a task anchor for non-trivial multi-stage work and trigger trajectory audit only on evidence-shaped cumulative-risk boundaries rather than turn/fix counts;
+- detects local-success/global-nonprogress chains, hypothesis laundering, acceptance erosion, scoped-evidence overclaim, and clustered correction boundaries while preserving staged-work, isolated-fix, and independent-defect counterexamples;
+- adds distinct trajectory verdicts `continue | reanchor | reassess | checkpoint-required | unverified`, with semantic propositions still routed to the existing `semantic-checkpoint`;
+- adds a dedicated role-executability profile, a high-risk `code-orchestrator -> trajectory-auditor` handoff profile, synthetic negative handoff coverage, and ST-85…ST-94.
+
+No runtime semantic change is made to `build`, `debugger`, `reviewer`, `tester`, `semantic-checkpoint`, `session-evaluator`, UI roles, skills, publication policy, or installer control flow beyond the new role being installed as part of the normal agents directory.
+
+Fresh isolated behavioral replay remains a separate evidence class; this release records it only if actually run.
+
+See [`docs/releases/v30.83-beta.md`](docs/releases/v30.83-beta.md) and [`docs/contract-protocol-audit-v30.83.md`](docs/contract-protocol-audit-v30.83.md).
+
+## v30.82 beta
+
+Debugger falsification-loop hardening:
+
+- strengthens only `agents/debugger.md` at runtime: non-trivial bugfixes now concretize the relevant root §7.3 case map before selecting the fix and use materially different representatives to falsify the diagnosis/fix model;
+- makes target-environment/external-grammar/API/tool/runtime conditions part of the evidence when they are material to the claim, so a convenient local surrogate cannot silently stand in for the target semantics;
+- requires debugger to reset or escalate when an assignment premise, fixture, mechanism/constraint, or remediation conflicts with stronger behavior/evidence instead of implementing it merely because the handoff was explicit;
+- adds a pre-return falsification gate that rejects correlated self-tests as closure when they share the implementation assumption and requires evidence gaps to remain explicit for unclosed established classes;
+- adds ST-80…ST-84 covering contradictory debugger handoffs, target-environment fidelity, non-reproducing diagnosis, correlated reviewer evidence for external semantics, and opaque provider failures promoted too early into fix recipes.
+
+No runtime semantic change is made to `build`, `reviewer`, `code-orchestrator`, root policy, permissions, topology, skills, or installer control flow. Their new scenarios are regression evidence for already-owned behavior, not new owners or duplicated policy.
+
+Fresh isolated behavioral replay of ST-01…ST-84 remains separate evidence and is not claimed by static/contract/package validation.
+
+See [`docs/releases/v30.82-beta.md`](docs/releases/v30.82-beta.md) and [`docs/contract-protocol-audit-v30.82.md`](docs/contract-protocol-audit-v30.82.md).
+
 ## v30.81 beta
 
 UI routing discriminator hardening:
