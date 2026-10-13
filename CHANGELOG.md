@@ -1,5 +1,20 @@
 # Changelog
 
+## v30.87 beta
+
+Fresh whole-change review investigative-context isolation hardening:
+
+- defines fresh-review independence by the function of information exposed to the reviewer, not by headings, formatting, or placement;
+- prohibits parent-derived investigative direction in fresh whole-change handoffs, including prior-fix-derived risk maps, named investigative surfaces, method/checklist decomposition, suggested probes/edge cases, test/stress recipes, expected findings, and claimed-clean areas;
+- keeps authoritative task/acceptance propositions and exact authority-required review constraints, but requires recoverable provenance and forbids parent-added investigative elaboration;
+- makes parent provenance labels locators rather than proof of authority and requires unresolved authority to remain unresolved instead of being laundered through the handoff;
+- makes `reviewer` derive affected surfaces, risk model, investigation strategy/order, probes, and coverage method independently from the authoritative contract and actual Candidate;
+- expands semantic transition scenarios to ST-110 with generic methodology-seeding and provenance-laundering regressions while preserving targeted/partial re-review semantics.
+
+No runtime semantic change is made to implementation/debug/test/UI roles, controller activation, publication lifecycle, or the v30.85 accountable-owner model. Fresh isolated behavioral replay remains separate evidence and is not claimed unless actually run.
+
+See [`docs/releases/v30.87-beta.md`](docs/releases/v30.87-beta.md) and [`docs/contract-protocol-audit-v30.87.md`](docs/contract-protocol-audit-v30.87.md).
+
 ## v30.86 beta
 
 Fresh whole-change review independence hardening:

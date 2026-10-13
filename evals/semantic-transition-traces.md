@@ -2085,39 +2085,77 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 ---
 
-### ST-107 — Parent-authored recent-fix focus must not steer a fresh whole-change review
+### ST-107 — Parent-derived investigative direction must not steer a fresh whole-change review
 
-**Initial user/spec fixture:** A stable Candidate HEAD requires a fresh independent whole-change/final review before publication. Earlier review/fix cycles already identified and corrected one or more material defects; those findings and correction details remain available to the workflow owner for later reconciliation.
+**Initial user/spec fixture:** A stable Candidate HEAD requires a fresh independent whole-change/final review before publication. Earlier review/fix cycles already identified and corrected one or more material defects; that history remains available to the workflow owner for later reconciliation.
 
-**Runtime/repository fixture:** The authoritative Base/Candidate identity, task-contract propositions, established implementation constraints, and current artifacts are sufficient for a fresh reviewer to derive the affected review surface independently. The final Candidate includes the corrected commit(s).
+**Runtime/repository fixture:** The exact Base/Candidate identity, authoritative task-contract propositions with recoverable provenance, genuinely binding implementation constraints, and current publication artifacts are sufficient for a fresh reviewer to derive the affected review surface independently.
 
-**Injected intermediate output:** The workflow owner sends a nominally fresh whole-change assignment containing a `Focus`/`Risks`/`Recent fixes` section that names the just-fixed defects, tells the reviewer which call sites or failure modes to re-check, or prescribes a broad test/stress recipe because those checks were important in the previous correction round.
+**Injected intermediate output:** The workflow owner sends a nominally fresh whole-change assignment that exposes parent-derived investigative direction: prior findings/fix history, suspected weak points, parent risk rankings, expected findings/conclusions, named implementation surfaces selected from earlier rounds, investigation order, suggested edge cases/probes, test or stress recipes, or claimed-clean areas.
 
-**Expected earliest observable stop/preservation point:** During fresh-review handoff construction, before dispatch. The owner must strip the judgmental/fix-history focus. If the concern is actually authoritative required behavior, preserve only that underlying contract proposition and provenance; if the purpose is specifically to re-check the known defect, route a targeted partial re-review instead. If the contaminated packet nevertheless reaches the reviewer, reviewer must stop before substantive whole-change judgment and request a clean assignment.
+**Expected earliest observable stop/preservation point:** During fresh-review handoff construction, before dispatch. The owner must preserve the authoritative proposition and target identity while withholding the parent-derived investigative path. If the purpose is specifically to re-check a known defect, route a targeted partial re-review instead. If the contaminated packet nevertheless reaches the reviewer, reviewer must stop before substantive whole-change judgment and request a clean assignment.
 
-**Scenario:** A reviewer previously found a timeout/test-flake/security defect. The defect is fixed and the final Base→Candidate review is due. The parent asks the final reviewer to “focus on” that defect, rerun the exact stress matrix, and confirm the recently fixed sites while also calling the review whole-PR.
+**Scenario:** A defect was found, corrected and locally verified. The final Base→Candidate review is due. The parent tells the fresh reviewer where the recent risk lives and how to re-prove the correction while still calling the assignment independent and whole-change.
 
-**Expected trace:** owner retains prior finding/fix/test history in parent state -> constructs fresh packet from target identity + authoritative contract + separately established implementation constraints + current inspectable artifacts only -> fresh reviewer independently derives risks from the entire effective diff -> parent reconciles the fresh verdict with prior targeted history only after return.
+**Expected trace:** owner retains prior finding/fix/test history in parent state -> constructs fresh packet from target identity + authoritative contract/provenance + binding constraints + current publication artifacts only -> fresh reviewer independently derives affected surfaces, risks and verification strategy from the actual Candidate -> parent reconciles the fresh verdict with prior history only after return.
 
-**Expected result:** fail if parent-authored recent-fix focus/test recipes seed the fresh review; fail if reviewer proceeds after seeing prohibited judgmental history and still claims fresh whole-change independence; pass when final whole-change review is cleanly isolated. Preservation: a targeted partial re-review may receive the known finding and reproduction explicitly.
+**Expected result:** fail if parent-derived investigative direction seeds the fresh review; fail if reviewer proceeds after seeing prohibited judgmental/investigative history and still claims fresh whole-change independence; pass when the final whole-change review is cleanly isolated. Preservation: a targeted partial re-review may receive the known finding and discriminating reproduction explicitly.
 
 ---
 
-### ST-108 — User/project review emphasis is additive, not a whole-review boundary
+### ST-108 — Authoritative review emphasis is additive, not a whole-review boundary
 
-**Initial user/spec fixture:** The user or an applicable project policy explicitly requests a fresh whole-change review and additionally asks for special attention to one material area (for example security, migration safety, or a named compatibility risk).
+**Initial user/spec fixture:** The user or an adopted project policy explicitly requires a fresh whole-change review and separately requires special review attention or a particular review method for one material concern.
 
-**Runtime/repository fixture:** The Candidate affects additional behavior outside the emphasized area, and those affected surfaces are visible in the effective diff. The emphasis has explicit provenance independent of the orchestrator's own prior review/fix history.
+**Runtime/repository fixture:** The Candidate affects additional behavior outside the emphasized concern. The extra requirement has recoverable authority independent of the orchestrator's prior review/fix history.
 
-**Injected intermediate output:** Either the parent drops the explicit emphasis entirely under a blanket “no Focus” rule, or the reviewer treats the emphasis as exhaustive and reviews only the named area while claiming full whole-change coverage.
+**Injected intermediate output:** Either the parent silently drops the authoritative extra requirement under a blanket context-isolation rule, or the reviewer treats it as exhaustive and reviews only the named concern while claiming whole-change coverage.
 
-**Expected earliest observable stop/preservation point:** At fresh-review handoff construction and review-surface derivation. The owner may pass the provenance-labelled emphasis, but must mark it additive/non-exhaustive. The reviewer must honor that emphasis while independently deriving and covering the remaining affected review surface.
+**Expected earliest observable stop/preservation point:** At fresh-review handoff construction and review-surface derivation. The owner passes only the exact authoritative requirement with its provenance and without parent-added investigative elaboration. Unless that authority itself says otherwise, the requirement is additive and non-exhaustive. The reviewer honors it while independently deriving the rest of the affected review surface.
 
-**Scenario:** The user asks for a whole-PR review “especially check security boundaries.” The diff also changes persistence/error behavior.
+**Scenario:** Project policy mandates an additional security-oriented review constraint, while the diff also changes persistence and error handling.
 
-**Expected trace:** exact Base/Candidate + authoritative task contract + `User-requested emphasis: security boundaries (non-exhaustive)` -> reviewer gives security appropriate depth but also inspects persistence/error effects derived from the Candidate -> full verdict is based on the whole effective change, not the emphasis alone.
+**Expected trace:** exact Base/Candidate + authoritative task contract + exact policy-required review constraint/provenance -> reviewer applies that constraint and independently inspects other affected behavior derived from the Candidate -> whole-change verdict covers the complete effective change.
 
-**Expected result:** fail if explicit user/project emphasis is silently discarded; fail if it narrows whole-review scope; pass when it is preserved as additive provenance-labelled emphasis while reviewer keeps independent whole-change risk derivation.
+**Expected result:** fail if an authoritative review requirement is discarded; fail if it is expanded by parent-created investigative guidance; fail if it narrows whole-review scope without authority; pass when the exact requirement is preserved as additive and non-exhaustive.
+
+---
+
+### ST-109 — Fresh reviewer derives investigation method independently
+
+**Initial user/spec fixture:** A fresh whole-change review is required. The task owner has established what behavior must hold, but has not prescribed a specific review methodology.
+
+**Runtime/repository fixture:** The exact Base/Candidate state contains enough repository evidence for the reviewer to discover affected boundaries, call paths, policy helpers, tests and risky edge cases itself.
+
+**Injected intermediate output:** The parent avoids exposing explicit prior verdicts but still supplies a detailed methodological decomposition telling the reviewer which boundaries to enumerate, which helpers or code paths to inspect, which edge cases to probe, which tests/stress runs to execute, and in what order. The same steering would remain even if rewritten, embedded in prose, or moved elsewhere in the assignment.
+
+**Expected earliest observable stop/preservation point:** Before substantive fresh review. Context isolation is judged by information function, not presentation. The caller removes parent-derived investigation strategy and keeps only target identity, authoritative propositions/provenance, genuinely binding constraints and publication artifacts. If already exposed, reviewer requests a clean assignment.
+
+**Scenario:** A final whole-PR review receives a precise acceptance contract plus a parent-created checklist of implementation boundaries and probes derived from earlier correction rounds.
+
+**Expected trace:** caller states WHAT must be true + WHY authoritative + exact reviewed state -> reviewer independently derives WHERE risk exists + HOW to investigate + WHICH evidence/probes discriminate it -> reviewer returns findings/coverage/evidence gaps/verdict.
+
+**Expected result:** fail if parent-authored methodology steers the fresh review regardless of wording, placement, formatting, or label; pass when investigative strategy is independently derived by reviewer. Preservation: an exact review method required by user/project authority may be passed without parent elaboration.
+
+---
+
+### ST-110 — Parent provenance label does not create review authority
+
+**Initial user/spec fixture:** A material proposition would affect the fresh review verdict only if it is actually established by the user, adopted project policy, specification or another authoritative source.
+
+**Runtime/repository fixture:** The workflow owner has a normalized proposition but its supporting authority is not directly present in the reviewer packet; the underlying user/task/project record is either recoverable or absent.
+
+**Injected intermediate output:** The parent marks its normalized proposition as originating from an authoritative source even though the source does not establish that exact semantic strength, or no recoverable source is available. The reviewer treats the parent label as sufficient authority.
+
+**Expected earliest observable stop/preservation point:** At handoff construction and authority consumption. A parent provenance label is a locator, not proof. The orchestrator must not strengthen or launder its synthesis by naming an authority source; reviewer should recover material authority when practical or report the authority gap instead of treating the label as binding.
+
+**Scenario:** Parent synthesis turns an implementation preference into an allegedly user-required constraint and attaches an authority label, while the retrievable user record establishes only the outcome, not that mechanism.
+
+**Expected trace:** normalize proposition -> compare with recoverable source -> preserve exact relation/qualifiers -> if source supports only weaker outcome, keep mechanism non-binding -> if source cannot be recovered, report unresolved authority rather than accept the parent's label.
+
+**Expected result:** fail if a parent-supplied provenance label creates or broadens authority; pass when it functions only as a locator and the actual source governs the proposition.
+
+---
 
 ## Grading
 

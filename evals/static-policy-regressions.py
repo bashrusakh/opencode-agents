@@ -416,14 +416,14 @@ check(
     "reviewer: managed OCR independence/host coverage contract missing",
 )
 check(
-    "For a fresh whole-change/final review" in reviewer
-    and "caller-authored `Focus`, `Risks`, `Recent fixes`" in reviewer
-    and "not become the primary review plan or oracle" in reviewer
-    and "judgment context is already contaminated" in reviewer
-    and "request a clean fresh assignment" in reviewer
-    and "additive and non-exhaustive" in reviewer
+    "Freshness is a property of the **information exposed to the reviewer**" in reviewer
+    and "parent-derived investigative direction" in reviewer
+    and "independently derive the affected surfaces, risk model, investigation strategy and order" in reviewer
+    and "regardless of wording, placement, formatting, or label" in reviewer
+    and "request a clean assignment" in reviewer
+    and "locator, not proof" in reviewer
     and "targeted/partial re-review" in reviewer,
-    "reviewer: fresh whole-change focus/context-isolation defense missing",
+    "reviewer: fresh whole-change investigative-context isolation/provenance defense missing",
 )
 
 # Material user decisions that are not retrievable downstream need provenance
@@ -432,19 +432,17 @@ orch = text("agents/code-orchestrator.md")
 session_evidence = text("skills/session-evidence/SKILL.md")
 check(
     "For a fresh whole-change/final reviewer judgment" in orch
-    and "authoritative task-contract propositions needed for judgment" in orch
+    and "what must be true, why it is authoritative, and what exact state is being reviewed" in orch
     and "label only that exact proposition as an `implementation constraint`" in orch
-    and "do not present the mechanism as an accepted design, adequate/correct fix" in orch
-    and "Do not add a parent-authored `Focus`, `Risks`, `Recent fixes`" in orch
-    and "user or project policy explicitly requests a review emphasis" in orch
-    and "additive and non-exhaustive" in orch
-    and "derive its own risk model from the actual Candidate/effective diff" in orch
-    and "Do not seed the fresh reviewer with prior reviewer/OCR verdicts or findings" in orch
-    and "claimed-clean areas" in orch
-    and "reconcile it only after the reviewer returns" in orch
+    and "parent-derived investigative direction" in orch
+    and "regardless of wording, placement, formatting, or label" in orch
+    and "reviewer independently derives where risk exists and how to investigate it" in orch
+    and "review method or emphasis explicitly required by the user or an adopted project policy" in orch
+    and "without parent-added investigative elaboration" in orch
+    and "provenance label supplied by the parent is a locator, not proof of authority" in orch
     and "targeted re-review" in orch
     and "partial/incremental" in orch,
-    "code-orchestrator: fresh reviewer context-isolation/mechanism-framing contract missing",
+    "code-orchestrator: fresh reviewer investigative-context isolation/provenance contract missing",
 )
 check(
     "preserve a contemporaneous provenance receipt" in orch
@@ -770,14 +768,14 @@ check(
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 108, "semantic-transition suite must contain 106 cases")
+check(traces.count("### ST-") == 110, "semantic-transition suite must contain 110 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 108, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 110, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -1252,15 +1250,25 @@ check(
     "ST-106 anti-think-loop owner regression missing",
 )
 check(
-    "st-107 — parent-authored recent-fix focus must not steer a fresh whole-change review" in traces.lower()
+    "st-107 — parent-derived investigative direction must not steer a fresh whole-change review" in traces.lower()
     and "request a clean assignment" in traces.lower()
     and "targeted partial re-review" in traces.lower(),
-    "ST-107 fresh whole-change focus-isolation regression missing",
+    "ST-107 fresh whole-change investigative-context isolation regression missing",
 )
 check(
-    "st-108 — user/project review emphasis is additive, not a whole-review boundary" in traces.lower()
-    and "user-requested emphasis: security boundaries (non-exhaustive)" in traces.lower(),
+    "st-108 — authoritative review emphasis is additive, not a whole-review boundary" in traces.lower()
+    and "additive and non-exhaustive" in traces.lower(),
     "ST-108 explicit-emphasis preservation regression missing",
+)
+check(
+    "st-109 — fresh reviewer derives investigation method independently" in traces.lower()
+    and "regardless of wording, placement, formatting, or label" in traces.lower(),
+    "ST-109 method-seeding regression missing",
+)
+check(
+    "st-110 — parent provenance label does not create review authority" in traces.lower()
+    and "locator, not proof" in traces.lower(),
+    "ST-110 provenance-laundering regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | indeterminate`" in traces,
