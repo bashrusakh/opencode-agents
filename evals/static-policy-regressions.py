@@ -108,6 +108,35 @@ check(
     and "recommendation when the evidence supports one" in code_orchestrator_sem,
     "code-orchestrator: decision-context completeness guard missing",
 )
+check(
+    "### Workflow-owner synthesis loop" in code_orchestrator_sem
+    and "**Ingest**" in code_orchestrator_sem
+    and "**Reconcile**" in code_orchestrator_sem
+    and "**Update the whole-task model**" in code_orchestrator_sem
+    and "**Decide**" in code_orchestrator_sem
+    and "**Delegate**" in code_orchestrator_sem
+    and "not a workflow transition by itself" in code_orchestrator_sem
+    and "Do not invoke an independent controller merely to avoid making an ordinary workflow-owner decision" in code_orchestrator_sem
+    and "safe read-only primary evidence" in code_orchestrator_sem,
+    "code-orchestrator: accountable-owner synthesis/reconciliation loop missing",
+)
+check(
+    "bounded owner trajectory reassessment yourself" in code_orchestrator_sem
+    and "If that bounded reassessment yields one evidence-backed model" in code_orchestrator_sem
+    and "exact longitudinal question remains unresolved after the owner reassessment" in code_orchestrator_sem
+    and "owner reassessment performed" in code_orchestrator_sem
+    and "why available primary evidence could not safely resolve it" in code_orchestrator_sem
+    and "not by themselves reasons to ask a controller" in code_orchestrator_sem,
+    "code-orchestrator: owner-first trajectory reassessment/second-opinion boundary missing",
+)
+check(
+    "independent authority-sensitive gate" in code_orchestrator_sem
+    and "material semantic proposition remains unresolved after that owner reconciliation" in code_orchestrator_sem
+    and "Do **not** invoke the checkpoint merely because strong repository evidence changes a technical owner" in code_orchestrator_sem
+    and "owner reconciliation performed" in code_orchestrator_sem
+    and "why the owner cannot safely settle the authority relation directly" in code_orchestrator_sem,
+    "code-orchestrator: residual-authority semantic-checkpoint boundary missing",
+)
 
 for bad in [
     "requires separate authority or evidence of an established blocker",
@@ -386,6 +415,16 @@ check(
     and "never add OCR-selected entries to host coverage" in reviewer,
     "reviewer: managed OCR independence/host coverage contract missing",
 )
+check(
+    "For a fresh whole-change/final review" in reviewer
+    and "caller-authored `Focus`, `Risks`, `Recent fixes`" in reviewer
+    and "not become the primary review plan or oracle" in reviewer
+    and "judgment context is already contaminated" in reviewer
+    and "request a clean fresh assignment" in reviewer
+    and "additive and non-exhaustive" in reviewer
+    and "targeted/partial re-review" in reviewer,
+    "reviewer: fresh whole-change focus/context-isolation defense missing",
+)
 
 # Material user decisions that are not retrievable downstream need provenance
 # preservation, but the receipt itself must not become a new authority source.
@@ -396,6 +435,10 @@ check(
     and "authoritative task-contract propositions needed for judgment" in orch
     and "label only that exact proposition as an `implementation constraint`" in orch
     and "do not present the mechanism as an accepted design, adequate/correct fix" in orch
+    and "Do not add a parent-authored `Focus`, `Risks`, `Recent fixes`" in orch
+    and "user or project policy explicitly requests a review emphasis" in orch
+    and "additive and non-exhaustive" in orch
+    and "derive its own risk model from the actual Candidate/effective diff" in orch
     and "Do not seed the fresh reviewer with prior reviewer/OCR verdicts or findings" in orch
     and "claimed-clean areas" in orch
     and "reconcile it only after the reviewer returns" in orch
@@ -417,19 +460,31 @@ check(
 )
 
 
-# Longitudinal trajectory auditing is a separate mid-workflow lifecycle: it binds to
-# primary session evidence, judges cumulative task progress, and must not become a second
-# reviewer/planner/evaluator or a fixed-frequency ceremony.
+# Longitudinal trajectory auditing is a separate second-opinion lifecycle: the workflow
+# owner must first reassess its own model, while the auditor independently checks only
+# the residual longitudinal question against primary session evidence.
 check(
     "current user-authorized task anchor" in trajectory_sem
-    and "Treat this packet as a **workflow-owner report and index, not independent proof**" in trajectory_sem
+    and "workflow-owner report and index, not independent proof" in trajectory_sem
     and "acceptance progress" in trajectory_sem
     and "enabling progress" in trajectory_sem
     and "diagnostic progress" in trajectory_sem
     and "hypothesis laundering" in trajectory_sem
     and "`independent`, `clustered`, or `unverified`" in trajectory_sem
+    and "`report-only`, `pre-existing`, or locally `out-of-scope`" in trajectory_sem
+    and "Do not let local severity" in trajectory_sem
+    and "existing files/functions/call sites as evidence" in trajectory_sem
     and "does **not** mean the architecture is wrong" in trajectory_sem,
     "trajectory-auditor: anchor/primary-evidence/progress/cluster method missing",
+)
+check(
+    "longitudinal **second opinion**" in trajectory_sem
+    and "owner reassessment performed" in trajectory_sem
+    and "exact unresolved trajectory question" in trajectory_sem
+    and "why available primary evidence could not safely resolve" in trajectory_sem
+    and "does not create task authority" in trajectory_sem
+    and "serve as the first-line mechanism" in trajectory_sem,
+    "trajectory-auditor: second-opinion invocation boundary missing",
 )
 check(
     "Return exactly one workflow verdict" in trajectory_sem
@@ -447,13 +502,31 @@ check(
 check(
     "retain a compact **task anchor** across stages" in code_orchestrator_sem
     and "correction epoch" in code_orchestrator_sem
-    and "successive locally successful correction epochs" in code_orchestrator_sem
-    and "fresh `@trajectory-auditor`" in code_orchestrator_sem
-    and "Do **not** invoke trajectory audit for an isolated ordinary correction" in code_orchestrator_sem
-    and "Length, turn count, commit count, and number of reviewers are not triggers" in code_orchestrator_sem
+    and "cumulative counterexamples to the same classifier, normalizer, policy, or semantic boundary" in code_orchestrator_sem
+    and "`report-only`, `pre-existing`, or leaf-reported `out-of-scope`" in code_orchestrator_sem
+    and "bounded owner trajectory reassessment yourself" in code_orchestrator_sem
+    and "If that bounded reassessment yields one evidence-backed model" in code_orchestrator_sem
+    and "fresh `@trajectory-auditor` only when" in code_orchestrator_sem
+    and "exact longitudinal question remains unresolved after the owner reassessment" in code_orchestrator_sem
     and "packet is a workflow-owner report, not proof" in code_orchestrator_sem
-    and "`checkpoint-required` routes the material candidate to fresh `@semantic-checkpoint`" in code_orchestrator_sem,
-    "code-orchestrator: longitudinal trajectory trigger/anti-ritual/verdict-consumption contract missing",
+    and "`checkpoint-required` routes the exact unresolved semantic-authority proposition" in code_orchestrator_sem,
+    "code-orchestrator: owner-first longitudinal control/verdict-consumption contract missing",
+)
+check(
+    "independent authority-sensitive pre-mutation semantic gate" in checkpoint_sem
+    and "owner reconciliation performed" in checkpoint_sem
+    and "exact semantic proposition whose authority remains unresolved" in checkpoint_sem
+    and "Ordinary technical owner/fix-level/abstraction decisions are not a reason to invoke you" in checkpoint_sem
+    and "technical ownership, fix-level, shared-abstraction, invariant-representation, or necessary implementation-scope change is not by itself a semantic choice" in checkpoint_sem,
+    "semantic-checkpoint: residual-authority/anti-overreach invocation contract missing",
+)
+check(
+    "workflow-owner synthesis" in evaluator_sem
+    and "specialist pass-through" in evaluator_sem
+    and "controller dependence" in evaluator_sem
+    and "independently determined the next required question/action" in evaluator_sem
+    and "Workflow-owner quality" in evaluator_sem,
+    "session-evaluator: accountable-owner/controller-use audit missing",
 )
 
 # Cross-role mutation handoffs must preserve role ownership instead of laundering
@@ -463,7 +536,7 @@ debugger_sem = text("agents/debugger.md")
 ui_orch_sem = text("agents/ui-orchestrator.md")
 ui_impl_sem = text("agents/ui-implementer.md")
 check(
-    "do not certify a concrete implementation mechanism, patch shape, or technical design as correct" in checkpoint_sem
+    "do not certify a concrete implementation mechanism, patch shape, technical owner, or technical design as correct" in checkpoint_sem
     and "does not certify design/implementation adequacy" in checkpoint_sem
     and "Remaining implementation uncertainty belongs to the implementation role" in checkpoint_sem
     and "## Result" in checkpoint_sem
@@ -697,14 +770,14 @@ check(
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 94, "semantic-transition suite must contain 94 cases")
+check(traces.count("### ST-") == 108, "semantic-transition suite must contain 106 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 94, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 108, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -1059,55 +1132,135 @@ check(
     "ST-84 orchestrator opaque-provider-failure regression missing",
 )
 check(
-    "st-85 — local correction success must not silently substitute for end-to-end progress" in traces.lower()
-    and "trajectory-auditor" in traces.lower()
-    and "reassess" in traces.lower(),
-    "ST-85 longitudinal local-success/global-nonprogress regression missing",
+    "st-85 — local correction success must trigger owner reassessment before another same-level patch" in traces.lower()
+    and "perform one bounded owner trajectory reassessment" in traces.lower()
+    and "without `trajectory-auditor`" in traces.lower(),
+    "ST-85 owner-first local-success/global-nonprogress regression missing",
 )
 check(
     "st-86 — repeated hypothesis handoffs must not launder a parent inference into root cause" in traces.lower()
-    and "checkpoint-required" in traces.lower(),
-    "ST-86 longitudinal hypothesis-laundering regression missing",
+    and "keep h as hypothesis" in traces.lower()
+    and "semantic-checkpoint` is not used merely to decide a technical root cause" in traces.lower(),
+    "ST-86 owner hypothesis-laundering regression missing",
 )
 check(
     "st-87 — terminal completion must preserve the original end-to-end acceptance" in traces.lower()
-    and "reanchor" in traces.lower(),
-    "ST-87 completion-erosion regression missing",
+    and "restore the original completion boundary in the owner model" in traces.lower(),
+    "ST-87 owner completion-erosion regression missing",
 )
 check(
-    "st-88 — scoped review success must remain scoped evidence" in traces.lower()
-    and "end-to-end probe has not run" in traces.lower(),
+    "st-88 — scoped review success must remain scoped evidence under parent synthesis" in traces.lower()
+    and "end-to-end effect unverified" in traces.lower(),
     "ST-88 scoped-review/e2e evidence regression missing",
 )
 check(
-    "st-89 — clustered correction failures require boundary-level reassessment" in traces.lower()
-    and "clustered" in traces.lower(),
-    "ST-89 clustered-correction regression missing",
+    "st-89 — clustered correction failures require owner boundary-level reassessment" in traces.lower()
+    and "owner reconstructs the material chain" in traces.lower()
+    and "if materially plausible models remain unresolved" in traces.lower(),
+    "ST-89 owner clustered-correction regression missing",
 )
 check(
-    "st-90 — independent correction failures must remain a valid continue counterexample" in traces.lower()
-    and "different owners" in traces.lower(),
+    "st-90 — independent correction failures must remain a direct-flow counterexample" in traces.lower()
+    and "no trajectory auditor" in traces.lower(),
     "ST-90 independent-defects anti-overreach regression missing",
 )
 check(
     "st-91 — explicit staged work must not be misclassified as global non-progress" in traces.lower()
-    and "later acceptance milestone is not yet expected" in traces.lower(),
+    and "continue to the next established stage without a trajectory audit" in traces.lower(),
     "ST-91 staged-work anti-overreach regression missing",
 )
 check(
-    "st-92 — a prior trajectory continue verdict must not become sticky authority" in traces.lower()
-    and "fresh trajectory audit" in traces.lower(),
-    "ST-92 fresh-trajectory-judgment regression missing",
+    "st-92 — a prior trajectory `continue` verdict must not become sticky authority" in traces.lower()
+    and "perform fresh owner reassessment" in traces.lower()
+    and "only if a material longitudinal question still remains unresolved" in traces.lower(),
+    "ST-92 owner-freshness/conditional-auditor regression missing",
 )
 check(
     "st-93 — the parent trajectory packet is an index, not primary proof" in traces.lower()
+    and "after owner reassessment leaves a real residual trajectory question" in traces.lower()
     and "primary session history" in traces.lower(),
-    "ST-93 parent-packet evidence regression missing",
+    "ST-93 second-opinion parent-packet evidence regression missing",
 )
 check(
-    "st-94 — an isolated ordinary correction must not trigger trajectory ceremony" in traces.lower()
-    and "must not invoke" in traces.lower(),
-    "ST-94 anti-ritual routing regression missing",
+    "st-94 — an isolated ordinary correction must not trigger controller ceremony" in traces.lower()
+    and "route directly to `@debugger`" in traces.lower(),
+    "ST-94 controller anti-ritual routing regression missing",
+)
+check(
+    "st-95 — same-policy report-only/pre-existing counterexamples require owner abstraction reassessment" in traces.lower()
+    and "reassess canonical owner/representation/invariant" in traces.lower()
+    and "if materially plausible models remain" in traces.lower(),
+    "ST-95 same-policy owner-reassessment regression missing",
+)
+check(
+    "st-96 — unrelated low/pre-existing notes must not force abstraction reassessment or audit" in traces.lower()
+    and "independent/unrelated" in traces.lower()
+    and "no invented helper/planner/controller stage" in traces.lower(),
+    "ST-96 residual-note anti-overreach regression missing",
+)
+check(
+    "st-97 — a specialist recommendation must not become the next workflow stage by pass-through" in traces.lower()
+    and "independently owns the transition" in traces.lower(),
+    "ST-97 specialist-pass-through regression missing",
+)
+check(
+    "st-98 — fact, hypothesis, and remediation must remain distinct during owner ingestion" in traces.lower()
+    and "record f as evidence, h/h2 as hypotheses, r as recommendation" in traces.lower(),
+    "ST-98 owner-ingestion epistemic-class regression missing",
+)
+check(
+    "st-99 — evidence-backed technical ownership/fix-level change must not require semantic checkpoint" in traces.lower()
+    and "no semantic checkpoint merely because fix level" in traces.lower(),
+    "ST-99 semantic-checkpoint technical-owner anti-overreach regression missing",
+)
+check(
+    "st-100 — residual semantic authority conflict requires semantic checkpoint" in traces.lower()
+    and "owner states reconciliation performed" in traces.lower()
+    and "invoke fresh `@semantic-checkpoint`" in traces.lower(),
+    "ST-100 residual-authority checkpoint regression missing",
+)
+check(
+    "st-101 — two plausible trajectory models remaining after owner reassessment require second opinion" in traces.lower()
+    and "exact unresolved trajectory question" in traces.lower()
+    and "cannot safely resolve" in traces.lower(),
+    "ST-101 residual-trajectory second-opinion regression missing",
+)
+check(
+    "st-102 — explicit user request for independent trajectory review remains sufficient invocation authority" in traces.lower()
+    and "explicit user-requested independence" in traces.lower(),
+    "ST-102 user-requested trajectory-audit regression missing",
+)
+check(
+    "st-103 — a locally excellent deliverable that violates the task anchor must be rejected by the owner" in traces.lower()
+    and "reject completion/transition" in traces.lower(),
+    "ST-103 whole-task owner-protection regression missing",
+)
+check(
+    "st-104 — session evaluator must diagnose specialist pass-through and controller dependence" in traces.lower()
+    and "workflow-owner quality" in traces.lower()
+    and "controller dependence" in traces.lower(),
+    "ST-104 post-hoc owner-quality regression missing",
+)
+check(
+    "st-105 — narrow factual reconciliation should not create an unnecessary subagent chain" in traces.lower()
+    and "inspect the narrow primary evidence" in traces.lower(),
+    "ST-105 bounded direct-reconciliation regression missing",
+)
+check(
+    "st-106 — owner synthesis must be bounded rather than recursive think-loop" in traces.lower()
+    and "one bounded ingest/reconcile/update/decide pass" in traces.lower(),
+    "ST-106 anti-think-loop owner regression missing",
+)
+check(
+    "st-107 — parent-authored recent-fix focus must not steer a fresh whole-change review" in traces.lower()
+    and "request a clean assignment" in traces.lower()
+    and "targeted partial re-review" in traces.lower(),
+    "ST-107 fresh whole-change focus-isolation regression missing",
+)
+check(
+    "st-108 — user/project review emphasis is additive, not a whole-review boundary" in traces.lower()
+    and "user-requested emphasis: security boundaries (non-exhaustive)" in traces.lower(),
+    "ST-108 explicit-emphasis preservation regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | indeterminate`" in traces,

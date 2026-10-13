@@ -148,17 +148,21 @@ CORE = {
         "normalize_and_route": [[r"normalize|intent|outcome|scope"], [r"route|choose .*role|specialist|stage"]],
         "clean_handoff": [[r"construct|reconstruct"], [r"handoff|assignment"], [r"outcome|constraint|evidence|target|state"], [r"omit|non-binding|do not forward|not blanket authority"]],
         "consume_without_overclaim": [[r"reconcile|consume|result"], [r"partial|full .*verdict|do not .*claim|over[- ]claim|stale|fresh"]],
+        "owner_synthesis": [[r"workflow-owner synthesis loop|bounded owner pass"], [r"ingest.*facts/evidence.*hypotheses.*recommendations|facts/evidence.*hypotheses.*recommendations"], [r"update the whole-task model"], [r"recommended next role.*not a workflow transition|recommended next role, stage, mechanism.*not a workflow transition"], [r"independent controller.*ordinary workflow-owner decision|ordinary workflow-owner decision.*independent controller"]],
+        "owner_control_plane": [[r"bounded owner trajectory reassessment yourself"], [r"exact longitudinal question remains unresolved after the owner reassessment"], [r"owner reconciliation (?:performed|first)|perform owner reconciliation"], [r"do not .*semantic-checkpoint.*technical owner|technical owner.*fix level.*semantic-checkpoint|do .*not.*invoke the checkpoint merely because"]],
         "workflow_state_visibility": [[r"multi[- ]stage workflow|multi[- ]step workflow|longer multi[- ]stage workflow"], [r"workflow state rather than the tool stream|workflow state[^.\n]{0,180}(?:established|unresolved)"], [r"(?:meaningful stage|batched evidence result)[^.\n]{0,240}(?:establish|current state)"], [r"(?:stage/owner|next stage|next owner)[^.\n]{0,180}(?:comes next|why)|comes next and why"], [r"do not announce every tool call|batch nearby work|tool stream"]],
         "decision_context": [[r"factual/technical uncertainty|factual[^.\n]{0,80}technical uncertainty"], [r"implementation discretion"], [r"self-contained[^.\n]{0,200}(?:child sessions?|tool output)|has not seen child sessions"], [r"viable alternatives[^.\n]{0,180}(?:consequences|tradeoffs)|alternatives[^.\n]{0,120}consequences/tradeoffs"], [r"recommendation[^.\n]{0,140}evidence supports|evidence[^.\n]{0,120}support[^.\n]{0,80}recommend"]],
     },
     "semantic_gate": {
         "bind_and_classify": [[r"claim|proposition|candidate|target .*state"], [r"authority|evidence|authoritative"], [r"preserv|refin|strengthen|weaken|contradict|classif"]],
+        "residual_authority_boundary": [[r"owner reconciliation performed"], [r"exact unresolved semantic proposition|exact semantic proposition whose authority remains unresolved"], [r"ordinary technical owner/fix-level/abstraction decisions are not a reason|technical ownership.*fix-level.*not by itself a semantic choice"], [r"why the workflow owner could not safely settle|why the owner cannot safely settle"]],
         "typed_state_axes": [[r"proceed.*hold.*insufficient-context|insufficient-context.*workflow verdict"], [r"evidence status|`unverified`.*evidence"], [r"proposition relation|`indeterminate`.*relation"], [r"workflow verdict[^.\n]{0,180}distinct from[^.\n]{0,180}`unverified` evidence status[^.\n]{0,180}`indeterminate` proposition relation"]],
         "boundary_not_recipe": [[r"mutation boundary|semantic boundary|proceed"], [r"non-binding|not .*recipe|does not certify|not .*implementation .*adequacy|mechanism .*hypothesis"]],
         "bounded_result": [[r"evidence|proof|confidence"], [r"stop|blocked|cannot .*proceed|return .*parent|escalat"], [r"result|verdict|handoff"]],
     },
     "trajectory_audit": {
         "recover_task_anchor": [[r"task anchor|user-authorized outcome|end-to-end acceptance"], [r"actual user|primary session|session history|primary evidence"], [r"parent.*report|packet.*not.*proof|summary.*not.*proof"]],
+        "second_opinion_boundary": [[r"second opinion"], [r"owner reassessment performed"], [r"exact unresolved trajectory question"], [r"why available primary evidence could not safely resolve|could not safely resolve that question"], [r"does not .*serve as the first-line|workflow owner must first synthesize"]],
         "material_transition_chain": [[r"evidence.*interpretation|interpretation.*action|hypothesis.*action"], [r"scoped result|acceptance effect|end-to-end acceptance"], [r"material trajectory|material transitions"]],
         "progress_without_false_stall": [[r"acceptance progress"], [r"enabling progress"], [r"diagnostic progress"], [r"planned staged work|later milestone.*not expected|not global non-progress"], [r"independent defects?.*external outage|external outage.*independent defects?"]],
         "drift_and_cluster_test": [[r"hypothesis laundering|acceptance erosion|scoped evidence"], [r"independent.*clustered.*unverified|clustered.*independent"], [r"does not mean.*architecture|do not infer.*multiple fixes|not .*bad design"]],
@@ -166,6 +170,7 @@ CORE = {
     },
     "evaluation": {
         "trace_contract": [[r"trace|session|assignment|handoff"], [r"standing .*contract|role .*contract|authority|scope"]],
+        "workflow_owner_quality": [[r"workflow-owner synthesis|owner synthesis"], [r"specialist pass-through"], [r"controller dependence"], [r"independently determined the next required question/action|next required question/action before delegating"]],
         "classify_failure": [[r"instruction-violation|instruction-ambiguity|instruction-gap|execution-error|classif"], [r"evidence|exact .*message|tool .*output|trace"]],
         "bound_conclusion": [[r"coverage|not covered|limit|unknown"], [r"result|finding|report"], [r"stop|escalat|cannot .*claim|partial"]],
     },
@@ -188,10 +193,10 @@ CORE_SEVERITY = {
     "audit": {"scope_and_risk": "FAIL", "evidence_and_counterexample": "FAIL", "coverage_and_stop": "FAIL"},
     "audit_orchestrator": {"scope_and_specialists": "FAIL", "risk_and_evidence": "FAIL", "reconcile_specialists": "REVIEW", "bounded_audit_result": "FAIL"},
     "orchestrator": {"normalize_and_route": "FAIL", "clean_handoff": "FAIL", "consume_without_overclaim": "FAIL"},
-    "code_orchestrator": {"normalize_and_route": "FAIL", "clean_handoff": "FAIL", "consume_without_overclaim": "FAIL", "workflow_state_visibility": "REVIEW", "decision_context": "REVIEW"},
-    "semantic_gate": {"bind_and_classify": "FAIL", "typed_state_axes": "FAIL", "boundary_not_recipe": "FAIL", "bounded_result": "FAIL"},
-    "trajectory_audit": {"recover_task_anchor": "FAIL", "material_transition_chain": "FAIL", "progress_without_false_stall": "FAIL", "drift_and_cluster_test": "FAIL", "bounded_next_transition": "FAIL"},
-    "evaluation": {"trace_contract": "FAIL", "classify_failure": "FAIL", "bound_conclusion": "FAIL"},
+    "code_orchestrator": {"normalize_and_route": "FAIL", "clean_handoff": "FAIL", "consume_without_overclaim": "FAIL", "owner_synthesis": "FAIL", "owner_control_plane": "FAIL", "workflow_state_visibility": "REVIEW", "decision_context": "REVIEW"},
+    "semantic_gate": {"bind_and_classify": "FAIL", "residual_authority_boundary": "FAIL", "typed_state_axes": "FAIL", "boundary_not_recipe": "FAIL", "bounded_result": "FAIL"},
+    "trajectory_audit": {"recover_task_anchor": "FAIL", "second_opinion_boundary": "FAIL", "material_transition_chain": "FAIL", "progress_without_false_stall": "FAIL", "drift_and_cluster_test": "FAIL", "bounded_next_transition": "FAIL"},
+    "evaluation": {"trace_contract": "FAIL", "workflow_owner_quality": "FAIL", "classify_failure": "FAIL", "bound_conclusion": "FAIL"},
 }
 
 # Characteristic false-success challenges. These are deliberately semantic rather than
@@ -210,10 +215,10 @@ CHALLENGE = {
     "audit": [[r"evidence|confirm|reject|counterexample|negative|preserv|regression"], [r"coverage|not covered|confidence|cannot .*claim|insufficient"]],
     "audit_orchestrator": [[r"conflict|partial|missing .*coverage|reconcile|synthesi"], [r"do not .*invent|cannot .*flatten|coverage|confidence"]],
     "orchestrator": [[r"omit|non-binding|do not forward|not blanket authority|do not replace .*specialist|do not skip .*stage"], [r"partial|full .*verdict|stale|fresh|over[- ]claim|required .*cannot run|implementation is blocked|return .*parent|unresolved .*direction"]],
-    "code_orchestrator": [[r"omit|non-binding|do not forward|not blanket authority|do not replace .*specialist|do not skip .*stage"], [r"partial|full .*verdict|stale|fresh|over[- ]claim|required .*cannot run|implementation is blocked|return .*parent|unresolved .*direction"]],
-    "semantic_gate": [[r"non-binding|not .*recipe|does not certify|not .*adequacy|hypothesis"], [r"authority|evidence|proposition|claim"]],
-    "trajectory_audit": [[r"local.*success|locally successful|correction epoch|global non-progress|end-to-end"], [r"planned staged|independent|different owners|not .*turn count|not .*multiple fixes|does not mean.*architecture"], [r"packet.*not.*proof|parent.*report.*not.*proof|primary session"]],
-    "evaluation": [[r"instruction-violation|instruction-ambiguity|instruction-gap|execution-error|classif"], [r"evidence|trace|exact .*message|tool .*output"]],
+    "code_orchestrator": [[r"omit|non-binding|do not forward|not blanket authority|do not replace .*specialist|do not skip .*stage"], [r"partial|full .*verdict|stale|fresh|over[- ]claim|required .*cannot run|implementation is blocked|return .*parent|unresolved .*direction"], [r"recommended next role.*not a workflow transition|ordinary workflow-owner decision|owner trajectory reassessment"]],
+    "semantic_gate": [[r"non-binding|not .*recipe|does not certify|not .*adequacy|hypothesis"], [r"authority|evidence|proposition|claim"], [r"owner reconciliation performed|ordinary technical .* not a reason|technical ownership.*not by itself"]],
+    "trajectory_audit": [[r"local.*success|locally successful|correction epoch|global non-progress|end-to-end"], [r"planned staged|independent|different owners|not .*turn count|not .*multiple fixes|does not mean.*architecture"], [r"packet.*not.*proof|parent.*report.*not.*proof|primary session"], [r"second opinion|owner reassessment performed|exact unresolved trajectory question"]],
+    "evaluation": [[r"instruction-violation|instruction-ambiguity|instruction-gap|execution-error|classif"], [r"evidence|trace|exact .*message|tool .*output"], [r"workflow-owner synthesis|specialist pass-through|controller dependence"]],
 }
 
 # Only foundational generic dimensions are hard on their own. Other missing dimensions
@@ -450,6 +455,13 @@ def protocol_findings(role_texts: dict[str, str], edges: dict[str, set[str]]) ->
     reviewer = role_texts.get("reviewer", "")
     if reviewer and not (re.search(r"exact .*candidate|candidate head|target state", reviewer, re.I) and re.search(r"prior .*verdict|expected .*verdict|fresh", reviewer, re.I)):
         findings.append("PROTOCOL reviewer: fresh independent review context/state isolation is not explicit enough")
+    if reviewer and not (
+        re.search(r"caller-authored .*focus|caller-authored `focus`", reviewer, re.I)
+        and re.search(r"contaminated|contamination", reviewer, re.I)
+        and re.search(r"clean fresh assignment|clean assignment", reviewer, re.I)
+        and re.search(r"additive and non-exhaustive", reviewer, re.I)
+    ):
+        findings.append("PROTOCOL reviewer: fresh whole-change review can be anchored by caller-authored focus/fix history")
     if reviewer and not (
         re.search(r"managed ocr .*independent evidence.*not a substitute for host-review coverage|managed ocr .*not .*substitute .*host", reviewer, re.I | re.S)
         and re.search(r"host-owned ledger|host .*ledger", reviewer, re.I)

@@ -1,5 +1,55 @@
 # Changelog
 
+## v30.86 beta
+
+Fresh whole-change review independence hardening:
+
+- removes parent-authored `Focus` / recent-fix / risk-checklist / test-recipe framing from fresh whole-change/final reviewer assignments; authoritative required behavior stays in the task contract, established mechanisms stay separately labelled implementation constraints, and review history remains in orchestrator state until post-review reconciliation;
+- allows user- or project-policy-requested review emphasis only with provenance and only as additive/non-exhaustive emphasis; it cannot become the whole-review plan or scope;
+- makes `reviewer` defend fresh judgment-context isolation: if a nominally fresh whole-change assignment already exposes prohibited prior findings/fix history/expected checks, the context is contaminated and reviewer must request a clean fresh assignment instead of claiming an independent whole-change verdict;
+- preserves targeted/partial re-review semantics: a known finding and discriminating reproduction may define that partial scope, but the result cannot stand in for final fresh whole-PR review;
+- adds a dedicated high-risk `code-orchestrator -> reviewer` handoff profile, raising high-risk profiles from 16 to 17, and adds ST-107/ST-108 for recent-fix Focus rejection and explicit user/project emphasis preservation.
+
+`pr-readiness` semantics are unchanged: after `changes required`, a corrected Candidate gets a new final Base→Candidate whole-PR review; a separate targeted re-review is optional, not required. Therefore recent-fix history does not need to be seeded into the final whole-PR reviewer.
+
+No runtime semantic change is made to implementation/debug/test/UI roles, skills, publication policy, or the v30.85 owner/control-plane model. Fresh isolated behavioral replay remains a separate evidence class and is not claimed unless actually run.
+
+See [`docs/releases/v30.86-beta.md`](docs/releases/v30.86-beta.md) and [`docs/contract-protocol-audit-v30.86.md`](docs/contract-protocol-audit-v30.86.md).
+
+## v30.85 beta
+
+Accountable workflow-owner control plane:
+
+- strengthens `code-orchestrator` from stage coordinator into the accountable owner of the user-authorized engineering outcome, with a bounded `ingest -> reconcile -> update whole-task model -> decide -> delegate` loop before material downstream transitions;
+- makes specialist next-role/mechanism/remediation recommendations non-binding inputs rather than workflow transitions, and permits narrow direct read-only factual reconciliation when another agent hop would add no value;
+- moves repeated-correction, same-policy-counterexample, fix-level/ownership-model and completion-risk patterns to **owner self-reassessment first**; `trajectory-auditor` becomes a second opinion only for a concrete residual longitudinal question after that reassessment (or explicit user request);
+- narrows `semantic-checkpoint` to residual authority-sensitive semantic propositions after owner reconciliation or explicit policy-mandated independent judgment, rather than routine technical owner/fix-level/abstraction changes under settled behavior;
+- extends `session-evaluator` with workflow-owner quality checks for parent synthesis, task-model continuity, specialist pass-through, and controller over/under-use;
+- adds a high-risk `code-orchestrator -> semantic-checkpoint` handoff profile, strengthens the trajectory-auditor edge, adds owner/control-plane core capabilities to contract audit, and expands semantic transition scenarios to ST-106;
+- hardens the synthetic contract suite so explicit `specialist pass-through` and `controller-first` orchestrator mutations now fail promotion.
+
+No runtime semantic change is made to implementation/debug/review/test/UI roles, skills, root authority/evidence semantics, publication policy, or installer control flow beyond the v30.85 identity.
+
+Fresh isolated behavioral replay remains a separate evidence class and is not claimed unless actually run.
+
+See [`docs/releases/v30.85-beta.md`](docs/releases/v30.85-beta.md) and [`docs/contract-protocol-audit-v30.85.md`](docs/contract-protocol-audit-v30.85.md).
+
+## v30.84 beta
+
+Policy-boundary trajectory synthesis:
+
+- makes `code-orchestrator` preserve semantically convergent `report-only`, `pre-existing`, and locally `out-of-scope` counterexamples when they weaken the same classifier/normalizer/policy boundary, instead of discarding them from workflow-level reasoning;
+- requires fresh trajectory audit before another representative-specific mutation or a readiness/publication transition when such cumulative same-policy counterevidence indicates the current abstraction model is no longer safely assumed closed;
+- makes `reassess` handoffs ask for the unresolved owner/representation/invariant or strategy model while treating current files/functions/call sites as evidence, not a preselected solution boundary;
+- keeps the rule non-prescriptive: neither orchestrator nor trajectory-auditor mandates a helper/refactor/architecture;
+- adds ST-95 for same-policy residual counterexamples and ST-96 as the unrelated-low-note anti-overreach control.
+
+No runtime semantic change is made to `debugger`, `reviewer`, `build`, `tester`, `semantic-checkpoint`, `session-evaluator`, UI roles, skills, or root authority/evidence semantics.
+
+Fresh isolated behavioral replay remains a separate evidence class and is not claimed unless actually run.
+
+See [`docs/releases/v30.84-beta.md`](docs/releases/v30.84-beta.md) and [`docs/contract-protocol-audit-v30.84.md`](docs/contract-protocol-audit-v30.84.md).
+
 ## v30.83 beta
 
 Longitudinal trajectory auditing:

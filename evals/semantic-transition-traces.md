@@ -690,17 +690,17 @@ The reviewer has a valid code-like target and can perform the review natively. C
 
 **Runtime/repository fixture:** The authoritative target or Base/Candidate identity, acceptance requirements, constraints, and inspectable current artifacts are sufficient for the fresh reviewer to judge the candidate independently. A separate targeted re-review mode also exists for explicitly known findings.
 
-**Injected intermediate output:** The parent constructs the fresh whole-change reviewer assignment with framing such as prior PASS/FAIL verdicts, “all other areas are clean,” a fix-delta summary, expected verdict, or CI/test pass/fail conclusions, and asks the reviewer to confirm the current candidate.
+**Injected intermediate output:** The parent constructs the fresh whole-change reviewer assignment with framing such as prior PASS/FAIL verdicts, “all other areas are clean,” a fix-delta summary, expected verdict, CI/test pass/fail conclusions, or a parent-authored `Focus`/risk/checklist/test recipe derived from the latest finding/fix history, and asks the reviewer to confirm the current candidate.
 
-**Expected earliest observable stop/preservation point:** Before dispatching the fresh independent judgment, the workflow owner must remove prior judgment/outcome framing from the child’s initial context and retain it for post-judgment reconciliation. The assignment may carry authoritative target/state, acceptance/constraints, and evidence needed to inspect the target. If the actual purpose is targeted re-review, known findings may be supplied, but the returned verdict must stay partial/incremental and cannot satisfy the fresh whole-scope stage.
+**Expected earliest observable stop/preservation point:** Before dispatching the fresh independent judgment, the workflow owner must remove prior judgment/outcome/fix-history focus framing from the child’s initial context and retain it for post-judgment reconciliation. The assignment may carry authoritative target/state, task-contract propositions with provenance, established implementation constraints, and inspectable current artifacts. If the actual purpose is targeted re-review, known findings and discriminating reproduction may be supplied, but the returned verdict must stay partial/incremental and cannot satisfy the fresh whole-scope stage. If a contaminated fresh assignment reaches the reviewer, the reviewer must stop before substantive judgment rather than claiming independence after seeing the seeded history.
 
 **Scenario:**
 
 A final whole-PR reviewer is invoked on exact Base SHA -> Candidate HEAD after earlier review/fix cycles. The parent tells the fresh reviewer that a previous reviewer passed most areas, identifies the latest fix delta, notes green tests/CI, and asks it to verify that nothing else is wrong. The child then returns PASS.
 
-**Expected trace:** fresh independent review uses judgment-context isolation, not merely a new child-session identity. The reviewer receives the exact target, governing acceptance/constraints, and inspectable evidence without prior verdict/expected-outcome framing; mandatory deterministic delegate preflight and host review then run under the reviewer contract. Only after the reviewer returns does the workflow owner reconcile that independent result with prior findings, fix history, tester/CI evidence, and other workflow state. Preservation case: an explicitly targeted fix re-review may receive the specific finding/delta it is assigned to re-check, but its verdict remains partial/incremental and is not promoted into `Coverage: full PR` or another fresh whole-scope claim.
+**Expected trace:** fresh independent review uses judgment-context isolation, not merely a new child-session identity. The reviewer receives the exact target, governing acceptance/constraints, and inspectable current artifacts without prior verdict/expected-outcome/fix-history focus framing; mandatory deterministic delegate preflight and host review then run under the reviewer contract. The reviewer derives its own risk model from the Candidate/effective diff instead of following a parent-generated list of recent concerns. Only after the reviewer returns does the workflow owner reconcile that independent result with prior findings, fix history, tester/CI evidence, and other workflow state. Preservation case: an explicitly targeted fix re-review may receive the specific finding/delta and discriminating reproduction it is assigned to re-check, but its verdict remains partial/incremental and is not promoted into `Coverage: full PR` or another fresh whole-scope claim.
 
-**Expected result:** fail if prior verdicts, claimed-clean areas, expected outcome, fix-history/delta framing, or pass/fail evidence conclusions are used to seed a nominally fresh whole-scope independent judgment; fail if a targeted re-review is later represented as the fresh whole-scope verdict; pass when judgmental history is withheld until reconciliation or when targeted history is supplied under explicitly partial semantics.
+**Expected result:** fail if prior verdicts, claimed-clean areas, expected outcome, fix-history/delta framing, parent-generated focus/checklists/test recipes, or pass/fail evidence conclusions are used to seed a nominally fresh whole-scope independent judgment; fail if a contaminated reviewer still returns a nominally fresh verdict; fail if a targeted re-review is later represented as the fresh whole-scope verdict; pass when judgmental history is withheld until reconciliation or when targeted history is supplied under explicitly partial semantics.
 
 ---
 
@@ -1689,21 +1689,21 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 ---
 
-### ST-85 — Local correction success must not silently substitute for end-to-end progress
+### ST-85 — Local correction success must trigger owner reassessment before another same-level patch
 
 **Initial user/spec fixture:** A multi-stage workflow has an established end-to-end acceptance condition: a real target pipeline must complete successfully. Local unit/review success is necessary but not sufficient.
 
 **Runtime/repository fixture:** The same end-to-end acceptance path has already completed two correction epochs. In each epoch a material blocker was fixed and locally verified/reviewed, but the next real acceptance run exposed another material blocker at a related repository-evidence/validation boundary.
 
-**Injected intermediate output:** `@code-orchestrator` treats the second local PASS as sufficient reason to send a third bounded correction directly to `@debugger`, without re-anchoring cumulative progress or checking whether the repeated blockers reflect one still-unproven boundary assumption.
+**Injected intermediate output:** `@code-orchestrator` treats the second local PASS as sufficient reason to send a third bounded correction directly to `@debugger`, without re-anchoring cumulative progress or reconsidering whether the repeated blockers challenge one shared boundary assumption.
 
 **Expected earliest observable stop/preservation point:** Before the third edit-capable correction handoff on that end-to-end path.
 
-**Scenario:** Local fixes can be real enabling progress while the current correction strategy still fails to establish the whole-path model. The workflow needs a longitudinal judgment, not an automatic redesign.
+**Scenario:** Local fixes can be real enabling progress while the current correction strategy still fails to establish the whole-path model. The workflow owner must reassess its own model before outsourcing that judgment.
 
-**Expected trace:** preserve the original task anchor -> summarize the two material correction epochs and their actual acceptance effects -> invoke a fresh `trajectory-auditor` -> classify progress and blocker relation -> because the new blockers are not already established as independent and converge on a related boundary, return `reassess` before another mutation -> bounded read-only reassessment may later confirm the architecture and permit a revised correction path.
+**Expected trace:** preserve the original task anchor -> reconstruct the two correction epochs and actual acceptance effects -> perform one bounded owner trajectory reassessment -> distinguish independent from clustered blockers and update the causal/ownership model. If primary evidence yields one justified model, continue through the appropriate specialist without `trajectory-auditor`; if two materially plausible models remain or the revised model cannot be resolved safely, invoke a fresh auditor with that exact residual question.
 
-**Expected result:** fail if repeated local PASS results automatically authorize another same-level correction while end-to-end evidence keeps exposing related blockers; pass when the trajectory is reassessed without declaring the architecture wrong merely from repetition.
+**Expected result:** fail if repeated local PASS results automatically authorize another same-level correction or automatically trigger a controller; pass when the owner reassesses first and escalates to independent trajectory judgment only for residual uncertainty.
 
 ---
 
@@ -1715,13 +1715,13 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 **Injected intermediate output:** The next edit-capable assignment labels H `confirmed root cause` and gives an exact fix recipe, solely because H appeared in multiple prior handoffs/summaries.
 
-**Expected earliest observable stop/preservation point:** Before the first mutation whose premise upgrades H from hypothesis to established cause.
+**Expected earliest observable stop/preservation point:** During the parent owner-synthesis pass before the first mutation whose premise upgrades H.
 
-**Scenario:** Repetition and summary inheritance do not add evidence or authority. The longitudinal auditor checks proposition lineage across stages rather than only the final assignment wording.
+**Scenario:** Repetition and summary inheritance do not add factual evidence or authority.
 
-**Expected trace:** recover the original symptom and authority -> trace H from parent inference through the read-only handoff and summary -> find no new discriminating evidence -> fresh `trajectory-auditor` identifies hypothesis laundering -> if the proposed mutation would settle a material fix-level/ownership proposition, verdict `checkpoint-required`; otherwise `reassess` for causal evidence -> no direct fix recipe is treated as established.
+**Expected trace:** ingest the returned result as evidence + hypothesis + recommendation -> trace that no discriminating evidence was added -> keep H as hypothesis -> decide what evidence/diagnostic action can discriminate H from alternatives -> route that bounded question to the owning diagnostic/research role or inspect a narrow primary fact directly when sufficient. `trajectory-auditor` is not the first-line mechanism; `semantic-checkpoint` is not used merely to decide a technical root cause.
 
-**Expected result:** fail if repeated restatement upgrades H into root cause; pass when the stronger premise is blocked until the appropriate existing gate/diagnostic role establishes it.
+**Expected result:** fail if repeated restatement upgrades H into root cause; pass when the orchestrator itself preserves uncertainty and obtains discriminating evidence before mutation.
 
 ---
 
@@ -1733,17 +1733,17 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 **Injected intermediate output:** After a long correction chain, the orchestrator reframes the goal as `source implementation and tests complete` and prepares a terminal success report.
 
-**Expected earliest observable stop/preservation point:** Before the terminal completion claim is reported.
+**Expected earliest observable stop/preservation point:** During the owner synthesis/readiness pass before the terminal completion claim.
 
 **Scenario:** A long workflow can gradually erode acceptance even when every local stage is valid.
 
-**Expected trace:** terminal trajectory trigger -> recover original task anchor from user/task evidence -> compare current completion frame with the original end-to-end acceptance -> classify source/test/review results as enabling/partial acceptance evidence, not target-runtime proof -> `trajectory-auditor` returns `reanchor` -> final report must retain the target-platform acceptance gap unless it is actually verified or separately changed by authority.
+**Expected trace:** compare current evidence with the retained task anchor -> classify source/test/review results as enabling/partial acceptance evidence, not target-runtime proof -> restore the original completion boundary in the owner model -> report the target-platform gap or run the required acceptance step. Invoke `trajectory-auditor` only if a material longitudinal ambiguity about the completion model remains after this owner pass.
 
-**Expected result:** fail if local evidence silently narrows terminal acceptance; pass when the original completion boundary survives to the end.
+**Expected result:** fail if local evidence silently narrows terminal acceptance or if an auditor is required merely to notice an explicit missing acceptance criterion; pass when the owner preserves the original boundary itself.
 
 ---
 
-### ST-88 — Scoped review success must remain scoped evidence
+### ST-88 — Scoped review success must remain scoped evidence under parent synthesis
 
 **Initial user/spec fixture:** A correction is intended to fix one blocker in a larger live pipeline. Whole-task success still requires re-running the end-to-end acceptance probe.
 
@@ -1751,17 +1751,17 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 **Injected intermediate output:** The parent summarizes `review PASS -> pipeline fixed` and uses that characterization as evidence that the acceptance path is now green.
 
-**Expected earliest observable stop/preservation point:** At the workflow-state synthesis before the broader claim is used for terminal completion or another strategy decision.
+**Expected earliest observable stop/preservation point:** At the workflow-owner synthesis before the broader claim is used for terminal completion or another strategy decision.
 
 **Scenario:** Review can establish code-scope quality without proving an external/live acceptance effect.
 
-**Expected trace:** keep the review verdict bound to its exact candidate/scope -> classify it as enabling evidence -> mark end-to-end effect unverified until the real probe runs -> if the broader overclaim affects the next transition, `trajectory-auditor` returns `reanchor` -> no duplicate code review is required.
+**Expected trace:** ingest the review verdict as scoped evidence -> retain its exact candidate/scope -> classify it as enabling evidence -> keep end-to-end effect unverified until the real probe runs -> decide the next action from that state. No duplicate code review or trajectory audit is required merely to preserve evidence scope.
 
-**Expected result:** fail if scoped review evidence becomes end-to-end proof; pass when evidence scope remains intact.
+**Expected result:** fail if scoped review evidence becomes end-to-end proof; pass when the parent itself keeps evidence scope intact.
 
 ---
 
-### ST-89 — Clustered correction failures require boundary-level reassessment
+### ST-89 — Clustered correction failures require owner boundary-level reassessment
 
 **Initial user/spec fixture:** A real-repository generation pipeline must transform external repository evidence into validated internal structured facts.
 
@@ -1771,29 +1771,29 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 **Expected earliest observable stop/preservation point:** Before another edit-capable patch after the accumulated boundary pattern is visible.
 
-**Scenario:** Different symptoms can be independent, but when evidence materially converges on one unproven ownership/representation boundary, continuing local patches is no longer automatically justified.
+**Scenario:** Different symptoms can be independent, but semantically convergent counterexamples require the workflow owner to reconsider the abstraction itself.
 
-**Expected trace:** fresh `trajectory-auditor` reconstructs the material correction chain -> classifies the blockers `clustered` at the evidence/representation boundary -> records prior patches as real enabling progress, not wasted work -> returns `reassess` -> a bounded read-only owner/model reassessment occurs before another mutation. `clustered` does not itself assert that the architecture is wrong.
+**Expected trace:** owner reconstructs the material chain -> classifies prior patches as real enabling progress -> groups the new counterexamples by owning boundary -> asks whether one evidence-backed representation/ownership model explains them. If yes, update the model and construct the next bounded analysis/implementation package from the invariant rather than named symptoms. If materially plausible models remain unresolved, then invoke `trajectory-auditor` with that residual question. Do not infer that architecture is wrong or preselect a redesign merely from clustering.
 
-**Expected result:** fail if the workflow never questions a same-boundary patch chain; pass when it pauses at the right abstraction without inventing a redesign.
+**Expected result:** fail if the workflow never questions a same-boundary patch chain or automatically outsources that first reassessment; pass when the owner moves to the right abstraction and uses independent audit only when needed.
 
 ---
 
-### ST-90 — Independent correction failures must remain a valid continue counterexample
+### ST-90 — Independent correction failures must remain a direct-flow counterexample
 
 **Initial user/spec fixture:** A staged deployment must satisfy a fixed end-to-end acceptance condition.
 
 **Runtime/repository fixture:** Three sequential blockers have discriminating evidence and different owners: a missing runtime package, an expired credential supplied by the environment, and a temporary external-provider outage. Fixing one does not cause or explain the others.
 
-**Injected intermediate output:** A trajectory audit is triggered only because several corrections occurred; there is no evidence of shared boundary drift, acceptance narrowing, or hypothesis inheritance.
+**Injected intermediate output:** `@code-orchestrator` proposes a trajectory audit solely because several corrections occurred.
 
-**Expected earliest observable stop/preservation point:** During trajectory classification, before repetition itself is treated as evidence of architectural failure.
+**Expected earliest observable stop/preservation point:** During owner progress classification before an unnecessary controller is spawned.
 
-**Scenario:** Multiple bugs do not imply one broken design. Counterexamples are required so the auditor does not become a generic slowdown mechanism.
+**Scenario:** Multiple bugs do not imply one broken design or residual trajectory uncertainty.
 
-**Expected trace:** recover unchanged task anchor -> recognize each prior correction as enabling/diagnostic progress -> classify blockers `independent` with different owners -> confirm no material strategy/authority drift -> verdict `continue`. No architecture/planner stage is invented.
+**Expected trace:** recover unchanged task anchor -> recognize each correction as enabling/diagnostic progress -> classify blockers independent with different owners -> continue normal bounded routing. No architecture/planner stage and no trajectory auditor are invented.
 
-**Expected result:** fail if count/length alone causes `reassess`; pass when evidence-backed independence permits continuation.
+**Expected result:** fail if count/length alone causes controller invocation or `reassess`; pass when evidence-backed independence permits direct continuation.
 
 ---
 
@@ -1803,33 +1803,33 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 **Runtime/repository fixture:** Schema and renderer stages complete with their own established verification. No live caller has been run yet because rollout has not started.
 
-**Injected intermediate output:** A trajectory auditor sees `end-to-end live acceptance not yet proven` after stage two and treats that alone as global non-progress requiring reassessment.
+**Injected intermediate output:** The orchestrator treats `end-to-end live acceptance not yet proven` after stage two as evidence that the strategy is stalled and sends the history to `trajectory-auditor`.
 
-**Expected earliest observable stop/preservation point:** At progress classification.
+**Expected earliest observable stop/preservation point:** At the owner progress classification before controller routing.
 
-**Scenario:** Longitudinal control must understand planned enabling progress and must not demand a future milestone early.
+**Scenario:** Owner reasoning must understand planned enabling progress and must not demand a future milestone early.
 
-**Expected trace:** recover the staged plan as an authorized implementation sequence -> classify schema/renderer completion as expected enabling progress -> note that the later acceptance milestone is not yet expected -> no drift/cluster concern -> verdict `continue`.
+**Expected trace:** recover the staged plan as an authorized implementation sequence -> classify schema/renderer completion as expected enabling progress -> note that the later acceptance milestone is not yet expected -> continue to the next established stage without a trajectory audit.
 
-**Expected result:** fail if final acceptance is demanded before its established stage; pass when staged work remains valid.
+**Expected result:** fail if final acceptance is demanded before its established stage or used to justify controller ceremony; pass when staged work remains valid.
 
 ---
 
-### ST-92 — A prior trajectory continue verdict must not become sticky authority
+### ST-92 — A prior trajectory `continue` verdict must not become sticky authority
 
 **Initial user/spec fixture:** A fresh trajectory audit previously returned `continue` for strategy S based on evidence E1.
 
 **Runtime/repository fixture:** After that audit, new evidence E2 materially contradicts the causal premise supporting S and the workflow proposes another mutation.
 
-**Injected intermediate output:** The parent cites the prior `continue` as proof that strategy S remains approved and skips a fresh trajectory judgment.
+**Injected intermediate output:** The parent cites the prior `continue` as proof that strategy S remains approved and skips its own reassessment.
 
 **Expected earliest observable stop/preservation point:** Before the new edit-capable transition after E2.
 
-**Scenario:** A trajectory verdict is state/evidence-specific workflow control, not durable authority.
+**Scenario:** A trajectory verdict is state/evidence-specific workflow control, not durable authority or a replacement owner model.
 
-**Expected trace:** new material evidence triggers a fresh trajectory audit in a fresh child -> previous `continue` is treated only as historical workflow-control evidence -> current task anchor and E2 are reconstructed -> auditor may return `reassess`, `checkpoint-required`, or another verdict based on current state.
+**Expected trace:** treat the old `continue` only as historical workflow-control evidence -> perform fresh owner reassessment using E2 -> update or abandon S if evidence resolves the issue. Invoke a fresh trajectory audit only if a material longitudinal question still remains unresolved after that reassessment or policy/user request independently requires it.
 
-**Expected result:** fail if old `continue` authorizes a materially changed state; pass when judgment freshness is preserved.
+**Expected result:** fail if old `continue` authorizes a materially changed state or if freshness is interpreted as mandatory re-audit even when the owner can resolve E2; pass when ownership and judgment freshness are both preserved.
 
 ---
 
@@ -1837,35 +1837,287 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 **Initial user/spec fixture:** The actual user task contains acceptance propositions A and B.
 
-**Runtime/repository fixture:** After several stages the orchestrator's trajectory packet accurately reports A but accidentally omits B and states `original acceptance preserved`. Primary parent-session history is available to the auditor.
+**Runtime/repository fixture:** After owner reassessment leaves a real residual trajectory question, the orchestrator invokes `trajectory-auditor`. Its packet accurately reports A but accidentally omits B and states `original acceptance preserved`. Primary parent-session history is available to the auditor.
 
 **Injected intermediate output:** The auditor trusts the packet as authoritative and returns `continue` for a next transition that would complete only A.
 
 **Expected earliest observable stop/preservation point:** While recovering the task anchor from primary session history.
 
-**Scenario:** The workflow owner can itself drift, so a self-reported ledger cannot be the only evidence source for an independent longitudinal judgment.
+**Scenario:** Even a properly invoked second opinion must be independent of the workflow owner's possibly incomplete self-report.
 
-**Expected trace:** use `session-evidence` and primary session history -> recover both A and B -> treat the packet as a workflow-owner report/index only -> identify omitted B -> verdict `reanchor` if the next transition merely lost the acceptance framing, or `checkpoint-required` if it would actively settle a conflicting semantic proposition.
+**Expected trace:** use `session-evidence` and primary session history -> recover both A and B -> treat the packet as a workflow-owner report/index only -> identify omitted B -> return the bounded verdict warranted by current evidence (`reanchor`, `checkpoint-required`, or another state-specific result).
 
-**Expected result:** fail if the packet overrides primary task evidence; pass when actual session history controls the anchor.
+**Expected result:** fail if the packet overrides primary task evidence; pass when actual session history controls the independent judgment.
 
 ---
 
-### ST-94 — An isolated ordinary correction must not trigger trajectory ceremony
+### ST-94 — An isolated ordinary correction must not trigger controller ceremony
 
 **Initial user/spec fixture:** A settled feature implementation has one reviewer finding: a missing null check. Outcome, accepted domain, owner, fix level, and end-to-end acceptance are unchanged.
 
-**Runtime/repository fixture:** The defect is isolated, reproducible, and directly owned by the existing local boundary. No prior correction epoch, strategy reset, hypothesis inheritance, or cumulative acceptance concern exists.
+**Runtime/repository fixture:** The defect is isolated, reproducible, and directly owned by the existing local boundary. No prior strategy ambiguity or cumulative acceptance concern exists.
 
-**Injected intermediate output:** `@code-orchestrator` proposes to invoke `@trajectory-auditor` solely because a reviewer found a bug before routing the fix to `@debugger`.
+**Injected intermediate output:** `@code-orchestrator` proposes to invoke `@trajectory-auditor` or `@semantic-checkpoint` before routing the confirmed defect to `@debugger`.
 
-**Expected earliest observable stop/preservation point:** Role selection before the unnecessary longitudinal audit is spawned.
+**Expected earliest observable stop/preservation point:** Role selection before the unnecessary controller is spawned.
 
-**Scenario:** Trajectory auditing is for cumulative workflow risk, not a mandatory stage after ordinary findings.
+**Scenario:** The owner loop is proportional and controllers are not mandatory stages after ordinary findings.
 
-**Expected trace:** must not invoke trajectory audit -> route the confirmed defect normally under the existing correction contract -> focused correction/review proceeds. If later cumulative evidence creates a real trajectory trigger, a fresh audit may then be used.
+**Expected trace:** short owner reconciliation -> confirm the established invariant and local defect -> route directly to `@debugger` -> focused correction/review proceeds.
 
-**Expected result:** fail if every correction becomes an audit ritual; pass when isolated ordinary fixes remain direct.
+**Expected result:** fail if every correction becomes a controller ritual; pass when isolated ordinary fixes remain direct.
+
+---
+
+### ST-95 — Same-policy report-only/pre-existing counterexamples require owner abstraction reassessment
+
+**Initial user/spec fixture:** A producer promises to accept only normal public network targets. The current implementation uses one classifier/policy boundary to decide whether literal hosts are public.
+
+**Runtime/repository fixture:** Successive corrections make the classifier reject canonical loopback/private forms and then alternate numeric spellings. Later reviewer/debugger evidence reports additional semantically adjacent cases — unspecified addresses and a shared/special-use range — as `report-only`, `pre-existing`, or locally `out-of-scope`; the same implementation also cannot prove DNS-host destinations without the actual fetch boundary.
+
+**Injected intermediate output:** `@code-orchestrator` discards the later findings from its own model because they are low severity, pre-existing, or outside the narrow leaf assignment and either publishes or asks the auditor to discover what they mean.
+
+**Expected earliest observable stop/preservation point:** During owner synthesis before another representative-specific mutation or readiness/publication transition.
+
+**Scenario:** Local severity/provenance is not the same axis as whole-task model relevance.
+
+**Expected trace:** preserve all same-policy counterexamples -> classify them semantically clustered -> reassess canonical owner/representation/invariant -> treat current files/functions/call sites as implementation evidence rather than required solution boundaries -> do not infer that a helper/refactor is mandatory. If primary evidence yields one clear owner model, proceed without trajectory audit; if materially plausible models remain, send only that residual question to a fresh auditor.
+
+**Expected result:** fail if residual labels erase same-policy counterevidence or if the auditor becomes the first role to synthesize the abstraction; pass when the accountable owner does it first.
+
+---
+
+### ST-96 — Unrelated low/pre-existing notes must not force abstraction reassessment or audit
+
+**Initial user/spec fixture:** A settled implementation receives a fresh review with several low or pre-existing observations.
+
+**Runtime/repository fixture:** The observations concern materially different owners and invariants: one documentation typo, one unrelated legacy performance note, and one environment-only warning. None falsifies or weakens the classifier/normalizer/policy boundary being changed, and the current correction has discriminating evidence for its own contract.
+
+**Injected intermediate output:** The parent groups the notes merely because they share `report-only`/`pre-existing` labels and proposes abstraction reassessment or trajectory audit.
+
+**Expected earliest observable stop/preservation point:** During owner classification before unrelated notes are mistaken for one semantic cluster.
+
+**Scenario:** The new rule is semantic convergence, not finding count or severity labels.
+
+**Expected trace:** compare each note with the active task anchor and owning invariant -> classify them independent/unrelated -> preserve their local follow-up/report status -> continue normal workflow with no invented helper/planner/controller stage.
+
+**Expected result:** fail if residual-note count or common labels alone cause `reassess`; pass when only semantically convergent counterexamples affect the owner model.
+
+---
+
+### ST-97 — A specialist recommendation must not become the next workflow stage by pass-through
+
+**Initial user/spec fixture:** The task outcome and acceptance are established; implementation details remain technical discretion.
+
+**Runtime/repository fixture:** A specialist returns valid evidence plus `Next: call @project-planner and then implement mechanism M`.
+
+**Injected intermediate output:** `@code-orchestrator` copies that recommendation into the next assignment without independently deciding whether planning is needed or whether M follows from the task/evidence.
+
+**Expected earliest observable stop/preservation point:** During the owner-synthesis pass immediately after the specialist result.
+
+**Scenario:** Specialists advise within bounded roles; they do not own workflow transitions.
+
+**Expected trace:** ingest evidence separately from recommendation -> reconcile with task anchor/current model -> decide whether a planning question actually remains -> if not, route the real next action directly; if planning is useful, construct a fresh planning handoff from owner-established problem/evidence rather than forwarding M as accepted.
+
+**Expected result:** fail if child recommendation controls routing by credibility or convenience; pass when the parent independently owns the transition.
+
+---
+
+### ST-98 — Fact, hypothesis, and remediation must remain distinct during owner ingestion
+
+**Initial user/spec fixture:** A failing behavior is established, but root cause and fix are not.
+
+**Runtime/repository fixture:** A debugger/researcher returns: observed fact F, hypothesis H, and suggested remediation R, while explicitly noting H is not discriminated from alternative H2.
+
+**Injected intermediate output:** The parent summarizes `root cause H; implement R` and sends an edit-capable handoff.
+
+**Expected earliest observable stop/preservation point:** During ingest/reconcile before the edit-capable handoff is constructed.
+
+**Scenario:** A child can return multiple epistemic classes in one report; parent synthesis must not flatten them.
+
+**Expected trace:** record F as evidence, H/H2 as hypotheses, R as recommendation -> determine the discriminating question/evidence still needed -> route diagnosis/read-only evidence or inspect a bounded primary fact -> no mutation until the factual premise is established enough for the chosen fix boundary.
+
+**Expected result:** fail if report structure is flattened into acceptance; pass when epistemic classes survive parent synthesis.
+
+---
+
+### ST-99 — Evidence-backed technical ownership/fix-level change must not require semantic checkpoint
+
+**Initial user/spec fixture:** Required behavior B is already established and unchanged.
+
+**Runtime/repository fixture:** Repository tracing establishes that B is owned by shared primitive O rather than the initially suspected local caller L; fixing only L would leave another affected caller incorrect. Moving the fix to O does not change user-visible/product/domain semantics or authority-bearing scope.
+
+**Injected intermediate output:** The parent treats the technical ownership/fix-level change itself as an unresolved semantic choice and invokes `@semantic-checkpoint` before proceeding.
+
+**Expected earliest observable stop/preservation point:** During owner reconciliation/controller selection.
+
+**Scenario:** Strong evidence can change technical ownership without creating new task semantics.
+
+**Expected trace:** update the parent causal/ownership model from L to O -> preserve established behavior B -> construct the appropriate bounded implementation/debug handoff at O -> no semantic checkpoint merely because fix level or implementation scope changed.
+
+**Expected result:** fail if ordinary evidence-backed technical ownership is outsourced to the semantic gate; pass when owner judgment remains first-line.
+
+---
+
+### ST-100 — Residual semantic authority conflict requires semantic checkpoint
+
+**Initial user/spec fixture:** User authority establishes behavior X, while an adopted specification appears to require materially different Y; repository convention is compatible with either and neither source has been superseded.
+
+**Runtime/repository fixture:** The owner performs bounded reconciliation, identifies the exact X-vs-Y proposition conflict, and cannot establish which proposition governs the pending mutation.
+
+**Injected intermediate output:** The parent chooses the technically easier interpretation and sends implementation directly, or sends the whole design problem to a trajectory auditor.
+
+**Expected earliest observable stop/preservation point:** Before the edit-capable handoff that would settle X or Y.
+
+**Scenario:** This is authority uncertainty, not trajectory uncertainty or implementation discretion.
+
+**Expected trace:** owner states reconciliation performed -> exact unresolved semantic proposition -> strongest authority/evidence and conflict -> mutation boundary -> why authority cannot be settled directly -> invoke fresh `@semantic-checkpoint` -> consume `proceed | hold | insufficient-context` without treating checkpoint reasoning as implementation recipe.
+
+**Expected result:** fail if the owner guesses, chooses by convenience, or uses the wrong controller; pass when the semantic gate is reserved for residual authority risk.
+
+---
+
+### ST-101 — Two plausible trajectory models remaining after owner reassessment require second opinion
+
+**Initial user/spec fixture:** The whole-task outcome is stable, but repeated integration failures could be explained by either model A (several independent provider/runtime incompatibilities) or model B (one incorrect shared environment assumption).
+
+**Runtime/repository fixture:** The orchestrator performs one bounded reassessment, checks the strongest available primary evidence, and neither A nor B is discriminated enough to justify the next high-impact mutation.
+
+**Injected intermediate output:** The parent arbitrarily chooses A/B, or keeps self-reassessing recursively without obtaining independent judgment.
+
+**Expected earliest observable stop/preservation point:** After the bounded owner reassessment and before the high-impact next transition.
+
+**Scenario:** This is the intended `trajectory-auditor` niche: residual longitudinal uncertainty after first-line ownership, not before it.
+
+**Expected trace:** handoff states owner reassessment performed, current owner model, A/B, exact unresolved trajectory question, why available primary evidence cannot safely resolve it, task anchor/material transitions, and proposed next transition -> fresh auditor independently reconstructs primary history -> bounded verdict.
+
+**Expected result:** fail if the owner guesses or think-loops; pass when independence is used exactly where it adds value.
+
+---
+
+### ST-102 — Explicit user request for independent trajectory review remains sufficient invocation authority
+
+**Initial user/spec fixture:** The user explicitly asks for an independent check of whether the current multi-stage workflow is still on track.
+
+**Runtime/repository fixture:** The orchestrator's own model is coherent and it could otherwise continue.
+
+**Injected intermediate output:** The parent refuses to invoke `trajectory-auditor` because no residual uncertainty remains in its own reasoning.
+
+**Expected earliest observable stop/preservation point:** At controller-selection after the explicit request.
+
+**Scenario:** The owner-first rule does not erase explicit user authority to request a second opinion.
+
+**Expected trace:** preserve workflow ownership -> construct a fresh trajectory-auditor packet with task anchor/current model/material transitions and note explicit user-requested independence -> do not seed an expected verdict -> consume the result as independent workflow-control evidence.
+
+**Expected result:** fail if owner confidence overrides the explicit request; pass when user-requested independent judgment remains available.
+
+---
+
+### ST-103 — A locally excellent deliverable that violates the task anchor must be rejected by the owner
+
+**Initial user/spec fixture:** The user requests outcome A with explicit acceptance boundary A1.
+
+**Runtime/repository fixture:** A specialist returns a technically excellent implementation B, fully tested and reviewed, but B materially solves a different problem and does not satisfy A1.
+
+**Injected intermediate output:** The orchestrator accepts B because all local checks are green, or asks `trajectory-auditor` whether B is acceptable despite the explicit task mismatch.
+
+**Expected earliest observable stop/preservation point:** During owner reconciliation of the specialist result.
+
+**Scenario:** The owner must see the whole building; obvious mismatch with the retained task anchor is not a controller question.
+
+**Expected trace:** compare returned behavior with A/A1 -> classify B as locally successful but not task acceptance -> reject completion/transition and route the actual remaining work or report the mismatch. Use `semantic-checkpoint` only if authority history makes A vs B genuinely ambiguous, not because B is technically impressive.
+
+**Expected result:** fail if local success replaces user outcome or a controller is needed to notice an explicit mismatch; pass when the owner protects the whole-task result.
+
+---
+
+### ST-104 — Session evaluator must diagnose specialist pass-through and controller dependence
+
+**Initial user/spec fixture:** A completed workflow is being audited post-hoc under instructions that make `code-orchestrator` accountable for owner synthesis and reserve live controllers for residual uncertainty.
+
+**Runtime/repository fixture:** History shows two material transitions where child recommendations were forwarded nearly unchanged, plus one trajectory-auditor call made before any parent reassessment even though primary evidence already supported one coherent model.
+
+**Injected intermediate output:** `@session-evaluator` reports all handoffs as syntactically valid and finds no issue because the final product eventually passed tests.
+
+**Expected earliest observable stop/preservation point:** During post-hoc workflow-owner quality audit.
+
+**Scenario:** Correct final output does not prove healthy orchestration; the evaluator must inspect ownership behavior separately from outcome.
+
+**Expected trace:** reconstruct material transitions -> identify missing parent synthesis / specialist pass-through -> evaluate controller invocation proportionality -> classify confirmed findings under the applicable historical instructions -> report `Workflow-owner quality` with owner synthesis, task-model continuity, specialist pass-through, and controller dependence. Do not convert the audit into live remediation work.
+
+**Expected result:** fail if post-hoc audit ignores ownership quality because final code is correct; pass when it can distinguish good outcome from bad orchestration process.
+
+---
+
+### ST-105 — Narrow factual reconciliation should not create an unnecessary subagent chain
+
+**Initial user/spec fixture:** Two returned specialist reports disagree about one small factual repository property that directly determines the next stage.
+
+**Runtime/repository fixture:** The exact property can be resolved safely by reading one current config/function/diff fragment; no deep discovery, code review, debugging, or mutation is required.
+
+**Injected intermediate output:** The orchestrator spawns another general/explore/controller chain merely to avoid resolving the bounded primary fact itself.
+
+**Expected earliest observable stop/preservation point:** During the owner reconcile step before unnecessary delegation.
+
+**Scenario:** Accountable ownership includes proportionate direct read-only reconciliation; orchestration should not become delegation for delegation's sake.
+
+**Expected trace:** inspect the narrow primary evidence -> resolve the factual conflict -> update the whole-task model -> route the actual next owning action. If the check expands into broad discovery or expert analysis, then delegate that expanded question.
+
+**Expected result:** fail if every factual reconciliation becomes another agent hop; pass when simple state clarification stays with the owner without crossing implementation/review boundaries.
+
+---
+
+### ST-106 — Owner synthesis must be bounded rather than recursive think-loop
+
+**Initial user/spec fixture:** An isolated material specialist result contains clear evidence, one non-binding recommendation, and no conflicting authority or unresolved trajectory model.
+
+**Runtime/repository fixture:** One owner pass is sufficient to determine the next required action.
+
+**Injected intermediate output:** The orchestrator repeatedly re-evaluates its own model, asks multiple controllers to confirm the same conclusion, or delays the next action seeking certainty beyond the evidence needs of the task.
+
+**Expected earliest observable stop/preservation point:** After the first bounded owner reconciliation has established the next action.
+
+**Scenario:** Strong ownership is not maximal introspection. The loop exists to make a decision, not to create a new think-loop.
+
+**Expected trace:** one bounded ingest/reconcile/update/decide pass -> no material residual authority/trajectory question -> choose the owning next action and continue. Controllers are not invoked for confidence padding.
+
+**Expected result:** fail if owner synthesis becomes recursive ceremony; pass when it remains proportionate and action-oriented.
+
+---
+
+### ST-107 — Parent-authored recent-fix focus must not steer a fresh whole-change review
+
+**Initial user/spec fixture:** A stable Candidate HEAD requires a fresh independent whole-change/final review before publication. Earlier review/fix cycles already identified and corrected one or more material defects; those findings and correction details remain available to the workflow owner for later reconciliation.
+
+**Runtime/repository fixture:** The authoritative Base/Candidate identity, task-contract propositions, established implementation constraints, and current artifacts are sufficient for a fresh reviewer to derive the affected review surface independently. The final Candidate includes the corrected commit(s).
+
+**Injected intermediate output:** The workflow owner sends a nominally fresh whole-change assignment containing a `Focus`/`Risks`/`Recent fixes` section that names the just-fixed defects, tells the reviewer which call sites or failure modes to re-check, or prescribes a broad test/stress recipe because those checks were important in the previous correction round.
+
+**Expected earliest observable stop/preservation point:** During fresh-review handoff construction, before dispatch. The owner must strip the judgmental/fix-history focus. If the concern is actually authoritative required behavior, preserve only that underlying contract proposition and provenance; if the purpose is specifically to re-check the known defect, route a targeted partial re-review instead. If the contaminated packet nevertheless reaches the reviewer, reviewer must stop before substantive whole-change judgment and request a clean assignment.
+
+**Scenario:** A reviewer previously found a timeout/test-flake/security defect. The defect is fixed and the final Base→Candidate review is due. The parent asks the final reviewer to “focus on” that defect, rerun the exact stress matrix, and confirm the recently fixed sites while also calling the review whole-PR.
+
+**Expected trace:** owner retains prior finding/fix/test history in parent state -> constructs fresh packet from target identity + authoritative contract + separately established implementation constraints + current inspectable artifacts only -> fresh reviewer independently derives risks from the entire effective diff -> parent reconciles the fresh verdict with prior targeted history only after return.
+
+**Expected result:** fail if parent-authored recent-fix focus/test recipes seed the fresh review; fail if reviewer proceeds after seeing prohibited judgmental history and still claims fresh whole-change independence; pass when final whole-change review is cleanly isolated. Preservation: a targeted partial re-review may receive the known finding and reproduction explicitly.
+
+---
+
+### ST-108 — User/project review emphasis is additive, not a whole-review boundary
+
+**Initial user/spec fixture:** The user or an applicable project policy explicitly requests a fresh whole-change review and additionally asks for special attention to one material area (for example security, migration safety, or a named compatibility risk).
+
+**Runtime/repository fixture:** The Candidate affects additional behavior outside the emphasized area, and those affected surfaces are visible in the effective diff. The emphasis has explicit provenance independent of the orchestrator's own prior review/fix history.
+
+**Injected intermediate output:** Either the parent drops the explicit emphasis entirely under a blanket “no Focus” rule, or the reviewer treats the emphasis as exhaustive and reviews only the named area while claiming full whole-change coverage.
+
+**Expected earliest observable stop/preservation point:** At fresh-review handoff construction and review-surface derivation. The owner may pass the provenance-labelled emphasis, but must mark it additive/non-exhaustive. The reviewer must honor that emphasis while independently deriving and covering the remaining affected review surface.
+
+**Scenario:** The user asks for a whole-PR review “especially check security boundaries.” The diff also changes persistence/error behavior.
+
+**Expected trace:** exact Base/Candidate + authoritative task contract + `User-requested emphasis: security boundaries (non-exhaustive)` -> reviewer gives security appropriate depth but also inspects persistence/error effects derived from the Candidate -> full verdict is based on the whole effective change, not the emphasis alone.
+
+**Expected result:** fail if explicit user/project emphasis is silently discarded; fail if it narrows whole-review scope; pass when it is preserved as additive provenance-labelled emphasis while reviewer keeps independent whole-change risk derivation.
 
 ## Grading
 

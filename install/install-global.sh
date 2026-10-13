@@ -127,7 +127,7 @@ done < <(find "$ROOT/agents" "$ROOT/skills" -type f -print0)
 cp -a "$ROOT/AGENTS.md" "$BASE/AGENTS.md"
 
 cp "$NEW_MANIFEST" "$RECEIPT"
-printf 'pack_version=v30.83 beta\ninstalled_at=%s\n' "$STAMP" > "$STATE/install-info"
+printf 'pack_version=v30.86 beta\ninstalled_at=%s\n' "$STAMP" > "$STATE/install-info"
 
 echo "Installed agents to ~/.config/opencode/agents"
 echo "Installed skills to ~/.config/opencode/skills"

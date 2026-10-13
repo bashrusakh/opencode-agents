@@ -166,15 +166,18 @@ check(any("core-loop" in f or "external" in f for f in a.findings),
 # meaningful workflow state, while user decisions are self-contained and evidence-first.
 complete_orchestrator = """
 ## Role
-Coordinate a bounded multi-stage coding workflow and own scope, routing, and user-visible workflow state without implementing repository changes.
-## Workflow method
+Act as the accountable workflow owner for a bounded multi-stage coding outcome: own scope, routing, whole-task state and user-visible workflow state without implementing repository changes.
+## Workflow-owner synthesis loop
 1. Normalize the requested outcome/scope and choose the next specialist/stage.
 2. If a required owner cannot run, stop blocked and return the next safe handoff instead of substituting yourself.
 3. Construct each assignment from the established outcome, constraints, evidence, exact target/state, and stop boundary; omit non-binding mechanism proposals.
-4. On a multi-stage workflow, when a meaningful stage establishes new current workflow state, report to the user what is established/unresolved and which next stage or owner comes next and why; batch tool calls and specialist invocations instead of narrating the tool stream.
-5. Reconcile every returned result with current state before consuming it; if a verdict is partial or stale, preserve that boundary and do not over-claim completion.
-6. Before asking the user to resolve a material choice, resolve factual/technical uncertainty with read-only evidence and keep implementation discretion with its owner.
-7. If a user-owned choice remains, ask a self-contained question for someone who has not seen child sessions or tool output: explain the affected surface, viable alternatives and consequences/tradeoffs, and give a recommendation when evidence supports one before the exact question.
+4. After a material specialist result, perform one bounded owner pass: ingest facts/evidence, hypotheses, recommendations and unresolved questions; reconcile them with the task anchor/current state/other evidence; update the whole-task model; decide the exact next question/action; then delegate. A specialist's recommended next role, stage, mechanism or remediation is input, not a workflow transition. Do not invoke an independent controller merely to avoid an ordinary workflow-owner decision.
+5. When repeated corrections or same-policy counterexamples materially challenge the model, perform bounded owner trajectory reassessment yourself. If one evidence-backed model remains, continue normally. Invoke trajectory-auditor only when an exact longitudinal question remains unresolved after the owner reassessment; pass owner reassessment performed, current owner model, why available primary evidence could not safely resolve it, and the residual question.
+6. For semantic authority, perform owner reconciliation first. Invoke semantic-checkpoint only when an exact semantic proposition remains unresolved or policy requires independence; do not invoke it merely because technical owner/fix level/abstraction/scope changes under settled behavior. Pass owner reconciliation performed and why the owner cannot safely settle the authority relation.
+7. On a multi-stage workflow, when a meaningful stage establishes new current workflow state, report to the user what is established/unresolved and which next stage or owner comes next and why; batch tool calls and specialist invocations instead of narrating the tool stream.
+8. Reconcile every returned result with current state before consuming it; if a verdict is partial or stale, preserve that boundary and do not over-claim completion.
+9. Before asking the user to resolve a material choice, resolve factual/technical uncertainty with read-only evidence and keep implementation discretion with its owner.
+10. If a user-owned choice remains, ask a self-contained question for someone who has not seen child sessions or tool output: explain the affected surface, viable alternatives and consequences/tradeoffs, and give a recommendation when evidence supports one before the exact question.
 ## Result
 Return the consolidated workflow result, current target/state, material specialist evidence, blockers/unresolved choices, and next safe action only when one remains.
 """
@@ -182,20 +185,36 @@ a = audit("fake-orchestrator-good", "code_orchestrator", complete_orchestrator)
 check(a.status == "PASS", f"complete orchestrator communication contract should PASS: {a.status} {a.findings} {a.review_reasons}")
 
 quiet_orchestrator = complete_orchestrator.replace(
-    "4. On a multi-stage workflow, when a meaningful stage establishes new current workflow state, report to the user what is established/unresolved and which next stage or owner comes next and why; batch tool calls and specialist invocations instead of narrating the tool stream.\n",
-    "4. Continue to the next stage after each specialist returns.\n",
+    "7. On a multi-stage workflow, when a meaningful stage establishes new current workflow state, report to the user what is established/unresolved and which next stage or owner comes next and why; batch tool calls and specialist invocations instead of narrating the tool stream.\n",
+    "7. Continue to the next stage after each specialist returns.\n",
 )
 a = audit("fake-orchestrator-quiet", "code_orchestrator", quiet_orchestrator)
 check(a.status == "REVIEW", f"orchestrator lacking workflow-state visibility should REVIEW: {a.status} {a.findings} {a.review_reasons}")
 check(any("workflow_state_visibility" in r for r in a.review_reasons), "quiet orchestrator did not surface workflow-state visibility gap")
 
 opaque_question_orchestrator = complete_orchestrator.replace(
-    "6. Before asking the user to resolve a material choice, resolve factual/technical uncertainty with read-only evidence and keep implementation discretion with its owner.\n7. If a user-owned choice remains, ask a self-contained question for someone who has not seen child sessions or tool output: explain the affected surface, viable alternatives and consequences/tradeoffs, and give a recommendation when evidence supports one before the exact question.\n",
-    "6. If a specialist reports a material choice, ask the user which option they want.\n",
+    "9. Before asking the user to resolve a material choice, resolve factual/technical uncertainty with read-only evidence and keep implementation discretion with its owner.\n10. If a user-owned choice remains, ask a self-contained question for someone who has not seen child sessions or tool output: explain the affected surface, viable alternatives and consequences/tradeoffs, and give a recommendation when evidence supports one before the exact question.\n",
+    "9. If a specialist reports a material choice, ask the user which option they want.\n",
 )
 a = audit("fake-orchestrator-opaque-question", "code_orchestrator", opaque_question_orchestrator)
 check(a.status == "REVIEW", f"orchestrator with hidden-context user question should REVIEW: {a.status} {a.findings} {a.review_reasons}")
 check(any("decision_context" in r for r in a.review_reasons), "opaque-question orchestrator did not surface decision-context gap")
+
+pass_through_orchestrator = complete_orchestrator.replace(
+    "A specialist's recommended next role, stage, mechanism or remediation is input, not a workflow transition.",
+    "A specialist's recommended next stage may be accepted as the workflow transition without separate parent synthesis when the specialist is credible.",
+)
+a = audit("fake-orchestrator-pass-through", "code_orchestrator", pass_through_orchestrator)
+check(a.status == "FAIL", f"orchestrator allowing specialist pass-through should FAIL: {a.status} {a.findings} {a.review_reasons}")
+check(any("owner_synthesis" in f for f in a.findings), "pass-through orchestrator did not fail owner_synthesis")
+
+controller_first_orchestrator = complete_orchestrator.replace(
+    "When repeated corrections or same-policy counterexamples materially challenge the model, perform bounded owner trajectory reassessment yourself. If one evidence-backed model remains, continue normally. Invoke trajectory-auditor only when an exact longitudinal question remains unresolved after the owner reassessment; pass owner reassessment performed, current owner model, why available primary evidence could not safely resolve it, and the residual question.",
+    "When cumulative history raises a material question, prefer trajectory-auditor over performing your own reassessment.",
+)
+a = audit("fake-orchestrator-controller-first", "code_orchestrator", controller_first_orchestrator)
+check(a.status == "FAIL", f"controller-first orchestrator should FAIL: {a.status} {a.findings} {a.review_reasons}")
+check(any("owner_control_plane" in f for f in a.findings), "controller-first orchestrator did not fail owner_control_plane")
 
 # Executable audit orchestrator with good scope/risk/evidence/result semantics but no
 # explicit conflict reconciliation is usable yet materially incomplete: REVIEW, not FAIL.

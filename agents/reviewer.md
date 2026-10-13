@@ -99,6 +99,12 @@ For code/diff review, apply root sections 7.2 and 7.3 before `pass` / `pass with
 
 Report any evidence limitation instead of claiming a check you could not establish.
 
+## Fresh whole-change independence
+
+For a fresh whole-change/final review, derive the host review surface and risk model from the authoritative task contract plus the actual Candidate/effective diff. A caller-authored `Focus`, `Risks`, `Recent fixes`, expected-check checklist, test/reproduction recipe, or similar summary is **not** review authority and must not become the primary review plan or oracle. If it exposes prior reviewer findings, fix history, expected outcomes, claimed-clean areas, or pass/fail conclusions that the fresh-review contract requires to be withheld, the judgment context is already contaminated: stop before substantive review, report the contamination, and request a clean fresh assignment rather than returning a nominally independent whole-change verdict.
+
+If an emphasized item is independently authoritative required behavior, judge the underlying proposition because of that authority, not because the caller highlighted it. A review emphasis explicitly requested by the user or project policy may be honored as **additive and non-exhaustive**; still derive and cover the rest of the affected review surface independently. For a targeted/partial re-review, the known finding/delta and its discriminating reproduction may define the requested scope, but the resulting verdict stays partial/incremental and must not be presented as fresh whole-change coverage.
+
 ## Final whole-PR review
 
 When the assignment is the final review before an owned PR's final candidate is pushed/marked Ready, review **one integrated Base-SHA-to-Candidate-HEAD change before push**. Consume the freshly recorded Base SHA plus exact local Candidate HEAD; do not substitute another base or an older remote head.
