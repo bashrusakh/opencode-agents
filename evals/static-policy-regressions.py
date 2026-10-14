@@ -138,6 +138,15 @@ check(
     "code-orchestrator: residual-authority semantic-checkpoint boundary missing",
 )
 
+check(
+    "capability, not exposed task context" in root_sem
+    and "does not by itself affect freshness, independence, or review validity" in root_sem
+    and "actually present in the model-visible context" in root_sem
+    and "Uncertainty about whether an available integration *might* inject or reveal prior content is not evidence that it did" in root_sem
+    and "Do not disable, hide, or reconfigure an optional integration merely to manufacture freshness or independence" in root_sem,
+    "AGENTS.md: memory capability-versus-exposure freshness boundary missing",
+)
+
 for bad in [
     "requires separate authority or evidence of an established blocker",
     "require separate authority for the substitution or evidence of an established blocker",
@@ -416,14 +425,21 @@ check(
     "reviewer: managed OCR independence/host coverage contract missing",
 )
 check(
-    "Freshness is a property of the **information exposed to the reviewer**" in reviewer
-    and "parent-derived investigative direction" in reviewer
+    "task-specific judgmental or investigative information actually present in the reviewer's model-visible context" in reviewer
+    and "does **not** by itself contaminate a fresh review" in reviewer
+    and "uncertainty about whether such a capability could reveal prior context is not evidence" in reviewer
+    and "Do not proactively retrieve prior-task/session memory" in reviewer
+    and "Do not run parent-task checkpoint/memory recovery" in reviewer
+    and "whole-PR authoritative acceptance model" in reviewer
+    and "Coverage: full PR` describes host diff coverage, not semantic acceptance-model completeness" in reviewer
+    and "Do not block the review, request integration changes, or treat freshness as unproven merely because a recall capability is available" in reviewer
+    and "parent-derived or prior-task investigative direction" in reviewer
+    and "including assignment text, automatic context injection, or intentional retrieval" in reviewer
+    and "Do not speculate that contamination exists when no such task-specific steering content is visible" in reviewer
     and "independently derive the affected surfaces, risk model, investigation strategy and order" in reviewer
-    and "regardless of wording, placement, formatting, or label" in reviewer
-    and "request a clean assignment" in reviewer
     and "locator, not proof" in reviewer
     and "targeted/partial re-review" in reviewer,
-    "reviewer: fresh whole-change investigative-context isolation/provenance defense missing",
+    "reviewer: fresh whole-change capability/exposure isolation or provenance defense missing",
 )
 
 # Material user decisions that are not retrievable downstream need provenance
@@ -432,17 +448,24 @@ orch = text("agents/code-orchestrator.md")
 session_evidence = text("skills/session-evidence/SKILL.md")
 check(
     "For a fresh whole-change/final reviewer judgment" in orch
-    and "what must be true, why it is authoritative, and what exact state is being reviewed" in orch
+    and ("what must be true, why it is authoritative, and what exact state is being reviewed" in orch or "what must be true, why authoritative, and what state is reviewed" in orch)
     and "label only that exact proposition as an `implementation constraint`" in orch
     and "parent-derived investigative direction" in orch
     and "regardless of wording, placement, formatting, or label" in orch
-    and "reviewer independently derives where risk exists and how to investigate it" in orch
+    and ("reviewer independently derives where risk exists and how to investigate it" in orch or "reviewer derives where risk exists and how to investigate it" in orch)
     and "review method or emphasis explicitly required by the user or an adopted project policy" in orch
     and "without parent-added investigative elaboration" in orch
     and "provenance label supplied by the parent is a locator, not proof of authority" in orch
+    and "actual model-visible task-specific steering content" in orch
+    and ("Do not treat an enabled memory integration, connector, tool, permission, or possible access to prior sessions as contamination by itself" in orch or "not recall capability availability" in orch)
+    and ("Do not pause a fresh review to prove such capabilities are hidden" in orch or "Do not pause to prove memory/connectors are hidden" in orch)
+    and ("configuration changes merely because prior context could theoretically be retrieved" in orch or "reconfigure them merely because prior context could be retrieved" in orch)
+    and ("Do not ask the fresh reviewer to recover the parent task through GrayMatter/checkpoint/session-history continuity" in orch or "Do not ask a fresh reviewer to recover parent-task GrayMatter/checkpoint/session history" in orch)
+    and "whole material task/acceptance surface" in orch
+    and ("only when prior-task judgmental/investigative content is actually present" in orch or "Freshness is contaminated only when prior-task investigative/judgmental content is actually present" in orch)
     and "targeted re-review" in orch
     and "partial/incremental" in orch,
-    "code-orchestrator: fresh reviewer investigative-context isolation/provenance contract missing",
+    "code-orchestrator: fresh reviewer capability/exposure isolation/provenance contract missing",
 )
 check(
     "preserve a contemporaneous provenance receipt" in orch
@@ -457,8 +480,81 @@ check(
     "session-evidence: receipt consumption/provenance boundary missing",
 )
 
+check(
+    "objective, target/behavior scope, allowed action level, expected deliverable/evidence, stop/escalation conditions" in root_sem
+    and "minimally sufficient and reconstructable, not exhaustive" in root_sem
+    and "ambiguity introduced by compression is a handoff defect" in root_sem
+    and "fresh independent child does **not** resume the parent task through persistent-memory/checkpoint recovery" in root_sem
+    and "whole requested acceptance surface" in root_sem,
+    "root: canonical handoff / fresh-child continuity / whole-scope acceptance contract missing",
+)
+graymatter = text("skills/graymatter-memory/SKILL.md")
+check(
+    "fresh independent-judgment child is not resuming the parent's workstream" in graymatter
+    and "do **not** call `checkpoint_resume` or search prior-task/session memory" in graymatter,
+    "graymatter-memory: fresh independent child still inherits parent continuity recovery",
+)
+pr_readiness = text("skills/pr-readiness/SKILL.md")
+check(
+    "authoritative acceptance model that spans the whole PR/task surface" in pr_readiness
+    and "Structural full-diff coverage does not cure an omitted semantic acceptance area" in pr_readiness
+    and "explicitly deferred/out-of-lifecycle evidence surface" in pr_readiness,
+    "pr-readiness: whole-PR semantic acceptance model / deferred-proof distinction missing",
+)
+check(
+    "root section 5 handoff contract" in orch
+    and "workflow-specific reconstruction state" in orch
+    and "parent-generated technical inference" in orch
+    and "preserved end-to-end behavior" in orch
+    and "focused/slice-limited/qualified result" in orch
+    and "structural diff coverage" in orch
+    and "authoritative acceptance-model coverage" in orch
+    and "readiness/publication claim later invalidated by a related material blocker" in orch
+    and "Reassess the affected acceptance/ownership model before another local fix/review/Ready cycle" in orch
+    and "when reopenings repeat, widen the reassessment" in orch,
+    "code-orchestrator: root-handoff activation / hypothesis / whole-review / readiness-reversal guards missing",
+)
+check(
+    "whole authoritative acceptance model" in evaluator_sem
+    and "parent-generated technical hypotheses" in evaluator_sem
+    and "handoff proportionality" in evaluator_sem
+    and "decision boundary was explicit" in evaluator_sem
+    and "Ready/merge/release authorization" in evaluator_sem,
+    "session-evaluator: whole-review/hypothesis/handoff-quality/decision-boundary diagnostics missing",
+)
 
-# Longitudinal trajectory auditing is a separate second-opinion lifecycle: the workflow
+reviewer_sem = text("agents/reviewer.md")
+check(
+    "**decision boundary**" in root_sem
+    and "does not by itself satisfy or authorize the downstream transition" in root_sem
+    and "judgment purpose and downstream decision boundary separately from target identity" in orch
+    and "not authorization for that transition" in orch
+    and "narrowest decision claim actually established" in reviewer_sem
+    and "do not infer satisfaction of a broader lifecycle gate" in reviewer_sem
+    and "does **not** itself establish or authorize the Ready transition or any later lifecycle transition" in pr_readiness,
+    "independent-judgment decision-boundary / lifecycle-authorization guard missing",
+)
+
+# Canonical-owner dedup regression guard. These are historical root-owned formulations
+# that must not reappear in code-orchestrator after the v30.90 owner compaction.
+for duplicated_root_fragment in [
+    "objective and behavioral/target scope",
+    "If the original request would allow a materially different approach",
+    "Do not run mutation specialists concurrently",
+    "Preserve root section 2.2.1 evidence-state classes",
+    "completed / partially completed / blocked / blocked by gate",
+    "Docker/systemd/CI/deploy/runtime work -> `@devops`",
+]:
+    check(
+        duplicated_root_fragment not in orch,
+        f"code-orchestrator: root-owned semantic duplicate reintroduced: {duplicated_root_fragment}",
+    )
+check(
+    "Pass already-known orchestrator and material participating child-session IDs" not in root_sem,
+    "AGENTS.md: code-orchestrator-owned terminal evaluator procedure duplicated back into root",
+)
+
+# Longitudinal trajectory auditing is a separate second-opinion lifecycle:
 # owner must first reassess its own model, while the auditor independently checks only
 # the residual longitudinal question against primary session evidence.
 check(
@@ -544,7 +640,7 @@ check(
     "semantic-checkpoint: semantic authorization still leaks into implementation certification/recipe",
 )
 check(
-    "omit upstream non-required mechanism/remediation proposals by default" in orch
+    ("Keep unresolved mechanisms non-binding in edit-capable handoffs" in orch or "omit non-required mechanisms unless they are materially necessary factual context" in orch)
     and "do not forward the candidate/checkpoint report verbatim" in orch
     and "does not certify a proposed implementation mechanism" in orch
     and "do not turn a reviewer/tester remediation suggestion or patch shape into the assigned fix" in orch,
@@ -768,14 +864,14 @@ check(
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 110, "semantic-transition suite must contain 110 cases")
+check(traces.count("### ST-") == 119, "semantic-transition suite must contain 119 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 110, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 119, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -1269,6 +1365,54 @@ check(
     "st-110 — parent provenance label does not create review authority" in traces.lower()
     and "locator, not proof" in traces.lower(),
     "ST-110 provenance-laundering regression missing",
+)
+check(
+    "st-111 — available recall capability does not contaminate a fresh review" in traces.lower()
+    and "capability availability" in traces.lower()
+    and "without prior-task recall" in traces.lower(),
+    "ST-111 capability-not-exposure regression missing",
+)
+check(
+    "st-112 — actually exposed prior-task steering still contaminates fresh review" in traces.lower()
+    and "automatic context injection" in traces.lower()
+    and "request a clean" in traces.lower(),
+    "ST-112 actual-exposure contamination regression missing",
+)
+check(
+    "st-113 — fresh independent reviewer must not recover parent-task memory" in traces.lower()
+    and "continuity belongs to the workflow owner" in traces.lower(),
+    "ST-113 fresh-review parent-memory-recovery regression missing",
+)
+check(
+    "st-114 — whole-pr target requires a whole authoritative acceptance model" in traces.lower()
+    and "whole structural diff coverage does not manufacture missing semantic acceptance authority" in traces.lower(),
+    "ST-114 whole-target/partial-acceptance regression missing",
+)
+check(
+    "st-115 — qualified slice verdict must not be promoted into whole readiness" in traces.lower()
+    and "structural diff coverage from semantic acceptance-model coverage" in traces.lower(),
+    "ST-115 qualifier-laundering regression missing",
+)
+check(
+    "st-116 — parent technical inference must not become a preserved requirement or test oracle" in traces.lower()
+    and "parent hypotheses are evidence/inferences, not task authority" in traces.lower(),
+    "ST-116 parent-hypothesis laundering regression missing",
+)
+check(
+    "st-117 — specialist handoff must be minimally sufficient and reconstructable" in traces.lower()
+    and "concision is not permission to destroy semantic distinctions" in traces.lower(),
+    "ST-117 handoff-ergonomics regression missing",
+)
+check(
+    "st-118 — related blocker after readiness reopens the owner model before another local cycle" in traces.lower()
+    and "readiness reversal is trajectory evidence" in traces.lower(),
+    "ST-118 readiness-reversal owner-reassessment regression missing",
+)
+check(
+    "st-119 — independent review verdict must stay bound to its downstream decision boundary" in traces.lower()
+    and "review pass" in traces.lower()
+    and "later lifecycle authorization" in traces.lower(),
+    "ST-119 review-verdict/lifecycle-boundary regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | indeterminate`" in traces,

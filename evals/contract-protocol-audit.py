@@ -456,13 +456,15 @@ def protocol_findings(role_texts: dict[str, str], edges: dict[str, set[str]]) ->
     if reviewer and not (re.search(r"exact .*candidate|candidate head|target state", reviewer, re.I) and re.search(r"prior .*verdict|expected .*verdict|fresh", reviewer, re.I)):
         findings.append("PROTOCOL reviewer: fresh independent review context/state isolation is not explicit enough")
     if reviewer and not (
-        re.search(r"parent-derived investigative direction|investigative path", reviewer, re.I)
-        and re.search(r"regardless of wording, placement, formatting, or label", reviewer, re.I)
+        re.search(r"parent-derived(?: or prior-task)? investigative direction|investigative path", reviewer, re.I)
+        and re.search(r"actually present in .*model-visible context|model-visible context", reviewer, re.I)
+        and re.search(r"does .*not.*by itself contaminate|not .*contaminate.*merely.*available", reviewer, re.I | re.S)
+        and re.search(r"automatic context injection|intentional retrieval", reviewer, re.I)
         and re.search(r"contaminated|contamination", reviewer, re.I)
-        and re.search(r"clean assignment", reviewer, re.I)
+        and re.search(r"clean assignment|clean .*invocation boundary", reviewer, re.I)
         and re.search(r"locator, not proof", reviewer, re.I)
     ):
-        findings.append("PROTOCOL reviewer: fresh whole-change review can be steered by parent-derived investigation or unverified authority labels")
+        findings.append("PROTOCOL reviewer: fresh whole-change isolation does not distinguish available capability from actually exposed investigative steering or does not preserve authority provenance")
     if reviewer and not (
         re.search(r"managed ocr .*independent evidence.*not a substitute for host-review coverage|managed ocr .*not .*substitute .*host", reviewer, re.I | re.S)
         and re.search(r"host-owned ledger|host .*ledger", reviewer, re.I)

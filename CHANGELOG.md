@@ -1,5 +1,51 @@
 # Changelog
 
+## v30.90 beta
+
+Decision-boundary hardening plus root/orchestrator semantic-owner deduplication:
+
+- adds an explicit downstream **decision boundary** for independent judgments so a Candidate review pass cannot be laundered into Ready/merge/release authorization whose prerequisites were not adjudicated;
+- keeps review reuse: the same still-valid whole-Candidate verdict may feed later lifecycle gates without ceremonial re-review, while each gate still evaluates its own prerequisites;
+- makes root the canonical owner for shared specialist handoff shape, decision-space preservation, generic mutation concurrency, task-semantic authority/evidence definitions, generic evidence freshness, routing defaults, and common final-report fields;
+- compacts `code-orchestrator` to workflow-owner execution/consumption semantics: owner-model reconstruction state, routing discriminators, parent-hypothesis guard, whole-review construction/consumption, readiness reversal, controller use, and code-workflow-specific terminal evaluator mechanics;
+- moves the temporary `session-evaluator` invocation procedure to its actual workflow owner while leaving only a root activation pointer;
+- adds ST-119 and structural guards for review-verdict → lifecycle-gate laundering;
+- fixes the prior validation wording that reported Unicode character counts as bytes.
+
+No fresh isolated behavioral replay is claimed unless separately executed.
+
+See [`docs/releases/v30.90-beta.md`](docs/releases/v30.90-beta.md) and [`docs/contract-protocol-audit-v30.90.md`](docs/contract-protocol-audit-v30.90.md).
+
+## v30.89 beta
+
+Whole-scope review, handoff-quality, owner-hypothesis, and fresh-memory-continuity hardening:
+
+- requires final whole-PR/whole-change review to receive a whole authoritative acceptance model rather than only the latest fix/risk slice; structural `Coverage: full PR` no longer compensates for omitted semantic acceptance areas;
+- prevents `code-orchestrator` from promoting qualified/slice-limited reviewer verdicts into whole readiness and distinguishes structural diff coverage, semantic acceptance-model coverage, and separately deferred executable/live proof;
+- prevents parent-generated technical inferences or one-layer compatibility observations from becoming `preserve`/`required` constraints or test oracles without stronger authority or discriminating end-to-end evidence;
+- treats a related material blocker after a readiness/publication claim as owner-reassessment evidence before another local fix/review/Ready cycle; repeated reopenings widen the reassessment instead of resetting confidence after each local pass;
+- strengthens generic specialist handoff ergonomics: packets must be minimally sufficient, reconstructable, and readable rather than serialized/overcompressed session dumps that blur baseline, scope, authority, or evidence state;
+- clarifies GrayMatter continuity: a fresh independent child does not resume the parent's long-running workstream through checkpoint/memory recovery. Memory capability may remain enabled; actual injected/retrieved steering still contaminates the fresh review;
+- updates `pr-readiness`, `session-evaluator`, the semantic design checklist, handoff/static guards, and adds ST-113…ST-118 for these failure classes.
+
+No fresh isolated behavioral model replay is claimed by this release unless separately executed.
+
+See [`docs/releases/v30.89-beta.md`](docs/releases/v30.89-beta.md) and [`docs/contract-protocol-audit-v30.89.md`](docs/contract-protocol-audit-v30.89.md).
+
+## v30.88 beta
+
+Fresh-review capability-versus-context clarification:
+
+- distinguishes mere availability of memory/connectors/tools/permissions from task-specific content actually exposed in model-visible context; capability availability alone does not contaminate a fresh review;
+- forbids speculative blocking or integration reconfiguration merely because prior context could theoretically be retrieved; actual task-specific judgmental/investigative content must be observed before freshness is treated as contaminated;
+- tells fresh reviewers not to proactively retrieve prior-task/session memory for context enrichment and to use authoritative user/task/project records rather than recalled memory for task semantics;
+- preserves the hard stop when prior findings, fix history, expected weak points, investigative plans, or equivalent steering are actually injected or retrieved into the reviewer context;
+- adds ST-111/ST-112 and static/handoff guards for both sides of the distinction: available recall capability is non-contaminating, actually exposed prior-task steering remains contaminating.
+
+No change is made to GrayMatter availability, memory-tool permissions, reviewer read-only permissions, targeted partial re-review, publication lifecycle, or the v30.87 investigative-context isolation rule. Fresh isolated behavioral replay remains separate evidence and is not claimed unless actually run.
+
+See [`docs/releases/v30.88-beta.md`](docs/releases/v30.88-beta.md) and [`docs/contract-protocol-audit-v30.88.md`](docs/contract-protocol-audit-v30.88.md).
+
 ## v30.87 beta
 
 Fresh whole-change review investigative-context isolation hardening:

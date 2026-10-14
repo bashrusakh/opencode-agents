@@ -674,7 +674,7 @@ Derivable rule:
 
 > Start a new specialist assignment or independent judgment in fresh child context. Continue an existing child only when deliberately continuing the same specialist-owned workstream; role identity alone does not justify reuse.
 
-For an independent judgment, fresh session identity is necessary but not sufficient. Keep prior verdicts, expected outcomes, parent conclusions, claimed-clean areas, and fix-history framing out of the initial judgment context; reconcile them after the independent result. A targeted re-review is different: known findings may be supplied, but the result must remain partial/incremental rather than masquerading as a fresh whole-scope judgment.
+For an independent judgment, fresh session identity is necessary but not sufficient. Keep prior verdicts, expected outcomes, parent conclusions, claimed-clean areas, and fix-history framing out of the initial judgment context; reconcile them after the independent result. Judge isolation by **task-specific content actually present in model-visible context**, not by the mere availability of a memory integration, connector, tool, permission, or possible recall path. Capability availability does not itself contaminate a fresh judgment, and uncertainty that prior content might be retrievable is not evidence that it was exposed. Conversely, actual prior-task investigative steering contaminates the initial judgment whether it arrived in the assignment, through automatic context injection, or by intentional retrieval. Do not disable or reconfigure integrations merely to manufacture freshness; prefer a clean invocation boundary when actual contamination is observed and separately authorize any configuration change. A targeted re-review is different: known findings may be supplied, but the result must remain partial/incremental rather than masquerading as a fresh whole-scope judgment.
 
 The second form predicts an action in a concrete case.
 
@@ -947,7 +947,9 @@ Before shipping a prompt/harness semantic change, verify:
 - [ ] The replay set contains adversarial and preservation cases plus incident-independent regressions derived from established real failure classes, and was run in an isolated/fresh evaluation context.
 - [ ] Standing prompt growth is justified; otherwise use conditional disclosure.
 - [ ] Delegation/checking is conditional rather than ritual unless policy requires it.
-- [ ] Fresh independent judgments isolate their initial context from prior verdict/expected-outcome framing; targeted re-review history is allowed only with explicitly partial/incremental verdict semantics.
+- [ ] Fresh independent judgments isolate their initial context from actually exposed prior-task verdict/expected-outcome/investigative framing; mere availability of recall capabilities is not treated as contamination, a fresh child does not run parent-task memory/checkpoint recovery, and targeted re-review history is allowed only with explicitly partial/incremental verdict semantics.
+- [ ] A whole-change review receives a whole authoritative acceptance model; structural whole-diff coverage is not substituted for semantic acceptance-model coverage, and scoped/qualified verdicts are not promoted to whole readiness.
+- [ ] Specialist handoffs are minimally sufficient and reconstructable rather than serialized session dumps; concise formatting preserves identity, authority, evidence-state, and stop-boundary distinctions instead of compressing them away.
 - [ ] Important state identity is preserved.
 - [ ] A negative/counterexample case prevents overreach.
 - [ ] Reviewer depth follows actual candidate effects rather than issue wording alone: materially changed high-risk boundaries become review surfaces without becoming new implementation authority.

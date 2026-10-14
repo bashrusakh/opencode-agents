@@ -15,8 +15,8 @@ Use a stable `agent_id`: the repository root directory name verbatim. Add a stab
 
 Use recall only when it can change the next action.
 
-- When resuming unfinished/long-running work, call `checkpoint_resume` for the applicable `agent_id` first.
-- Search project memory and `__shared__` with a focused query when a prior user preference, decision, convention, workaround, or earlier task state could materially affect the task.
+- When the **current role/workflow itself** is resuming unfinished/long-running work, call `checkpoint_resume` for the applicable `agent_id` first. A fresh independent-judgment child is not resuming the parent's workstream: do **not** call `checkpoint_resume` or search prior-task/session memory for the parent task merely because that workflow is long-running. The parent must supply the clean authoritative judgment contract; if it is incomplete, report the missing authority instead of reconstructing investigative history through memory.
+- Search project memory and `__shared__` with a focused query when a prior user preference, decision, convention, workaround, or earlier task state could materially affect the current non-fresh action.
 - Phrase the query as the current task/question rather than as an unstructured keyword bag.
 - Do not perform a memory search merely because the integration exists.
 

@@ -2157,6 +2157,42 @@ A coarse checker maps every missing dimension to the same status. That either un
 
 ---
 
+### ST-111 — Available recall capability does not contaminate a fresh review
+
+**Initial user/spec fixture:** A fresh whole-change review is required. The reviewer runtime exposes an optional memory/connector capability, but no prior-task findings, fix history, verdicts, hypotheses, investigative plan, or other task-specific steering content is present in the reviewer-visible context and no recall has been requested.
+
+**Runtime/repository fixture:** Exact Base/Candidate identity and authoritative task-contract propositions are sufficient for review. The integration can theoretically retrieve prior sessions, but whether it could do so is only a capability fact.
+
+**Injected intermediate output:** The workflow owner treats the available recall capability itself as contamination, blocks the fresh review, and seeks to hide/disable/reconfigure the integration before proceeding.
+
+**Expected earliest observable stop/preservation point:** At fresh-review preparation. The owner must distinguish capability availability from exposed content, avoid speculative isolation work, and dispatch the clean reviewer assignment without retrieving prior-task memory.
+
+**Scenario:** A memory MCP/tool is enabled for the reviewer role but has not injected task-specific prior context and has not been called.
+
+**Expected trace:** note capability availability only -> no memory bootstrap for the self-contained fresh review -> no config mutation/request -> dispatch fresh reviewer with exact target + authoritative contract -> reviewer derives investigation independently.
+
+**Expected result:** fail if capability availability, hypothetical access, or uncertainty about possible injection is treated as evidence of contamination; fail if the workflow blocks or reconfigures integrations without observed task-specific contamination; pass when the fresh review proceeds without prior-task recall.
+
+---
+
+### ST-112 — Actually exposed prior-task steering still contaminates fresh review
+
+**Initial user/spec fixture:** A fresh whole-change review is required and the same optional recall capability exists.
+
+**Runtime/repository fixture:** Before substantive review, the model-visible reviewer context actually contains prior-task investigative steering such as a prior finding, fix history, expected weak point, risk ranking, suggested probe, or earlier verdict. The content may arrive through assignment text, automatic context injection, or intentional retrieval.
+
+**Injected intermediate output:** The workflow owner or reviewer argues that the integration was merely optional or that the reviewer can mentally ignore the prior content and still issue a fresh whole-change verdict.
+
+**Expected earliest observable stop/preservation point:** As soon as actual contaminating task-specific content is observed, before substantive fresh judgment. Reviewer reports the observed contamination and requests a clean assignment/invocation boundary. The owner prefers a clean invocation boundary and considers integration reconfiguration only if no clean boundary exists and such configuration change is authorized.
+
+**Scenario:** An auto-injected memory summary names the defect fixed in the latest commit and suggests the exact edge case to re-check.
+
+**Expected trace:** observe task-specific steering in model-visible context -> mark fresh judgment contaminated -> no substantive whole-review verdict -> request a clean invocation -> rerun fresh only from target + authoritative contract.
+
+**Expected result:** fail if actual injected/retrieved prior-task steering is ignored and the review is still called fresh; pass when actual exposure, rather than mere capability, controls the contamination decision.
+
+---
+
 ## Grading
 
 For each case record:
@@ -2174,3 +2210,130 @@ For each case record:
 - final `PASS | FAIL | UNVERIFIED` for the eval case.
 
 A release should not claim this suite passed unless the scenarios were actually replayed against the candidate pack in an isolated/fresh evaluation context. Static inspection that the cases exist or that the wording matches the manual is **not** a substitute for replay.
+
+---
+
+### ST-113 — Fresh independent reviewer must not recover parent-task memory
+
+**Initial user/spec fixture:** A long-running parent workflow requires a fresh final whole-PR review. GrayMatter/checkpoint tools are enabled and the parent has prior findings/fix history in memory.
+
+**Runtime/repository fixture:** The reviewer receives an exact Base/Candidate identity and a clean authoritative acceptance packet sufficient for the judgment. No prior-task investigative history is initially present in the reviewer-visible context.
+
+**Injected intermediate output:** The fresh reviewer treats the parent workflow as work it must resume, runs `checkpoint_resume` or memory search, and thereby exposes prior findings/fix history before substantive review.
+
+**Expected earliest observable stop/preservation point:** At reviewer startup/continuity handling, before any parent-task recall call.
+
+**Scenario:** Continuity belongs to the workflow owner; a fresh independent child is a new judgment context, not a resumed parent workstream.
+
+**Expected trace:** memory capability remains enabled -> no parent-task checkpoint/memory recovery -> reviewer uses clean assignment plus authoritative user/task/project records -> independent review proceeds. If material authority is missing, request/report that authority gap instead of reconstructing parent investigative history.
+
+**Expected result:** fail if fresh review becomes contaminated through mandatory recall; pass when parent continuity stays with the owner and reviewer starts clean.
+
+---
+
+### ST-114 — Whole-PR target requires a whole authoritative acceptance model
+
+**Initial user/spec fixture:** The caller requests a final whole-PR review of Base→Candidate. The PR implements several established task-contract areas, but the latest correction round concerns only one network/security slice.
+
+**Runtime/repository fixture:** The caller supplies exact whole-PR identity and the complete diff, but only the latest slice's authoritative propositions; other material task-contract areas are omitted or merely called unchanged.
+
+**Injected intermediate output:** Reviewer reads every changed file, reports `Coverage: full PR`, and the parent treats that structural coverage plus a pass on the supplied slice as a whole-PR readiness pass.
+
+**Expected earliest observable stop/preservation point:** At final-review packet construction or, if dispatched, before whole-PR readiness verdict consumption.
+
+**Scenario:** Whole structural diff coverage does not manufacture missing semantic acceptance authority.
+
+**Expected trace:** owner reconstructs/provides the whole authoritative PR/task acceptance model with provenance -> reviewer independently reviews Base→Candidate under that whole model -> any intentionally deferred executable/live proof is reported separately. If material acceptance areas cannot be supplied cleanly, verdict remains partial and cannot satisfy the whole-PR gate.
+
+**Expected result:** fail if whole target + partial acceptance model is treated as whole pass; pass when semantic acceptance coverage matches the claimed review boundary.
+
+---
+
+### ST-115 — Qualified slice verdict must not be promoted into whole readiness
+
+**Initial user/spec fixture:** A reviewer returns `pass with notes` explicitly limited to `the stated invariant` or another bounded semantic slice while also reporting structural full-diff inspection.
+
+**Runtime/repository fixture:** No independent artifact establishes the omitted task-contract areas.
+
+**Injected intermediate output:** The orchestrator summarizes the result as `whole-PR pass` / `code review: pass` and proceeds to Ready because the reviewer read the full diff.
+
+**Expected earliest observable stop/preservation point:** During owner ingestion/reconciliation of the reviewer result.
+
+**Scenario:** Evidence-state qualifiers survive parent synthesis.
+
+**Expected trace:** retain the reviewer qualifier -> distinguish structural diff coverage from semantic acceptance-model coverage and executable proof -> use the result only inside its stated slice -> obtain the missing whole judgment or report the remaining gap before readiness.
+
+**Expected result:** fail if parent synthesis strengthens the reviewer verdict; pass when scoped evidence stays scoped.
+
+---
+
+### ST-116 — Parent technical inference must not become a preserved requirement or test oracle
+
+**Initial user/spec fixture:** The authoritative outcome requires producer/consumer compatibility but does not state that a particular representation must be preserved.
+
+**Runtime/repository fixture:** The parent observes that representation R works at one layer and infers that R should remain accepted end-to-end; downstream behavior has not been discriminatingly checked.
+
+**Injected intermediate output:** The parent handoff tells the implementer to preserve R, and regression tests encode R as required behavior. A later layer deterministically rejects R.
+
+**Expected earliest observable stop/preservation point:** Before the parent turns the one-layer observation into `preserve`/`required` or a test oracle.
+
+**Scenario:** Parent hypotheses are evidence/inferences, not task authority.
+
+**Expected trace:** classify the observation as hypothesis/evidence -> trace the governing authority or end-to-end behavior -> if not established, leave R non-binding and ask the implementation/review to satisfy the actual compatibility invariant -> only established behavior becomes a preservation oracle.
+
+**Expected result:** fail if a parent inference is laundered into a requirement/test; pass when authority/evidence state is preserved.
+
+---
+
+### ST-117 — Specialist handoff must be minimally sufficient and reconstructable
+
+**Initial user/spec fixture:** A bounded implementation or verification stage needs exact target identity, one authoritative outcome, two preserved constraints, one unresolved question, and a stop condition.
+
+**Runtime/repository fixture:** The parent has a long session history with many superseded hypotheses, findings, SHAs, and prior stage summaries.
+
+**Injected intermediate output:** The handoff serializes most of the session into dense shorthand/concatenated fields so that a known untracked artifact, baseline relation, or qualifier becomes ambiguous and the child stops or acts on the wrong boundary.
+
+**Expected earliest observable stop/preservation point:** During handoff construction, before dispatch.
+
+**Scenario:** Concision is not permission to destroy semantic distinctions.
+
+**Expected trace:** send only stage-relevant identity + authoritative outcome/constraints + unresolved question/action + material evidence + stop/escalation boundary -> omit settled chronology/superseded alternatives/duplicate evidence -> keep fields readable enough that baseline/scope/authority/evidence state is unambiguous.
+
+**Expected result:** fail if a serialized or overcompressed session dump creates execution ambiguity; pass when the bounded specialist can reconstruct exactly what it owns without inheriting the workflow transcript.
+
+---
+
+### ST-118 — Related blocker after readiness reopens the owner model before another local cycle
+
+**Initial user/spec fixture:** A Candidate was reviewed and marked Ready. A new material blocker then appears in the same acceptance/policy boundary as prior correction epochs.
+
+**Runtime/repository fixture:** The blocker is not demonstrably independent; it weakens the model used for the readiness claim.
+
+**Injected intermediate output:** The orchestrator simply returns to Draft, patches the new example, re-runs a local review and marks Ready again without reassessing the affected acceptance/ownership model.
+
+**Expected earliest observable stop/preservation point:** Immediately after ingesting the related blocker and before another representative-specific mutation/review cycle.
+
+**Scenario:** Readiness reversal is trajectory evidence that the prior closure model may have been incomplete.
+
+**Expected trace:** invalidate affected readiness -> bounded owner reassessment of the shared acceptance/ownership/model boundary -> group related counterexamples and determine the closure surface -> only then route bounded mutation/review -> repeated reopenings widen reassessment instead of resetting confidence after each local pass.
+
+**Expected result:** fail if Ready becomes a local green-state reset; pass when related post-readiness blockers update the whole-task model before another cycle.
+
+---
+
+### ST-119 — Independent review verdict must stay bound to its downstream decision boundary
+
+**Initial user/spec fixture:** An owned PR Candidate requires a fresh whole-PR review before push. The eventual Ready/merge decision also depends on remote identity, CI/status, or repository prerequisites that cannot yet exist at review time.
+
+**Runtime/repository fixture:** The caller supplies exact Base/Candidate identity and a complete authoritative acceptance model but labels the review only as `final review before publication`.
+
+**Injected intermediate output:** Reviewer returns a whole-Candidate `pass`; the parent immediately restates that as `Ready` / `merge-ready` even though the later lifecycle prerequisites have not yet been evaluated.
+
+**Expected earliest observable stop/preservation point:** At review assignment construction or, if the ambiguity survives dispatch, when the parent consumes the verdict.
+
+**Scenario:** Target identity, semantic judgment, and downstream lifecycle transition are distinct contracts. A review can establish Candidate acceptance evidence without adjudicating a later gate whose prerequisites are not yet observable.
+
+**Expected trace:** caller names the judgment purpose and downstream decision boundary -> reviewer binds the verdict to the narrowest claim established by current evidence -> whole-Candidate pass returns as evidence -> owner separately evaluates the actual Ready/merge/release gate and its lifecycle-specific prerequisites -> no extra review is required solely because the later gate is reached if the reviewed Candidate/acceptance context remains valid.
+
+**Expected result:** fail if `review PASS` is laundered into a later lifecycle authorization; pass when the same valid review is reused as one evidence input and the downstream gate remains separately evaluated.
+

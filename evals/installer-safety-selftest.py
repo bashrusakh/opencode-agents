@@ -68,7 +68,7 @@ with tempfile.TemporaryDirectory(prefix='opencode-installer-selftest-') as td:
     legacy='personal review command\n'; (base/'commands/review.md').write_text(legacy)
     p=run(GLOBAL, t, home)
     check(p.returncode==0, f'global upgrade failed: {p.returncode} {p.stderr}')
-    check('**Pack version: v30.87 beta**' in (base/'AGENTS.md').read_text(), 'global pack root not updated')
+    check('**Pack version: v30.90 beta**' in (base/'AGENTS.md').read_text(), 'global pack root not updated')
     check((base/'commands/review.md').read_text()==legacy, 'ambiguous global command was deactivated')
     receipt=base/'.agent-pack/managed-files.sha256'; check(receipt.is_file(), 'global ownership receipt missing')
     backups=list((base/'.agent-pack/backups').glob('*/agents/reviewer.md'))

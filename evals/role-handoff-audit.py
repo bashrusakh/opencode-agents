@@ -108,9 +108,8 @@ ALLOWED_KINDS = {
 # Specific high-risk edges below add stronger callee-specific requirements.
 CALLER_DELEGATION = {
     'code-orchestrator': [
-        [r'objective and behavioral/target scope'], [r'allowed action level'],
-        [r'expected deliverable/evidence'], [r'stop or escalation conditions'],
-        [r'omit upstream non-required mechanism|label it explicitly non-binding'],
+        [r'root section 5 handoff contract'], [r'workflow-specific reconstruction state'],
+        [r'current diff/Candidate HEAD/PR context'], [r'intended mutation baseline'],
     ],
     'auditor': [
         [r'audit question'], [r'exact target/state'], [r'bounded subsystem/behavior surface'],
@@ -149,6 +148,11 @@ EDGE = {
    [r'provenance label .*locator, not proof|locator, not proof'],
    [r'prior findings/verdicts|prior reviewer.*findings|fix history'],
    [r'targeted re-review.*partial/incremental|partial/incremental'],
+   [r'actual model-visible task-specific steering content|actually present .*model-visible context'],
+   [r'enabled memory integration.*not.*contamination|recall capabilities.*not.*contamination|possible access to prior sessions as contamination by itself|not recall capability availability'],
+   [r'do not pause .*prove .*hidden|do not .*configuration changes merely because prior context could theoretically be retrieved'],
+   [r'whole material task/acceptance surface|whole.*acceptance model|whole requested acceptance surface'],
+   [r'do not ask .*recover .*(?:parent-task|parent task).*(?:memory|GrayMatter|checkpoint)|does not.*resume the parent task.*memory|no parent-task checkpoint.*recovery'],
  ],
  ('code-orchestrator','semantic-checkpoint'): [
    [r'owner reconciliation performed'], [r'exact semantic proposition|semantic proposition .* unresolved'],
