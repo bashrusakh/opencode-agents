@@ -148,11 +148,9 @@ EDGE = {
    [r'provenance label .*locator, not proof|locator, not proof'],
    [r'prior findings/verdicts|prior reviewer.*findings|fix history'],
    [r'targeted re-review.*partial/incremental|partial/incremental'],
-   [r'actual model-visible task-specific steering content|actually present .*model-visible context'],
-   [r'enabled memory integration.*not.*contamination|recall capabilities.*not.*contamination|possible access to prior sessions as contamination by itself|not recall capability availability'],
-   [r'do not pause .*prove .*hidden|do not .*configuration changes merely because prior context could theoretically be retrieved'],
+   [r'Apply the root .*Memory and continuity.*independent-judgment isolation contract|root .*independent-judgment isolation contract'],
+   [r'clean authoritative packet|without importing parent investigative history'],
    [r'whole material task/acceptance surface|whole.*acceptance model|whole requested acceptance surface'],
-   [r'do not ask .*recover .*(?:parent-task|parent task).*(?:memory|GrayMatter|checkpoint)|does not.*resume the parent task.*memory|no parent-task checkpoint.*recovery'],
  ],
  ('code-orchestrator','semantic-checkpoint'): [
    [r'owner reconciliation performed'], [r'exact semantic proposition|semantic proposition .* unresolved'],
@@ -167,7 +165,7 @@ EDGE = {
    [r'current owner model'], [r'why available primary evidence could not safely resolve|could not safely resolve'],
    [r'fresh `?@?trajectory-auditor|fresh .*trajectory'], [r'parent session ID|current parent session'], [r'material transitions'],
    [r'packet .*not proof|workflow-owner report, not proof'],
-   [r'continue.*reanchor.*reassess.*checkpoint-required.*unverified'],
+   [r'continue.*reanchor.*reassess.*checkpoint-required.*insufficient-evidence'],
    [r'do not .*controller|not by themselves reasons to ask a controller|only when .* remains unresolved'],
  ],
  ('code-orchestrator','ui-implementer'): [
@@ -204,6 +202,14 @@ EDGE = {
  ('auditor','independent-judgment'): [[r'independent reviewer/a11y'], [r'fresh judgment-context isolation|judgment-context isolation']],
 }
 
+EDGE_FORBIDDEN = {
+    ('code-orchestrator','reviewer'): [
+        r'before reviewing,?\s+resume .*checkpoint',
+        r'resume the parent workflow checkpoint',
+        r'search memory for prior findings so',
+    ],
+}
+
 CALLER_FILES = {'code-orchestrator':'code-orchestrator.md','ui-orchestrator':'ui-orchestrator.md','auditor':'auditor.md'}
 
 
@@ -237,6 +243,9 @@ def audit_specific_edges(callers: dict[str,str]) -> list[str]:
         hay=callers.get(caller,'')
         if not groups_present(hay,groups):
             findings.append(f'{caller} -> {target}: handoff contract missing one or more required semantic groups')
+        for pattern in EDGE_FORBIDDEN.get((caller,target), []):
+            if re.search(pattern, hay, re.I | re.M):
+                findings.append(f'{caller} -> {target}: caller contract contains forbidden contradictory steering: {pattern}')
     return findings
 
 

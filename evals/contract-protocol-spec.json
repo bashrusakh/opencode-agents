@@ -1,10 +1,11 @@
 {
   "version": 3,
   "principles": {
-    "role_executability": "A routed substantive role needs a role-local executable method, not merely a description/checklist plus root pointer. Evaluate the characteristic core loop, conditional decisions, evidence discipline, stop/escalation and result semantics.",
+    "role_executability": "Role executability is inherited shared contract + role-local method. A routed substantive role needs its own executable characteristic method, conditional decisions, evidence discipline, stop/escalation and result semantics, but must not repeat root/skill-owned shared policy merely to satisfy a local vocabulary check.",
     "role_contract_shape": "Standardize by semantic function, not headings: Ownership -> Invocation -> Method -> Boundaries -> Result. Each function needs a clear primary locus; merged/specialized sections are valid and cosmetic duplicate summaries are not required.",
     "protocol_composition": "Evaluate producer output, parent transformation, consumer input, and consumer standing contract as one interface. Per-file correctness does not prove handoff correctness.",
-    "anti_gaming": "The gate exists to falsify the candidate. Keyword presence, prompt length, mutation retention and current-candidate wording cannot independently prove adequacy. REVIEW is release-blocking when semantic evidence is too sparse for an honest PASS."
+    "anti_gaming": "The gate exists to falsify the candidate. Keyword presence, prompt length, mutation retention and current-candidate wording cannot independently prove adequacy. REVIEW is release-blocking when semantic evidence is too sparse for an honest PASS.",
+    "semantic_ownership": "Material shared semantics have one canonical owner. Downstream layers declare whether they reference, consume, or specialize that owner; a second consistent definition is an ownership defect even when behavior remains correct."
   },
   "role_profiles": {
     "a11y-reviewer": "independent_review",

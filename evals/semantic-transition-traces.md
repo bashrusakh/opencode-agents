@@ -2337,3 +2337,129 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 **Expected result:** fail if `review PASS` is laundered into a later lifecycle authorization; pass when the same valid review is reused as one evidence input and the downstream gate remains separately evaluated.
 
+---
+
+### ST-120 — A consistent consumer duplicate is still a semantic-ownership regression
+
+**Initial user/spec fixture:** Root policy canonically owns a material shared handoff/state/procedure contract. A downstream role already references that owner and has a complete role-local executable method.
+
+**Runtime/repository fixture:** Both owner and consumer currently produce correct behavior and all role-executability / handoff behavior checks are green.
+
+**Injected intermediate output:** A maintenance edit adds a semantically equivalent paraphrase of the shared contract into the consumer—for example it restates the generic handoff fields or lifecycle/state machine in different words—without changing observable behavior.
+
+**Expected earliest observable stop/preservation point:** At the cross-layer semantic-ownership release gate, before promotion; no behavioral divergence is required.
+
+**Scenario:** Consistency today does not justify two policy owners. The duplicate creates standing-context cost and future drift risk even though both copies currently agree.
+
+**Expected trace:** identify the material shared capability -> resolve its declared canonical owner -> confirm the consumer already activates/references/consumes/specializes that owner -> reject the second shared definition -> preserve only role-local method/discriminators/specialization -> rerun role executability to prove deduplication did not remove the consumer's executable core.
+
+**Expected result:** fail if a consumer can become a second consistent definition while static/behavioral gates remain green; pass when one owner remains and the consumer stays executable through inherited shared contract + role-local method.
+
+
+---
+
+### ST-121 — Evidence-status literal must not become a workflow verdict
+
+**Initial user/spec fixture:** Root policy defines `unverified` only as an evidence/verification status and explicitly excludes it from proposition-relation and workflow-verdict domains.
+
+**Runtime/repository fixture:** A specialist role needs a blocking workflow outcome when primary evidence is insufficient.
+
+**Injected intermediate output:** The role adds `unverified` as a peer workflow verdict alongside role-owned verdicts, while also continuing to use `unverified` as evidence status elsewhere. Both local meanings appear internally understandable and ordinary behavioral checks may still pass.
+
+**Expected earliest observable stop/preservation point:** At typed semantic-domain audit before release promotion.
+
+**Scenario:** Canonical ownership does not prevent a type collision when two different semantic domains reuse the same literal.
+
+**Expected trace:** preserve `unverified` in the evidence-status domain -> assign the workflow outcome a distinct role-owned verdict such as `insufficient-evidence` -> unsupported factual/trajectory propositions remain `unverified` -> static domain discovery confirms the role verdict enum and rejects any literal shared across incompatible domains.
+
+**Expected result:** fail if one literal simultaneously denotes evidence status and workflow verdict; pass when state domains remain disjoint and explicit.
+
+---
+
+### ST-122 — Adjacent issue and PR workflow mechanics share the role-owned workflow layer
+
+**Initial user/spec fixture:** Root normalization routes existing-PR work and issue/ticket/report work to code workflows while root section 6 states that detailed workflow mechanics belong to role contracts.
+
+**Runtime/repository fixture:** `code-orchestrator` already owns detailed PR follow-up mechanics and can own issue/report target verification, issue deduplication, creation, and separate-fix boundaries.
+
+**Injected intermediate output:** Root grows a detailed issue pipeline (refresh target -> verify -> search existing issues -> draft/open -> no code fix) while the adjacent detailed PR pipeline remains in `code-orchestrator`, creating split ownership for two repository-publication workflows.
+
+**Expected earliest observable stop/preservation point:** At section-placement / semantic-ownership audit before promotion.
+
+**Scenario:** Root should normalize and gate; code-orchestrator should own adjacent detailed repository workflow mechanics. `pr-readiness` remains the canonical owner of the owned-PR lifecycle state machine rather than being copied into either root or orchestrator.
+
+**Expected trace:** root keeps issue/PR routing plus generic repository/publication/provenance gates -> `code-orchestrator` colocates detailed `Existing PR follow-up` and `Issue / ticket / report` mechanics under `Workflow behavior` -> PR-specific Draft/Candidate/Ready lifecycle continues to come from `pr-readiness` -> no second issue pipeline remains in root.
+
+**Expected result:** fail if detailed issue mechanics are reintroduced into root or PR lifecycle is duplicated out of `pr-readiness`; pass when adjacent workflows are colocated at the role layer with shared root gates inherited.
+
+---
+
+### ST-123 — Pack-owned skill cannot become an undeclared second semantic owner
+
+**Initial user/spec fixture:** Root owns a generic shared handoff/authority/lifecycle contract and a pack-owned workflow skill is selected only for its conditional procedure.
+
+**Runtime/repository fixture:** The skill is classified as pack-owned/integration in the skill-control inventory and already has a declared owner/consumer surface.
+
+**Injected intermediate output:** A maintenance edit adds a behaviorally consistent paraphrase of the root-owned shared contract inside that skill without declaring a legitimate specialization/ownership relation.
+
+**Expected earliest observable stop/preservation point:** At skill-control / semantic-ownership release audit before promotion, even when role and behavioral checks remain green.
+
+**Scenario:** Conditional loading does not permit a skill to become a second owner of root policy.
+
+**Expected trace:** closed-world skill classification -> resolve pack-owned skill semantic surface -> scan declared shared-family guard -> reject undeclared second owner -> preserve only skill-owned conditional mechanics.
+
+**Expected result:** fail if a pack-owned skill can restate a shared owner contract undetected; pass when the same canonical-owner rule covers root -> role -> skill.
+
+---
+
+### ST-124 — Typed semantic collision inside a pack-owned skill is a release failure
+
+**Initial user/spec fixture:** Root owns `unverified` as evidence status while a pack-owned skill needs a workflow/state outcome.
+
+**Runtime/repository fixture:** The skill is classified in `skill-control-spec` and participates in typed-domain discovery.
+
+**Injected intermediate output:** The skill adds `unverified` as a workflow verdict/state peer while root continues to use it as evidence status.
+
+**Expected earliest observable stop/preservation point:** At semantic-domain audit before promotion.
+
+**Scenario:** A typed token does not gain a second meaning merely because the collision occurs in conditionally loaded skill text.
+
+**Expected trace:** discover pack-owned skill verdict/state surface -> compare with declared domain inventory -> preserve root evidence-status meaning -> reject the colliding skill state or require a distinct typed literal/domain.
+
+**Expected result:** fail if skill-side collisions bypass the domain gate; pass when declared pack skills are first-class typed-domain nodes.
+
+---
+
+### ST-125 — Vendor skill content remains subordinate to the pack integration boundary
+
+**Initial user/spec fixture:** A bundled third-party skill contains broad activation or host-method language, while the pack owns a narrower integration boundary.
+
+**Runtime/repository fixture:** Vendor bytes are provenance/hash guarded and remain unchanged. The active reviewer/UI integration owner defines when and which provider mechanics/advice are consumed.
+
+**Injected intermediate output:** Vendor text says to perform broader review method, auto-activate managed review, install/persist tooling, choose a default stack, or promote generated output to source-of-truth.
+
+**Expected earliest observable stop/preservation point:** At the pack-owned integration boundary before the conflicting vendor directive changes activation, authority, mutation, or final judgment.
+
+**Scenario:** Loading vendor guidance does not transfer pack semantic ownership.
+
+**Expected trace:** classify vendor skill as advisory/provider guidance -> apply root/role integration owner -> consume only compatible mechanics/advice -> separately satisfy any install/persist/publication gate -> vendor subtree remains unchanged.
+
+**Expected result:** fail if vendor wording overrides pack activation/authority/review/source-of-truth semantics; pass when containment works without rewriting upstream skill content.
+
+---
+
+### ST-126 — Root-owned canonical state and skill-owned procedure must not collapse into duplicate policy
+
+**Initial user/spec fixture:** Persistent planning or memory continuity is activated by root policy, and the selected pack skill supplies conditional implementation/tool procedure.
+
+**Runtime/repository fixture:** Root already establishes activation, authority/canonical-state or freshness/durability semantics. The skill owns fallback representation/resume or provider-specific recall/write/checkpoint mechanics.
+
+**Injected intermediate output:** The skill restates the root activation/canonical-state/authority contract before its procedure, producing two consistent definitions.
+
+**Expected earliest observable stop/preservation point:** At semantic-ownership audit before promotion.
+
+**Scenario:** Skill executability is inherited shared contract + skill-local procedure, just as role executability is inherited shared contract + role-local method.
+
+**Expected trace:** root establishes the shared semantic boundary -> skill references that boundary -> skill executes only its fallback/tool procedure -> owner manifest preserves the split -> no duplicate root policy is required for skill usability.
+
+**Expected result:** fail if skill-local procedure requires a second copy of root policy to pass; pass when root and skill remain compositionally distinct.

@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "scope": "Closed-world classification and control contract for bundled skill entrypoints. Pack-owned/integration skills participate in semantic ownership/domain gates; vendor skill content remains provenance-preserved and subordinate to pack-owned integration boundaries.",
+  "skills": [
+    {
+      "path": "skills/git-provenance/SKILL.md",
+      "class": "pack-workflow",
+      "entry_sections": [
+        "Mutation baseline checkpoint",
+        "Publication provenance checkpoint"
+      ],
+      "owned_capabilities": [
+        "git_provenance_mechanics"
+      ],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "read-only provenance plus gate-controlled fetch/branch-publication mechanics"
+    },
+    {
+      "path": "skills/graymatter-memory/SKILL.md",
+      "class": "pack-integration",
+      "entry_sections": [
+        "Identity",
+        "Recall and checkpoint procedure",
+        "Durable-write and correction mechanics",
+        "Tool contract"
+      ],
+      "owned_capabilities": [
+        "graymatter_tool_mechanics"
+      ],
+      "consumed_capabilities": [
+        "memory_authority_and_activation",
+        "fresh_independent_judgment_isolation"
+      ],
+      "typed_domains": [],
+      "side_effect_class": "external memory/checkpoint reads and root-authorized durable memory writes"
+    },
+    {
+      "path": "skills/output-formatting/SKILL.md",
+      "class": "pack-workflow",
+      "entry_sections": [],
+      "owned_capabilities": [
+        "output_formatting_destination_procedure"
+      ],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "text formatting only; publication remains externally gated"
+    },
+    {
+      "path": "skills/persistent-planning/SKILL.md",
+      "class": "pack-workflow",
+      "entry_sections": [
+        "Fallback durable representation",
+        "Resume and update procedure",
+        "Work-package cycle"
+      ],
+      "owned_capabilities": [
+        "persistent_planning_fallback_representation"
+      ],
+      "consumed_capabilities": [
+        "persistent_planning_activation_canonical_state"
+      ],
+      "typed_domains": [],
+      "side_effect_class": "root-authorized repository planning artifact mutation"
+    },
+    {
+      "path": "skills/pr-readiness/SKILL.md",
+      "class": "pack-workflow",
+      "entry_sections": [
+        "Draft publication safety",
+        "Candidate HEAD",
+        "Ready-for-review gate"
+      ],
+      "owned_capabilities": [
+        "owned_pr_lifecycle"
+      ],
+      "consumed_capabilities": [
+        "independent_judgment_decision_boundary",
+        "review_activation_and_reuse"
+      ],
+      "typed_domains": [
+        "owned_pr_lifecycle_state"
+      ],
+      "side_effect_class": "gate-controlled PR publication/readiness transitions"
+    },
+    {
+      "path": "skills/resource-lifecycle/SKILL.md",
+      "class": "pack-workflow",
+      "entry_sections": [
+        "What enters the lifecycle",
+        "Ownership",
+        "Reconciliation"
+      ],
+      "owned_capabilities": [
+        "resource_lifecycle_mechanics"
+      ],
+      "consumed_capabilities": [],
+      "typed_domains": [
+        "resource_lifecycle_terminal_state"
+      ],
+      "side_effect_class": "cleanup/reconciliation of workflow-owned temporary resources under root gates"
+    },
+    {
+      "path": "skills/session-evidence/SKILL.md",
+      "class": "pack-integration",
+      "entry_sections": [
+        "Read-only boundary",
+        "Prefer supplied identities",
+        "Recover complete material history",
+        "Completeness and provenance"
+      ],
+      "owned_capabilities": [
+        "session_evidence_retrieval"
+      ],
+      "consumed_capabilities": [
+        "provenance_receipt_interface"
+      ],
+      "typed_domains": [],
+      "side_effect_class": "read-only OpenChamber session retrieval"
+    },
+    {
+      "path": "skills/ui-component-sources/SKILL.md",
+      "class": "pack-integration",
+      "entry_sections": [
+        "Source order",
+        "Advisory design integration",
+        "Role consumption"
+      ],
+      "owned_capabilities": [
+        "ui_component_source_ordering_and_vendor_boundary"
+      ],
+      "consumed_capabilities": [
+        "vendor_skill_containment"
+      ],
+      "typed_domains": [],
+      "side_effect_class": "advisory source selection; dependency/config/persistence changes remain root-gated"
+    },
+    {
+      "path": "skills/verification-strategy/SKILL.md",
+      "class": "pack-workflow",
+      "entry_sections": [],
+      "owned_capabilities": [
+        "verification_layering_and_tester_activation"
+      ],
+      "consumed_capabilities": [
+        "verification_evidence_invariants"
+      ],
+      "typed_domains": [],
+      "side_effect_class": "verification planning only; tester/implementation roles execute checks"
+    },
+    {
+      "path": "skills/api-designer/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "9c70f0c0f071295aa013733d0d3d10cd11f636dc8952328e2be7a55f53e7eef2",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary"
+    },
+    {
+      "path": "skills/cpp-pro/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "82f7498c123648d4bc82795c9d0133eb9c7ddc58275979fee523b1f41ce8a141",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary"
+    },
+    {
+      "path": "skills/golang-pro/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "e2d98e29469080e9a8b99f761bfc5c8354a2f27b36e63fc926a47cb21d31d076",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary"
+    },
+    {
+      "path": "skills/open-code-review/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "39aed91519641920eb248ed498491633fc5c0ef3fcefa6f0d5b42b907fbc3c16",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary",
+      "integration_owner": "agents/reviewer.md",
+      "integration_signature": [
+        [
+          "Managed `open-code-review` / `ocr review` is separate"
+        ],
+        [
+          "Do not load or run managed OCR solely because the vendor skill description"
+        ]
+      ]
+    },
+    {
+      "path": "skills/open-code-review-delegate/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "f69228e5344cba9f323ec9314fe15997eb9489d38e08fb2ae26286afd65bebc0",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary",
+      "integration_owner": "agents/reviewer.md",
+      "integration_signature": [
+        [
+          "deterministic preflight only"
+        ],
+        [
+          "vendor-skill text that continues into host review method"
+        ]
+      ]
+    },
+    {
+      "path": "skills/playwright-expert/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "6b39269d7a20e52d7b720719ee5457266cbb28584d6beeb73f310e181e790bd7",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary"
+    },
+    {
+      "path": "skills/python-pro/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "c0903b141d69c302e632185efb42ccd755d9d8db2ebd012d12acaddef423eb1b",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary"
+    },
+    {
+      "path": "skills/react-expert/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "be2e878d434964833f6f1fad726616ec8a0f6c9a83ab7b5bf0b8bbd5e413de48",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary"
+    },
+    {
+      "path": "skills/rust-engineer/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "6f7313eabb8af5c0e302083f0253d9ecdf26e2fc97a91de1aa581fa53cbbb4f4",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary"
+    },
+    {
+      "path": "skills/secure-code-guardian/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "9b70c62cb84e1af925e8684c75e2fa0c55fc87dbb3d77918fb6199e756dab91a",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary"
+    },
+    {
+      "path": "skills/typescript-pro/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "ab8ceaa33f0265121f294571ef0da93a357e82e3db69d84fed9eb09e1fb07e94",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary"
+    },
+    {
+      "path": "skills/ui-ux-pro-max/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "462cf24d1d4136d4e7b1dc63893c65a12e59db5c81df46458c80ceeb47ec0377",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary",
+      "integration_owner": "skills/ui-component-sources/SKILL.md",
+      "integration_signature": [
+        [
+          "UUPM is advisory design input"
+        ],
+        [
+          "Treat vendor install/default-stack/`REQUIRED`/`Always`/persist/source-of-truth language as provider guidance"
+        ]
+      ]
+    },
+    {
+      "path": "skills/vue-expert/SKILL.md",
+      "class": "vendor-advisory",
+      "directory_sha256": "2c2e09490dfa70f4e0278b7e2639e6e4f941cb54271294edd52747479290b616",
+      "owned_capabilities": [],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "vendor-defined; constrained by root/pack integration boundary"
+    }
+  ]
+}

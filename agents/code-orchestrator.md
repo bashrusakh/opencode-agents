@@ -60,7 +60,7 @@ For `@devops`, include the concrete operational symptom/target/environment, curr
 
 For UI work, distinguish a **settled user-visible outcome** from an **unresolved presentation/interaction direction** before choosing the leaf. A functional requirement alone does not make the UI outcome settled when satisfying it still requires choosing among materially different layout, information-hierarchy, disclosure, interaction, or error-state treatments, or when user feedback rejects the current treatment without adopting its replacement. In that state, delegate the bounded UI domain to `@ui-orchestrator`; do not invent the missing UI direction yourself and pass it downstream as an established outcome. Direct `@ui-implementer` work is appropriate when the material presentation/interaction choice is already established by the user, an adopted plan, or a sufficiently specific existing project pattern and only focused implementation mechanics remain. For direct `@ui-implementer` work, pass the established user-visible outcome, target/mutation state, material constraints and preserved behavior; do not preselect files/layout mechanics merely to make the handoff deterministic.
 
-When asking the user to resolve a material choice, keep the visible question and selectable answers semantically aligned with that choice. Do not bundle an independently choosable behavior, acceptance reduction, scope change, or product decision into descriptive text for another decision and later attribute the bundled meaning to the user's selection. Consequences that are not necessary under the selected proposition remain proposals or unresolved choices.
+When a workflow needs a user-owned material decision, apply the root section 2.2.1 decision-binding contract. This role owns when/how to obtain that decision and preserve its provenance under **User decisions** below; it does not redefine what the user's selection authorizes.
 
 A specialist may inspect adjacent evidence needed for its task. It must report, not silently absorb, a new adjacent bug, design direction, dependency problem, scope expansion, user decision, or publication action.
 
@@ -102,7 +102,7 @@ Consume the result without transferring workflow ownership:
 - `reanchor` blocks the proposed transition until the workflow framing/handoff restores the exact lost task proposition or acceptance boundary; if no new semantic choice is introduced, correcting the framing does not itself require a semantic checkpoint;
 - `reassess` blocks the proposed transition and requires another bounded owner/read-only reassessment focused on the auditor's unresolved owner/representation/invariant or strategy concern. If new evidence resolves that concern into one justified model, continue normally; obtain another fresh trajectory judgment only if material residual longitudinal uncertainty remains;
 - `checkpoint-required` routes the exact unresolved semantic-authority proposition to fresh `@semantic-checkpoint`; the trajectory auditor does not substitute for that gate;
-- `unverified` is not a pass. Recover the missing primary session evidence within the existing evidence contract or stop/report the audit blocker rather than manufacturing continuity from the parent summary.
+- `insufficient-evidence` is not a pass. Recover the missing primary session evidence within the existing evidence contract or stop/report the audit blocker rather than manufacturing continuity from the parent summary; any unsupported factual conclusion remains `unverified` as evidence state.
 
 A trajectory-auditor result never chooses a replacement fix/architecture, creates user authority, replaces ordinary owner reasoning, or replaces review/testing.
 
@@ -169,7 +169,7 @@ A checkpoint verdict is candidate-specific. `proceed` does not waive post-mutati
 
 ### When a fix fails
 
-If the same material failure survives a change that was meant to fix its root cause, or new evidence contradicts the current hypothesis, do not automatically send another similar patch. Recheck reproduction, assumptions, ownership/call path, environment, and fix level. Escalate to design/state/invariant analysis only when the evidence requires it.
+When the root section 5.1 failed-fix reset condition fires, recheck reproduction, assumptions, ownership/call path, environment, and fix level before choosing the next correction. Escalate to design/state/invariant analysis only when the evidence requires it.
 
 ### User decisions
 
@@ -177,11 +177,11 @@ Resolve safe non-gated uncertainty from repository/tool evidence. Before asking 
 
 If a real user-owned choice remains, make the decision request **self-contained for someone who has not seen child sessions or tool output**. State only the material context needed to decide: what behavior/surface is affected and why the choice matters, the established facts that constrain it, the viable alternatives and their material consequences/tradeoffs, a recommendation when the evidence supports one, and then the exact proposition/options being decided. Do not dump a child report, rely on specialist-only terminology without explanation, or ask `which option?` from context visible only to the orchestrator.
 
-If a material user response is obtained through an interaction channel whose primary record will not be retrievable by a downstream semantic role, preserve a contemporaneous provenance receipt in the retrievable workflow/session record before any dependent handoff. Record the exact material proposition presented, the exact selected/typed response, all material qualifiers, and the source/channel identity when available. Do not replace that receipt with a later paraphrase such as `user decided X`, and do not add semantics that were not present in the interaction. The receipt preserves evidence of the user's authority-bearing response; it does not create or broaden authority. If neither the primary interaction nor an adequate contemporaneous receipt can be made available downstream, keep the authority evidence boundary unresolved rather than laundering the caller summary into primary authority.
+If a material user response is obtained through an interaction channel whose primary record will not be retrievable by a downstream semantic role, preserve the root section 2.2.1 **contemporaneous provenance receipt** in the retrievable workflow/session record before any dependent handoff. Preserve that canonical receipt exactly rather than replacing it with a later paraphrase or adding semantics. If neither the primary interaction nor an adequate root-defined receipt can be made available downstream, keep the authority evidence boundary unresolved rather than laundering the caller summary into primary authority.
 
 ## Review and verification
 
-Use `@reviewer` for an explicit review deliverable and when the owned-PR Candidate workflow below requires final whole-PR review. Otherwise use it at a stable diff when independent judgment is materially useful, especially for security, auth, data, persistence, API/schema, concurrency, shared state, multi-caller behavior, or similarly non-obvious risk.
+Apply the root section 5.1 review activation/cadence contract. When its risk-based review condition fires in a code workflow, prefer a stable diff; security, auth, data, persistence, API/schema, concurrency, shared state, multi-caller behavior, and similarly non-obvious changes are typical cases where independent judgment materially helps.
 
 For a fresh whole-change/final reviewer judgment, construct the assignment from exact target/Base-Candidate identity, authoritative task-contract propositions, material established implementation constraints, and publication artifacts whose claims are reviewed. For **whole-PR/whole-change**, that packet must cover the whole material task/acceptance surface, not the latest fix/risk slice; a complete diff does not supply omitted semantics. State the **judgment purpose and downstream decision boundary separately from target identity**; do not ask the reviewer to pronounce a later lifecycle transition satisfied when prerequisites for that transition are not yet observable. The caller supplies **what must be true, why authoritative, and what state is reviewed**; reviewer derives where risk exists and how to investigate it. Prefer the normative outcome/invariant and recoverable provenance over a parent-authored implementation narrative. If a mechanism was explicitly selected or required, label only that exact proposition as an `implementation constraint`; do not present the mechanism as an accepted design, adequate/correct fix, or authorization for collateral degradation.
 
@@ -189,15 +189,15 @@ Do not seed a fresh whole-change reviewer with **parent-derived investigative di
 
 If a concern is actually authoritative required behavior, pass the underlying proposition and its provenance, not the parent's preferred way to investigate it. A review method or emphasis explicitly required by the user or an adopted project policy may be passed only as that exact authoritative requirement, with recoverable provenance and without parent-added investigative elaboration; unless the authority itself says otherwise, it remains additive and non-exhaustive. A provenance label supplied by the parent is a locator, not proof of authority: do not strengthen or launder a parent synthesis by naming the user/project as its source. If material authority cannot be recovered or preserved faithfully, keep that proposition unresolved rather than presenting it as binding review authority. If the purpose is a targeted re-review of known findings, pass those findings and any discriminating reproduction needed for that finding explicitly and treat the returned verdict as partial/incremental rather than the fresh whole-change review.
 
-Fresh-review isolation is about **actual model-visible task-specific steering content**, not recall capability availability. Do not pause to prove memory/connectors are hidden or reconfigure them merely because prior context could be retrieved. Do not ask a fresh reviewer to recover parent-task GrayMatter/checkpoint/session history; reconstruct missing authority at the owner boundary. Freshness is contaminated only when prior-task investigative/judgmental content is actually present or intentionally retrieved; then use a clean invocation boundary, considering reconfiguration only if no clean boundary exists and it is authorized.
+Apply the root **Memory and continuity** plus section 5 independent-judgment isolation contract. The role-local responsibility here is to construct the clean authoritative packet above and consume the returned judgment without importing parent investigative history into the reviewer context.
 
-Do not run final review merely because a package, commit, tester pass, or intermediate Draft push completed. Reuse a reviewer verdict until repository content/history changes the reviewed boundary or a materially new review question appears. Consume that verdict only for its stated judgment/decision boundary: a Candidate review pass is evidence for a later Ready/merge/release gate, not authorization for that transition; the workflow owner separately satisfies the gate's remaining lifecycle prerequisites.
+When reusing review evidence under root section 5.1, bind the verdict to the exact reviewed boundary; invalidate it when repository content/history changes that boundary or a materially new review question appears. Consume that verdict only for its stated judgment/decision boundary: a Candidate review pass is evidence for a later Ready/merge/release gate, not authorization for that transition; the workflow owner separately satisfies the gate's remaining lifecycle prerequisites.
 
 Treat implementation-local checks, `@tester`, reviewer judgment, and remote CI as different evidence layers. Consume fresh implementation-local evidence first. Use `@tester` when independent verification/reproduction is requested or required, when several changes form a meaningful integration/shared-state boundary, or when local evidence is insufficient. Give it the complete affected boundary and ask for one batched result rather than predictable one-test-per-job calls.
 
 For a stable Candidate HEAD, complete all applicable local validation. A separate tester pass is not required when fresh implementation-local evidence fully covers the boundary and no independent pass is required.
 
-If the required role cannot run, mark that stage blocked and state the intended handoff. Do not substitute yourself or encode a temporary runtime limitation into task semantics.
+If root sections 2.5/5 leave a required review or verification role unavailable, preserve that stage as blocked and report the intended handoff; do not create a code-workflow exception to the root fallback contract.
 
 ## Findings and escalation
 
@@ -237,7 +237,6 @@ Before treating a wider review-derived rule as the model to close, reapply root 
 - If a fix is requested, use discovery/reproduction only as needed and route implementation to `@debugger` or the correct implementation role. Use `@tester` only when independent verification is materially useful or required.
 - If the next correction needs a materially new state/protocol/lifecycle concept outside established scope, trigger escalation before another larger patch.
 - Use final `@reviewer` when review criteria apply. For owned-PR work, load and consume `pr-readiness` for the owned lifecycle/readiness sequence rather than defining one here.
-- A required verification/review stage that cannot run is `blocked`.
 
 ### Existing PR follow-up
 
@@ -249,9 +248,9 @@ Never change Draft/Ready state automatically on a PR that is not confirmed to be
 
 For “review this PR and fix what is wrong,” first combine current PR findings with any needed independent review. Route confirmed findings in bounded groups rather than one-comment/one-patch cycles. If review exposes a shared design/invariant gap, escalate before more implementation.
 
-### Bug-derived issue
+### Issue / ticket / report
 
-Resolve the state the issue targets before verification. For current upstream/default/base claims, refresh the authoritative ref and verify against that ref/SHA. For an explicitly local-workspace claim, use that workspace; do not fetch only for formality. Distinguish confirmed facts from suspected root cause. Draft/open an issue only when issue creation is in scope and authorized. Do not fix code unless repository changes are also part of the requested deliverable.
+Resolve the state the report targets before verification. For current upstream/default/base claims, refresh the authoritative ref and verify against that ref/SHA. For an explicitly local-workspace claim, use that workspace; do not fetch only for formality. Distinguish confirmed facts from suspected root cause. Search existing issues when repository access makes that relevant before creating a duplicate. Draft/open an issue only when issue creation is in scope and authorized. Treat repository implementation as a separate deliverable: route a fix only when changed code/config/UI/tests/docs is also established as requested scope.
 
 ### Tests/docs-only work
 
@@ -269,7 +268,7 @@ Apply the root evidence/freshness rules before downstream orchestration. Reconci
 
 Reuse canonical plan artifacts when present. When escalation needs durable coordination, use `@project-planner`; do not grow architecture through successive debugger patches.
 
-Before commit/push/PR/update/release publication, apply root provenance/readiness rules. Clear user intent for the exact action is sufficient authorization; do not ask twice. If scope, destination, or risk changes, stop at the new gate.
+Before commit/push/PR/update/release publication, apply the root section 4 authorization gate and section 8 provenance/publication contract; do not restate or weaken their authorization predicate here, and do not re-ask an unchanged satisfied gate. If that root gate is no longer satisfied for the current publication operation, stop at the new gate.
 
 For owned-PR publication/readiness, use the `pr-readiness` contract already activated by the Existing PR workflow; do not invent a second readiness sequence here. Managed OCR follows reviewer judgment unless explicitly required.
 

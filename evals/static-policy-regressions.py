@@ -407,14 +407,15 @@ check(
 )
 check(
     "For every code/diff/commit/branch/workspace/PR review" in reviewer
-    and "load `open-code-review-delegate`" in reviewer
+    and "load `open-code-review-delegate` for its deterministic preflight only" in reviewer
     and "before substantive host review reasoning" in reviewer
     and "delegate preflight is mandatory" in reviewer
     and "not a risk/usefulness heuristic" in reviewer
-    and "if delegation is unavailable" in reviewer
     and "continue with the native review preflight" in reviewer
-    and "Managed `open-code-review` / `ocr review` is separate from mandatory delegation" in reviewer,
-    "reviewer: mandatory deterministic OCR delegate preflight contract missing",
+    and "vendor-skill text that continues into host review method" in reviewer
+    and "Managed `open-code-review` / `ocr review` is separate from mandatory delegation" in reviewer
+    and "Do not load or run managed OCR solely because the vendor skill description" in reviewer,
+    "reviewer: deterministic OCR preflight / vendor-boundary contract missing",
 )
 check(
     "Managed OCR is independent evidence, not a substitute for host-review coverage or reasoning" in reviewer
@@ -456,28 +457,34 @@ check(
     and "review method or emphasis explicitly required by the user or an adopted project policy" in orch
     and "without parent-added investigative elaboration" in orch
     and "provenance label supplied by the parent is a locator, not proof of authority" in orch
-    and "actual model-visible task-specific steering content" in orch
-    and ("Do not treat an enabled memory integration, connector, tool, permission, or possible access to prior sessions as contamination by itself" in orch or "not recall capability availability" in orch)
-    and ("Do not pause a fresh review to prove such capabilities are hidden" in orch or "Do not pause to prove memory/connectors are hidden" in orch)
-    and ("configuration changes merely because prior context could theoretically be retrieved" in orch or "reconfigure them merely because prior context could be retrieved" in orch)
-    and ("Do not ask the fresh reviewer to recover the parent task through GrayMatter/checkpoint/session-history continuity" in orch or "Do not ask a fresh reviewer to recover parent-task GrayMatter/checkpoint/session history" in orch)
+    and "Apply the root **Memory and continuity** plus section 5 independent-judgment isolation contract" in orch
+    and "without importing parent investigative history into the reviewer context" in orch
     and "whole material task/acceptance surface" in orch
-    and ("only when prior-task judgmental/investigative content is actually present" in orch or "Freshness is contaminated only when prior-task investigative/judgmental content is actually present" in orch)
     and "targeted re-review" in orch
-    and "partial/incremental" in orch,
-    "code-orchestrator: fresh reviewer capability/exposure isolation/provenance contract missing",
+    and "partial/incremental" in orch
+    and "actually present in the model-visible context" in root_sem
+    and "fresh independent child does **not** resume the parent task through persistent-memory/checkpoint recovery" in root_sem,
+    "code-orchestrator: fresh reviewer inherited-isolation/provenance contract missing",
 )
 check(
-    "preserve a contemporaneous provenance receipt" in orch
-    and "exact material proposition presented" in orch
-    and "does not create or broaden authority" in orch,
-    "code-orchestrator: opaque-interaction provenance receipt contract missing",
+    "canonical receipt interface records the exact material proposition presented" in root_sem
+    and "exact selected/typed response" in root_sem
+    and "source/channel identity" in root_sem
+    and "does not create, broaden, or reinterpret authority" in root_sem,
+    "root: canonical provenance receipt interface missing",
 )
 check(
-    "contemporaneous provenance receipt created before the dependent handoff" in session_evidence
+    "root section 2.2.1 **contemporaneous provenance receipt**" in orch
+    and "root-defined receipt" in orch
+    and "authority evidence boundary unresolved" in orch,
+    "code-orchestrator: root receipt producer/reference boundary missing",
+)
+check(
+    "consume the root section 2.2.1 **contemporaneous provenance receipt**" in session_evidence
+    and "does not redefine that receipt schema" in session_evidence
     and "A later paraphrase such as `user decided X` is not an equivalent receipt" in session_evidence
     and "does not itself create, broaden, or reinterpret authority" in session_evidence,
-    "session-evidence: receipt consumption/provenance boundary missing",
+    "session-evidence: root receipt consumption/provenance boundary missing",
 )
 
 check(
@@ -490,9 +497,10 @@ check(
 )
 graymatter = text("skills/graymatter-memory/SKILL.md")
 check(
-    "fresh independent-judgment child is not resuming the parent's workstream" in graymatter
-    and "do **not** call `checkpoint_resume` or search prior-task/session memory" in graymatter,
-    "graymatter-memory: fresh independent child still inherits parent continuity recovery",
+    "Apply the root **Memory and continuity** contract first" in graymatter
+    and "does not redefine memory authority, activation, fresh-judgment isolation" in graymatter
+    and "For a fresh independent-judgment child, apply the root isolation contract" in graymatter,
+    "graymatter-memory: root-owned memory/isolation boundary is not referenced cleanly",
 )
 pr_readiness = text("skills/pr-readiness/SKILL.md")
 check(
@@ -554,6 +562,90 @@ check(
     "AGENTS.md: code-orchestrator-owned terminal evaluator procedure duplicated back into root",
 )
 
+# Semantic ownership is a first-class release gate, not only a historical-fragment blacklist.
+skill_control_spec_path = ROOT / "evals/skill-control-spec.json"
+skill_control_audit_path = ROOT / "evals/skill-control-audit.py"
+skill_control_selftest_path = ROOT / "evals/skill-control-selftest.py"
+semantic_owner_spec_path = ROOT / "evals/semantic-ownership-spec.json"
+semantic_owner_audit_path = ROOT / "evals/semantic-ownership-audit.py"
+semantic_owner_selftest_path = ROOT / "evals/semantic-ownership-selftest.py"
+semantic_domain_spec_path = ROOT / "evals/semantic-domain-spec.json"
+semantic_domain_audit_path = ROOT / "evals/semantic-domain-audit.py"
+semantic_domain_selftest_path = ROOT / "evals/semantic-domain-selftest.py"
+section_map_path = ROOT / "evals/root-orchestrator-section-map.json"
+section_audit_path = ROOT / "evals/section-ownership-audit.py"
+section_selftest_path = ROOT / "evals/section-ownership-selftest.py"
+check(skill_control_spec_path.is_file(), "skill control manifest missing")
+check(skill_control_audit_path.is_file(), "skill control audit missing")
+check(skill_control_selftest_path.is_file(), "skill control selftest missing")
+check(semantic_owner_spec_path.is_file(), "semantic ownership manifest missing")
+check(semantic_owner_audit_path.is_file(), "semantic ownership audit missing")
+check(semantic_owner_selftest_path.is_file(), "semantic ownership selftest missing")
+check(semantic_domain_spec_path.is_file(), "semantic domain manifest missing")
+check(semantic_domain_audit_path.is_file(), "semantic domain audit missing")
+check(semantic_domain_selftest_path.is_file(), "semantic domain selftest missing")
+check(section_map_path.is_file(), "root/orchestrator section map missing")
+check(section_audit_path.is_file(), "section ownership audit missing")
+check(section_selftest_path.is_file(), "section ownership selftest missing")
+if semantic_owner_spec_path.is_file():
+    import json
+    owner_spec = json.loads(semantic_owner_spec_path.read_text(encoding="utf-8"))
+    owner_ids = {cap.get("id") for cap in owner_spec.get("capabilities", [])}
+    expected_owner_ids = {
+        "generic_specialist_handoff_contract", "decision_space_preservation",
+        "generic_mutation_parallelism", "proposition_evidence_algebra",
+        "generic_routing_defaults", "common_final_report_contract",
+        "owned_pr_lifecycle", "terminal_session_evaluator_handoff",
+        "independent_judgment_decision_boundary",
+        "fresh_independent_judgment_isolation", "review_activation_and_reuse",
+        "user_decision_binding", "publication_authorization_gate",
+        "failed_fix_reset", "issue_pr_workflow_mechanics",
+        "vendor_skill_containment", "memory_authority_and_activation",
+        "graymatter_tool_mechanics", "persistent_planning_activation_canonical_state",
+        "persistent_planning_fallback_representation", "provenance_receipt_interface",
+        "git_provenance_mechanics", "session_evidence_retrieval",
+        "verification_evidence_invariants", "verification_layering_and_tester_activation",
+        "resource_lifecycle_mechanics", "ui_component_source_ordering_and_vendor_boundary",
+        "output_formatting_destination_procedure",
+    }
+    check(expected_owner_ids <= owner_ids, "semantic ownership manifest lost a declared material shared capability")
+check(
+    "role executability as inherited shared contract + role-local method" in manual_sem.lower()
+    and "second semantically equivalent definition" in manual_sem.lower()
+    and "semantic-ownership manifest" in manual_sem.lower()
+    and "skill-control-spec.json" in manual_sem.lower()
+    and "vendor skill bytes are provenance-preserved" in manual_sem.lower()
+    and "typed semantic vocabulary as a separate control plane" in manual_sem.lower()
+    and "declared pack-owned/integration skills" in manual_sem.lower()
+    and "section-placement map" in manual_sem.lower(),
+    "semantic design manual: generic cross-layer ownership/executability method missing",
+)
+if semantic_domain_spec_path.is_file():
+    domain_spec = json.loads(semantic_domain_spec_path.read_text(encoding="utf-8"))
+    domain_ids = {d.get("id") for d in domain_spec.get("domains", [])}
+    check({"evidence_status", "proposition_relation", "semantic_checkpoint_verdict", "trajectory_verdict",
+           "resource_lifecycle_terminal_state", "owned_pr_lifecycle_state"} <= domain_ids,
+          "semantic domain manifest lost a typed state/verdict/lifecycle domain")
+check(
+    "`insufficient-evidence` — available primary session evidence is insufficient" in trajectory_sem
+    and "`unverified` — available primary session evidence is insufficient" not in trajectory_sem,
+    "trajectory-auditor: evidence-state literal still reused as workflow verdict",
+)
+check(
+    "Issue/ticket/report outcome -> issue/ticket/report workflow" in root_sem
+    and "search existing issues when access exists" not in root_sem
+    and "### Issue / ticket / report" in code_orchestrator_sem
+    and "Search existing issues" in code_orchestrator_sem
+    and "### Existing PR follow-up" in code_orchestrator_sem,
+    "root/code-orchestrator: adjacent issue/PR workflow mechanics are not correctly colocated",
+)
+traces_owner_sem = text("evals/semantic-transition-traces.md")
+check(
+    "consistent consumer duplicate is still a semantic-ownership regression" in traces_owner_sem.lower()
+    and "inherited shared contract + role-local method" in traces_owner_sem.lower(),
+    "semantic transition traces: ST-120 semantic-owner duplicate regression missing",
+)
+
 # Longitudinal trajectory auditing is a separate second-opinion lifecycle:
 # owner must first reassess its own model, while the auditor independently checks only
 # the residual longitudinal question against primary session evidence.
@@ -564,7 +656,8 @@ check(
     and "enabling progress" in trajectory_sem
     and "diagnostic progress" in trajectory_sem
     and "hypothesis laundering" in trajectory_sem
-    and "`independent`, `clustered`, or `unverified`" in trajectory_sem
+    and "classify the relevant blockers as `independent` or `clustered`" in trajectory_sem
+    and "classification evidence `unverified`" in trajectory_sem
     and "`report-only`, `pre-existing`, or locally `out-of-scope`" in trajectory_sem
     and "Do not let local severity" in trajectory_sem
     and "existing files/functions/call sites as evidence" in trajectory_sem
@@ -586,7 +679,8 @@ check(
     and "`reanchor` — the current workflow framing has materially" in trajectory_sem
     and "`reassess` — cumulative evidence no longer justifies" in trajectory_sem
     and "`checkpoint-required` — the proposed next transition would treat" in trajectory_sem
-    and "`unverified` — available primary session evidence is insufficient" in trajectory_sem
+    and "`insufficient-evidence` — available primary session evidence is insufficient" in trajectory_sem
+    and "remain `unverified` as evidence state" in trajectory_sem
     and "Do not propose replacement implementation" in trajectory_sem
     and "Do not classify prompt/instruction defects" in trajectory_sem
     and "Audit the trajectory, not the repository" in trajectory_sem
@@ -775,7 +869,7 @@ contract_audit = text("evals/contract-protocol-audit.py")
 contract_spec = text("evals/contract-protocol-spec.json")
 contract_selftest = text("evals/contract-protocol-selftest.py")
 release_gates = text("evals/run-release-gates.py")
-check("role-local executable method" in contract_spec and "Ownership -> Invocation -> Method -> Boundaries -> Result" in contract_spec and "producer output, parent transformation, consumer input" in contract_spec and "Keyword presence" in contract_spec, "contract/protocol spec missing semantic-shape/adversarial audit principles")
+check("inherited shared contract + role-local method" in contract_spec and "second consistent definition" in contract_spec and "Ownership -> Invocation -> Method -> Boundaries -> Result" in contract_spec and "producer output, parent transformation, consumer input" in contract_spec and "Keyword presence" in contract_spec, "contract/protocol spec missing semantic-owner/semantic-shape/adversarial audit principles")
 check("CONTRACT / PROTOCOL AUDIT v3" in contract_audit and "missing essential profile core-loop capabilities" in contract_audit and "REVIEW is intentionally release-blocking" in contract_audit and "Prompt length is diagnostic only" in contract_audit, "contract audit v3 severity/core-loop/review gate missing")
 check("keyword-stuffed implementation role was not rejected" in contract_selftest and "thin ops role without diagnostic isolation" in contract_selftest and "five-heading shell without executable implementation method was not rejected" in contract_selftest and "compact executable discovery role" in contract_selftest and "without five standardized headings" in contract_selftest and "audit orchestrator missing only reconciliation" in contract_selftest and "producer-side implementation certification" in contract_selftest and "new role without executable-contract audit profile did not block release" in contract_selftest and "stale role profile did not block release" in contract_selftest and "thin external research role without version/conflict applicability loop was not rejected" in contract_selftest and "complete external-research contract should PASS" in contract_selftest, "contract audit v3 synthetic anti-gaming/severity/lifecycle/semantic-shape/external-research selftests missing")
 edge_audit = text("evals/role-handoff-audit.py")
@@ -783,6 +877,7 @@ edge_selftest = text("evals/role-handoff-selftest.py")
 release_gates = text("evals/run-release-gates.py")
 check("Closed-world static audit" in edge_audit and "EDGE_CLASSIFICATION" in edge_audit and "UNCLASSIFIED EDGE" in edge_audit and "STALE EDGE" in edge_audit and "ui-orchestrator','a11y-reviewer" in edge_audit and "code-orchestrator','devops" in edge_audit and "auditor','specialists" in edge_audit and "code-orchestrator','librarian" in edge_audit and "auditor','librarian" in edge_audit, "role-handoff closed-world inventory/profiles missing")
 check("recipe-shaped devops handoff not rejected" in edge_selftest and "unbound a11y handoff not rejected" in edge_selftest and "preselected UI planning handoff not rejected" in edge_selftest and "unbounded auditor specialist handoff not rejected" in edge_selftest and "new unclassified handoff edge did not block release" in edge_selftest and "stale handoff classification did not block release" in edge_selftest and "unbound librarian handoff not rejected" in edge_selftest and "auditor librarian authority/applicability omission not rejected" in edge_selftest, "role-handoff synthetic anti-gaming/inventory/external-research selftests missing")
+check("skill control selftest" in release_gates and "skill control audit" in release_gates, "release gate runner missing skill-control checks")
 check("role-handoff selftest" in release_gates and "role-handoff edge audit" in release_gates, "release gate runner missing role-handoff checks")
 check("unresolved findings must not be waived merely to obtain PASS" in release_gates, "release gate aggregator may waive unresolved contract findings")
 check("Role lifecycle requalification" in text("docs/semantic-design-manual.md") and "method-preservation test" in text("docs/semantic-design-manual.md") and "closed-world discovered handoff inventory" in text("docs/semantic-design-manual.md"), "semantic-design manual missing role lifecycle/method-preservation/closed-world edge audit")
@@ -864,14 +959,14 @@ check(
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 119, "semantic-transition suite must contain 119 cases")
+check(traces.count("### ST-") == 126, "semantic-transition suite must contain 126 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 119, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 126, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -1413,6 +1508,44 @@ check(
     and "review pass" in traces.lower()
     and "later lifecycle authorization" in traces.lower(),
     "ST-119 review-verdict/lifecycle-boundary regression missing",
+)
+check(
+    "st-120 — a consistent consumer duplicate is still a semantic-ownership regression" in traces.lower()
+    and "second shared definition" in traces.lower()
+    and "inherited shared contract + role-local method" in traces.lower(),
+    "ST-120 semantic-owner duplicate regression missing",
+)
+check(
+    "st-121 — evidence-status literal must not become a workflow verdict" in traces.lower()
+    and "typed semantic-domain audit" in traces.lower()
+    and "insufficient-evidence" in traces.lower(),
+    "ST-121 typed semantic-domain collision regression missing",
+)
+check(
+    "st-122 — adjacent issue and pr workflow mechanics share the role-owned workflow layer" in traces.lower()
+    and "detailed issue mechanics" in traces.lower()
+    and "`pr-readiness` remains the canonical owner" in traces.lower(),
+    "ST-122 issue/PR workflow-placement regression missing",
+)
+check(
+    "st-123 — pack-owned skill cannot become an undeclared second semantic owner" in traces.lower()
+    and "conditional loading does not permit a skill to become a second owner" in traces.lower(),
+    "ST-123 pack-skill ownership regression missing",
+)
+check(
+    "st-124 — typed semantic collision inside a pack-owned skill is a release failure" in traces.lower()
+    and "skill-side collisions bypass the domain gate" in traces.lower(),
+    "ST-124 pack-skill typed-domain regression missing",
+)
+check(
+    "st-125 — vendor skill content remains subordinate to the pack integration boundary" in traces.lower()
+    and "vendor subtree remains unchanged" in traces.lower(),
+    "ST-125 vendor containment regression missing",
+)
+check(
+    "st-126 — root-owned canonical state and skill-owned procedure must not collapse into duplicate policy" in traces.lower()
+    and "inherited shared contract + skill-local procedure" in traces.lower(),
+    "ST-126 root/skill ownership split regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | indeterminate`" in traces,

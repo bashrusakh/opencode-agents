@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.90 beta**
+**Pack version: v30.93 beta**
 
 **These rules are normative. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -82,6 +82,8 @@ When a specialist skill is selected or a root/project rule requires one, load it
 
 Skills remain below section 0 instruction/action precedence, task-semantic authority, role boundaries, gates, and applicable project rules in this file. Use existing project commands and conventions first. Do not add or tighten tooling, dependencies, strict modes, coverage gates, sanitizers, or build config only because a skill recommends it.
 
+Bundled third-party/vendor skills are conditional provider/domain guidance, not pack-policy owners. Their descriptions do not override a root/role-owned activation boundary, and their bodies do not acquire authority over scope, review method, project source-of-truth, gates, or mutations merely by being loaded. When a pack-owned role/skill defines the integration boundary, consume only vendor mechanics/advice compatible with that boundary; conflicting vendor `required`/`always`/default/persist/install language remains advisory until separately established by higher-priority project/task authority and the applicable gate.
+
 Mention skill usage once when useful: `Skill: <name|none>`.
 
 ### 2.2 Behavioral contract check
@@ -111,6 +113,8 @@ If authority is missing, keep the claim as evidence or a hypothesis. Return unre
 A user response authorizes only the material proposition actually presented for decision. Labels, option descriptions, helper text, summaries, or surrounding explanation may clarify consequences that are already necessary under that proposition, but they do not silently authorize another independently choosable material proposition. If a later candidate contains material meaning that is not entailed by the user's visible decision or another established authority source, that added meaning remains an agent proposal or unresolved choice.
 
 Preserve semantic correspondence as claims move through questions, summaries, plans, assignments, checkpoints, and handoffs. Restatement, bundling, repetition, omission of qualifiers, or placement inside a selected option does not strengthen authority. Conditional alternatives and fallbacks remain conditional until their preconditions are established; a permitted fallback is not automatically equivalent to satisfying the strongest established outcome.
+
+When an authority-bearing user interaction's primary record will not be retrievable by a downstream semantic role, preserve a **contemporaneous provenance receipt** before the dependent handoff. The canonical receipt interface records the exact material proposition presented, the exact selected/typed response, all material qualifiers, and source/channel identity when available. The receipt preserves evidence of that interaction; it does not create, broaden, or reinterpret authority. A later paraphrase or reconstructed summary is not an equivalent receipt.
 
 Preserve the materially established proposition itself, not only its action or mutation ceiling. Technical discretion may refine mechanics inside an established approach, but it does not authorize replacing an established requested approach with a materially different one merely because the replacement is narrower, safer, technically preferable, or serves the same broad end goal. Treat that replacement as **semantic substitution**. Evidence may establish that the original approach is blocked or non-viable, but that fact does not itself authorize a materially different replacement. A material substitution requires separate proposition-scoped authority, unless the replacement was already established as a conditional alternative and evidence establishes that alternative's condition. When the distinction matters, classify the candidate relation to the established proposition as `preserved`, `refined`, `strengthened`, `weakened`, `substituted`, or `indeterminate`; ordinary implementation discretion covers `refined`, not an unsupported `substituted` relation. `indeterminate` means the proposition relation itself cannot yet be classified from the available authority/evidence; use `unverified` only for evidence/verification state, not as a relation or workflow verdict.
 
@@ -239,7 +243,7 @@ Workflow selection:
 - UI/web options, audit, planning, redesign, layout, theme, forms, dashboards, tables, navigation, or visual hierarchy -> UI workflow.
 - Broken, incorrect, failing, strange, or wrong behavior -> investigation by default unless the requested deliverable includes changed code/config/UI/tests/docs; then use bugfix workflow.
 - Existing PR, review comment, requested correction, failed PR check, CI failure, or follow-up work -> PR follow-up workflow on the same PR branch by default.
-- Issue/ticket/report outcome -> resolve the claimed target state/freshness, verify facts against that target, search existing issues when access exists, draft/open only when issue creation is in scope, and do not fix code unless changed code/config/UI is separately requested.
+- Issue/ticket/report outcome -> issue/ticket/report workflow; issue creation does not by itself establish a repository-implementation deliverable.
 - Whole-project review, architecture health, dead-code sweep, logic audit, duplicated-fix search, or broad bug hunt -> project audit workflow; use Persistent Planning when duration/coordination warrants it and plan-file mutation is authorized.
 - Docker, systemd, CI, deployment, runtime services, environment, logs, permissions, or production config -> DevOps/runtime workflow.
 - Release notes, tags, changelog, release body, or release verification -> release-prep workflow.

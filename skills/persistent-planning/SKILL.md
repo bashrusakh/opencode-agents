@@ -1,17 +1,15 @@
 ---
 name: persistent-planning
-description: Use when a task genuinely requires durable coordination across long duration, broad scope, multiple sessions, multiple agents, or more state than one reliable session can preserve. Do not load for short, self-contained, or read-only work that can be completed without durable task artifacts.
+description: Use only after root AGENTS.md section 2.3 activates Persistent Planning Mode. Owns fallback durable representation, resume, and work-package persistence mechanics; root owns activation and canonical task-state policy.
 ---
 
 # Persistent planning
 
-Persistent planning preserves one authoritative task state across work boundaries. It does not create new product authority, widen scope, or authorize repository mutation.
+Root section 2.3 owns activation, canonical task-state semantics, preference for an existing project planning owner, and the repository-mutation gate. This skill begins after that boundary is established and does not redefine it.
 
-## Prefer the nearest existing owner
+## Fallback durable representation
 
-If the project already defines a canonical plan, roadmap, tracker, or handover convention, use it. Do not create a parallel planning system merely because this pack has a default representation.
-
-When repository planning artifacts are authorized and no project convention exists, the pack default is:
+When root section 2.3 establishes that durable repository planning is authorized and no existing project convention can serve as the canonical representation, the pack fallback is:
 
 ```text
 plans/<plan>/
@@ -25,29 +23,16 @@ plans/<plan>/
 
 Use only the files needed by the actual task. Do not create empty artifact categories for symmetry.
 
-## Durable state contract
+## Resume and update procedure
 
-The authoritative plan state must let another session reconstruct:
-
-- the established outcome and active scope;
-- the current phase/work package;
-- material decisions and their authority/evidence status;
-- completed and remaining work;
-- blockers and unresolved choices;
-- state-bound verification/review evidence;
-- the next safe action.
-
-On resume, read the canonical current state before changing it and continue from that state instead of reconstructing progress from chat summaries.
+On resume, read the root-established canonical current state before changing it. Continue from that state instead of reconstructing progress from chat summaries. If the fallback representation is the canonical owner for this task, update only the smallest artifact set needed to preserve current work-package state, durable decisions/blockers, state-bound evidence, and the next safe action already required by root section 2.3.
 
 ## Work-package cycle
 
-For broad implementation, use the minimal cycle needed to keep state coherent:
+For broad implementation, use the minimal cycle needed to keep the canonical state coherent:
 
-1. define the bounded work package;
-2. check it against current authority/scope/gates;
-3. execute only that package;
-4. reflect durable conclusions, blockers, and next action back into the canonical state.
+1. define the bounded work package from current canonical state;
+2. execute only that package within the already-established authority/scope/gates;
+3. reflect durable conclusions, blockers, evidence changes, and next action back into the canonical representation.
 
-This cycle is a coordination aid, not a mandatory ceremony. Collapse steps when the state is obvious and no information would be lost.
-
-Read-only/audit work does not create repository plan files merely for continuity. Repository planning artifacts are mutations and remain subject to the root authorization policy.
+This cycle is a coordination aid, not a mandatory ceremony. Collapse steps when no durable state would be lost. Repository planning artifacts remain mutations governed by the root authorization policy.

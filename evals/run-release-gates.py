@@ -12,6 +12,14 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 checks=[
     ("contract audit selftest", [sys.executable, str(ROOT/'evals/contract-protocol-selftest.py')]),
+    ("skill control selftest", [sys.executable, str(ROOT/'evals/skill-control-selftest.py')]),
+    ("skill control audit", [sys.executable, str(ROOT/'evals/skill-control-audit.py')]),
+    ("semantic ownership selftest", [sys.executable, str(ROOT/'evals/semantic-ownership-selftest.py')]),
+    ("semantic ownership audit", [sys.executable, str(ROOT/'evals/semantic-ownership-audit.py')]),
+    ("semantic domain selftest", [sys.executable, str(ROOT/'evals/semantic-domain-selftest.py')]),
+    ("semantic domain audit", [sys.executable, str(ROOT/'evals/semantic-domain-audit.py')]),
+    ("section ownership selftest", [sys.executable, str(ROOT/'evals/section-ownership-selftest.py')]),
+    ("section ownership audit", [sys.executable, str(ROOT/'evals/section-ownership-audit.py')]),
     ("static policy regressions", [sys.executable, str(ROOT/'evals/static-policy-regressions.py')]),
     ("installer safety selftest", [sys.executable, str(ROOT/'evals/installer-safety-selftest.py')]),
     ("contract/protocol audit", [sys.executable, str(ROOT/'evals/contract-protocol-audit.py')]),

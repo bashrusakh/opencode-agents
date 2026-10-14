@@ -1,5 +1,59 @@
 # Changelog
 
+## v30.93 beta
+
+Whole-pack skill ownership/type hardening without modifying bundled third-party skills:
+
+- adds a closed-world `skill-control` manifest/audit/selftest for all 22 bundled skill entrypoints: 9 pack-controlled and 13 vendor-advisory; vendor subtrees are SHA-256 guarded and remain byte-identical to v30.92;
+- expands semantic ownership from 15 to 28 declared capabilities so pack-owned skills become first-class owner/consumer nodes rather than opaque conditional text;
+- extends typed-domain coverage into declared pack skills and registers `resource-lifecycle` terminal states plus owned-PR lifecycle states;
+- moves the canonical contemporaneous provenance-receipt schema to root §2.2.1; `code-orchestrator` produces/references it and `session-evidence` consumes it without redefining the fields;
+- compacts `persistent-planning` to fallback representation/resume/work-package mechanics while root §2.3 retains activation and canonical-state ownership;
+- compacts `graymatter-memory` to GrayMatter identity/query/checkpoint/write/correction mechanics while root retains memory authority/activation/freshness/durability semantics;
+- compacts `verification-strategy` to layer selection, batching/cadence, tester activation, and blocked-boundary handling while root retains universal evidence validity/freshness rules;
+- keeps Alibaba/Jeffallan/UUPM skill bytes unchanged and strengthens only pack-owned containment: reviewer consumes deterministic OCR preflight mechanics without accepting vendor host-review method, managed OCR activation stays reviewer-owned, and UUPM install/persist/default/source-of-truth directives remain advisory under `ui-component-sources`;
+- adds ST-123..ST-126 for pack-skill second-owner regression, skill-side typed collision, vendor containment, and root↔skill ownership composition.
+
+Agent permission/frontmatter policy is intentionally unchanged.
+
+Fresh isolated behavioral replay of ST-123..ST-126 is not claimed unless separately executed.
+
+See [`docs/releases/v30.93-beta.md`](docs/releases/v30.93-beta.md) and [`docs/contract-protocol-audit-v30.93.md`](docs/contract-protocol-audit-v30.93.md).
+
+## v30.92 beta
+
+Typed semantic-domain hardening and root/orchestrator placement cleanup:
+
+- keeps `unverified` exclusively in the evidence/verification-status domain and changes the trajectory-auditor missing-primary-evidence workflow verdict to `insufficient-evidence`;
+- adds a typed semantic-domain manifest/audit/selftest that inventories durable evidence/relation/verdict literals, discovers role verdict enums, and rejects one literal reused across incompatible domains;
+- expands cross-layer semantic ownership from 9 to 15 declared capabilities, including fresh-review isolation, review activation/reuse, user-decision binding, publication authorization, failed-fix reset, and issue/PR workflow mechanics;
+- adds an exact root/orchestrator section-placement map plus audit/selftest so new or moved material sections require an explicit owner/reference/specialization classification;
+- removes remaining root-owned policy restatements from `code-orchestrator` for fresh-review isolation, review cadence, user-decision binding, publication authorization, and failed-fix reset while preserving role-local construction/consumption method;
+- moves detailed issue/ticket/report mechanics out of root normalization and colocates them with `Existing PR follow-up` under the orchestrator's `Workflow behavior`; `pr-readiness` remains the canonical owner of the owned-PR Draft/Candidate/Ready lifecycle;
+- updates old handoff/static test oracles that had required duplicated fresh-review policy in the orchestrator; edge tests now accept inherited root policy and reject contradictory caller steering instead;
+- adds ST-121 (typed state-domain collision) and ST-122 (issue/PR workflow-placement ownership).
+
+Permission/frontmatter policy is intentionally unchanged in this release.
+
+Fresh isolated behavioral replay of ST-121/ST-122 is not claimed unless separately executed.
+
+See [`docs/releases/v30.92-beta.md`](docs/releases/v30.92-beta.md) and [`docs/contract-protocol-audit-v30.92.md`](docs/contract-protocol-audit-v30.92.md).
+
+## v30.91 beta
+
+Generic cross-layer semantic-ownership control plane:
+
+- promotes canonical ownership from a design-checklist principle into a manifest-driven release gate over material shared contracts;
+- declares canonical owner plus downstream `reference` / `consume` / `specialize` relations for the current root↔orchestrator↔reviewer/skill shared semantic graph;
+- rejects a consumer that becomes a second consistent definition of a shared contract, including paraphrased handoff-schema duplication, even when role executability and behavior would otherwise remain green;
+- adds synthetic anti-gaming selftests proving clean owner references and legitimate specialization still pass while a paraphrased duplicate, missing activation, or owner drift fails;
+- clarifies that role executability is **inherited shared contract + role-local method**, so evals must not force consumers to repeat root/skill-owned vocabulary merely to obtain PASS;
+- adds ST-120 for the failure class where static/behavioral correctness hides duplicate semantic ownership.
+
+Fresh isolated behavioral replay of ST-120 is not claimed unless separately executed.
+
+See [`docs/releases/v30.91-beta.md`](docs/releases/v30.91-beta.md) and [`docs/contract-protocol-audit-v30.91.md`](docs/contract-protocol-audit-v30.91.md).
+
 ## v30.90 beta
 
 Decision-boundary hardening plus root/orchestrator semantic-owner deduplication:

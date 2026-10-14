@@ -1,41 +1,27 @@
 ---
 name: graymatter-memory
-description: Use when GrayMatter memory tools are available and prior unfinished work, user preferences, project conventions, decisions, workarounds, or durable task history can materially affect the current action. Do not load for fresh self-contained work with no material dependency on prior state.
+description: Use only when the root Memory and continuity policy activates GrayMatter recall/continuity. Owns GrayMatter identity, query, checkpoint, durable-write, correction, and tool-call mechanics; root owns authority, activation, freshness/isolation, and durable-vs-transient policy.
 ---
 
 # GrayMatter memory and continuity
 
-GrayMatter is optional recall context, not repository authority. Current code, project rules, repository history, and observed tool/runtime state outrank recalled memory when they conflict.
+Apply the root **Memory and continuity** contract first. This skill supplies GrayMatter-specific mechanics only and does not redefine memory authority, activation, fresh-judgment isolation, or what counts as durable versus transient state.
 
 ## Identity
 
 Use a stable `agent_id`: the repository root directory name verbatim. Add a stable `-<role>` suffix only when multiple long-lived agents in the same repository genuinely need separate role memory. Facts intended for every agent in the project belong to `__shared__`.
 
-## Relevant recall
+## Recall and checkpoint procedure
 
-Use recall only when it can change the next action.
+When the root policy activates continuity for the **current role/workflow**, call `checkpoint_resume` for the applicable `agent_id` first when resuming unfinished work. For other root-authorized recall, search project memory and `__shared__` with a focused query phrased as the current task/question rather than an unstructured keyword bag. If no checkpoint exists, continue normally.
 
-- When the **current role/workflow itself** is resuming unfinished/long-running work, call `checkpoint_resume` for the applicable `agent_id` first. A fresh independent-judgment child is not resuming the parent's workstream: do **not** call `checkpoint_resume` or search prior-task/session memory for the parent task merely because that workflow is long-running. The parent must supply the clean authoritative judgment contract; if it is incomplete, report the missing authority instead of reconstructing investigative history through memory.
-- Search project memory and `__shared__` with a focused query when a prior user preference, decision, convention, workaround, or earlier task state could materially affect the current non-fresh action.
-- Phrase the query as the current task/question rather than as an unstructured keyword bag.
-- Do not perform a memory search merely because the integration exists.
+For a fresh independent-judgment child, apply the root isolation contract: do not use GrayMatter to reconstruct the parent task/history. Missing authority stays an authority gap.
 
-If no checkpoint exists, continue normally. If recalled memory conflicts with current authoritative evidence, verify the current source and update/forget stale memory rather than preserving both as live facts.
+Before stopping unfinished work whose transient state must survive, save concise reconstructable state with `checkpoint_save`.
 
-## Store only durable conclusions
+## Durable-write and correction mechanics
 
-Use durable memory for atomic, specific, self-contained conclusions that are likely to matter again and are not already authoritative in current code or project documentation.
-
-Appropriate examples:
-
-- a durable user preference;
-- an undocumented project-wide convention or security rule;
-- a non-obvious decision that future work will need;
-- an environment quirk or reusable workaround.
-
-Do not store secrets, credentials, raw transcripts, speculation, large outputs, or temporary progress. Use checkpoints for transient unfinished-work state.
-
-Before stopping unfinished work, save concise reconstructable state with `checkpoint_save`.
+When root policy permits a durable conclusion to be stored, write it atomically and specifically with `memory_add`. For a correction, search for the exact old fact if necessary, then use `memory_reflect` to update or forget it so stale and corrected variants do not remain simultaneously live in recall. Do not copy raw tool output into durable memory merely because it was retrieved.
 
 ## Tool contract
 
@@ -46,5 +32,3 @@ Use the current GrayMatter tool schema exposed by the runtime. Typical calls are
 - `memory_reflect(action, agent_id[, text, target])`
 - `checkpoint_save(agent_id[, state])`
 - `checkpoint_resume(agent_id)`
-
-For a correction, search for the exact old fact if necessary, then update or forget it so stale and corrected variants do not remain simultaneously authoritative in recall.

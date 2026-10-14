@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "domains": [
+    {
+      "id": "evidence_status",
+      "domain_class": "evidence_status",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "use `unverified` only for evidence/verification state"
+        ],
+        [
+          "Preserve the evidence state"
+        ]
+      ],
+      "tokens": [
+        "established",
+        "unverified",
+        "contradicted"
+      ]
+    },
+    {
+      "id": "proposition_relation",
+      "domain_class": "proposition_relation",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "classify the candidate relation"
+        ],
+        [
+          "`preserved`"
+        ],
+        [
+          "`indeterminate`"
+        ]
+      ],
+      "tokens": [
+        "preserved",
+        "refined",
+        "strengthened",
+        "weakened",
+        "substituted",
+        "indeterminate"
+      ]
+    },
+    {
+      "id": "semantic_checkpoint_verdict",
+      "domain_class": "workflow_verdict",
+      "owner": "agents/semantic-checkpoint.md",
+      "owner_heading": "## Verdict",
+      "tokens": [
+        "proceed",
+        "hold",
+        "insufficient-context"
+      ]
+    },
+    {
+      "id": "trajectory_verdict",
+      "domain_class": "workflow_verdict",
+      "owner": "agents/trajectory-auditor.md",
+      "owner_heading": "## Verdict semantics",
+      "tokens": [
+        "continue",
+        "reanchor",
+        "reassess",
+        "checkpoint-required",
+        "insufficient-evidence"
+      ]
+    },
+    {
+      "id": "resource_lifecycle_terminal_state",
+      "domain_class": "lifecycle_state",
+      "owner": "skills/resource-lifecycle/SKILL.md",
+      "owner_signature": [
+        [
+          "every known workflow-created temporary resource is exactly one of"
+        ],
+        [
+          "cleaned"
+        ],
+        [
+          "ownership transferred"
+        ]
+      ],
+      "tokens": [
+        "cleaned",
+        "intentionally retained",
+        "cleanup blocked",
+        "ownership transferred"
+      ]
+    },
+    {
+      "id": "owned_pr_lifecycle_state",
+      "domain_class": "lifecycle_state",
+      "owner": "skills/pr-readiness/SKILL.md",
+      "owner_signature": [
+        [
+          "Draft publication and Ready-for-review are different boundaries"
+        ],
+        [
+          "Candidate HEAD"
+        ],
+        [
+          "Ready"
+        ]
+      ],
+      "tokens": [
+        "Draft",
+        "Candidate HEAD",
+        "Ready"
+      ]
+    }
+  ]
+}

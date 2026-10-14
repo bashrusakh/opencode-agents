@@ -197,6 +197,8 @@ Use a skill for conditional procedural knowledge that should load only when rele
 
 The skill description should be short and precise enough to answer **when this applies**. Put the full procedure in the skill body and supporting references.
 
+Treat bundled skills as a closed-world control surface with explicit provenance. Classify each entrypoint as **pack workflow owner**, **pack integration**, or **vendor advisory**. Pack-owned/integration skills participate in the same semantic-owner and typed-domain graph as root/roles; each declares the shared capabilities/domains it owns or consumes, its material top-level procedure sections, and its side-effect class. Vendor skill bytes are provenance-preserved rather than normalized into pack policy; when the pack owns an integration boundary around vendor content, keep that boundary in a pack-owned root/role/skill and hash-guard the vendor subtree so maintenance cannot silently rewrite upstream semantics.
+
 ### Project documentation
 
 Keep project-specific commands, architecture, constraints, and conventions in their project-owned documents. Global agent policy should point to them conditionally rather than copying them.
@@ -207,7 +209,13 @@ Put behavior in runtime code when it is actually a tool/API contract, not a reas
 
 Do not compensate for a broken pagination API, permission boundary, or session topology with semantic prose if the runtime can be corrected.
 
-When auditing ownership, inspect the **cross-layer graph**, not only each file in isolation. A rule can have one apparent owner inside every file while still being duplicated across root, role, and skill. For every material state machine, lifecycle, or procedural integration, identify the canonical owner and verify that other layers only activate, constrain, consume, or report it.
+When auditing ownership, inspect the **cross-layer graph**, not only each file in isolation. A rule can have one apparent owner inside every file while still being duplicated across root, role, and skill. For every material shared state machine, lifecycle, schema, or procedural integration, identify the canonical owner and verify that other layers only reference/activate, consume, or deliberately specialize it. Record that owner→consumer relation in the semantic-ownership manifest when the contract is material enough to affect standing runtime behavior. A second semantically equivalent definition is still an ownership defect even when both copies agree today.
+
+Treat **typed semantic vocabulary as a separate control plane from ownership**. A literal that belongs to one state domain (for example evidence status, proposition relation, a role-owned workflow verdict, or a pack-owned skill lifecycle state) must not silently become a peer value in another domain. Maintain a typed-domain inventory for durable enums/literals, discover verdict enums from roles **and declared pack-owned/integration skills**, and fail promotion when one literal is assigned to multiple domains even if both definitions have different canonical owners. Vendor-advisory text is not promoted into the pack type system merely because it contains state-like words. Ownership answers *who defines the contract*; domain integrity answers *what type a state token means*.
+
+For the always-loaded root and primary orchestrator, maintain a reviewed **section-placement map**. Every material section must be classified as shared owner/boundary, role-local owner, specialization, or reference consumer. A new or moved section therefore forces an explicit placement decision even when no existing semantic-family signature recognizes its prose. The map does not prove deduplication by itself; it closes the blind spot where a new cross-layer family enters an existing prompt without being reviewed for ownership.
+
+Treat **role executability as inherited shared contract + role-local method**. A consumer does not need to repeat root/skill-owned policy to remain executable; its prompt needs only the role-owned algorithm, discriminators, evidence/stop/result behavior, and any specialization that cannot be reconstructed from the shared owner. An eval must not require local copies of generic owner vocabulary merely to obtain PASS.
 
 A semantic role may reference a conditional integration, but provider/API/CLI invocation mechanics belong in the owning integration skill or runtime adapter unless the exact mechanic is itself part of that role's semantic responsibility.
 
@@ -592,15 +600,19 @@ Do not use one grader type for everything.
 
 ### Keep release gates adversarial to the candidate
 
-A release check exists to falsify the candidate, not to confirm that expected wording is present. Separate at least three evidence classes:
+A release check exists to falsify the candidate, not to confirm that expected wording is present. Separate at least four evidence classes:
 
 1. **structural/retention checks** — schema, dependencies, known owner/consumer invariants, and whether a known guard disappeared;
-2. **contract/protocol checks** — split into (a) role executability and (b) caller→assignment→callee edge compatibility. Every routed substantive role must be executable, and every real handoff must satisfy the callee invocation contract without laundering authority, proof, recipes, or completion; an individually correct caller and callee do not prove their edge;
-3. **behavioral replay** — whether representative traces actually produce the required behavior under the evaluated model/runtime.
+2. **skill-control checks** — every bundled skill entrypoint is classified; pack-owned/integration skills declare their owner/consumer/type surface, new material skill sections cannot appear unreviewed, and vendor-advisory subtrees remain provenance/hash guarded rather than silently rewritten;
+3. **semantic-ownership checks** — the declared cross-layer graph still has one canonical owner for each material shared contract, consumers still activate/reference/consume/specialize that owner as declared, and a role or declared pack-owned/integration skill has not become a second definition merely because the duplicate remains behaviorally consistent;
+4. **typed-domain checks** — durable semantic literals retain one declared state domain, discovered workflow-verdict enums across roles and declared pack-owned/integration skills are inventoried, and evidence/relation tokens cannot become workflow verdicts merely because local prose remains internally coherent;
+5. **section-placement checks** — every material root/orchestrator section is explicitly classified so a new shared family cannot bypass ownership review merely by appearing under a new or repurposed heading; pack-owned skill entrypoint headings are separately closed-world inventoried by the skill-control gate;
+6. **contract/protocol checks** — split into (a) role executability and (b) caller→assignment→callee edge compatibility. Every routed substantive role must be executable, and every real handoff must satisfy the callee invocation contract without laundering authority, proof, recipes, or completion; an individually correct caller and callee do not prove their edge;
+7. **behavioral replay** — whether representative traces actually produce the required behavior under the evaluated model/runtime.
 
 Mutation tests show that a known guard is load-bearing; they do not prove that the guard set is complete. Keyword/presence checks show structural evidence; they do not prove semantic adequacy. Do not add a role-specific exception merely because a new generic audit makes the current candidate fail. First decide whether the audit criterion itself is wrong using a nearby preservation/overreach case. If the criterion remains valid, keep the release red until the contract is fixed.
 
-For routed-role executability, do not reduce the contract check to prompt size or vocabulary. Audit two layers independently:
+For routed-role executability, do not reduce the contract check to prompt size or vocabulary. Evaluate the role together with inherited shared policy, then audit the role-local executable surface independently. In particular, do not make a consumer repeat a shared owner schema/state machine merely so a local regex can see the same nouns. Audit two role-local layers:
 
 - **generic execution skeleton** — role-local action sequence/decision rules, evidence threshold, stop/escalation and result semantics;
 - **profile-specific core loop** — the characteristic method that makes that capability distinct (for example symptom→cause→fix→rerun for debugging, current-state→fault-layer isolation→authorized reversible action→postcondition for operations, or target→reference/call-flow trace→corroboration→bounded handoff for discovery).
@@ -847,6 +859,10 @@ Ask:
 - Can an existing rule already produce the behavior?
 - Can this live in a conditional skill instead of root?
 - Did we copy the same semantic rule into multiple roles?
+- If the rule is a material shared contract, is its canonical owner and each reference/consume/specialize consumer declared in the semantic-ownership manifest?
+- Does the change introduce or repurpose a durable state/verdict/relation literal; if so, is its typed semantic domain declared and collision-free?
+- Did a new or moved root/orchestrator section get classified in the section-placement map, and does its placement agree with the canonical owner?
+- Would adding a second *consistent paraphrase* in a consumer make the ownership gate fail, or are we only protecting historical literal strings?
 - Did the change create a mandatory stage where only a conditional judgment was intended?
 
 ### Step 10 — Re-evaluate after model/runtime upgrades
@@ -928,7 +944,11 @@ Before shipping a prompt/harness semantic change, verify:
 - [ ] The expected behavior is stated independently of the incident.
 - [ ] Authority and evidence are not conflated.
 - [ ] Optional mechanisms remain optional.
-- [ ] The rule has one canonical owner **across the full root → role → skill/runtime graph**, not merely within each file; consumers activate/reference the owner instead of restating its state machine or procedure.
+- [ ] The rule has one canonical owner **across the full root → role → skill/runtime graph**, not merely within each file; consumers reference/activate, consume, or deliberately specialize the owner instead of restating its shared state machine/schema/procedure. Material shared contracts are declared in `evals/semantic-ownership-spec.json`.
+- [ ] `evals/skill-control-spec.json` exactly classifies every bundled skill entrypoint as pack-owned/integration or vendor-advisory. Pack-controlled skills declare owned/consumed capabilities, typed domains, material `##` sections, and side-effect class; vendor subtrees retain their reviewed hashes and any package integration boundary lives outside vendor content.
+- [ ] The manifest-driven semantic-ownership audit passes across the whole declared graph, not only changed files; its selftest rejects a behaviorally consistent paraphrased duplicate in a role **and in an undeclared pack-skill consumer** while preserving a clean owner reference and legitimate specialization.
+- [ ] Durable semantic vocabulary is type-stable: `evals/semantic-domain-spec.json` assigns shared evidence/relation/verdict/lifecycle literals to one domain, the domain audit discovers runtime verdict enums across roles and declared pack skills, and its selftest rejects a literal reused through a pack skill.
+- [ ] The root/orchestrator section-placement map exactly covers both runtime surfaces; every new/moved material section is consciously classified as shared owner/boundary, role owner, specialization, or reference consumer before promotion.
 - [ ] Every real caller→callee edge satisfies the callee invocation contract: required target/state/mode/action/evidence inputs are supplied, caller-originated solutions remain hypotheses unless authoritative, and deleting an edge-specific handoff guard makes an edge-level regression test fail even if both roles still pass individually.
 - [ ] Every routed substantive role passes the role-executability test: shared/root policy may own common semantics, but the role itself contains enough role-owned procedure, profile-specific core loop, conditional decision logic, evidence/self-check, stop/escalation behavior, and result semantics to perform the delegated stage. Generic keywords alone are insufficient; prompt size is diagnostic only. `FAIL` and `REVIEW` follow semantic executability/severity, and PASS requires a characteristic false-success/adversarial defense in addition to the core loop.
 - [ ] Every substantive role is readable through the semantic shape `Ownership → Invocation → Method → Boundaries → Result`: each function has one clear primary locus, merged/specialized sections are allowed, and no duplicate summary is added merely to satisfy a heading/template.

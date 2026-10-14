@@ -1,0 +1,1846 @@
+{
+  "schema_version": 1,
+  "scope": "Material shared semantics whose canonical owner and downstream consumers must remain compositionally distinct.",
+  "capabilities": [
+    {
+      "id": "generic_specialist_handoff_contract",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "minimally sufficient and reconstructable"
+        ],
+        [
+          "assignment specializes the selected role contract"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "root section 5 handoff contract"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 14,
+            "groups": [
+              [
+                "objective",
+                "goal"
+              ],
+              [
+                "target.*scope",
+                "behavior.*scope",
+                "scope"
+              ],
+              [
+                "allowed action",
+                "action ceiling",
+                "mutation authority"
+              ],
+              [
+                "deliverable",
+                "expected evidence",
+                "expected result"
+              ],
+              [
+                "stop.*condition",
+                "stop.*boundary",
+                "escalation.*condition"
+              ]
+            ]
+          }
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 14,
+        "groups": [
+          [
+            "objective",
+            "goal",
+            "intended result",
+            "desired outcome",
+            "requested result"
+          ],
+          [
+            "target.*scope",
+            "behavior.*scope",
+            "affected surface",
+            "target surface",
+            "scope",
+            "behavioral boundary"
+          ],
+          [
+            "allowed action",
+            "permitted action",
+            "maximum permitted action",
+            "action ceiling",
+            "mutation authority",
+            "action level"
+          ],
+          [
+            "deliverable",
+            "expected evidence",
+            "evidence.*expected",
+            "expected result",
+            "result.*expected",
+            "proof expected"
+          ],
+          [
+            "stop.*condition",
+            "stop.*boundary",
+            "escalation.*condition",
+            "stop or escalate",
+            "stops? or escalates?",
+            "halt.*escalat"
+          ]
+        ],
+        "min_groups": 4
+      }
+    },
+    {
+      "id": "decision_space_preservation",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "preserve the user's actual decision space"
+        ],
+        [
+          "non-exhaustive hypotheses"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "root decision-space preservation rule"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 10,
+            "groups": [
+              [
+                "decision space",
+                "materially different approach",
+                "materially different direction"
+              ],
+              [
+                "candidate solutions",
+                "candidate approaches",
+                "options",
+                "alternatives"
+              ],
+              [
+                "non-exhaustive",
+                "not exhaustive"
+              ],
+              [
+                "independent recommendation",
+                "preselect.*architecture",
+                "preselected solution"
+              ]
+            ]
+          }
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 12,
+        "groups": [
+          [
+            "decision space",
+            "materially different approach",
+            "materially different direction"
+          ],
+          [
+            "options",
+            "alternatives",
+            "candidate approaches"
+          ],
+          [
+            "non-exhaustive",
+            "not exhaustive"
+          ],
+          [
+            "independent recommendation",
+            "preselect.*architecture",
+            "preselected solution"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "generic_mutation_parallelism",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "Prefer serialized mutation"
+        ],
+        [
+          "proven disjoint"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "Generic mutation parallelism.*root-owned"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 10,
+            "groups": [
+              [
+                "mutation",
+                "mutating"
+              ],
+              [
+                "parallel",
+                "concurrent",
+                "serialize",
+                "serialized"
+              ],
+              [
+                "disjoint",
+                "independent files",
+                "independent state"
+              ],
+              [
+                "only when",
+                "unless",
+                "must not"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "proposition_evidence_algebra",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "Preserve the evidence state"
+        ],
+        [
+          "classify the candidate relation"
+        ],
+        [
+          "`preserved`"
+        ],
+        [
+          "`unverified` only for evidence/verification state"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "consume",
+          "activation_signature": [
+            [
+              "root section 2\\.2\\.1"
+            ],
+            [
+              "root-owned proposition/evidence classes"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 18,
+            "groups": [
+              [
+                "evidence status"
+              ],
+              [
+                "established"
+              ],
+              [
+                "unverified"
+              ],
+              [
+                "contradicted"
+              ],
+              [
+                "proposition relation"
+              ],
+              [
+                "preserved"
+              ],
+              [
+                "refined",
+                "strengthened",
+                "weakened",
+                "substituted",
+                "indeterminate"
+              ]
+            ]
+          }
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 20,
+        "groups": [
+          [
+            "evidence status"
+          ],
+          [
+            "established"
+          ],
+          [
+            "unverified"
+          ],
+          [
+            "contradicted"
+          ],
+          [
+            "proposition relation"
+          ],
+          [
+            "preserved"
+          ],
+          [
+            "refined",
+            "strengthened",
+            "weakened",
+            "substituted",
+            "indeterminate"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "generic_routing_defaults",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "Entry-routing defaults"
+        ],
+        [
+          "Delegation-routing defaults"
+        ],
+        [
+          "Docker/systemd/CI/deploy/runtime"
+        ],
+        [
+          "external technical evidence"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "root routing map"
+            ],
+            [
+              "code workflow adds these discriminators"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "common_final_report_contract",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "## 10\\. Final reports"
+        ],
+        [
+          "remaining blockers/risks"
+        ],
+        [
+          "exact relevant verification"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "consume",
+          "activation_signature": [
+            [
+              "Apply root sections 2\\.4 and 10"
+            ],
+            [
+              "do not restate the shared final-report contract"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 12,
+            "groups": [
+              [
+                "material change",
+                "material finding"
+              ],
+              [
+                "exact.*verification",
+                "verification"
+              ],
+              [
+                "publication state",
+                "review.*state"
+              ],
+              [
+                "remaining blocker",
+                "remaining risk"
+              ],
+              [
+                "temporary-resource cleanup",
+                "cleanup status"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "owned_pr_lifecycle",
+      "owner": "skills/pr-readiness/SKILL.md",
+      "owner_signature": [
+        [
+          "Draft"
+        ],
+        [
+          "Candidate HEAD"
+        ],
+        [
+          "Ready"
+        ],
+        [
+          "Reviewed Base"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "load `pr-readiness`"
+            ],
+            [
+              "does not restate the Draft/Candidate/publication/Ready sequence"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 18,
+            "groups": [
+              [
+                "Draft"
+              ],
+              [
+                "Candidate HEAD"
+              ],
+              [
+                "push",
+                "publication"
+              ],
+              [
+                "Ready"
+              ],
+              [
+                "Reviewed Base",
+                "base SHA"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "terminal_session_evaluator_handoff",
+      "owner": "agents/code-orchestrator.md",
+      "owner_signature": [
+        [
+          "## Terminal semantic-evaluator handoff"
+        ],
+        [
+          "material participating child-session IDs"
+        ],
+        [
+          "diagnostic"
+        ],
+        [
+          "does not change an already-established terminal state"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "AGENTS.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "follows the orchestrator's role-local `@session-evaluator` handoff contract"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 12,
+            "groups": [
+              [
+                "parent session ID",
+                "orchestrator session ID"
+              ],
+              [
+                "child-session IDs",
+                "participating child"
+              ],
+              [
+                "complete or partial",
+                "completeness status"
+              ],
+              [
+                "session-history discovery",
+                "do not perform.*discovery"
+              ],
+              [
+                "diagnostic",
+                "non-gating",
+                "does not.*terminal state"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "independent_judgment_decision_boundary",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "\\*\\*decision boundary\\*\\*"
+        ],
+        [
+          "does not by itself satisfy or authorize the downstream transition"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "downstream decision boundary separately from target identity"
+            ]
+          ]
+        },
+        {
+          "path": "agents/reviewer.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "narrowest decision claim actually established"
+            ]
+          ]
+        },
+        {
+          "path": "skills/pr-readiness/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "does \\*\\*not\\*\\* itself establish or authorize the Ready transition"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh_independent_judgment_isolation",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "judgment-context isolation"
+        ],
+        [
+          "fresh independent child does \\*\\*not\\*\\* resume the parent task"
+        ],
+        [
+          "prior verdicts|fix-history framing"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "Apply the root \\*\\*Memory and continuity\\*\\* plus section 5 independent-judgment isolation contract"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 12,
+            "groups": [
+              [
+                "model-visible",
+                "task-specific steering"
+              ],
+              [
+                "recall capability",
+                "memory integration",
+                "connector"
+              ],
+              [
+                "checkpoint",
+                "parent-task",
+                "prior-task"
+              ],
+              [
+                "contaminat",
+                "clean invocation",
+                "reconfigur"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "agents/reviewer.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Freshness is a property of the \\*\\*task-specific judgmental or investigative information actually present"
+            ]
+          ]
+        },
+        {
+          "path": "skills/graymatter-memory/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "For a fresh independent-judgment child, apply the root isolation contract"
+            ]
+          ]
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 18,
+        "groups": [
+          [
+            "fresh independent",
+            "fresh reviewer"
+          ],
+          [
+            "checkpoint.*memory",
+            "parent.*memory",
+            "prior-task.*memory"
+          ],
+          [
+            "do not.*recover",
+            "does not.*resume",
+            "must not.*retrieve"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "review_activation_and_reuse",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "Explicit review-only requests use `@reviewer`"
+        ],
+        [
+          "final owned-PR Candidate HEAD requires one whole-change reviewer pass"
+        ],
+        [
+          "otherwise use independent review when risk/non-obviousness materially benefits"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Apply the root section 5\\.1 review activation/cadence contract"
+            ],
+            [
+              "When reusing review evidence under root section 5\\.1"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 12,
+            "groups": [
+              [
+                "explicit review-only requests",
+                "explicit review deliverable"
+              ],
+              [
+                "final owned-PR",
+                "Candidate.*whole-change",
+                "whole-PR review"
+              ],
+              [
+                "risk/non-obviousness",
+                "risk-based review"
+              ],
+              [
+                "not after every",
+                "package/test/commit",
+                "intermediate Draft"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "skills/pr-readiness/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "run whole-PR `@reviewer` against `Base SHA -> Candidate HEAD`"
+            ],
+            [
+              "An intermediate Draft push does not require a separate `@tester` invocation or final `@reviewer`"
+            ]
+          ]
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 16,
+        "groups": [
+          [
+            "explicit review",
+            "whole-change",
+            "final.*review"
+          ],
+          [
+            "risk",
+            "materially improves correctness"
+          ],
+          [
+            "package",
+            "commit",
+            "test"
+          ],
+          [
+            "not.*trigger",
+            "not.*after",
+            "do not.*review"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "user_decision_binding",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "A user response authorizes only the material proposition actually presented for decision"
+        ],
+        [
+          "do not silently authorize another independently choosable material proposition"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "apply the root section 2\\.2\\.1 decision-binding contract"
+            ],
+            [
+              "owns when/how to obtain that decision and preserve its provenance"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 8,
+            "groups": [
+              [
+                "user response",
+                "user selection"
+              ],
+              [
+                "authorizes",
+                "authority"
+              ],
+              [
+                "material proposition",
+                "independently choosable"
+              ],
+              [
+                "later attribute",
+                "silently authoriz",
+                "bundl.*descriptive"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "agents/session-evaluator.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "compare the actual user-visible decision with the later meaning attributed to it"
+            ]
+          ]
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 16,
+        "groups": [
+          [
+            "user response",
+            "user decision"
+          ],
+          [
+            "proposition"
+          ],
+          [
+            "option",
+            "label",
+            "description"
+          ],
+          [
+            "authorize",
+            "authority"
+          ],
+          [
+            "independently choosable",
+            "added meaning",
+            "material meaning"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "publication_authorization_gate",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "same action, target, scope, and material risk"
+        ],
+        [
+          "Ambiguity is not approval"
+        ],
+        [
+          "do not ask again for the same unchanged authorization"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "apply the root section 4 authorization gate and section 8 provenance/publication contract"
+            ],
+            [
+              "do not restate or weaken their authorization predicate"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 8,
+            "groups": [
+              [
+                "authoriz",
+                "approval",
+                "intent"
+              ],
+              [
+                "action"
+              ],
+              [
+                "target"
+              ],
+              [
+                "scope"
+              ],
+              [
+                "risk"
+              ]
+            ]
+          }
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 16,
+        "groups": [
+          [
+            "publication",
+            "push",
+            "merge",
+            "release"
+          ],
+          [
+            "action"
+          ],
+          [
+            "target"
+          ],
+          [
+            "scope"
+          ],
+          [
+            "risk"
+          ],
+          [
+            "authoriz",
+            "gate"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "failed_fix_reset",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "If a claimed root-cause fix fails materially, reassess the hypothesis before issuing a similar patch"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "When the root section 5\\.1 failed-fix reset condition fires"
+            ],
+            [
+              "recheck reproduction, assumptions, ownership/call path, environment, and fix level"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 8,
+            "groups": [
+              [
+                "same material failure",
+                "root-cause fix fails",
+                "fix fails materially"
+              ],
+              [
+                "current hypothesis",
+                "reassess the hypothesis"
+              ],
+              [
+                "similar patch",
+                "another patch",
+                "automatically send"
+              ]
+            ]
+          }
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 14,
+        "groups": [
+          [
+            "failed fix",
+            "fix fails",
+            "failure persists"
+          ],
+          [
+            "hypothesis",
+            "root cause",
+            "assumption"
+          ],
+          [
+            "reassess",
+            "recheck",
+            "reset"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "issue_pr_workflow_mechanics",
+      "owner": "agents/code-orchestrator.md",
+      "owner_signature": [
+        [
+          "### Existing PR follow-up"
+        ],
+        [
+          "### Issue / ticket / report"
+        ],
+        [
+          "Resolve the state the report targets before verification"
+        ],
+        [
+          "Search existing issues"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "AGENTS.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "Existing PR.*-> PR follow-up workflow"
+            ],
+            [
+              "Issue/ticket/report outcome -> issue/ticket/report workflow"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 10,
+            "groups": [
+              [
+                "Issue/ticket/report|Existing PR"
+              ],
+              [
+                "refresh.*ref|resolve.*target state|same PR branch"
+              ],
+              [
+                "search existing issues|current review comments|effective diff"
+              ],
+              [
+                "draft/open|Draft/Ready"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "vendor_skill_containment",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "Bundled third-party/vendor skills are conditional provider/domain guidance"
+        ],
+        [
+          "descriptions do not override a root/role-owned activation boundary"
+        ],
+        [
+          "bodies do not acquire authority"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/reviewer.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "vendor-skill text that continues into host review method"
+            ],
+            [
+              "Do not load or run managed OCR solely because the vendor skill description"
+            ]
+          ]
+        },
+        {
+          "path": "skills/ui-component-sources/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Treat vendor install/default-stack/`REQUIRED`/`Always`/persist/source-of-truth language as provider guidance"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "memory_authority_and_activation",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "Persistent memory is optional recall context, not task-semantic authority"
+        ],
+        [
+          "Do not search persistent memory merely because"
+        ],
+        [
+          "Store durable conclusions rather than transcripts"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "skills/graymatter-memory/SKILL.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "Apply the root \\*\\*Memory and continuity\\*\\* contract first"
+            ],
+            [
+              "does not redefine memory authority, activation"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 18,
+            "groups": [
+              [
+                "optional recall context",
+                "not.*authority"
+              ],
+              [
+                "search.*merely",
+                "recall only"
+              ],
+              [
+                "durable conclusions",
+                "raw transcripts"
+              ]
+            ]
+          }
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 18,
+        "groups": [
+          [
+            "memory",
+            "recall"
+          ],
+          [
+            "authority"
+          ],
+          [
+            "search.*merely",
+            "materially affect"
+          ],
+          [
+            "durable",
+            "transient"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "graymatter_tool_mechanics",
+      "owner": "skills/graymatter-memory/SKILL.md",
+      "owner_signature": [
+        [
+          "stable `agent_id`"
+        ],
+        [
+          "`memory_search"
+        ],
+        [
+          "`checkpoint_resume"
+        ],
+        [
+          "`memory_reflect"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "AGENTS.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "load the bundled `graymatter-memory` skill and follow it"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 20,
+            "groups": [
+              [
+                "agent_id"
+              ],
+              [
+                "memory_search"
+              ],
+              [
+                "memory_add"
+              ],
+              [
+                "checkpoint_resume"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "persistent_planning_activation_canonical_state",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "### 2.3 Persistent Planning Mode"
+        ],
+        [
+          "Maintain one authoritative task state"
+        ],
+        [
+          "Reuse an existing canonical plan when present"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "skills/persistent-planning/SKILL.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "Root section 2.3 owns activation, canonical task-state semantics"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 20,
+            "groups": [
+              [
+                "when.*durable coordination",
+                "whenever.*durable coordination",
+                "enters persistent planning",
+                "activate.*durable coordination"
+              ],
+              [
+                "canonical.*task state",
+                "authoritative task state",
+                "one authoritative task state"
+              ],
+              [
+                "outcome.*scope",
+                "scope.*current phase",
+                "phase.*blocker"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "agents/project-planner.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "root section 2.3 owns activation/canonical-state policy"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 16,
+            "groups": [
+              [
+                "activate persistent",
+                "one authoritative task state"
+              ],
+              [
+                "outcome.*scope.*phase.*blocker"
+              ]
+            ]
+          }
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 20,
+        "groups": [
+          [
+            "persistent planning",
+            "durable coordination"
+          ],
+          [
+            "activate",
+            "when.*requires"
+          ],
+          [
+            "canonical",
+            "authoritative task state"
+          ],
+          [
+            "outcome",
+            "scope",
+            "phase",
+            "blocker"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "persistent_planning_fallback_representation",
+      "owner": "skills/persistent-planning/SKILL.md",
+      "owner_signature": [
+        [
+          "## Fallback durable representation"
+        ],
+        [
+          "plans/<plan>/"
+        ],
+        [
+          "## Resume and update procedure"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/project-planner.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "load `persistent-planning` for the fallback representation and resume procedure"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 14,
+            "groups": [
+              [
+                "plans/<plan>"
+              ],
+              [
+                "phases/phase-N"
+              ],
+              [
+                "handovers/session"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "provenance_receipt_interface",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "canonical receipt interface records the exact material proposition presented"
+        ],
+        [
+          "exact selected/typed response"
+        ],
+        [
+          "source/channel identity"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "root section 2.2.1 \\*\\*contemporaneous provenance receipt\\*\\*"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 14,
+            "groups": [
+              [
+                "exact material proposition",
+                "exact.*proposition",
+                "material proposition presented"
+              ],
+              [
+                "exact selected/typed response",
+                "selected or typed response",
+                "selected.*typed.*response",
+                "exact.*response"
+              ],
+              [
+                "material qualifiers",
+                "every material qualifier",
+                "qualifier"
+              ],
+              [
+                "source/channel identity",
+                "source or channel identity",
+                "source.*channel.*identity",
+                "channel identity"
+              ]
+            ],
+            "min_groups": 4
+          }
+        },
+        {
+          "path": "skills/session-evidence/SKILL.md",
+          "mode": "consume",
+          "activation_signature": [
+            [
+              "consume the root section 2.2.1 \\*\\*contemporaneous provenance receipt\\*\\*"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 14,
+            "groups": [
+              [
+                "exact proposition"
+              ],
+              [
+                "selected/typed response"
+              ],
+              [
+                "qualifiers"
+              ],
+              [
+                "source identity"
+              ]
+            ]
+          }
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 16,
+        "groups": [
+          [
+            "provenance receipt"
+          ],
+          [
+            "exact.*proposition"
+          ],
+          [
+            "selected/typed response"
+          ],
+          [
+            "qualifier"
+          ],
+          [
+            "source.*channel"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "git_provenance_mechanics",
+      "owner": "skills/git-provenance/SKILL.md",
+      "owner_signature": [
+        [
+          "resolve the actual head remote, base remote, base branch, and base ref"
+        ],
+        [
+          "## Mutation baseline checkpoint"
+        ],
+        [
+          "## Publication provenance checkpoint"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "AGENTS.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "load `git-provenance`"
+            ],
+            [
+              "mutation baseline checkpoint"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 18,
+            "groups": [
+              [
+                "head remote"
+              ],
+              [
+                "base remote"
+              ],
+              [
+                "base branch"
+              ],
+              [
+                "base ref"
+              ],
+              [
+                "git fetch --prune"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "session_evidence_retrieval",
+      "owner": "skills/session-evidence/SKILL.md",
+      "owner_signature": [
+        [
+          "`session.list` and `session.messages`"
+        ],
+        [
+          "## Recover complete material history"
+        ],
+        [
+          "parentID"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/semantic-checkpoint.md",
+          "mode": "consume",
+          "activation_signature": [
+            [
+              "Load `session-evidence` for session-history retrieval"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 16,
+            "groups": [
+              [
+                "session.list"
+              ],
+              [
+                "session.messages"
+              ],
+              [
+                "parentID"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "agents/session-evaluator.md",
+          "mode": "consume",
+          "activation_signature": [
+            [
+              "Load `session-evidence` and reconstruct"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 16,
+            "groups": [
+              [
+                "session.list"
+              ],
+              [
+                "session.messages"
+              ],
+              [
+                "parentID"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "agents/trajectory-auditor.md",
+          "mode": "consume",
+          "activation_signature": [
+            [
+              "Load `session-evidence`"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 16,
+            "groups": [
+              [
+                "session.list"
+              ],
+              [
+                "session.messages"
+              ],
+              [
+                "parentID"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "verification_evidence_invariants",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "### 7.4 Verification cadence and evidence freshness"
+        ],
+        [
+          "Verification must support the exact current claim/state"
+        ],
+        [
+          "never weaken tests/validation or hide failures"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "skills/verification-strategy/SKILL.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "Apply root sections 2.2.1, 7.3, and 7.4 for universal evidence validity"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 18,
+            "groups": [
+              [
+                "exact current claim",
+                "exact current state",
+                "target.*current state",
+                "current claim/state"
+              ],
+              [
+                "mutation.*stale",
+                "prior evidence is stale",
+                "evidence.*stale",
+                "state changes.*re-run"
+              ],
+              [
+                "never weaken",
+                "weaken.*tests",
+                "manufactur.*pass",
+                "hide failures"
+              ]
+            ],
+            "min_groups": 3
+          }
+        },
+        {
+          "path": "agents/tester.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "apply root §2.2.1 evidence fidelity"
+            ],
+            [
+              "If a later edit affects a check you ran, your earlier result is stale"
+            ]
+          ]
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 18,
+        "groups": [
+          [
+            "verification",
+            "evidence"
+          ],
+          [
+            "exact current claim",
+            "current state"
+          ],
+          [
+            "stale"
+          ],
+          [
+            "weaken.*test",
+            "manufacture.*pass"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "verification_layering_and_tester_activation",
+      "owner": "skills/verification-strategy/SKILL.md",
+      "owner_signature": [
+        [
+          "Implementation-local evidence"
+        ],
+        [
+          "Independent verification checkpoint"
+        ],
+        [
+          "Remote/host evidence"
+        ],
+        [
+          "Package completion alone is not a trigger"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "AGENTS.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "load the bundled `verification-strategy` skill for detailed cadence"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 16,
+            "groups": [
+              [
+                "Implementation-local evidence"
+              ],
+              [
+                "Independent verification checkpoint"
+              ],
+              [
+                "Remote/host evidence"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "agents/tester.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "independent verification checkpoint"
+            ],
+            [
+              "one complete affected behavior boundary"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "resource_lifecycle_mechanics",
+      "owner": "skills/resource-lifecycle/SKILL.md",
+      "owner_signature": [
+        [
+          "Creation creates a cleanup obligation"
+        ],
+        [
+          "every known workflow-created temporary resource is exactly one of"
+        ],
+        [
+          "ownership transferred"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "AGENTS.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "load `resource-lifecycle`; it owns resource identity, cleanup ownership/transfer"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 14,
+            "groups": [
+              [
+                "cleaned"
+              ],
+              [
+                "intentionally retained"
+              ],
+              [
+                "cleanup blocked"
+              ],
+              [
+                "ownership transferred"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "ui_component_source_ordering_and_vendor_boundary",
+      "owner": "skills/ui-component-sources/SKILL.md",
+      "owner_signature": [
+        [
+          "## Source order"
+        ],
+        [
+          "official shadcn"
+        ],
+        [
+          "Jpisnice shadcn-ui MCP"
+        ],
+        [
+          "UUPM is advisory design input"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/ui-auditor.md",
+          "mode": "consume",
+          "activation_signature": [
+            [
+              "load `ui-component-sources`"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 16,
+            "groups": [
+              [
+                "official shadcn"
+              ],
+              [
+                "Jpisnice"
+              ],
+              [
+                "manual implementation"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "agents/ui-planner.md",
+          "mode": "consume",
+          "activation_signature": [
+            [
+              "load `ui-component-sources` and apply that policy"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 16,
+            "groups": [
+              [
+                "official shadcn"
+              ],
+              [
+                "Jpisnice"
+              ],
+              [
+                "manual implementation"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "agents/ui-orchestrator.md",
+          "mode": "consume",
+          "activation_signature": [
+            [
+              "load `ui-component-sources` and consume its current source/integration policy"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 16,
+            "groups": [
+              [
+                "official shadcn"
+              ],
+              [
+                "Jpisnice"
+              ],
+              [
+                "manual implementation"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "agents/ui-implementer.md",
+          "mode": "consume",
+          "activation_signature": [
+            [
+              "load `ui-component-sources` and apply the established source choice/constraints"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 16,
+            "groups": [
+              [
+                "official shadcn"
+              ],
+              [
+                "Jpisnice"
+              ],
+              [
+                "manual implementation"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "output_formatting_destination_procedure",
+      "owner": "skills/output-formatting/SKILL.md",
+      "owner_signature": [
+        [
+          "Choose the richest portable Markdown subset"
+        ],
+        [
+          "GitHub/GitLab PRs"
+        ],
+        [
+          "Plain-text-only channels"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "AGENTS.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "load the bundled `output-formatting` skill"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 16,
+            "groups": [
+              [
+                "GitHub/GitLab PRs"
+              ],
+              [
+                "OpenCode CLI"
+              ],
+              [
+                "Plain-text-only channels"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
