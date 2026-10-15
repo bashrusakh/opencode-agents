@@ -2,61 +2,173 @@
   "schema_version": 1,
   "surfaces": {
     "AGENTS.md": [
-      {"heading":"## 0. Philosophy and interpretation principles","placement":"shared_owner","purpose":"global interpretation, precedence, model-agnostic operating principles"},
-      {"heading":"## 1. Source of truth","placement":"shared_owner","purpose":"authority/source precedence and current-state grounding"},
-      {"heading":"## Memory and continuity","placement":"shared_owner","purpose":"generic memory/continuity and fresh-child boundary"},
-      {"heading":"## 2. Core behavior","placement":"shared_owner","purpose":"global behavior envelope"},
-      {"heading":"### 2.1 Model policy","placement":"shared_owner","purpose":"model-selection and capability policy"},
-      {"heading":"### 2.1.1 Skills","placement":"shared_owner","purpose":"skill activation and procedural-source policy"},
-      {"heading":"### 2.2 Behavioral contract check","placement":"shared_owner","purpose":"normalize user-visible behavior before implementation"},
-      {"heading":"### 2.2.1 Task-semantic authority and evidence","placement":"shared_owner","purpose":"canonical authority/evidence/proposition algebra and user-decision binding"},
-      {"heading":"### 2.3 Persistent Planning Mode","placement":"shared_owner","purpose":"generic durable-planning activation"},
-      {"heading":"### 2.4 Communication, Markdown, and Startup","placement":"shared_owner","purpose":"shared communication and decision-visibility contract"},
-      {"heading":"### Startup","placement":"shared_owner","purpose":"shared startup output contract"},
-      {"heading":"### Update","placement":"shared_owner","purpose":"shared progress-update contract"},
-      {"heading":"### 2.5 Role and capability boundaries","placement":"shared_owner","purpose":"global role/capability and fallback ceilings"},
-      {"heading":"## 3. Request normalization","placement":"shared_owner","purpose":"deliverable/action normalization and top-level workflow routing only"},
-      {"heading":"## 4. Preconditions and approval gates","placement":"shared_owner","purpose":"canonical authorization/gate predicate and gated-effect semantics"},
-      {"heading":"## 5. Delegation and orchestration","placement":"shared_owner","purpose":"generic handoff, independence, routing, topology and mutation-parallelism policy"},
-      {"heading":"### 5.1 Reuse evidence and avoid ritual stages","placement":"shared_owner","purpose":"generic evidence reuse, failed-fix reset and review activation/cadence"},
-      {"heading":"### 5.2 Workflow-created resource lifecycle","placement":"reference_consumer","purpose":"activate resource-lifecycle skill while root retains cleanup authorization"},
-      {"heading":"## 6. Role-owned workflow mechanics","placement":"shared_boundary","purpose":"explicit boundary: detailed pipelines live in role contracts, not root"},
-      {"heading":"## 7. Implementation rules","placement":"shared_owner","purpose":"cross-role implementation correctness contract"},
-      {"heading":"### 7.1 Before editing","placement":"shared_owner","purpose":"generic mutation baseline and edit preparation"},
-      {"heading":"### 7.2 Right-level implementation boundary","placement":"shared_owner","purpose":"generic fix-level/owner selection principle"},
-      {"heading":"### 7.3 Regression guard","placement":"shared_owner","purpose":"generic changed/preserved behavior verification contract"},
-      {"heading":"### 7.4 Verification cadence and evidence freshness","placement":"shared_owner","purpose":"generic evidence freshness and verification-strategy activation"},
-      {"heading":"## 8. Repository state, Git, commit, PR, issue, and release discipline","placement":"shared_owner","purpose":"generic repository identity/provenance/publication discipline; no role pipeline"},
-      {"heading":"### 8.1 Visual evidence publication","placement":"shared_owner","purpose":"generic binary-evidence publication constraints"},
-      {"heading":"## 9. User-facing output and public writing quality","placement":"shared_owner","purpose":"shared public-artifact quality and formatting activation"},
-      {"heading":"## 10. Final reports","placement":"shared_owner","purpose":"canonical final-report fields and claim boundaries"}
+      {
+        "heading": "## 0. Universal interpretation principles",
+        "placement": "shared_owner",
+        "purpose": "universal precedence, state identity and interpretation kernel for every role"
+      },
+      {
+        "heading": "## 1. Source of truth and continuity",
+        "placement": "shared_owner",
+        "purpose": "universal project evidence and memory-authority/continuity baseline"
+      },
+      {
+        "heading": "## 2. Core semantic behavior",
+        "placement": "shared_owner",
+        "purpose": "universal semantic behavior envelope"
+      },
+      {
+        "heading": "### 2.1 Model and skill policy",
+        "placement": "shared_owner",
+        "purpose": "model neutrality plus universal skill authority/vendor containment rules"
+      },
+      {
+        "heading": "### 2.2 Task-semantic authority and evidence",
+        "placement": "shared_owner",
+        "purpose": "canonical authority/evidence/proposition algebra and decision binding"
+      },
+      {
+        "heading": "### 2.3 Communication",
+        "placement": "shared_owner",
+        "purpose": "universal communication and material-decision visibility"
+      },
+      {
+        "heading": "### 2.4 Role and capability boundaries",
+        "placement": "shared_owner",
+        "purpose": "universal role/capability ceilings and delegated-boundary semantics"
+      },
+      {
+        "heading": "## 3. Conditional shared contracts",
+        "placement": "shared_boundary",
+        "purpose": "residency boundary selecting on-demand workflow/delegation/implementation contracts"
+      },
+      {
+        "heading": "## 4. Role-owned workflow mechanics",
+        "placement": "shared_boundary",
+        "purpose": "explicit boundary keeping detailed pipelines outside global root"
+      },
+      {
+        "heading": "## 5. User-facing output and final claims",
+        "placement": "shared_owner",
+        "purpose": "universal final-claim honesty and public-output baseline"
+      }
     ],
     "agents/code-orchestrator.md": [
-      {"heading":"## Shared contract","placement":"reference_consumer","purpose":"inherit root policy without redefining it"},
-      {"heading":"## Role","placement":"role_owner","purpose":"code workflow ownership and mission"},
-      {"heading":"### Hard boundary","placement":"role_owner","purpose":"role-local no-edit/no-publication boundary"},
-      {"heading":"### Workflow-owner synthesis loop","placement":"role_owner","purpose":"accountable owner reconciliation/decision loop"},
-      {"heading":"## Delegation","placement":"specialization","purpose":"apply root handoff contract with code-workflow reconstruction state and specialist discriminators"},
-      {"heading":"### Longitudinal trajectory control","placement":"role_owner","purpose":"owner-first repeated-correction/trajectory method and trajectory-auditor consumption"},
-      {"heading":"## Choose the next role","placement":"specialization","purpose":"code-workflow discriminators layered on root routing map"},
-      {"heading":"### Current target and edit baseline","placement":"role_owner","purpose":"current-target identity and implementation baseline orchestration"},
-      {"heading":"### When to use `@explore`","placement":"specialization","purpose":"code-workflow discovery activation threshold"},
-      {"heading":"### Before implementation","placement":"specialization","purpose":"apply root authority algebra to implementation handoffs and parent hypotheses"},
-      {"heading":"### Pre-mutation semantic checkpoint","placement":"specialization","purpose":"role-local activation/consumption method for semantic-checkpoint"},
-      {"heading":"### When a fix fails","placement":"specialization","purpose":"execute root failed-fix reset with code-specific diagnostic dimensions"},
-      {"heading":"### User decisions","placement":"specialization","purpose":"when/how to ask, make questions self-contained, preserve authority provenance"},
-      {"heading":"## Review and verification","placement":"specialization","purpose":"construct/consume code-review and tester evidence under root activation/independence policy"},
-      {"heading":"## Findings and escalation","placement":"role_owner","purpose":"current-findings model, defect routing and shared-model escalation"},
-      {"heading":"## Workflow behavior","placement":"role_owner","purpose":"detailed code/repository workflow mechanics colocated here"},
-      {"heading":"### Bugfix","placement":"role_owner","purpose":"bug diagnosis/fix workflow mechanics"},
-      {"heading":"### Existing PR follow-up","placement":"role_owner","purpose":"PR follow-up orchestration; pr-readiness owns lifecycle state machine"},
-      {"heading":"### Issue / ticket / report","placement":"role_owner","purpose":"issue/report target verification, deduplication, creation and separate-fix boundary"},
-      {"heading":"### Tests/docs-only work","placement":"role_owner","purpose":"focused non-product-code workflow routing"},
-      {"heading":"### Release prep","placement":"role_owner","purpose":"release-preparation orchestration; root owns publication gate"},
-      {"heading":"## Evidence consumption","placement":"specialization","purpose":"consume scoped specialist/review evidence without qualifier laundering"},
-      {"heading":"## Planning and publication","placement":"reference_consumer","purpose":"activate canonical planning/PR/publication contracts without restating gates"},
-      {"heading":"## Terminal semantic-evaluator handoff","placement":"role_owner","purpose":"temporary terminal session-evaluator invocation procedure"},
-      {"heading":"## Final report","placement":"reference_consumer","purpose":"inherit root final-report contract and add code-orchestration-only state"}
+      {
+        "heading": "## Shared contract",
+        "placement": "reference_consumer",
+        "purpose": "inherit root policy without redefining it"
+      },
+      {
+        "heading": "## Role",
+        "placement": "role_owner",
+        "purpose": "code workflow ownership and mission"
+      },
+      {
+        "heading": "### Hard boundary",
+        "placement": "role_owner",
+        "purpose": "role-local no-edit/no-publication boundary"
+      },
+      {
+        "heading": "### Workflow-owner synthesis loop",
+        "placement": "role_owner",
+        "purpose": "accountable owner reconciliation/decision loop"
+      },
+      {
+        "heading": "## Delegation",
+        "placement": "specialization",
+        "purpose": "apply delegation-control handoff contract with code-workflow reconstruction state and specialist discriminators"
+      },
+      {
+        "heading": "### Longitudinal trajectory control",
+        "placement": "role_owner",
+        "purpose": "owner-first repeated-correction/trajectory method and trajectory-auditor consumption"
+      },
+      {
+        "heading": "## Choose the next role",
+        "placement": "specialization",
+        "purpose": "code-workflow discriminators layered on delegation-control routing map"
+      },
+      {
+        "heading": "### Current target and edit baseline",
+        "placement": "role_owner",
+        "purpose": "current-target identity and implementation baseline orchestration"
+      },
+      {
+        "heading": "### When to use `@explore`",
+        "placement": "specialization",
+        "purpose": "code-workflow discovery activation threshold"
+      },
+      {
+        "heading": "### Before implementation",
+        "placement": "specialization",
+        "purpose": "apply root authority algebra and conditionally implementation-contract to implementation handoffs"
+      },
+      {
+        "heading": "### Pre-mutation semantic checkpoint",
+        "placement": "specialization",
+        "purpose": "role-local activation/consumption method for semantic-checkpoint"
+      },
+      {
+        "heading": "### When a fix fails",
+        "placement": "specialization",
+        "purpose": "execute delegation-control failed-fix reset with code-specific diagnostic dimensions"
+      },
+      {
+        "heading": "### User decisions",
+        "placement": "specialization",
+        "purpose": "when/how to ask, make questions self-contained, preserve authority provenance"
+      },
+      {
+        "heading": "## Review and verification",
+        "placement": "specialization",
+        "purpose": "construct/consume code-review and tester evidence under delegation-control independence/cadence"
+      },
+      {
+        "heading": "## Findings and escalation",
+        "placement": "role_owner",
+        "purpose": "current-findings model, defect routing and shared-model escalation"
+      },
+      {
+        "heading": "## Workflow behavior",
+        "placement": "role_owner",
+        "purpose": "generic code-workflow mechanics plus conditional resource-workflow activation"
+      },
+      {
+        "heading": "### Bugfix",
+        "placement": "role_owner",
+        "purpose": "bug diagnosis/fix workflow mechanics"
+      },
+      {
+        "heading": "### Code-host resource workflow",
+        "placement": "reference_consumer",
+        "purpose": "conditionally load/consume code-host-workflow; host-specific PR/issue/release mechanics are not resident here"
+      },
+      {
+        "heading": "### Tests/docs-only work",
+        "placement": "role_owner",
+        "purpose": "focused non-product-code workflow routing"
+      },
+      {
+        "heading": "## Evidence consumption",
+        "placement": "specialization",
+        "purpose": "consume scoped specialist/review evidence without qualifier laundering"
+      },
+      {
+        "heading": "## Planning and publication",
+        "placement": "reference_consumer",
+        "purpose": "consume workflow-entry plus active conditional resource contracts without restating gates"
+      },
+      {
+        "heading": "## Terminal diagnostic hook",
+        "placement": "reference_consumer",
+        "purpose": "conditionally load terminal-semantic-eval at the already-established terminal-success boundary; detailed evaluator handoff is not resident here"
+      },
+      {
+        "heading": "## Final report",
+        "placement": "reference_consumer",
+        "purpose": "consume root plus workflow-entry final-report contracts and add code-orchestration state"
+      }
     ]
   }
 }

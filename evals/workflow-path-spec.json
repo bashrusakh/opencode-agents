@@ -1,0 +1,880 @@
+{
+  "schema_version": 1,
+  "scenarios": [
+    {
+      "id": "code_bugfix",
+      "nodes": [
+        {
+          "path": "skills/workflow-entry/SKILL.md",
+          "groups": [
+            [
+              "Normalize by requested deliverable"
+            ],
+            [
+              "highest requested action level"
+            ]
+          ]
+        },
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "fresh target ref/SHA before diagnosis or mutation"
+            ],
+            [
+              "fix is requested.*@debugger"
+            ],
+            [
+              "diagnosis.*do not create repository changes"
+            ],
+            [
+              "exact symptom/reproduction|strongest current failure evidence"
+            ],
+            [
+              "governing expected behavior/invariant"
+            ],
+            [
+              "affected behavior boundary"
+            ],
+            [
+              "target/mutation identity"
+            ]
+          ],
+          "anchor": [
+            "### Bugfix"
+          ],
+          "window_lines": 9
+        },
+        {
+          "path": "agents/debugger.md",
+          "groups": [
+            [
+              "root cause"
+            ],
+            [
+              "implementation-contract"
+            ],
+            [
+              "re-run the focused failing case"
+            ]
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "producer": "agents/code-orchestrator.md",
+          "consumer": "agents/debugger.md",
+          "producer_groups": [
+            [
+              "exact symptom/reproduction|strongest current failure evidence"
+            ],
+            [
+              "governing expected behavior/invariant"
+            ],
+            [
+              "affected behavior boundary"
+            ],
+            [
+              "target/mutation identity"
+            ],
+            [
+              "suspected root cause/remediation non-binding|suspected root cause.*non-binding"
+            ]
+          ],
+          "consumer_groups": [
+            [
+              "delegated"
+            ],
+            [
+              "symptom|reproduction"
+            ],
+            [
+              "root cause"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "settled_nonbug_implementation",
+      "nodes": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "focused settled non-bug implementation"
+            ],
+            [
+              "@build"
+            ]
+          ]
+        },
+        {
+          "path": "agents/build.md",
+          "groups": [
+            [
+              "load `implementation-contract` before the first mutation"
+            ],
+            [
+              "When delegated"
+            ],
+            [
+              "Pre-return self-review and verification"
+            ]
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "producer": "agents/code-orchestrator.md",
+          "consumer": "agents/build.md",
+          "producer_groups": [
+            [
+              "loaded `delegation-control` handoff contract"
+            ],
+            [
+              "intended mutation baseline"
+            ]
+          ],
+          "consumer_groups": [
+            [
+              "delegated scope|assignment"
+            ],
+            [
+              "preserved behavior|behavioral contract"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ui_unresolved_direction",
+      "nodes": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "material UI-domain routing decision, load `ui-routing-control`"
+            ]
+          ]
+        },
+        {
+          "path": "skills/ui-routing-control/SKILL.md",
+          "groups": [
+            [
+              "unresolved presentation/interaction direction"
+            ],
+            [
+              "functional requirement alone does not make the UI outcome settled"
+            ],
+            [
+              "delegate the bounded UI domain to `@ui-orchestrator`"
+            ],
+            [
+              "whether UI stage selection is delegated"
+            ],
+            [
+              "After the parent dispatches a returned UI leaf"
+            ],
+            [
+              "pass the leaf result plus exact updated target/state and material UI evidence back to `@ui-orchestrator`"
+            ],
+            [
+              "do not infer the remaining UI chain in `code-orchestrator`"
+            ]
+          ]
+        },
+        {
+          "path": "agents/ui-orchestrator.md",
+          "groups": [
+            [
+              "When delegated by `@code-orchestrator`"
+            ],
+            [
+              "UI target, behavior scope, action level, publication boundary, and target/state identity"
+            ],
+            [
+              "does \\*\\*not\\*\\* spawn another subagent generation"
+            ],
+            [
+              "return bounded assignments to the parent"
+            ]
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "producer": "skills/ui-routing-control/SKILL.md",
+          "consumer": "agents/ui-orchestrator.md",
+          "producer_groups": [
+            [
+              "UI domain/problem"
+            ],
+            [
+              "inherited target/state identity"
+            ],
+            [
+              "behavior scope"
+            ],
+            [
+              "action level"
+            ],
+            [
+              "publication boundary"
+            ],
+            [
+              "stage selection is delegated"
+            ]
+          ],
+          "consumer_groups": [
+            [
+              "UI target"
+            ],
+            [
+              "behavior scope"
+            ],
+            [
+              "action level"
+            ],
+            [
+              "publication boundary"
+            ],
+            [
+              "target/state identity"
+            ],
+            [
+              "stage selection was delegated"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ui_settled_direct_implementation",
+      "nodes": [
+        {
+          "path": "skills/ui-routing-control/SKILL.md",
+          "groups": [
+            [
+              "already established by the user, an adopted plan, or a sufficiently specific existing project pattern"
+            ],
+            [
+              "route directly to `@ui-implementer`"
+            ],
+            [
+              "Do not preselect files/layout mechanics"
+            ]
+          ]
+        },
+        {
+          "path": "agents/ui-implementer.md",
+          "groups": [
+            [
+              "established user-visible outcome"
+            ],
+            [
+              "target/state"
+            ],
+            [
+              "preserved behavior"
+            ],
+            [
+              "need not prescribe files or mechanics"
+            ]
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "producer": "skills/ui-routing-control/SKILL.md",
+          "consumer": "agents/ui-implementer.md",
+          "producer_groups": [
+            [
+              "established user-visible outcome"
+            ],
+            [
+              "target/mutation state"
+            ],
+            [
+              "material constraints"
+            ],
+            [
+              "preserved behavior"
+            ]
+          ],
+          "consumer_groups": [
+            [
+              "established user-visible outcome"
+            ],
+            [
+              "material implementation/design constraints"
+            ],
+            [
+              "target/state"
+            ],
+            [
+              "preserved behavior"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "existing_pr_followup",
+      "nodes": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "existing PR.*load `code-host-workflow`.*before.*preflight|load `code-host-workflow` \\*\\*before\\*\\* resource-specific preflight"
+            ]
+          ]
+        },
+        {
+          "path": "skills/code-host-workflow/SKILL.md",
+          "groups": [
+            [
+              "canonical PR URL/resource identity"
+            ],
+            [
+              "ownership"
+            ],
+            [
+              "Draft/Ready state"
+            ],
+            [
+              "head/base"
+            ],
+            [
+              "current review comments/checks"
+            ],
+            [
+              "load `pr-readiness`.*Owned PR"
+            ],
+            [
+              "load `git-provenance`"
+            ]
+          ]
+        },
+        {
+          "path": "skills/pr-readiness/SKILL.md",
+          "groups": [
+            [
+              "Owned PR"
+            ],
+            [
+              "Draft"
+            ],
+            [
+              "Candidate HEAD"
+            ],
+            [
+              "Ready"
+            ]
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "producer": "skills/code-host-workflow/SKILL.md",
+          "consumer": "agents/code-orchestrator.md",
+          "producer_groups": [
+            [
+              "canonical resource URL/identity"
+            ],
+            [
+              "current host state"
+            ],
+            [
+              "comments/checks/todo"
+            ],
+            [
+              "Base/Candidate/remote-head/readiness identity"
+            ]
+          ],
+          "consumer_groups": [
+            [
+              "Feed its returned resource state/findings into this owner's synthesis/findings model"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "issue_report",
+      "nodes": [
+        {
+          "path": "skills/code-host-workflow/SKILL.md",
+          "groups": [
+            [
+              "Resolve the state the report targets before verification"
+            ],
+            [
+              "Search existing issues"
+            ],
+            [
+              "issue creation is in scope and authorized"
+            ],
+            [
+              "implementation as a separate deliverable"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "release_publication",
+      "nodes": [
+        {
+          "path": "skills/code-host-workflow/SKILL.md",
+          "groups": [
+            [
+              "Build release notes/check inputs from actual repository history"
+            ],
+            [
+              "Tag/release/public publication stays under the active `workflow-entry` gate"
+            ],
+            [
+              "verify the published resource identity plus material metadata/body"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh_whole_review",
+      "nodes": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "fresh whole-change/final reviewer judgment"
+            ],
+            [
+              "exact reviewed target/state identity|Base/Candidate identity"
+            ],
+            [
+              "whole material task/acceptance surface"
+            ],
+            [
+              "Do not seed a fresh whole-change reviewer"
+            ]
+          ]
+        },
+        {
+          "path": "agents/reviewer.md",
+          "groups": [
+            [
+              "Bind the verdict to the exact requested state"
+            ],
+            [
+              "authoritative changed-file/effective-diff set"
+            ],
+            [
+              "load `open-code-review-delegate`.*deterministic preflight"
+            ],
+            [
+              "Fresh whole-change independence"
+            ]
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "producer": "agents/code-orchestrator.md",
+          "consumer": "agents/reviewer.md",
+          "producer_groups": [
+            [
+              "Base/Candidate identity"
+            ],
+            [
+              "authoritative task-contract propositions"
+            ],
+            [
+              "recoverable provenance"
+            ]
+          ],
+          "consumer_groups": [
+            [
+              "exact requested state"
+            ],
+            [
+              "authoritative changed-file/effective-diff set"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "independent_verification",
+      "nodes": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "Use `@tester` when independent verification"
+            ],
+            [
+              "complete affected boundary"
+            ],
+            [
+              "one batched result"
+            ]
+          ]
+        },
+        {
+          "path": "agents/tester.md",
+          "groups": [
+            [
+              "one complete affected behavior boundary"
+            ],
+            [
+              "current diff/Candidate/invariant context"
+            ],
+            [
+              "Establish the state actually being executed"
+            ],
+            [
+              "Return one coherent result"
+            ]
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "producer": "agents/code-orchestrator.md",
+          "consumer": "agents/tester.md",
+          "producer_groups": [
+            [
+              "complete affected boundary"
+            ]
+          ],
+          "consumer_groups": [
+            [
+              "complete affected behavior boundary"
+            ],
+            [
+              "current diff/Candidate/invariant context"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "semantic_checkpoint",
+      "nodes": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "owner reconciliation"
+            ],
+            [
+              "fresh `@semantic-checkpoint`"
+            ],
+            [
+              "exact semantic proposition"
+            ],
+            [
+              "strongest known authority/evidence"
+            ],
+            [
+              "mutation boundary"
+            ]
+          ]
+        },
+        {
+          "path": "agents/semantic-checkpoint.md",
+          "groups": [
+            [
+              "Evidence to inspect"
+            ],
+            [
+              "session-evidence"
+            ],
+            [
+              "Evidence status"
+            ],
+            [
+              "Verdict"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trajectory_second_opinion",
+      "nodes": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "bounded owner trajectory reassessment"
+            ],
+            [
+              "fresh `@trajectory-auditor`"
+            ],
+            [
+              "exact unresolved trajectory question"
+            ],
+            [
+              "current parent session ID"
+            ],
+            [
+              "task anchor"
+            ],
+            [
+              "material transitions"
+            ]
+          ]
+        },
+        {
+          "path": "agents/trajectory-auditor.md",
+          "groups": [
+            [
+              "Invocation contract"
+            ],
+            [
+              "task anchor"
+            ],
+            [
+              "proposed next transition"
+            ],
+            [
+              "session-evidence"
+            ],
+            [
+              "Verdict semantics"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "terminal_diagnostic",
+      "nodes": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "already-established terminal successful outcome.*load `terminal-semantic-eval`"
+            ]
+          ]
+        },
+        {
+          "path": "skills/terminal-semantic-eval/SKILL.md",
+          "groups": [
+            [
+              "terminal successful outcome"
+            ],
+            [
+              "Invoke `@session-evaluator` once"
+            ],
+            [
+              "material participating child-session IDs"
+            ],
+            [
+              "Do not perform new session-history discovery"
+            ],
+            [
+              "diagnostic evidence only"
+            ],
+            [
+              "does not gate final reporting"
+            ]
+          ]
+        },
+        {
+          "path": "agents/session-evaluator.md",
+          "groups": [
+            [
+              "post-hoc diagnostic agent"
+            ],
+            [
+              "Load `session-evidence`"
+            ],
+            [
+              "exact parent and participating child-session IDs"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "primary_ui_orchestration",
+      "nodes": [
+        {
+          "path": "agents/ui-orchestrator.md",
+          "groups": [
+            [
+              "When this role is primary, load `workflow-entry` and `delegation-control`"
+            ],
+            [
+              "Normalize by deliverable and target"
+            ],
+            [
+              "Apply stages semantically"
+            ],
+            [
+              "Leaf handoff contracts"
+            ],
+            [
+              "Before final claims/publication"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "primary_repository_audit",
+      "nodes": [
+        {
+          "path": "agents/auditor.md",
+          "groups": [
+            [
+              "At the start of this primary audit invocation"
+            ],
+            [
+              "Specialist handoffs"
+            ],
+            [
+              "exact target/state"
+            ],
+            [
+              "Reconcile specialist evidence"
+            ],
+            [
+              "Result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external_research",
+      "nodes": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "For `@librarian`"
+            ],
+            [
+              "bounded external research proposition"
+            ],
+            [
+              "named external target"
+            ],
+            [
+              "version/range/environment"
+            ],
+            [
+              "allowed source/evidence scope"
+            ],
+            [
+              "stop/applicability boundary"
+            ]
+          ]
+        },
+        {
+          "path": "agents/librarian.md",
+          "groups": [
+            [
+              "When delegated, do not load that owner contract"
+            ],
+            [
+              "Invocation contract"
+            ],
+            [
+              "external target"
+            ],
+            [
+              "Method"
+            ],
+            [
+              "Boundaries"
+            ],
+            [
+              "Result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "primary_build",
+      "nodes": [
+        {
+          "path": "agents/build.md",
+          "groups": [
+            [
+              "When this role is primary, load `workflow-entry` and `delegation-control`"
+            ],
+            [
+              "If another role owns a bounded specialist stage"
+            ],
+            [
+              "If another top-level-only workflow owns the request"
+            ],
+            [
+              "load `implementation-contract` before the first mutation"
+            ],
+            [
+              "As primary, invoke `@tester` / `@reviewer` only when the loaded `delegation-control` cadence calls"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "primary_project_planning",
+      "nodes": [
+        {
+          "path": "agents/project-planner.md",
+          "groups": [
+            [
+              "When this role is primary/user-facing, load `workflow-entry`"
+            ],
+            [
+              "when delegated, do not load it"
+            ],
+            [
+              "Planning evidence"
+            ],
+            [
+              "verification plan|validation and regression"
+            ],
+            [
+              "load `persistent-planning`.*fallback representation/resume mechanics"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "primary_external_research",
+      "nodes": [
+        {
+          "path": "agents/librarian.md",
+          "groups": [
+            [
+              "When this role is primary/user-facing, load `workflow-entry`"
+            ],
+            [
+              "When delegated, do not load that owner contract"
+            ],
+            [
+              "Receive a bounded external research proposition"
+            ],
+            [
+              "Bind material claims to the relevant product/library/API and version/range"
+            ],
+            [
+              "The result establishes only the bounded external proposition"
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

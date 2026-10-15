@@ -91,15 +91,15 @@ Reconstruct the shortest chain:
 
 `authoritative task → discovery evidence → candidate decision → proposed edit-capable handoff`
 
-Apply root section 2.2.1 claim by claim.
+Apply root section 2.2 claim by claim.
 
 For each material candidate decision:
 
 - state the semantic proposition the implementation would treat as settled;
 - identify what authorizes that proposition;
-- when authority is derived from an adopted source, apply root section 2.2.1's source-proposition classes, identify the exact proposition actually adopted, and do not treat adoption of the container as adoption of every statement inside it;
+- when authority is derived from an adopted source, apply root section 2.2's source-proposition classes, identify the exact proposition actually adopted, and do not treat adoption of the container as adoption of every statement inside it;
 - compare that proposition with the strongest primary authority source and identify any material semantic delta introduced by question framing, selectable-option text, summaries, plans, assignments, or handoffs;
-- classify the candidate's relation under root section 2.2.1 as `preserved`, `refined`, `strengthened`, `weakened`, `substituted`, or `indeterminate`; do not restate the root relation state machine here; `indeterminate` means the relation itself cannot yet be classified, not that evidence has passed or failed;
+- classify the candidate's relation under root section 2.2 as `preserved`, `refined`, `strengthened`, `weakened`, `substituted`, or `indeterminate`; do not restate the root relation state machine here; `indeterminate` means the relation itself cannot yet be classified, not that evidence has passed or failed;
 - verify that a user response is not being extended to an independently choosable proposition that was not actually presented as the decision;
 - identify evidence supporting factual premises needed for it;
 - identify any proposed or selected implementation mechanism separately from the authority that establishes the outcome;
@@ -109,7 +109,7 @@ For each material candidate decision:
 - check whether a subagent conclusion or prior decision is being promoted into acceptance merely because discovery returned it;
 - check whether implementation convenience, repository locality, perceived safety, minimal diff, or available tooling has silently narrowed or strengthened the established outcome;
 - check whether a conditional, partial, fallback-only, or insufficient candidate has lost that qualification as it moved downstream;
-- apply root section 2.2.1's relation/authority semantics to `weakened` and `substituted` candidates; block mutation unless the root-defined proposition-scoped authority or already-authorized conditional-alternative condition is established. A blocker to the prior path remains evidence, not replacement authority;
+- apply root section 2.2's relation/authority semantics to `weakened` and `substituted` candidates; block mutation unless the root-defined proposition-scoped authority or already-authorized conditional-alternative condition is established. A blocker to the prior path remains evidence, not replacement authority;
 - check whether a technical constraint has become a new product/domain policy or observable behavior without authority;
 - check whether mutation would silently resolve an unsettled authority-bearing choice about behavior, acceptance, user/product/domain/security/privacy semantics, or proposition-scoped scope; a technical ownership, fix-level, shared-abstraction, invariant-representation, or necessary implementation-scope change is not by itself a semantic choice when it preserves the established outcome and authority.
 

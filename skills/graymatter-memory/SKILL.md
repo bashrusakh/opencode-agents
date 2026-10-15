@@ -1,11 +1,11 @@
 ---
 name: graymatter-memory
-description: Use only when the root Memory and continuity policy activates GrayMatter recall/continuity. Owns GrayMatter identity, query, checkpoint, durable-write, correction, and tool-call mechanics; root owns authority, activation, freshness/isolation, and durable-vs-transient policy.
+description: Use only when root continuity semantics or an active workflow/role contract activates GrayMatter recall. Owns GrayMatter identity, query, checkpoint, durable-write, correction, and tool-call mechanics; root owns memory authority/durable-vs-transient policy and the active judgment contract owns independence/isolation.
 ---
 
 # GrayMatter memory and continuity
 
-Apply the root **Memory and continuity** contract first. This skill supplies GrayMatter-specific mechanics only and does not redefine memory authority, activation, fresh-judgment isolation, or what counts as durable versus transient state.
+Apply root source-of-truth/continuity semantics first and any active role/delegation isolation contract. This skill supplies GrayMatter-specific mechanics only and does not redefine memory authority, activation, fresh-judgment isolation, or what counts as durable versus transient state.
 
 ## Identity
 
@@ -13,15 +13,15 @@ Use a stable `agent_id`: the repository root directory name verbatim. Add a stab
 
 ## Recall and checkpoint procedure
 
-When the root policy activates continuity for the **current role/workflow**, call `checkpoint_resume` for the applicable `agent_id` first when resuming unfinished work. For other root-authorized recall, search project memory and `__shared__` with a focused query phrased as the current task/question rather than an unstructured keyword bag. If no checkpoint exists, continue normally.
+When root continuity semantics or the active workflow contract activates continuity for the **current role/workflow**, call `checkpoint_resume` for the applicable `agent_id` first when resuming unfinished work. For other authorized recall, search project memory and `__shared__` with a focused query phrased as the current task/question rather than an unstructured keyword bag. If no checkpoint exists, continue normally.
 
-For a fresh independent-judgment child, apply the root isolation contract: do not use GrayMatter to reconstruct the parent task/history. Missing authority stays an authority gap.
+For a fresh independent-judgment child, apply the active role/delegation isolation contract: do not use GrayMatter to reconstruct the parent task/history. Missing authority stays an authority gap.
 
 Before stopping unfinished work whose transient state must survive, save concise reconstructable state with `checkpoint_save`.
 
 ## Durable-write and correction mechanics
 
-When root policy permits a durable conclusion to be stored, write it atomically and specifically with `memory_add`. For a correction, search for the exact old fact if necessary, then use `memory_reflect` to update or forget it so stale and corrected variants do not remain simultaneously live in recall. Do not copy raw tool output into durable memory merely because it was retrieved.
+When root/role policy permits a durable conclusion to be stored, write it atomically and specifically with `memory_add`. For a correction, search for the exact old fact if necessary, then use `memory_reflect` to update or forget it so stale and corrected variants do not remain simultaneously live in recall. Do not copy raw tool output into durable memory merely because it was retrieved.
 
 ## Tool contract
 

@@ -77,7 +77,7 @@ Use current project/global instruction files only to resolve a rule referenced b
 
 If the instruction set governing a historical decision cannot be established, that instruction diagnosis is `unverified`. Missing evidence does not establish an instruction ambiguity or gap.
 
-Apply root section 2.2.1's evidence-state classes to the historical state itself, not only to requirements. For every material action or transition, preserve the actual class supported by the record. In particular, a visible completion report remains evidence of reported completion even when the underlying execution record is unavailable; characterize it as reported but not independently verified rather than downgrading it to intent. Conversely, an announced next step or intended transition is not completion without later evidence. Do not independently certify completion or failure merely because a parent or child reported it. When sources disagree or are incomplete, preserve both the reported state and the verification limitation.
+Apply root section 2.2's evidence-state classes to the historical state itself, not only to requirements. For every material action or transition, preserve the actual class supported by the record. In particular, a visible completion report remains evidence of reported completion even when the underlying execution record is unavailable; characterize it as reported but not independently verified rather than downgrading it to intent. Conversely, an announced next step or intended transition is not completion without later evidence. Do not independently certify completion or failure merely because a parent or child reported it. When sources disagree or are incomplete, preserve both the reported state and the verification limitation.
 
 ## Audit method
 
@@ -87,11 +87,11 @@ For each material decision or delegated claim:
 
 - identify who introduced it and when;
 - identify the authority and evidence available at that point;
-- when a referenced/adopted source supplies claimed authority, apply root section 2.2.1's source-proposition classes and identify the exact proposition actually adopted;
+- when a referenced/adopted source supplies claimed authority, apply root section 2.2's source-proposition classes and identify the exact proposition actually adopted;
 - compare the original authoritative proposition with each downstream restatement and record any material semantic delta;
-- classify each material downstream relation under root section 2.2.1 as `preserved`, `refined`, `strengthened`, `weakened`, `substituted`, or `indeterminate`; do not restate the root relation state machine here, and do not call a materially different approach `refined` merely because it has the same broad goal or stays within the same action ceiling;
+- classify each material downstream relation under root section 2.2 as `preserved`, `refined`, `strengthened`, `weakened`, `substituted`, or `indeterminate`; do not restate the root relation state machine here, and do not call a materially different approach `refined` merely because it has the same broad goal or stays within the same action ceiling;
 - when user authority is claimed, compare the actual user-visible decision with the later meaning attributed to it rather than relying on option descriptions, summaries, or descendant attributions as substitutes;
-- check whether the conclusion followed under root section 2.2.1;
+- check whether the conclusion followed under root section 2.2;
 - check whether an assumption, inferred invariant, review/test finding, implementation choice, or prior-agent claim was promoted into acceptance or a requirement;
 - check whether repetition, bundling, paraphrase, or loss of qualification caused an agent proposal, conditional alternative, or fallback to acquire apparent authority downstream;
 - check whether a test, reproduction, benchmark, trace, or review artifact lost material preconditions/qualifiers from the proposition it purported to prove, or whether weaker/ambiguous verification evidence was later laundered into proof of the stronger claim; distinguish evidence that wrongly supports the governing proposition from evidence that wrongly contradicts or blocks it, and distinguish both from unresolved evidentiary coverage and ordinary structural coverage;

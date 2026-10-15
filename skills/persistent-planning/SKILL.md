@@ -1,15 +1,15 @@
 ---
 name: persistent-planning
-description: Use only after root AGENTS.md section 2.3 activates Persistent Planning Mode. Owns fallback durable representation, resume, and work-package persistence mechanics; root owns activation and canonical task-state policy.
+description: Use only after the active workflow owner activates durable planning. Owns fallback durable representation, resume, and work-package persistence mechanics; workflow-entry/caller owns activation and canonical task-state policy.
 ---
 
 # Persistent planning
 
-Root section 2.3 owns activation, canonical task-state semantics, preference for an existing project planning owner, and the repository-mutation gate. This skill begins after that boundary is established and does not redefine it.
+The active workflow owner (normally via `workflow-entry`) owns activation, canonical task-state semantics, preference for an existing project planning owner, and any repository-mutation gate. This skill begins after that boundary is established and does not redefine it.
 
 ## Fallback durable representation
 
-When root section 2.3 establishes that durable repository planning is authorized and no existing project convention can serve as the canonical representation, the pack fallback is:
+When the active workflow owner establishes that durable repository planning is authorized and no existing project convention can serve as the canonical representation, the pack fallback is:
 
 ```text
 plans/<plan>/
@@ -25,7 +25,7 @@ Use only the files needed by the actual task. Do not create empty artifact categ
 
 ## Resume and update procedure
 
-On resume, read the root-established canonical current state before changing it. Continue from that state instead of reconstructing progress from chat summaries. If the fallback representation is the canonical owner for this task, update only the smallest artifact set needed to preserve current work-package state, durable decisions/blockers, state-bound evidence, and the next safe action already required by root section 2.3.
+On resume, read the root-established canonical current state before changing it. Continue from that state instead of reconstructing progress from chat summaries. If the fallback representation is the canonical owner for this task, update only the smallest artifact set needed to preserve current work-package state, durable decisions/blockers, state-bound evidence, and the next safe action already required by the active workflow-owner state.
 
 ## Work-package cycle
 

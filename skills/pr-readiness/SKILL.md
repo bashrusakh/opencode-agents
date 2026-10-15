@@ -5,6 +5,8 @@ description: Use for owned-PR Draft/candidate/publication/readiness workflows. O
 
 # PR readiness
 
+**Owned PR** means a pull request whose author is the current authenticated/user account, or a PR this workflow previously created on that user's behalf and whose ownership is confirmed from repository-host metadata. A branch name alone does not establish ownership.
+
 Draft publication and Ready-for-review are different boundaries. Here **Ready** means the repository host's Draft -> Ready state for external/public review; it is distinct from the internal `@reviewer` stage. Read-only review never authorizes a PR-state change, and Draft/Ready state must never be changed for a PR that is not confirmed to be owned.
 
 ## Draft publication safety
@@ -13,7 +15,7 @@ During active work on an owned PR, intermediate Draft publication is allowed onl
 
 - the `git-provenance` publication checkpoint is satisfied for the current batch;
 - the batch remains inside the authorized PR scope;
-- applicable section 7.4 evidence is fresh enough for that batch and failures/blockers are stated honestly;
+- applicable implementation/verification evidence is fresh enough for that batch and failures/blockers are stated honestly;
 - the PR remains Draft and its current metadata is not misleading.
 
 An intermediate Draft push does not require a separate `@tester` invocation or final `@reviewer` merely because a batch ended. Once the current repository state may be the final content candidate, do not publish it as another intermediate batch: freeze/commit it locally and enter the Candidate HEAD sequence.
@@ -26,11 +28,11 @@ Refresh Base SHA again before publishing that candidate and before Ready. If it 
 
 ## Ready-for-review gate
 
-Under the default pack readiness workflow, the Ready evidence contract is satisfied only when all applicable conditions are true for the Candidate HEAD. A higher-priority instruction may authorize a different state transition under root section 4, but it does not convert missing evidence into a pass:
+Under the default pack readiness workflow, the Ready evidence contract is satisfied only when all applicable conditions are true for the Candidate HEAD. A higher-priority instruction may authorize a different state transition under the active workflow-entry/user gate, but it does not convert missing evidence into a pass:
 
 - **Scope complete** — in-scope blocking findings/todo items are resolved or rejected with evidence; unrelated latent findings were not silently folded into the PR.
 - **Fix/regression contract** — applicable sections 7.2 and 7.3 are satisfied.
-- **Local evidence** — applicable section 7.4 evidence is current for the reviewed Base SHA + Candidate HEAD.
+- **Local evidence** — applicable implementation/verification evidence is current for the reviewed Base SHA + Candidate HEAD.
 - **Reviewer** — `@reviewer` reviewed the complete Base-SHA-to-Candidate-HEAD comparison before push with no unresolved blocking findings and `Coverage: full PR`, **under an authoritative acceptance model that spans the whole PR/task surface rather than only the latest fix/risk slice**. Structural full-diff coverage does not cure an omitted semantic acceptance area. A separately stated executable/live `Acceptance proof: partial` may be compatible with Ready only when the missing proof is an explicitly deferred/out-of-lifecycle evidence surface, not when the reviewer lacked the authoritative acceptance model needed to judge a material PR area. The reviewer verdict establishes Candidate-level independent acceptance evidence; it does **not** itself establish or authorize the Ready transition or any later lifecycle transition. The workflow owner derives Ready only from the complete applicable gate below.
 - **Identity/provenance** — the `git-provenance` checkpoint is current, base drift is reconciled, and remote PR head equals the reviewed Candidate HEAD.
 - **CI/status** — required/task-relevant remote checks whose evidence is legitimately available before the Ready transition are complete and successful when applicable. A host status token is evidence of state, not a semantic classification by itself: distinguish an executed/pending/failed check from a check awaiting approval, lifecycle transition, or another prerequisite before treating its absence as a Ready blocker.

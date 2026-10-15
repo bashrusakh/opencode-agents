@@ -12,6 +12,7 @@ not harmless prose: it requires conscious classification and, when material, an 
 """
 from __future__ import annotations
 import re
+import json
 from collections import Counter
 from pathlib import Path
 
@@ -28,24 +29,21 @@ def groups_present(hay: str, groups: list[list[str]]) -> bool:
 
 
 # Closed-world classification of every current pack-owned @role relation discovered in
-# AGENTS.md or an agents/*.md standing contract. Classification is semantic topology, not
+# AGENTS.md, pack-owned delegation-control, or an agents/*.md standing contract. Classification is semantic topology, not
 # proof that the edge is safe; material edges are checked again below.
 EDGE_CLASSIFICATION = {
-    ('root','auditor'): 'routing_policy',
-    ('root','build'): 'routing_policy',
-    ('root','code-orchestrator'): 'routing_policy',
-    ('root','debugger'): 'routing_policy',
-    ('root','devops'): 'routing_policy',
-    ('root','explore'): 'routing_policy',
-    ('root','general'): 'routing_policy',
-    ('root','librarian'): 'routing_policy',
-    ('root','project-planner'): 'routing_policy',
-    ('root','reviewer'): 'routing_policy',
-    ('root','session-evaluator'): 'routing_policy',
-    ('root','trajectory-auditor'): 'routing_policy',
-    ('root','tester'): 'routing_policy',
-    ('root','ui-implementer'): 'routing_policy',
-    ('root','ui-orchestrator'): 'routing_policy',
+    ('delegation-control','auditor'): 'routing_policy',
+    ('delegation-control','build'): 'routing_policy',
+    ('delegation-control','code-orchestrator'): 'routing_policy',
+    ('delegation-control','debugger'): 'routing_policy',
+    ('delegation-control','devops'): 'routing_policy',
+    ('delegation-control','explore'): 'routing_policy',
+    ('delegation-control','general'): 'routing_policy',
+    ('delegation-control','librarian'): 'routing_policy',
+    ('delegation-control','project-planner'): 'routing_policy',
+    ('delegation-control','reviewer'): 'routing_policy',
+    ('delegation-control','tester'): 'routing_policy',
+    ('delegation-control','ui-orchestrator'): 'routing_policy',
 
     ('auditor','a11y-reviewer'): 'delegation',
     ('auditor','devops'): 'delegation',
@@ -108,12 +106,12 @@ ALLOWED_KINDS = {
 # Specific high-risk edges below add stronger callee-specific requirements.
 CALLER_DELEGATION = {
     'code-orchestrator': [
-        [r'root section 5 handoff contract'], [r'workflow-specific reconstruction state'],
-        [r'current diff/Candidate HEAD/PR context'], [r'intended mutation baseline'],
+        [r'minimally sufficient and reconstructable'], [r'workflow-specific reconstruction state'],
+        [r'current diff/reviewed-candidate/resource context'], [r'intended mutation baseline'],
     ],
     'auditor': [
-        [r'audit question'], [r'exact target/state'], [r'bounded subsystem/behavior surface'],
-        [r'allowed action level'], [r'expected evidence'], [r'stop/coverage boundary'],
+        [r'audit(?:-specific)? question'], [r'exact target/state'], [r'bounded subsystem/behavior surface'],
+        [r'allowed action level'], [r'expected evidence|expected deliverable/evidence'], [r'stop/coverage boundary|stop/escalation boundary'],
         [r'do not forward .*suspected root cause|do not forward .*preferred fix|not acceptance'],
     ],
     'ui-orchestrator': [
@@ -148,7 +146,7 @@ EDGE = {
    [r'provenance label .*locator, not proof|locator, not proof'],
    [r'prior findings/verdicts|prior reviewer.*findings|fix history'],
    [r'targeted re-review.*partial/incremental|partial/incremental'],
-   [r'Apply the root .*Memory and continuity.*independent-judgment isolation contract|root .*independent-judgment isolation contract'],
+   [r'loaded `delegation-control` independent-judgment isolation contract|delegation-control.*independent-judgment isolation contract'],
    [r'clean authoritative packet|without importing parent investigative history'],
    [r'whole material task/acceptance surface|whole.*acceptance model|whole requested acceptance surface'],
  ],
@@ -175,10 +173,10 @@ EDGE = {
  ('code-orchestrator','ui-orchestrator'): [
    [r'settled user-visible outcome'], [r'unresolved presentation/interaction direction'],
    [r'materially different layout|information-hierarchy|disclosure|interaction|error-state'],
-   [r'user feedback rejects .* without adopting .* replacement|rejects the current treatment without adopting its replacement'],
+   [r'user feedback.*rejects .* without adopting .* replacement|rejects the current treatment without adopting a replacement'],
    [r'delegate .*UI domain to `?@?ui-orchestrator|delegate the bounded UI domain to `@ui-orchestrator`'],
-   [r'do not invent .* UI direction|do not .*pass it downstream as an established outcome'],
-   [r'Direct `@ui-implementer` work is appropriate|direct .*ui-implementer.*appropriate'],
+   [r'do not invent .*UI.*direction|do not .*pass it downstream as an established outcome'],
+   [r'route directly to `?@?ui-implementer|direct .*ui-implementer'],
  ],
  ('ui-orchestrator','ui-auditor'): [
    [r'current screen/flow'], [r'primary user job'], [r'audit question/boundary'], [r'current-state evidence'], [r'do not preselect .*redesign'],
@@ -193,7 +191,7 @@ EDGE = {
    [r'advisory'], [r'stable-result verification|stable result'], [r'exact stable target'], [r'changed interaction boundary'], [r'preserved behavior/constraints|preserved behavior'], [r'available evidence'], [r'stale after .*edit'],
  ],
  ('auditor','specialists'): [
-   [r'audit question'], [r'exact target/state'], [r'bounded subsystem/behavior surface'], [r'allowed action level'], [r'expected evidence'], [r'stop/coverage boundary'],
+   [r'audit(?:-specific)? question'], [r'exact target/state'], [r'bounded subsystem/behavior surface'], [r'allowed action level'], [r'expected evidence|expected deliverable/evidence'], [r'stop/coverage boundary|stop/escalation boundary'],
    [r'do not forward .*suspected root cause|do not forward .*preferred fix|not acceptance'],
  ],
  ('auditor','devops'): [[r'@devops'], [r'action ceiling read-only|set the action ceiling read-only']],
@@ -268,12 +266,68 @@ def audit_texts(callers: dict[str,str]) -> list[str]:
     return audit_generic_delegators(callers) + audit_specific_edges(callers)
 
 
+def discover_conditional_skill_edges(agent_names: set[str]) -> set[tuple[str, str]]:
+    out: set[tuple[str, str]] = set()
+    spec_path = ROOT / 'evals/runtime-residency-spec.json'
+    if not spec_path.is_file():
+        return out
+    try:
+        spec = json.loads(spec_path.read_text(encoding='utf-8'))
+    except Exception:
+        return out
+    for contract in spec.get('contracts', []):
+        if contract.get('role_edge_attribution') != 'activator':
+            continue
+        skill_path = ROOT / str(contract.get('path', ''))
+        if not skill_path.is_file():
+            continue
+        targets = {r for r in re.findall(r'@([a-zA-Z0-9_-]+)', skill_path.read_text(encoding='utf-8')) if r in agent_names}
+        for act in contract.get('activators', []):
+            ap = str(act.get('path', ''))
+            if not (ap.startswith('agents/') and ap.endswith('.md')):
+                continue
+            caller = Path(ap).stem
+            for target in targets:
+                if target != caller:
+                    out.add((caller, target))
+    return out
+
+
+
+def conditional_skill_text_by_activator() -> dict[str, str]:
+    out: dict[str, list[str]] = {}
+    spec_path = ROOT / 'evals/runtime-residency-spec.json'
+    if not spec_path.is_file():
+        return {}
+    try:
+        spec = json.loads(spec_path.read_text(encoding='utf-8'))
+    except Exception:
+        return {}
+    for contract in spec.get('contracts', []):
+        if contract.get('role_edge_attribution') != 'activator':
+            continue
+        skill_path = ROOT / str(contract.get('path', ''))
+        if not skill_path.is_file():
+            continue
+        skill_text = skill_path.read_text(encoding='utf-8')
+        for act in contract.get('activators', []):
+            ap = str(act.get('path', ''))
+            if not (ap.startswith('agents/') and ap.endswith('.md')):
+                continue
+            caller = Path(ap).stem
+            out.setdefault(caller, []).append(skill_text)
+    return {k: '\n'.join(v) for k, v in out.items()}
+
 def main() -> int:
     agent_names={p.stem for p in AG.glob('*.md')}
-    all_texts={'root': (ROOT/'AGENTS.md').read_text(encoding='utf-8')}
+    all_texts={'root': (ROOT/'AGENTS.md').read_text(encoding='utf-8'),
+               'delegation-control': (ROOT/'skills/delegation-control/SKILL.md').read_text(encoding='utf-8')}
     all_texts.update({p.stem:p.read_text(encoding='utf-8') for p in AG.glob('*.md')})
     discovered=discover_edges_from_texts(all_texts,agent_names)
-    callers={k:text(v) for k,v in CALLER_FILES.items()}
+    discovered |= discover_conditional_skill_edges(agent_names)
+    shared=(ROOT/'skills/delegation-control/SKILL.md').read_text(encoding='utf-8')
+    attributed=conditional_skill_text_by_activator()
+    callers={k:shared+'\n'+text(v)+'\n'+attributed.get(k,'') for k,v in CALLER_FILES.items()}
 
     findings=[]
     findings.extend(inventory_findings(discovered))

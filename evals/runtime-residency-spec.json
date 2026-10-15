@@ -1,0 +1,879 @@
+{
+  "schema_version": 1,
+  "root": {
+    "path": "AGENTS.md",
+    "audience": "universal",
+    "forbidden_families": [
+      {
+        "id": "startup_protocol",
+        "window_lines": 12,
+        "groups": [
+          [
+            "### Startup|Startup block|startup protocol"
+          ],
+          [
+            "- Route:|route identity|selected route"
+          ],
+          [
+            "Mode:|action ceiling"
+          ],
+          [
+            "Gated:|gate status"
+          ],
+          [
+            "Next:|next action"
+          ]
+        ]
+      },
+      {
+        "id": "caller_handoff_protocol",
+        "window_lines": 18,
+        "groups": [
+          [
+            "minimally sufficient.*reconstructable|bounded.*reconstructable|reconstructable packet"
+          ],
+          [
+            "expected deliverable/evidence|expected evidence|evidence expected"
+          ],
+          [
+            "stop/escalation|stop conditions|return.*caller"
+          ],
+          [
+            "fresh child|child session|specialist session"
+          ]
+        ]
+      },
+      {
+        "id": "implementation_pipeline",
+        "window_lines": 18,
+        "groups": [
+          [
+            "Before the first repository mutation|Before editing|pre[- ]mutation"
+          ],
+          [
+            "Right-level implementation boundary|narrowest existing owner|fix boundary"
+          ],
+          [
+            "Regression guard|preserved behavior|preserved invariant"
+          ],
+          [
+            "Verification freshness|evidence freshness|stale evidence"
+          ]
+        ]
+      },
+      {
+        "id": "resource_specific_codehost_pipeline",
+        "window_lines": 16,
+        "groups": [
+          [
+            "Existing PR follow-up|pull request follow-up|PR workflow"
+          ],
+          [
+            "Issue / ticket / report|issue workflow|ticket/report workflow"
+          ],
+          [
+            "Search existing issues|review comments|issue dedup"
+          ],
+          [
+            "Draft/Candidate/Ready|Candidate HEAD|PR readiness"
+          ]
+        ]
+      }
+    ],
+    "required_families": [
+      {
+        "id": "nontrivial_hypothesis_counterframing",
+        "window_lines": 8,
+        "groups": [
+          [
+            "first plausible framing|first plausible.*solution level"
+          ],
+          [
+            "hypothesis"
+          ],
+          [
+            "materially different plausible framing|materially different.*framing"
+          ]
+        ]
+      },
+      {
+        "id": "required_skill_unavailable_blocks_stage",
+        "window_lines": 8,
+        "groups": [
+          [
+            "required skill"
+          ],
+          [
+            "Skill: <name> unavailable"
+          ],
+          [
+            "blocked"
+          ]
+        ]
+      }
+    ]
+  },
+  "contracts": [
+    {
+      "id": "workflow-entry",
+      "path": "skills/workflow-entry/SKILL.md",
+      "autoinvoke_false": true,
+      "activators": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "always-primary",
+          "signature": [
+            "load `workflow-entry`",
+            "primary invocation"
+          ]
+        },
+        {
+          "path": "agents/auditor.md",
+          "mode": "always-primary",
+          "signature": [
+            "load `workflow-entry`",
+            "primary audit invocation"
+          ]
+        },
+        {
+          "path": "agents/build.md",
+          "mode": "primary-only",
+          "signature": [
+            "When this role is primary, load `workflow-entry`"
+          ]
+        },
+        {
+          "path": "agents/ui-orchestrator.md",
+          "mode": "primary-only",
+          "signature": [
+            "When this role is primary, load `workflow-entry`"
+          ]
+        },
+        {
+          "path": "agents/librarian.md",
+          "mode": "primary-only",
+          "signature": [
+            "When this role is primary/user-facing, load `workflow-entry`"
+          ]
+        },
+        {
+          "path": "agents/project-planner.md",
+          "mode": "primary-only",
+          "signature": [
+            "When this role is primary/user-facing, load `workflow-entry`"
+          ]
+        }
+      ],
+      "forbidden_role_paths": [
+        "agents/a11y-reviewer.md",
+        "agents/debugger.md",
+        "agents/devops.md",
+        "agents/explore.md",
+        "agents/general.md",
+        "agents/reviewer.md",
+        "agents/semantic-checkpoint.md",
+        "agents/session-evaluator.md",
+        "agents/tester.md",
+        "agents/trajectory-auditor.md",
+        "agents/ui-auditor.md",
+        "agents/ui-implementer.md",
+        "agents/ui-planner.md"
+      ],
+      "audience": "primary-entry",
+      "required_families": [
+        {
+          "id": "broad_scope_definition",
+          "window_lines": 8,
+          "groups": [
+            [
+              "Broad scope"
+            ],
+            [
+              "unrelated modules|shared architecture|public-contract"
+            ],
+            [
+              "file count.*signal"
+            ]
+          ]
+        },
+        {
+          "id": "confidence_consequence_semantics",
+          "window_lines": 12,
+          "groups": [
+            [
+              "`likely`"
+            ],
+            [
+              "safe read-only|narrow local"
+            ],
+            [
+              "`ambiguous`"
+            ],
+            [
+              "unwanted mutation|wrong deliverable|role violation"
+            ]
+          ]
+        },
+        {
+          "id": "visual_publication_blocked_fallback",
+          "window_lines": 10,
+          "groups": [
+            [
+              "Binary/visual evidence|visual evidence"
+            ],
+            [
+              "no valid publication path"
+            ],
+            [
+              "local evidence"
+            ],
+            [
+              "verify the destination"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "delegation-control",
+      "path": "skills/delegation-control/SKILL.md",
+      "autoinvoke_false": true,
+      "activators": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "always-primary",
+          "signature": [
+            "load `workflow-entry` and `delegation-control`"
+          ]
+        },
+        {
+          "path": "agents/auditor.md",
+          "mode": "always-primary",
+          "signature": [
+            "load `workflow-entry` and `delegation-control`"
+          ]
+        },
+        {
+          "path": "agents/build.md",
+          "mode": "primary-only",
+          "signature": [
+            "When this role is primary, load `workflow-entry` and `delegation-control`"
+          ]
+        },
+        {
+          "path": "agents/ui-orchestrator.md",
+          "mode": "primary-only",
+          "signature": [
+            "When this role is primary, load `workflow-entry` and `delegation-control`"
+          ]
+        }
+      ],
+      "forbidden_role_paths": [
+        "agents/a11y-reviewer.md",
+        "agents/debugger.md",
+        "agents/devops.md",
+        "agents/explore.md",
+        "agents/general.md",
+        "agents/librarian.md",
+        "agents/project-planner.md",
+        "agents/reviewer.md",
+        "agents/semantic-checkpoint.md",
+        "agents/session-evaluator.md",
+        "agents/tester.md",
+        "agents/trajectory-auditor.md",
+        "agents/ui-auditor.md",
+        "agents/ui-implementer.md",
+        "agents/ui-planner.md"
+      ],
+      "audience": "delegation-caller",
+      "required_families": [
+        {
+          "id": "no_artificial_freshness_reconfiguration",
+          "window_lines": 8,
+          "groups": [
+            [
+              "disable, hide, or reconfigure|disable.*reconfigure"
+            ],
+            [
+              "manufacture freshness|manufacture.*independence"
+            ],
+            [
+              "contaminating content"
+            ],
+            [
+              "authorized"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "code-host-workflow",
+      "path": "skills/code-host-workflow/SKILL.md",
+      "autoinvoke_false": true,
+      "audience": "code-host-resource",
+      "activators": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "always-primary",
+          "signature": [
+            "When normalization selects an existing PR, issue/ticket/report, release/tag, or another public code-host resource as a requested deliverable, load `code-host-workflow`"
+          ]
+        }
+      ],
+      "forbidden_role_paths": [
+        "agents/a11y-reviewer.md",
+        "agents/auditor.md",
+        "agents/build.md",
+        "agents/debugger.md",
+        "agents/devops.md",
+        "agents/explore.md",
+        "agents/general.md",
+        "agents/librarian.md",
+        "agents/project-planner.md",
+        "agents/reviewer.md",
+        "agents/semantic-checkpoint.md",
+        "agents/session-evaluator.md",
+        "agents/tester.md",
+        "agents/trajectory-auditor.md",
+        "agents/ui-auditor.md",
+        "agents/ui-implementer.md",
+        "agents/ui-orchestrator.md",
+        "agents/ui-planner.md"
+      ],
+      "forbidden_activator_families": [
+        {
+          "id": "existing_pr_pipeline",
+          "window_lines": 16,
+          "groups": [
+            [
+              "canonical PR URL|Draft/Ready state"
+            ],
+            [
+              "current review comments/checks|effective diff"
+            ],
+            [
+              "Stay on the existing PR branch|same PR branch"
+            ]
+          ]
+        },
+        {
+          "id": "issue_pipeline",
+          "window_lines": 12,
+          "groups": [
+            [
+              "Resolve the state the report targets"
+            ],
+            [
+              "Search existing issues"
+            ],
+            [
+              "Draft/open an issue"
+            ]
+          ]
+        },
+        {
+          "id": "release_pipeline",
+          "window_lines": 12,
+          "groups": [
+            [
+              "Build release notes/checks"
+            ],
+            [
+              "Tag/release/public publication"
+            ],
+            [
+              "release metadata/body"
+            ]
+          ]
+        },
+        {
+          "id": "host_template_pipeline",
+          "window_lines": 10,
+          "groups": [
+            [
+              "absent from the current worktree"
+            ],
+            [
+              "repository-host metadata"
+            ],
+            [
+              "template/guidance"
+            ]
+          ]
+        }
+      ],
+      "required_families": [
+        {
+          "id": "activation_boundary",
+          "window_lines": 12,
+          "groups": [
+            [
+              "existing PR"
+            ],
+            [
+              "issue/ticket/report"
+            ],
+            [
+              "release/tag"
+            ],
+            [
+              "Do not load it for an ordinary bugfix"
+            ]
+          ]
+        },
+        {
+          "id": "existing_pr_preflight",
+          "window_lines": 16,
+          "groups": [
+            [
+              "canonical PR URL/resource identity"
+            ],
+            [
+              "Draft/Ready state"
+            ],
+            [
+              "head/base"
+            ],
+            [
+              "current review comments/checks"
+            ],
+            [
+              "known todo"
+            ]
+          ]
+        },
+        {
+          "id": "issue_dedup_and_scope",
+          "window_lines": 16,
+          "groups": [
+            [
+              "Resolve the state the report targets"
+            ],
+            [
+              "Search existing issues"
+            ],
+            [
+              "separate deliverable"
+            ]
+          ]
+        },
+        {
+          "id": "release_publication",
+          "window_lines": 18,
+          "groups": [
+            [
+              "repository history"
+            ],
+            [
+              "Tag/release/public publication"
+            ],
+            [
+              "verify the published resource identity"
+            ],
+            [
+              "metadata/body"
+            ]
+          ]
+        },
+        {
+          "id": "host_template_fallback",
+          "window_lines": 12,
+          "groups": [
+            [
+              "absent from the current worktree"
+            ],
+            [
+              "repository-host metadata"
+            ]
+          ]
+        },
+        {
+          "id": "resource_result",
+          "window_lines": 14,
+          "groups": [
+            [
+              "canonical resource URL/identity"
+            ],
+            [
+              "current host state"
+            ],
+            [
+              "Base/Candidate/remote-head/readiness identity"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "implementation-contract",
+      "path": "skills/implementation-contract/SKILL.md",
+      "autoinvoke_false": true,
+      "activators": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "conditional",
+          "signature": [
+            "Load `implementation-contract` only when the workflow enters a code/config/UI implementation"
+          ]
+        },
+        {
+          "path": "agents/auditor.md",
+          "mode": "conditional",
+          "signature": [
+            "Load `implementation-contract` only when the audit materially judges implementation ownership"
+          ]
+        },
+        {
+          "path": "agents/build.md",
+          "mode": "conditional",
+          "signature": [
+            "load `implementation-contract` before the first mutation"
+          ]
+        },
+        {
+          "path": "agents/debugger.md",
+          "mode": "conditional",
+          "signature": [
+            "Load `implementation-contract` before selecting or applying"
+          ]
+        },
+        {
+          "path": "agents/devops.md",
+          "mode": "conditional",
+          "signature": [
+            "Load `implementation-contract` only before a semantic repository/config edit"
+          ]
+        },
+        {
+          "path": "agents/project-planner.md",
+          "mode": "conditional",
+          "signature": [
+            "Load `implementation-contract` only when the plan materially defines or judges implementation ownership"
+          ]
+        },
+        {
+          "path": "agents/reviewer.md",
+          "mode": "conditional",
+          "signature": [
+            "load `implementation-contract` before substantive engineering judgment"
+          ]
+        },
+        {
+          "path": "agents/tester.md",
+          "mode": "conditional",
+          "signature": [
+            "load `implementation-contract` before planning regression/preservation evidence"
+          ]
+        },
+        {
+          "path": "agents/ui-implementer.md",
+          "mode": "conditional",
+          "signature": [
+            "Load `implementation-contract` before the first UI repository mutation"
+          ]
+        }
+      ],
+      "forbidden_role_paths": [
+        "agents/a11y-reviewer.md",
+        "agents/explore.md",
+        "agents/general.md",
+        "agents/librarian.md",
+        "agents/semantic-checkpoint.md",
+        "agents/session-evaluator.md",
+        "agents/trajectory-auditor.md",
+        "agents/ui-auditor.md",
+        "agents/ui-planner.md"
+      ],
+      "audience": "implementation/judgment",
+      "required_families": [
+        {
+          "id": "complexity_design_escalation",
+          "window_lines": 12,
+          "groups": [
+            [
+              "Complexity/design escalation"
+            ],
+            [
+              "shared state|lifecycle|protocol|concurrency|persistence|ownership"
+            ],
+            [
+              "accumulating guards|adjacent interleavings"
+            ],
+            [
+              "invariant/state/transition/interleaving/ownership model"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "terminal-semantic-eval",
+      "path": "skills/terminal-semantic-eval/SKILL.md",
+      "autoinvoke_false": true,
+      "audience": "terminal-diagnostic",
+      "activators": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "always-primary",
+          "signature": [
+            "At an already-established terminal successful outcome about to be reported, load `terminal-semantic-eval`"
+          ]
+        }
+      ],
+      "forbidden_role_paths": [
+        "agents/a11y-reviewer.md",
+        "agents/auditor.md",
+        "agents/build.md",
+        "agents/debugger.md",
+        "agents/devops.md",
+        "agents/explore.md",
+        "agents/general.md",
+        "agents/librarian.md",
+        "agents/project-planner.md",
+        "agents/reviewer.md",
+        "agents/semantic-checkpoint.md",
+        "agents/session-evaluator.md",
+        "agents/tester.md",
+        "agents/trajectory-auditor.md",
+        "agents/ui-auditor.md",
+        "agents/ui-implementer.md",
+        "agents/ui-orchestrator.md",
+        "agents/ui-planner.md"
+      ],
+      "forbidden_activator_families": [
+        {
+          "id": "terminal_evaluator_handoff_procedure",
+          "window_lines": 14,
+          "groups": [
+            [
+              "material participating child-session IDs|child[- ]session IDs|session identities"
+            ],
+            [
+              "session-history discovery|session history discovery|history discovery"
+            ],
+            [
+              "failure/unavailability|failure or unavailability|failure|unavailable"
+            ],
+            [
+              "already-established terminal state|terminal state|completion/readiness|completion|readiness"
+            ],
+            [
+              "does not change|cannot change|reopen|non[- ]gating|does not.*gate|must not.*gate"
+            ]
+          ],
+          "min_groups": 4
+        }
+      ],
+      "required_families": [
+        {
+          "id": "terminal_activation_boundary",
+          "window_lines": 14,
+          "groups": [
+            [
+              "terminal successful outcome"
+            ],
+            [
+              "Do not load or invoke it for intermediate work"
+            ],
+            [
+              "not part of the task acceptance/readiness gate"
+            ]
+          ]
+        },
+        {
+          "id": "terminal_handoff",
+          "window_lines": 16,
+          "groups": [
+            [
+              "Invoke `@session-evaluator` once"
+            ],
+            [
+              "material participating child-session IDs"
+            ],
+            [
+              "Do not perform new session-history discovery"
+            ],
+            [
+              "session-evidence"
+            ]
+          ]
+        },
+        {
+          "id": "terminal_non_gating",
+          "window_lines": 12,
+          "groups": [
+            [
+              "diagnostic evidence only"
+            ],
+            [
+              "does not change an already-established terminal state"
+            ],
+            [
+              "does not reopen completed work"
+            ],
+            [
+              "does not gate final reporting"
+            ]
+          ]
+        }
+      ],
+      "role_edge_attribution": "activator"
+    },
+    {
+      "id": "ui-routing-control",
+      "path": "skills/ui-routing-control/SKILL.md",
+      "autoinvoke_false": true,
+      "audience": "code-to-ui-routing",
+      "activators": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "conditional",
+          "signature": [
+            "When the active code workflow reaches a material UI-domain routing decision, load `ui-routing-control`"
+          ]
+        }
+      ],
+      "forbidden_role_paths": [
+        "agents/a11y-reviewer.md",
+        "agents/auditor.md",
+        "agents/build.md",
+        "agents/debugger.md",
+        "agents/devops.md",
+        "agents/explore.md",
+        "agents/general.md",
+        "agents/librarian.md",
+        "agents/project-planner.md",
+        "agents/reviewer.md",
+        "agents/semantic-checkpoint.md",
+        "agents/session-evaluator.md",
+        "agents/tester.md",
+        "agents/trajectory-auditor.md",
+        "agents/ui-auditor.md",
+        "agents/ui-implementer.md",
+        "agents/ui-orchestrator.md",
+        "agents/ui-planner.md"
+      ],
+      "forbidden_activator_families": [
+        {
+          "id": "resident_ui_direction_discriminator",
+          "window_lines": 18,
+          "groups": [
+            [
+              "settled user-visible outcome"
+            ],
+            [
+              "unresolved presentation/interaction direction"
+            ],
+            [
+              "materially different layout|information[- ]hierarchy|disclosure|interaction|error-state"
+            ],
+            [
+              "@ui-orchestrator"
+            ],
+            [
+              "@ui-implementer"
+            ]
+          ],
+          "min_groups": 4
+        }
+      ],
+      "required_families": [
+        {
+          "id": "activation_boundary",
+          "window_lines": 12,
+          "groups": [
+            [
+              "material UI-domain routing decision"
+            ],
+            [
+              "Do not load it for non-UI code work"
+            ],
+            [
+              "ui-orchestrator.*internal UI stage selection"
+            ],
+            [
+              "ui-implementer.*focused UI repository mutation"
+            ]
+          ]
+        },
+        {
+          "id": "direction_discriminator",
+          "window_lines": 14,
+          "groups": [
+            [
+              "settled user-visible outcome"
+            ],
+            [
+              "unresolved presentation/interaction direction"
+            ],
+            [
+              "functional requirement alone does not make the UI outcome settled"
+            ],
+            [
+              "rejects the current treatment without adopting a replacement"
+            ]
+          ]
+        },
+        {
+          "id": "unresolved_route",
+          "window_lines": 18,
+          "groups": [
+            [
+              "delegate the bounded UI domain to `@ui-orchestrator`"
+            ],
+            [
+              "inherited target/state identity"
+            ],
+            [
+              "whether UI stage selection is delegated"
+            ],
+            [
+              "code orchestrator remains workflow owner"
+            ],
+            [
+              "Cross-layer architecture change|broader product redesign|publication-state change"
+            ]
+          ]
+        },
+        {
+          "id": "direct_implementation_route",
+          "window_lines": 16,
+          "groups": [
+            [
+              "route directly to `@ui-implementer`"
+            ],
+            [
+              "established user-visible outcome"
+            ],
+            [
+              "target/mutation state"
+            ],
+            [
+              "material constraints"
+            ],
+            [
+              "preserved behavior"
+            ],
+            [
+              "Do not preselect files/layout mechanics"
+            ]
+          ]
+        },
+        {
+          "id": "result_boundary",
+          "window_lines": 12,
+          "groups": [
+            [
+              "does not transfer whole-workflow ownership"
+            ],
+            [
+              "does not substitute for any independent verification/review/readiness stage"
+            ]
+          ]
+        }
+      ],
+      "role_edge_attribution": "activator"
+    }
+  ]
+}

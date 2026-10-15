@@ -1,5 +1,96 @@
 # Changelog
 
+## v30.99 beta
+
+- Corrected role/pack-skill references after the root residency split: Startup/Update, routing/fallback, review cadence, user gates, and current-target freshness now point to their actual conditional owners.
+- Removed the dangling `debugger` reference to deleted root §7; delegated scope now references root §2.4 while implementation/regression/verification reference `implementation-contract`.
+- Added `reference-integrity-audit.py` + selftest and release-gate integration across all roles and pack-controlled skills; vendor-advisory content remains untouched.
+- Permissions/frontmatter, vendor skills, role topology, and workflow semantics are unchanged.
+
+See [`docs/releases/v30.99-beta.md`](docs/releases/v30.99-beta.md) and [`docs/contract-protocol-audit-v30.99.md`](docs/contract-protocol-audit-v30.99.md).
+
+## v30.98 beta
+
+Conditional code-to-UI routing residency plus end-to-end workflow-path validation:
+
+- adds non-autoinvoked pack-owned `ui-routing-control` for the code-to-UI discriminator and bounded `ui-orchestrator` / direct `ui-implementer` handoff;
+- removes detailed UI direction selection from resident `code-orchestrator`, leaving only conditional activation/consumption;
+- preserves delegated multi-stage UI ownership by returning leaf results plus updated target/state/evidence to `ui-orchestrator` for further UI-stage selection instead of letting the code owner invent the remaining UI chain;
+- strengthens initial bugfix handoff with exact symptom/reproduction evidence, governing expected behavior/invariant, affected boundary, target/mutation identity, and non-binding suspected remediation;
+- adds workflow-path release gates covering 18 end-to-end routes across code orchestration, UI, code-host resources, review, verification, semantic/trajectory controllers, terminal diagnostics, audit, planning, build, and external research;
+- extends conditional skill-mediated topology/handoff auditing so UI edges remain visible without keeping UI procedure resident in `code-orchestrator`;
+- keeps agent permission/frontmatter policy and bundled third-party/vendor skill content unchanged.
+
+Fresh isolated behavioral replay of ST-138..ST-141 is not claimed unless separately executed.
+
+See [`docs/releases/v30.98-beta.md`](docs/releases/v30.98-beta.md) and [`docs/contract-protocol-audit-v30.98.md`](docs/contract-protocol-audit-v30.98.md).
+
+## v30.97 beta
+
+Conditional terminal diagnostic residency for `code-orchestrator`:
+
+- adds non-autoinvoked pack-owned `terminal-semantic-eval` for the one-time terminal `session-evaluator` activation/handoff and diagnostic non-gating semantics;
+- leaves `code-orchestrator` with only the already-established-terminal-success activation hook, so intermediate code-orchestrator sessions do not carry child-session-ID/retrieval/diagnostic procedure;
+- keeps `session-evaluator` as the post-hoc semantic/compliance diagnosis owner and `session-evidence` as the retrieval-mechanics owner;
+- moves `terminal_session_evaluator_handoff` semantic ownership from the resident orchestrator to the conditional skill and adds a `terminal-diagnostic` residency audience;
+- extends residency/static/selftests and ST-136..ST-137 so evaluator procedure cannot leak back into the resident caller or become a completion/readiness gate;
+- keeps agent permission/frontmatter policy and bundled third-party/vendor skill content unchanged.
+
+Fresh isolated behavioral replay of ST-136..ST-137 is not claimed unless separately executed.
+
+See [`docs/releases/v30.97-beta.md`](docs/releases/v30.97-beta.md) and [`docs/contract-protocol-audit-v30.97.md`](docs/contract-protocol-audit-v30.97.md).
+
+## v30.96 beta
+
+Conditional code-host resource residency for `code-orchestrator`:
+
+- adds non-autoinvoked pack-owned `code-host-workflow` for existing-PR follow-up, issue/ticket/report handling, release/host publication, host template/metadata discovery, and resource-specific reporting;
+- leaves `code-orchestrator` with only the code-host route/activate/consume discriminator, so ordinary bugfix/tests/docs/local implementation sessions do not carry PR/issue/release procedure;
+- keeps `pr-readiness` as the sole owner of Owned-PR Draft/Candidate/Ready lifecycle and `git-provenance` as the ref/SHA/worktree owner;
+- removes PR-template/readiness/reporting procedure from generic `workflow-entry`, which remains the primary routing/authorization/publication gate;
+- extends runtime-residency auditing with conditional-resource audience plus forbidden-activator-family checks, blocking resource procedure copied back into the resident orchestrator;
+- adds whole-pack ownership/skill-control coverage for the new resource owner and ST-134..ST-135 for non-resource non-activation and code-host/pr-readiness composition;
+- keeps agent permission/frontmatter policy and all bundled third-party/vendor skill content unchanged.
+
+Fresh isolated behavioral replay of ST-134..ST-135 is not claimed unless separately executed.
+
+See [`docs/releases/v30.96-beta.md`](docs/releases/v30.96-beta.md) and [`docs/contract-protocol-audit-v30.96.md`](docs/contract-protocol-audit-v30.96.md).
+
+## v30.95 beta
+
+Semantic-preservation hardening after the v30.94 residency split:
+
+- restores universal non-trivial hypothesis/counter-framing semantics and required-skill-unavailable blocking in root without returning caller/implementation procedure to universal residency;
+- restores `Broad scope` plus `clear/likely/ambiguous/unclassified` consequence semantics in `workflow-entry`;
+- restores PR-template host-metadata fallback and visual-evidence blocked/verify-destination behavior in the primary publication contract;
+- restores anti-artificial-freshness reconfiguration policy in `delegation-control`;
+- restores the canonical complexity/design-escalation trigger and shared invariant/state/transition/interleaving/ownership-model obligation in `implementation-contract`;
+- makes `pr-readiness` the canonical owner of the `Owned PR` definition and makes `code-orchestrator` load that definition before ownership-dependent PR-state decisions;
+- extends the residency gate with **required resident semantic families**, so release checks fail both when conditional procedure leaks back into root and when relocation silently drops a load-bearing invariant;
+- adds ST-130..ST-133 for relocation preservation; fixes the duplicated debugger wording found during the old→new semantic walk;
+- keeps agent permission/frontmatter policy and all bundled third-party/vendor skill content unchanged.
+
+Fresh isolated behavioral replay of ST-130..ST-133 is not claimed unless separately executed.
+
+See [`docs/releases/v30.95-beta.md`](docs/releases/v30.95-beta.md) and [`docs/contract-protocol-audit-v30.95.md`](docs/contract-protocol-audit-v30.95.md).
+
+## v30.94 beta
+
+Runtime-residency split of the always-loaded root without changing permissions or third-party skills:
+
+- shrinks global `AGENTS.md` from the mixed universal+workflow-owner contract into a universal semantic kernel; primary-entry, delegation-caller, and implementation/judgment procedure now live in three pack-owned conditional skills: `workflow-entry`, `delegation-control`, and `implementation-contract`;
+- marks all three shared control skills `opencode/autoinvoke: "false"` and activates them explicitly from role contracts according to the **current invocation** rather than agent capability alone; `mode: all` roles skip primary/caller contracts while delegated;
+- moves request normalization, Startup/Update, approval/publication gates, durable-planning activation and workflow-final reporting to `workflow-entry`; generic handoff/routing/fresh-child/review-cadence/resource-reconciliation to `delegation-control`; and mutation/regression/verification-freshness engineering procedure to `implementation-contract`;
+- keeps universal authority/evidence, capability/assignment boundaries, skill/vendor containment, continuity, communication, and evidence-bound final claims in root;
+- adds a separate runtime-residency/audience manifest, audit and selftest so a correct semantic owner cannot justify leaking conditional procedure into every role's standing context;
+- updates semantic ownership, section placement, handoff/static oracles and skill control for the new conditional-owner graph instead of requiring old root-local copies;
+- adds ST-127..ST-129 for ownership-vs-residency, delegated `mode: all` activation, and exact implementation-contract activation;
+- leaves all 19 agent permission/frontmatter blocks and all 13 vendor skill subtrees byte-identical to v30.93.
+
+Fresh isolated behavioral replay of ST-127..ST-129 is not claimed unless separately executed.
+
+See [`docs/releases/v30.94-beta.md`](docs/releases/v30.94-beta.md) and [`docs/contract-protocol-audit-v30.94.md`](docs/contract-protocol-audit-v30.94.md).
+
 ## v30.93 beta
 
 Whole-pack skill ownership/type hardening without modifying bundled third-party skills:

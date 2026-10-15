@@ -40,7 +40,13 @@ checkpoint_sem = text("agents/semantic-checkpoint.md")
 evaluator_sem = text("agents/session-evaluator.md")
 code_orchestrator_sem = text("agents/code-orchestrator.md")
 trajectory_sem = text("agents/trajectory-auditor.md")
-semantic_runtime = "\n".join([root_sem, checkpoint_sem, evaluator_sem])
+workflow_entry_sem = text("skills/workflow-entry/SKILL.md")
+code_host_sem = text("skills/code-host-workflow/SKILL.md")
+terminal_eval_sem = text("skills/terminal-semantic-eval/SKILL.md")
+delegation_sem = text("skills/delegation-control/SKILL.md")
+implementation_sem = text("skills/implementation-contract/SKILL.md")
+pr_readiness_sem = text("skills/pr-readiness/SKILL.md")
+semantic_runtime = "\n".join([root_sem, checkpoint_sem, evaluator_sem, workflow_entry_sem, delegation_sem, implementation_sem])
 
 # Release identity must stay consistent across canonical/root and overview surfaces.
 version_match = re.search(r"\*\*Pack version: ([^*]+)\*\*", root_sem)
@@ -140,11 +146,56 @@ check(
 
 check(
     "capability, not exposed task context" in root_sem
-    and "does not by itself affect freshness, independence, or review validity" in root_sem
-    and "actually present in the model-visible context" in root_sem
-    and "Uncertainty about whether an available integration *might* inject or reveal prior content is not evidence that it did" in root_sem
-    and "Do not disable, hide, or reconfigure an optional integration merely to manufacture freshness or independence" in root_sem,
-    "AGENTS.md: memory capability-versus-exposure freshness boundary missing",
+    and "do not retrieve parent investigative history merely because a recall integration exists" in root_sem
+    and "fresh child does not resume parent task memory/checkpoints merely because the parent workflow is long-running" in delegation_sem
+    and "Child-session freshness and independent judgment" in delegation_sem,
+    "root/delegation-control: memory capability-versus-exposure freshness boundary missing",
+)
+check(
+    "first plausible framing or solution level as a hypothesis" in root_sem
+    and "materially different plausible framing" in root_sem,
+    "AGENTS.md: non-trivial hypothesis/counter-framing invariant lost during residency split",
+)
+check(
+    "If a required skill is unavailable" in root_sem
+    and "Skill: <name> unavailable" in root_sem
+    and "stage as blocked" in root_sem,
+    "AGENTS.md: required-skill unavailable/blocking invariant lost",
+)
+check(
+    "**Broad scope** means" in workflow_entry_sem
+    and "file count is only a signal" in workflow_entry_sem
+    and "`likely` means one is most probable" in workflow_entry_sem
+    and "safe read-only work or narrow local work" in workflow_entry_sem
+    and "`ambiguous` means several materially different workflows/deliverables remain plausible" in workflow_entry_sem,
+    "workflow-entry: broad-scope/confidence consequence semantics lost",
+)
+check(
+    "absent from the current worktree" in code_host_sem
+    and "repository-host metadata" in code_host_sem
+    and "If no valid publication path exists, keep the local evidence and report publication blocked" in workflow_entry_sem
+    and "verify the destination" in workflow_entry_sem,
+    "code-host-workflow/workflow-entry: PR-template host lookup / visual-evidence publication fallback lost",
+)
+check(
+    "Do not disable, hide, or reconfigure an optional integration merely to manufacture freshness or independence" in delegation_sem
+    and "actual task-specific contaminating content" in delegation_sem
+    and "configuration change is authorized" in delegation_sem,
+    "delegation-control: anti-artificial-freshness reconfiguration guard missing",
+)
+check(
+    "**Complexity/design escalation** means" in implementation_sem
+    and "shared state, lifecycle, protocol, concurrency, persistence, or ownership rule" in implementation_sem
+    and "invariant/state/transition/interleaving/ownership model" in implementation_sem,
+    "implementation-contract: complexity/design escalation definition lost",
+)
+check(
+    "**Owned PR** means" in pr_readiness_sem
+    and "current authenticated/user account" in pr_readiness_sem
+    and "branch name alone does not establish ownership" in pr_readiness_sem
+    and "canonical **Owned PR** definition" in code_host_sem
+    and "load `code-host-workflow`" in code_orchestrator_sem,
+    "pr-readiness/code-host-workflow/code-orchestrator: canonical Owned PR identity chain missing",
 )
 
 for bad in [
@@ -163,7 +214,7 @@ check(
 )
 check(
     "A blocker to the prior path remains evidence, not replacement authority" in checkpoint_sem
-    and "apply root section 2.2.1's relation/authority semantics" in checkpoint_sem,
+    and "apply root section 2.2's relation/authority semantics" in checkpoint_sem,
     "semantic-checkpoint: blocker/replacement enforcement missing",
 )
 check(
@@ -176,10 +227,10 @@ check(
 # Delegated task text specializes the selected role; it must not rewrite role-owned
 # obligations or allow a partial diagnostic to masquerade as a complete stage verdict.
 check(
-    "An assignment specializes the selected role contract; it does not replace it" in root_sem
-    and "must remain explicitly partial" in root_sem
-    and "cannot satisfy a broader stage" in root_sem,
-    "AGENTS.md: assignment/role-contract composition guard missing",
+    "An assignment specializes the selected role contract" in root_sem
+    and "cannot waive role-owned obligations, independence, stop conditions, or verdict semantics" in root_sem
+    and "A narrow/targeted result remains partial and cannot impersonate a broader stage" in delegation_sem,
+    "root/delegation-control: assignment/role-contract composition guard missing",
 )
 check(
     "selected role's standing contract" in evaluator_sem
@@ -197,14 +248,13 @@ check(
     "AGENTS.md: implementation-mechanism ownership boundary missing",
 )
 check(
-    "freshness also requires **judgment-context isolation**" in root_sem
-    and "task-contract propositions with provenance/qualifiers" in root_sem
-    and "material implementation constraints" in root_sem
-    and "Do not frame a candidate mechanism as accepted/correct design" in root_sem
-    and "Do not seed the child with prior verdicts" in root_sem
-    and "targeted re-review" in root_sem
-    and "partial/incremental" in root_sem,
-    "AGENTS.md: independent-judgment context-isolation guard missing",
+    "Child-session freshness and independent judgment" in delegation_sem
+    and "authoritative task propositions with provenance/qualifiers" in delegation_sem
+    and "material implementation constraints" in delegation_sem
+    and "Do not seed prior verdicts" in delegation_sem
+    and "Targeted re-review" in delegation_sem
+    and "partial/incremental" in delegation_sem,
+    "delegation-control: independent-judgment context-isolation guard missing",
 )
 check(
     "check judgment-context isolation" in evaluator_sem
@@ -293,7 +343,12 @@ check("During active work on an owned PR, intermediate Draft publication" in pr,
 check("When implementation is complete, establish the final intended local state as **Candidate HEAD**" in pr, "pr-readiness Candidate owner missing")
 check("Ready evidence contract" in pr, "pr-readiness Ready owner missing")
 check("Owned PRs are created as Draft by default." not in text("skills/git-provenance/SKILL.md"), "git-provenance still owns Draft creation")
-check("not a second Draft/Candidate/Ready sequence" in text("AGENTS.md"), "root single-owner declaration missing")
+check(
+    "`pr-readiness` owns the canonical **Owned PR** definition and Draft/Candidate/Ready lifecycle" in code_host_sem
+    and "Draft/Candidate/Ready" not in root_sem
+    and "Draft/Candidate/Ready" not in workflow_entry_sem,
+    "code-host-workflow/workflow-entry/root: PR lifecycle single-owner declaration missing",
+)
 check("do not define a separate UI lifecycle order" in text("agents/ui-orchestrator.md"), "UI role still owns lifecycle order")
 
 # resource-lifecycle owns resource state machine; root owns trigger/gate only.
@@ -457,13 +512,12 @@ check(
     and "review method or emphasis explicitly required by the user or an adopted project policy" in orch
     and "without parent-added investigative elaboration" in orch
     and "provenance label supplied by the parent is a locator, not proof of authority" in orch
-    and "Apply the root **Memory and continuity** plus section 5 independent-judgment isolation contract" in orch
+    and "Apply root continuity semantics plus the loaded `delegation-control` independent-judgment isolation contract" in orch
     and "without importing parent investigative history into the reviewer context" in orch
     and "whole material task/acceptance surface" in orch
     and "targeted re-review" in orch
     and "partial/incremental" in orch
-    and "actually present in the model-visible context" in root_sem
-    and "fresh independent child does **not** resume the parent task through persistent-memory/checkpoint recovery" in root_sem,
+    and "fresh child does not resume parent task memory/checkpoints merely because the parent workflow is long-running" in delegation_sem,
     "code-orchestrator: fresh reviewer inherited-isolation/provenance contract missing",
 )
 check(
@@ -474,13 +528,13 @@ check(
     "root: canonical provenance receipt interface missing",
 )
 check(
-    "root section 2.2.1 **contemporaneous provenance receipt**" in orch
+    "root section 2.2 **contemporaneous provenance receipt**" in orch
     and "root-defined receipt" in orch
     and "authority evidence boundary unresolved" in orch,
     "code-orchestrator: root receipt producer/reference boundary missing",
 )
 check(
-    "consume the root section 2.2.1 **contemporaneous provenance receipt**" in session_evidence
+    "consume the root section 2.2 **contemporaneous provenance receipt**" in session_evidence
     and "does not redefine that receipt schema" in session_evidence
     and "A later paraphrase such as `user decided X` is not an equivalent receipt" in session_evidence
     and "does not itself create, broaden, or reinterpret authority" in session_evidence,
@@ -488,19 +542,19 @@ check(
 )
 
 check(
-    "objective, target/behavior scope, allowed action level, expected deliverable/evidence, stop/escalation conditions" in root_sem
-    and "minimally sufficient and reconstructable, not exhaustive" in root_sem
-    and "ambiguity introduced by compression is a handoff defect" in root_sem
-    and "fresh independent child does **not** resume the parent task through persistent-memory/checkpoint recovery" in root_sem
-    and "whole requested acceptance surface" in root_sem,
-    "root: canonical handoff / fresh-child continuity / whole-scope acceptance contract missing",
+    "objective, target/behavior scope, allowed action level, expected deliverable/evidence, stop/escalation boundary" in delegation_sem
+    and "minimally sufficient and reconstructable, not exhaustive" in delegation_sem
+    and "Compression that collapses semantic distinctions is a handoff defect" in delegation_sem
+    and "fresh child does not resume parent task memory/checkpoints merely because the parent workflow is long-running" in delegation_sem
+    and "whole authoritative acceptance surface" in delegation_sem,
+    "delegation-control: canonical handoff / fresh-child continuity / whole-scope acceptance contract missing",
 )
 graymatter = text("skills/graymatter-memory/SKILL.md")
 check(
-    "Apply the root **Memory and continuity** contract first" in graymatter
+    "Apply root source-of-truth/continuity semantics first" in graymatter
     and "does not redefine memory authority, activation, fresh-judgment isolation" in graymatter
-    and "For a fresh independent-judgment child, apply the root isolation contract" in graymatter,
-    "graymatter-memory: root-owned memory/isolation boundary is not referenced cleanly",
+    and "apply the active role/delegation isolation contract" in graymatter,
+    "graymatter-memory: root/active-isolation boundary is not referenced cleanly",
 )
 pr_readiness = text("skills/pr-readiness/SKILL.md")
 check(
@@ -510,15 +564,15 @@ check(
     "pr-readiness: whole-PR semantic acceptance model / deferred-proof distinction missing",
 )
 check(
-    "root section 5 handoff contract" in orch
+    "loaded `delegation-control` handoff contract" in orch
     and "workflow-specific reconstruction state" in orch
     and "parent-generated technical inference" in orch
     and "preserved end-to-end behavior" in orch
     and "focused/slice-limited/qualified result" in orch
-    and "structural diff coverage" in orch
+    and "structural change-set coverage" in orch
     and "authoritative acceptance-model coverage" in orch
     and "readiness/publication claim later invalidated by a related material blocker" in orch
-    and "Reassess the affected acceptance/ownership model before another local fix/review/Ready cycle" in orch
+    and "Reassess the affected acceptance/ownership model before another local fix/review/transition cycle" in orch
     and "when reopenings repeat, widen the reassessment" in orch,
     "code-orchestrator: root-handoff activation / hypothesis / whole-review / readiness-reversal guards missing",
 )
@@ -533,8 +587,8 @@ check(
 
 reviewer_sem = text("agents/reviewer.md")
 check(
-    "**decision boundary**" in root_sem
-    and "does not by itself satisfy or authorize the downstream transition" in root_sem
+    "exact **decision boundary**" in delegation_sem
+    and "does not itself satisfy or authorize a later Ready/merge/release/other transition" in delegation_sem
     and "judgment purpose and downstream decision boundary separately from target identity" in orch
     and "not authorization for that transition" in orch
     and "narrowest decision claim actually established" in reviewer_sem
@@ -549,7 +603,7 @@ for duplicated_root_fragment in [
     "objective and behavioral/target scope",
     "If the original request would allow a materially different approach",
     "Do not run mutation specialists concurrently",
-    "Preserve root section 2.2.1 evidence-state classes",
+    "Preserve root section 2.2 evidence-state classes",
     "completed / partially completed / blocked / blocked by gate",
     "Docker/systemd/CI/deploy/runtime work -> `@devops`",
 ]:
@@ -558,8 +612,18 @@ for duplicated_root_fragment in [
         f"code-orchestrator: root-owned semantic duplicate reintroduced: {duplicated_root_fragment}",
     )
 check(
-    "Pass already-known orchestrator and material participating child-session IDs" not in root_sem,
-    "AGENTS.md: code-orchestrator-owned terminal evaluator procedure duplicated back into root",
+    "material participating child-session IDs" not in root_sem,
+    "AGENTS.md: conditional terminal evaluator procedure duplicated back into root",
+)
+
+check(
+    "load `terminal-semantic-eval`" in orch
+    and "Invoke `@session-evaluator` once" in terminal_eval_sem
+    and "material participating child-session IDs" in terminal_eval_sem
+    and "Do not perform new session-history discovery" in terminal_eval_sem
+    and "does not change an already-established terminal state" in terminal_eval_sem
+    and "material participating child-session IDs" not in orch,
+    "terminal semantic-eval: activation/handoff residency split missing or duplicated",
 )
 
 # Semantic ownership is a first-class release gate, not only a historical-fragment blacklist.
@@ -599,7 +663,7 @@ if semantic_owner_spec_path.is_file():
         "independent_judgment_decision_boundary",
         "fresh_independent_judgment_isolation", "review_activation_and_reuse",
         "user_decision_binding", "publication_authorization_gate",
-        "failed_fix_reset", "issue_pr_workflow_mechanics",
+        "failed_fix_reset", "code_host_resource_workflow",
         "vendor_skill_containment", "memory_authority_and_activation",
         "graymatter_tool_mechanics", "persistent_planning_activation_canonical_state",
         "persistent_planning_fallback_representation", "provenance_receipt_interface",
@@ -632,12 +696,17 @@ check(
     "trajectory-auditor: evidence-state literal still reused as workflow verdict",
 )
 check(
-    "Issue/ticket/report outcome -> issue/ticket/report workflow" in root_sem
-    and "search existing issues when access exists" not in root_sem
-    and "### Issue / ticket / report" in code_orchestrator_sem
-    and "Search existing issues" in code_orchestrator_sem
-    and "### Existing PR follow-up" in code_orchestrator_sem,
-    "root/code-orchestrator: adjacent issue/PR workflow mechanics are not correctly colocated",
+    "resource-specific workflow mechanics belong to the selected role/skill" in workflow_entry_sem.lower()
+    and "code-host resources such as PRs/issues/releases" in workflow_entry_sem
+    and "Issue/ticket/report outcome" not in root_sem
+    and "search existing issues" not in root_sem.lower()
+    and "### Code-host resource workflow" in code_orchestrator_sem
+    and "load `code-host-workflow`" in code_orchestrator_sem
+    and "## Existing PR follow-up" in code_host_sem
+    and "## Issue / ticket / report" in code_host_sem
+    and "Search existing issues" in code_host_sem
+    and "## Release / host publication" in code_host_sem,
+    "root/workflow-entry/code-orchestrator/code-host-workflow: resource workflow mechanics are not correctly layered",
 )
 traces_owner_sem = text("evals/semantic-transition-traces.md")
 check(
@@ -767,15 +836,17 @@ check(
     and "non-required mechanism/layout recommendations remain hypotheses" in ui_impl_sem,
     "UI mutation handoff: plan/audit recipe-laundering guard missing",
 )
+ui_route = text("skills/ui-routing-control/SKILL.md")
 check(
-    "settled user-visible outcome" in orch
-    and "unresolved presentation/interaction direction" in orch
-    and "A functional requirement alone does not make the UI outcome settled" in orch
-    and "user feedback rejects the current treatment without adopting its replacement" in orch
-    and "delegate the bounded UI domain to `@ui-orchestrator`" in orch
-    and "do not invent the missing UI direction yourself" in orch
-    and "Direct `@ui-implementer` work is appropriate" in orch,
-    "code-orchestrator: unresolved UI direction can still be fabricated into a direct implementation handoff",
+    "load `ui-routing-control`" in orch
+    and "settled user-visible outcome" in ui_route
+    and "unresolved presentation/interaction direction" in ui_route
+    and "functional requirement alone does not make the ui outcome settled" in ui_route.lower()
+    and "rejects the current treatment without adopting a replacement" in ui_route.lower()
+    and "delegate the bounded UI domain to `@ui-orchestrator`" in ui_route
+    and "Do not invent a missing UI/product direction" in ui_route
+    and "route directly to `@ui-implementer`" in ui_route,
+    "code-to-UI route: unresolved UI direction can still be fabricated into a direct implementation handoff",
 )
 
 
@@ -858,10 +929,10 @@ check(
     "leaf roles gained direct librarian routing instead of returning the adjacent evidence need to the caller",
 )
 check(
-    "@librarian" in root_sem
+    "@librarian" in delegation_sem
     and "@librarian" in text("agents/code-orchestrator.md")
     and "@librarian" in text("agents/auditor.md"),
-    "librarian: intended root/orchestrator/auditor routing surfaces missing",
+    "librarian: intended delegation-control/orchestrator/auditor routing surfaces missing",
 )
 
 # Release-gate audit surfaces are separate from the legacy static presence harness.
@@ -879,6 +950,8 @@ check("Closed-world static audit" in edge_audit and "EDGE_CLASSIFICATION" in edg
 check("recipe-shaped devops handoff not rejected" in edge_selftest and "unbound a11y handoff not rejected" in edge_selftest and "preselected UI planning handoff not rejected" in edge_selftest and "unbounded auditor specialist handoff not rejected" in edge_selftest and "new unclassified handoff edge did not block release" in edge_selftest and "stale handoff classification did not block release" in edge_selftest and "unbound librarian handoff not rejected" in edge_selftest and "auditor librarian authority/applicability omission not rejected" in edge_selftest, "role-handoff synthetic anti-gaming/inventory/external-research selftests missing")
 check("skill control selftest" in release_gates and "skill control audit" in release_gates, "release gate runner missing skill-control checks")
 check("role-handoff selftest" in release_gates and "role-handoff edge audit" in release_gates, "release gate runner missing role-handoff checks")
+check("workflow path selftest" in release_gates and "workflow path audit" in release_gates, "release gate runner missing workflow-path checks")
+
 check("unresolved findings must not be waived merely to obtain PASS" in release_gates, "release gate aggregator may waive unresolved contract findings")
 check("Role lifecycle requalification" in text("docs/semantic-design-manual.md") and "method-preservation test" in text("docs/semantic-design-manual.md") and "closed-world discovered handoff inventory" in text("docs/semantic-design-manual.md"), "semantic-design manual missing role lifecycle/method-preservation/closed-world edge audit")
 check("Role contract semantic shape" in text("docs/semantic-design-manual.md") and "Ownership → Invocation → Method → Boundaries → Result" in text("docs/semantic-design-manual.md") and "not a five-heading template" in text("docs/semantic-design-manual.md"), "semantic-design manual missing semantic role-contract shape / anti-template rule")
@@ -900,11 +973,12 @@ check(
 
 # Project planning representation belongs to persistent-planning; an unwritable project canonical owner must not fork.
 check(
-    "root section 2.3 owns activation/canonical-state policy" in planner_sem
-    and "load `persistent-planning` for the fallback representation and resume procedure" in planner_sem
+    "When the caller or loaded `workflow-entry` activates durable planning" in planner_sem
+    and "load `persistent-planning` for fallback representation/resume mechanics" in planner_sem
     and "Read that artifact as authoritative state" in planner_sem
-    and "instead of creating a parallel plan solely because the canonical owner is not writable here" in planner_sem,
-    "project-planner: persistent-planning ownership or unwritable canonical-owner composition missing",
+    and "instead of creating a parallel plan solely because the canonical owner is not writable here" in planner_sem
+    and "Persistent planning activation" in workflow_entry_sem,
+    "project-planner/workflow-entry: persistent-planning ownership or unwritable canonical-owner composition missing",
 )
 
 # Explore must defend against false absence/flow claims rather than passing on size/keywords alone.
@@ -950,23 +1024,23 @@ check(
     "release gates: installer safety selftest not wired into aggregate gates",
 )
 check(
-    "package runner such as `npx`/`bunx`" in root_sem
-    and "fetching or installing a missing package requires the normal tooling authorization" in root_sem
-    and "installation remains a root section 4 new-tooling gate" in text("skills/open-code-review/SKILL.md"),
-    "new-tooling gate: package-runner/managed-OCR install path can bypass authorization",
+    "package runner does not bypass a new-tooling/install gate" in workflow_entry_sem.lower()
+    and "new dependencies/tooling/design systems/large generated assets" in workflow_entry_sem
+    and "third-party/vendor skills are advisory provider/domain guidance" in root_sem.lower(),
+    "workflow-entry/root containment: package-runner or vendor skill can bypass new-tooling authorization",
 )
 
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 126, "semantic-transition suite must contain 126 cases")
+check(traces.count("### ST-") == 141, "semantic-transition suite must contain 141 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 126, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 141, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -1522,8 +1596,8 @@ check(
     "ST-121 typed semantic-domain collision regression missing",
 )
 check(
-    "st-122 — adjacent issue and pr workflow mechanics share the role-owned workflow layer" in traces.lower()
-    and "detailed issue mechanics" in traces.lower()
+    "st-122 — adjacent issue and pr workflow mechanics share one conditional resource owner" in traces.lower()
+    and "`code-host-workflow`" in traces.lower()
     and "`pr-readiness` remains the canonical owner" in traces.lower(),
     "ST-122 issue/PR workflow-placement regression missing",
 )
@@ -1548,6 +1622,58 @@ check(
     "ST-126 root/skill ownership split regression missing",
 )
 check(
+    "st-127 — correct ownership does not justify universal residency" in traces.lower()
+    and "canonical ownership and prompt residency are independent design decisions" in traces.lower(),
+    "ST-127 residency/ownership separation regression missing",
+)
+check(
+    "st-128 — `mode: all` delegated invocation must not inherit primary-owner contracts" in traces.lower()
+    and "capability to be primary does not make every invocation primary" in traces.lower(),
+    "ST-128 delegated mode:all residency regression missing",
+)
+check(
+    "st-129 — implementation procedure must be conditional without disappearing from implement/judge roles" in traces.lower()
+    and "progressive disclosure must reduce unused context without deleting load-bearing engineering invariants" in traces.lower(),
+    "ST-129 conditional implementation residency regression missing",
+)
+check(
+    "st-130 — residency relocation must preserve universal hypothesis and required-skill semantics" in traces.lower()
+    and "first plausible framing" in traces.lower()
+    and "required skill" in traces.lower(),
+    "ST-130 relocation preservation regression missing",
+)
+check(
+    "st-131 — workflow-entry relocation must preserve broad-scope and confidence consequences" in traces.lower()
+    and "broad scope" in traces.lower()
+    and "likely" in traces.lower()
+    and "ambiguous" in traces.lower(),
+    "ST-131 workflow-entry preservation regression missing",
+)
+check(
+    "st-132 — fresh-judgment and complexity escalation semantics survive progressive disclosure" in traces.lower()
+    and "manufacture freshness" in traces.lower()
+    and "complexity/design escalation" in traces.lower(),
+    "ST-132 delegated/implementation preservation regression missing",
+)
+check(
+    "st-133 — owned-pr identity and publication evidence semantics survive resource relocation" in traces.lower()
+    and "branch name alone" in traces.lower()
+    and "repository-host metadata" in traces.lower()
+    and "publication blocked" in traces.lower(),
+    "ST-133 owned-PR/publication preservation regression missing",
+)
+check(
+    "st-134 — code-host resource procedure must not be resident in ordinary code-orchestrator sessions" in traces.lower()
+    and "do not load `code-host-workflow`" in traces.lower(),
+    "ST-134 code-host residency regression missing",
+)
+check(
+    "st-135 — code-host workflow composes with pr readiness instead of absorbing its state machine" in traces.lower()
+    and "`pr-readiness` owns owned pr identity plus draft/candidate/ready lifecycle" in traces.lower()
+    and "no duplicate pr lifecycle" in traces.lower(),
+    "ST-135 code-host/pr-readiness composition regression missing",
+)
+check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | indeterminate`" in traces,
     "semantic-transition suite proposition-relation axis missing or still conflated with evidence status",
 )
@@ -1563,6 +1689,31 @@ check(
     all(key in traces for key in ["`pack_version`", "`package_sha256`", "`active_root_sha256`", "`scenario_id`"])
     and "user-visible startup contract" in traces,
     "semantic-transition suite trace metadata contract missing",
+)
+
+check(
+    "ST-136" in traces and "terminal-semantic-eval" in traces and "standing orchestrator context" in traces,
+    "ST-136 terminal semantic-eval residency regression missing",
+)
+check(
+    "ST-137" in traces and "completion/readiness gate" in traces and "preserve terminal task state" in traces and "without laundering it into product acceptance authority" in traces,
+    "ST-137 terminal diagnostic non-gating regression missing",
+)
+check(
+    "ST-138" in traces and "ui-routing-control" in traces and "conditionally disclosed" in traces,
+    "ST-138 UI routing conditional-residency regression missing",
+)
+check(
+    "ST-139" in traces and "leaf result + exact updated target/state" in traces and "return to `ui-orchestrator`" in traces,
+    "ST-139 delegated UI reconciliation-loop regression missing",
+)
+check(
+    "ST-140" in traces and "governing expected behavior/invariant" in traces and "suspected root cause/remediation remains non-binding" in traces,
+    "ST-140 debugger failure-contract handoff regression missing",
+)
+check(
+    "ST-141" in traces and "workflow-path release gate" in traces and "producer omits target/state/authority/evidence" in traces,
+    "ST-141 end-to-end workflow composition regression missing",
 )
 
 if failures:

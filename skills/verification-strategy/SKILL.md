@@ -1,11 +1,11 @@
 ---
 name: verification-strategy
-description: Use when root AGENTS.md section 7.4 activates nontrivial verification planning, evidence freshness, blocked-check handling, or broad verification/readiness claims. Owns verification layering, batching/cadence, and independent-tester activation; root owns universal evidence validity/freshness rules.
+description: Use when an active role or implementation-contract activates nontrivial verification planning, evidence freshness, blocked-check handling, or broad verification/readiness claims. Owns verification layering, batching/cadence, and independent-tester activation; root owns authority/evidence semantics and implementation-contract owns shared engineering freshness/regression rules.
 ---
 
 # Verification strategy
 
-Apply root sections 2.2.1, 7.3, and 7.4 for universal evidence validity, preservation, freshness, and anti-pass-manufacturing rules. This skill adds only verification-layer selection, batching/cadence, and the independent-tester checkpoint decision.
+Apply root section 2.2 plus `implementation-contract` when active for evidence validity, preservation, freshness, and regression rules. This skill adds only verification-layer selection, batching/cadence, and the independent-tester checkpoint decision.
 
 Verification has separate layers; do not turn them into a ceremonial agent chain:
 
@@ -19,4 +19,4 @@ When `@tester` is invoked, give it the **complete affected verification boundary
 
 Use root evidence freshness to decide what must be re-run after state changes; this skill decides only the affected verification layer/batch. For owned-PR readiness, preserve the reviewed Base SHA + Candidate HEAD identity supplied by `pr-readiness`/`git-provenance` and do not substitute workspace-only evidence for target-bound proof.
 
-If an affected required check cannot run, report the blocker and keep that verification boundary unresolved. Implementation may continue only inside an already-established safe work package when later work does not depend on the blocked result; do not expand the design merely to route around unavailable evidence. Lifecycle-dependent handling remains governed by `pr-readiness` and root section 4.
+If an affected required check cannot run, report the blocker and keep that verification boundary unresolved. Implementation may continue only inside an already-established safe work package when later work does not depend on the blocked result; do not expand the design merely to route around unavailable evidence. Lifecycle-dependent handling remains governed by `pr-readiness` and the active workflow-entry/user gate.

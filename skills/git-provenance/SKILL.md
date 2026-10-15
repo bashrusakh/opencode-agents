@@ -32,9 +32,9 @@ Use normal `<base_ref>..HEAD` as the primary commit list. The `--cherry-pick` co
 
 Before the first repository edit, the workflow owner must establish the intended baseline, and the mutation-capable role must verify immediately before editing that its worktree represents that baseline: a fresh base for new work, or the explicitly authorized existing task/PR branch with a proven base relation.
 
-If the branch is merely behind its intended upstream, `git pull --ff-only` may be used only when the worktree is clean, the upstream is the intended task/PR branch, project rules permit it, and section 4 plus the active role allow that branch/worktree update. If the update changes the effective diff/state, affected validation/review becomes stale.
+If the branch is merely behind its intended upstream, `git pull --ff-only` may be used only when the worktree is clean, the upstream is the intended task/PR branch, project rules permit it, and the active workflow/user authorization boundary plus the active role allow that branch/worktree update. If the update changes the effective diff/state, affected validation/review becomes stale.
 
-For new independent work, the task branch must be clean relative to the resolved base unless the user explicitly authorized continuing the exact existing branch. If unrelated commits/files are present, branch creation/switch is allowed only when section 4 authorizes that branch mutation; otherwise stop. If the branch diverged, the worktree contains unrelated work, or recovery would rewrite published history, cause conflicts, or violate project rules, stop with the exact state and risk.
+For new independent work, the task branch must be clean relative to the resolved base unless the user explicitly authorized continuing the exact existing branch. If unrelated commits/files are present, branch creation/switch is allowed only when the active workflow/user authorization boundary authorizes that branch mutation; otherwise stop. If the branch diverged, the worktree contains unrelated work, or recovery would rewrite published history, cause conflicts, or violate project rules, stop with the exact state and risk.
 
 ## Publication provenance checkpoint
 

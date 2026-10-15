@@ -84,6 +84,30 @@
       "side_effect_class": "gate-controlled PR publication/readiness transitions"
     },
     {
+      "path": "skills/code-host-workflow/SKILL.md",
+      "class": "pack-workflow",
+      "entry_sections": [
+        "Activation boundary",
+        "Existing PR follow-up",
+        "Issue / ticket / report",
+        "Release / host publication",
+        "Resource result contract"
+      ],
+      "owned_capabilities": [
+        "code_host_resource_workflow"
+      ],
+      "consumed_capabilities": [
+        "publication_authorization_gate",
+        "git_provenance_mechanics",
+        "owned_pr_lifecycle",
+        "output_formatting_destination_procedure",
+        "resource_lifecycle_mechanics",
+        "common_final_report_contract"
+      ],
+      "typed_domains": [],
+      "side_effect_class": "gate-controlled code-host metadata/resource actions; repository implementation remains separately owned"
+    },
+    {
       "path": "skills/resource-lifecycle/SKILL.md",
       "class": "pack-workflow",
       "entry_sections": [
@@ -147,6 +171,118 @@
       ],
       "typed_domains": [],
       "side_effect_class": "verification planning only; tester/implementation roles execute checks"
+    },
+    {
+      "path": "skills/workflow-entry/SKILL.md",
+      "class": "pack-workflow",
+      "entry_sections": [
+        "Activation boundary",
+        "Request normalization",
+        "User-approvable gates",
+        "Persistent planning activation",
+        "Startup and updates",
+        "Repository/publication ownership",
+        "Final workflow report"
+      ],
+      "owned_capabilities": [
+        "workflow_entry_normalization_startup",
+        "publication_authorization_gate",
+        "persistent_planning_activation_canonical_state"
+      ],
+      "consumed_capabilities": [
+        "proposition_evidence_algebra",
+        "git_provenance_mechanics"
+      ],
+      "typed_domains": [],
+      "side_effect_class": "workflow-owner planning/authorization/reporting procedure; no capability grant"
+    },
+    {
+      "path": "skills/delegation-control/SKILL.md",
+      "class": "pack-workflow",
+      "entry_sections": [
+        "Activation boundary",
+        "Handoff contract",
+        "Decision-space preservation",
+        "Child-session freshness and independent judgment",
+        "Routing, topology, and fallback",
+        "Evidence reuse and review cadence",
+        "Workflow-created resources"
+      ],
+      "owned_capabilities": [
+        "generic_specialist_handoff_contract",
+        "generic_mutation_parallelism",
+        "generic_routing_defaults",
+        "independent_judgment_decision_boundary",
+        "fresh_independent_judgment_isolation",
+        "review_activation_and_reuse",
+        "failed_fix_reset"
+      ],
+      "consumed_capabilities": [
+        "proposition_evidence_algebra",
+        "resource_lifecycle_mechanics"
+      ],
+      "typed_domains": [],
+      "side_effect_class": "caller-side orchestration procedure; no capability grant"
+    },
+    {
+      "path": "skills/implementation-contract/SKILL.md",
+      "class": "pack-workflow",
+      "entry_sections": [
+        "Activation boundary",
+        "Behavioral contract",
+        "Before mutation",
+        "Right-level implementation boundary",
+        "Regression guard",
+        "Verification freshness",
+        "Judgment consumption"
+      ],
+      "owned_capabilities": [
+        "implementation_engineering_contract",
+        "verification_evidence_invariants"
+      ],
+      "consumed_capabilities": [
+        "proposition_evidence_algebra",
+        "git_provenance_mechanics",
+        "verification_layering_and_tester_activation"
+      ],
+      "typed_domains": [],
+      "side_effect_class": "shared engineering procedure; mutation authority remains external"
+    },
+    {
+      "path": "skills/terminal-semantic-eval/SKILL.md",
+      "class": "pack-workflow",
+      "entry_sections": [
+        "Activation boundary",
+        "Evaluator handoff",
+        "Diagnostic consumption"
+      ],
+      "owned_capabilities": [
+        "terminal_session_evaluator_handoff"
+      ],
+      "consumed_capabilities": [],
+      "typed_domains": [],
+      "side_effect_class": "one-time terminal diagnostic delegation; diagnostic only and non-gating"
+    },
+    {
+      "path": "skills/ui-routing-control/SKILL.md",
+      "class": "pack-workflow",
+      "entry_sections": [
+        "Activation boundary",
+        "Direction discriminator",
+        "Route to the UI domain",
+        "Result boundary"
+      ],
+      "owned_capabilities": [
+        "code_to_ui_routing_boundary"
+      ],
+      "consumed_capabilities": [
+        "generic_specialist_handoff_contract",
+        "decision_space_preservation",
+        "generic_mutation_parallelism",
+        "generic_routing_defaults"
+      ],
+      "typed_domains": [],
+      "side_effect_class": "conditional code-to-UI routing/handoff procedure; no mutation or workflow-ownership grant"
     },
     {
       "path": "skills/api-designer/SKILL.md",

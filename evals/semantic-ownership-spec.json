@@ -4,13 +4,16 @@
   "capabilities": [
     {
       "id": "generic_specialist_handoff_contract",
-      "owner": "AGENTS.md",
+      "owner": "skills/delegation-control/SKILL.md",
       "owner_signature": [
+        [
+          "## Handoff contract"
+        ],
         [
           "minimally sufficient and reconstructable"
         ],
         [
-          "assignment specializes the selected role contract"
+          "assignment specializes but never replaces"
         ]
       ],
       "consumers": [
@@ -19,7 +22,7 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "root section 5 handoff contract"
+              "loaded `delegation-control` handoff contract"
             ]
           ],
           "forbidden_redefinition": {
@@ -51,6 +54,30 @@
               ]
             ]
           }
+        },
+        {
+          "path": "agents/auditor.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Apply the loaded `delegation-control` handoff contract"
+            ],
+            [
+              "audit-specific question"
+            ]
+          ]
+        },
+        {
+          "path": "skills/ui-routing-control/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "delegation-control.*generic handoff|generic handoff.*delegation-control"
+            ],
+            [
+              "Pass the UI domain/problem|Pass the established user-visible outcome"
+            ]
+          ]
         }
       ],
       "pack_skill_guard": {
@@ -96,7 +123,10 @@
             "halt.*escalat"
           ]
         ],
-        "min_groups": 4
+        "min_groups": 4,
+        "allow_paths": [
+          "skills/workflow-entry/SKILL.md"
+        ]
       }
     },
     {
@@ -104,19 +134,31 @@
       "owner": "AGENTS.md",
       "owner_signature": [
         [
-          "preserve the user's actual decision space"
+          "Preserve the user's real decision space"
         ],
         [
-          "non-exhaustive hypotheses"
+          "materially different product/architecture/workflow direction"
         ]
       ],
       "consumers": [
+        {
+          "path": "skills/delegation-control/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "## Decision-space preservation"
+            ],
+            [
+              "non-exhaustive hypotheses"
+            ]
+          ]
+        },
         {
           "path": "agents/code-orchestrator.md",
           "mode": "reference",
           "activation_signature": [
             [
-              "root decision-space preservation rule"
+              "loaded `delegation-control` decision-space preservation rule"
             ]
           ],
           "forbidden_redefinition": {
@@ -144,6 +186,18 @@
               ]
             ]
           }
+        },
+        {
+          "path": "skills/ui-routing-control/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Do not invent a missing UI/product direction"
+            ],
+            [
+              "unresolved presentation/interaction direction"
+            ]
+          ]
         }
       ],
       "pack_skill_guard": {
@@ -173,13 +227,13 @@
     },
     {
       "id": "generic_mutation_parallelism",
-      "owner": "AGENTS.md",
+      "owner": "skills/delegation-control/SKILL.md",
       "owner_signature": [
         [
           "Prefer serialized mutation"
         ],
         [
-          "proven disjoint"
+          "parallel mutation requires proven disjoint"
         ]
       ],
       "consumers": [
@@ -188,7 +242,7 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "Generic mutation parallelism.*root-owned"
+              "Generic mutation parallelism.*`delegation-control`-owned"
             ]
           ],
           "forbidden_redefinition": {
@@ -213,6 +267,32 @@
                 "only when",
                 "unless",
                 "must not"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "skills/ui-routing-control/SKILL.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "mutation-parallelism semantics|mutation parallelism"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 12,
+            "groups": [
+              [
+                "mutation|mutating"
+              ],
+              [
+                "parallel|concurrent|serialize|serialized"
+              ],
+              [
+                "disjoint|independent files|independent state"
+              ],
+              [
+                "only when|unless|must not"
               ]
             ]
           }
@@ -242,7 +322,7 @@
           "mode": "consume",
           "activation_signature": [
             [
-              "root section 2\\.2\\.1"
+              "Apply root section 2\\.2"
             ],
             [
               "root-owned proposition/evidence classes"
@@ -278,6 +358,33 @@
               ]
             ]
           }
+        },
+        {
+          "path": "skills/workflow-entry/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Apply root task-semantic authority/evidence semantics"
+            ]
+          ]
+        },
+        {
+          "path": "skills/delegation-control/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Apply root authority/evidence semantics"
+            ]
+          ]
+        },
+        {
+          "path": "skills/implementation-contract/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Apply root task-semantic authority/evidence semantics"
+            ]
+          ]
         }
       ],
       "pack_skill_guard": {
@@ -313,16 +420,16 @@
     },
     {
       "id": "generic_routing_defaults",
-      "owner": "AGENTS.md",
+      "owner": "skills/delegation-control/SKILL.md",
       "owner_signature": [
         [
-          "Entry-routing defaults"
+          "Generic entry defaults"
         ],
         [
-          "Delegation-routing defaults"
+          "Generic leaf routing"
         ],
         [
-          "Docker/systemd/CI/deploy/runtime"
+          "CI/deploy/runtime"
         ],
         [
           "external technical evidence"
@@ -334,10 +441,31 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "root routing map"
+              "loaded `delegation-control` routing map"
             ],
             [
               "code workflow adds these discriminators"
+            ]
+          ]
+        },
+        {
+          "path": "agents/ui-orchestrator.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Choose the UI stage"
+            ]
+          ]
+        },
+        {
+          "path": "skills/ui-routing-control/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "bridge from the code workflow into the UI domain"
+            ],
+            [
+              "ui-orchestrator.*internal UI stage selection|ui-implementer.*focused UI repository mutation"
             ]
           ]
         }
@@ -348,25 +476,34 @@
       "owner": "AGENTS.md",
       "owner_signature": [
         [
-          "## 10\\. Final reports"
+          "## 5\\. User-facing output and final claims"
         ],
         [
           "remaining blockers/risks"
         ],
         [
-          "exact relevant verification"
+          "evidence actually established"
         ]
       ],
       "consumers": [
+        {
+          "path": "skills/workflow-entry/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "## Final workflow report"
+            ]
+          ]
+        },
         {
           "path": "agents/code-orchestrator.md",
           "mode": "consume",
           "activation_signature": [
             [
-              "Apply root sections 2\\.4 and 10"
+              "root communication/final-claim semantics"
             ],
             [
-              "do not restate the shared final-report contract"
+              "loaded `workflow-entry` final workflow report"
             ]
           ],
           "forbidden_redefinition": {
@@ -394,6 +531,18 @@
               ]
             ]
           }
+        },
+        {
+          "path": "skills/code-host-workflow/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "## Resource result contract"
+            ],
+            [
+              "canonical resource URL/identity"
+            ]
+          ]
         }
       ]
     },
@@ -402,6 +551,15 @@
       "owner": "skills/pr-readiness/SKILL.md",
       "owner_signature": [
         [
+          "Owned PR"
+        ],
+        [
+          "authenticated/user account|authenticated.*account"
+        ],
+        [
+          "branch name alone"
+        ],
+        [
           "Draft"
         ],
         [
@@ -409,25 +567,25 @@
         ],
         [
           "Ready"
-        ],
-        [
-          "Reviewed Base"
         ]
       ],
       "consumers": [
         {
-          "path": "agents/code-orchestrator.md",
+          "path": "skills/code-host-workflow/SKILL.md",
           "mode": "reference",
           "activation_signature": [
             [
-              "load `pr-readiness`"
+              "`pr-readiness` owns the canonical"
             ],
             [
-              "does not restate the Draft/Candidate/publication/Ready sequence"
+              "consume the `pr-readiness` lifecycle/state-transition contract"
+            ],
+            [
+              "without duplicating its state machine"
             ]
           ],
           "forbidden_redefinition": {
-            "window_lines": 18,
+            "window_lines": 20,
             "groups": [
               [
                 "Draft"
@@ -436,15 +594,13 @@
                 "Candidate HEAD"
               ],
               [
-                "push",
-                "publication"
+                "push|publication"
               ],
               [
                 "Ready"
               ],
               [
-                "Reviewed Base",
-                "base SHA"
+                "Reviewed Base|base SHA"
               ]
             ]
           }
@@ -453,16 +609,19 @@
     },
     {
       "id": "terminal_session_evaluator_handoff",
-      "owner": "agents/code-orchestrator.md",
+      "owner": "skills/terminal-semantic-eval/SKILL.md",
       "owner_signature": [
         [
-          "## Terminal semantic-evaluator handoff"
+          "# Terminal Semantic Evaluation Harness"
+        ],
+        [
+          "terminal successful outcome"
         ],
         [
           "material participating child-session IDs"
         ],
         [
-          "diagnostic"
+          "diagnostic evidence only"
         ],
         [
           "does not change an already-established terminal state"
@@ -470,51 +629,94 @@
       ],
       "consumers": [
         {
-          "path": "AGENTS.md",
+          "path": "agents/code-orchestrator.md",
           "mode": "reference",
           "activation_signature": [
             [
-              "follows the orchestrator's role-local `@session-evaluator` handoff contract"
+              "## Terminal diagnostic hook"
+            ],
+            [
+              "load `terminal-semantic-eval`"
+            ],
+            [
+              "Do not use this hook to establish, reopen, or gate completion/readiness"
             ]
           ],
           "forbidden_redefinition": {
-            "window_lines": 12,
+            "window_lines": 14,
             "groups": [
               [
-                "parent session ID",
-                "orchestrator session ID"
+                "material participating child-session IDs",
+                "child-session IDs already known"
               ],
               [
-                "child-session IDs",
-                "participating child"
+                "session-history discovery"
               ],
               [
-                "complete or partial",
-                "completeness status"
+                "failure or unavailability",
+                "failure/unavailability"
               ],
               [
-                "session-history discovery",
-                "do not perform.*discovery"
-              ],
-              [
-                "diagnostic",
-                "non-gating",
-                "does not.*terminal state"
+                "does not change an already-established terminal state",
+                "never reopens or gates completed work"
               ]
-            ]
+            ],
+            "min_groups": 3
           }
+        },
+        {
+          "path": "agents/session-evaluator.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "post-hoc diagnostic agent"
+            ],
+            [
+              "completed `code-orchestrator` workflow"
+            ]
+          ]
         }
-      ]
+      ],
+      "pack_skill_guard": {
+        "window_lines": 14,
+        "groups": [
+          [
+            "terminal successful outcome",
+            "terminal success",
+            "terminal boundary"
+          ],
+          [
+            "session-evaluator",
+            "session evaluator"
+          ],
+          [
+            "child-session IDs",
+            "child session IDs",
+            "session identities"
+          ],
+          [
+            "diagnostic"
+          ],
+          [
+            "non-gating",
+            "non gating",
+            "does not.*gate",
+            "preserve completion",
+            "reopen"
+          ]
+        ],
+        "min_groups": 4
+      }
     },
     {
       "id": "independent_judgment_decision_boundary",
-      "owner": "AGENTS.md",
+      "owner": "skills/delegation-control/SKILL.md",
       "owner_signature": [
         [
-          "\\*\\*decision boundary\\*\\*"
+          "decision boundary"
         ],
         [
-          "does not by itself satisfy or authorize the downstream transition"
+          "does not itself satisfy or authorize"
         ]
       ],
       "consumers": [
@@ -523,7 +725,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "downstream decision boundary separately from target identity"
+              "judgment purpose and downstream decision boundary separately from target identity"
             ]
           ]
         },
@@ -549,16 +751,16 @@
     },
     {
       "id": "fresh_independent_judgment_isolation",
-      "owner": "AGENTS.md",
+      "owner": "skills/delegation-control/SKILL.md",
       "owner_signature": [
         [
-          "judgment-context isolation"
+          "## Child-session freshness and independent judgment"
         ],
         [
-          "fresh independent child does \\*\\*not\\*\\* resume the parent task"
+          "Do not seed prior verdicts"
         ],
         [
-          "prior verdicts|fix-history framing"
+          "fresh child"
         ]
       ],
       "consumers": [
@@ -567,30 +769,30 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "Apply the root \\*\\*Memory and continuity\\*\\* plus section 5 independent-judgment isolation contract"
+              "loaded `delegation-control` independent-judgment isolation contract"
             ]
           ],
           "forbidden_redefinition": {
-            "window_lines": 12,
+            "window_lines": 18,
             "groups": [
               [
-                "model-visible",
-                "task-specific steering"
+                "fresh independent",
+                "fresh child",
+                "fresh whole"
               ],
               [
-                "recall capability",
-                "memory integration",
-                "connector"
+                "parent.*history",
+                "prior verdict",
+                "fix history"
               ],
               [
-                "checkpoint",
-                "parent-task",
-                "prior-task"
+                "memory",
+                "checkpoint"
               ],
               [
-                "contaminat",
-                "clean invocation",
-                "reconfigur"
+                "do not.*recover",
+                "do not.*resume",
+                "clean authoritative packet"
               ]
             ]
           }
@@ -600,18 +802,45 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "Freshness is a property of the \\*\\*task-specific judgmental or investigative information actually present"
+              "## Fresh whole-change independence"
+            ],
+            [
+              "Do not run parent-task checkpoint/memory recovery"
             ]
           ]
         },
         {
           "path": "skills/graymatter-memory/SKILL.md",
-          "mode": "specialize",
+          "mode": "reference",
           "activation_signature": [
             [
-              "For a fresh independent-judgment child, apply the root isolation contract"
+              "active role/delegation isolation contract"
+            ],
+            [
+              "do not use GrayMatter to reconstruct the parent task/history"
             ]
-          ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 16,
+            "groups": [
+              [
+                "fresh independent",
+                "fresh.*judgment"
+              ],
+              [
+                "prior verdict",
+                "fix history",
+                "investigative"
+              ],
+              [
+                "whole-scope",
+                "acceptance surface"
+              ],
+              [
+                "decision boundary"
+              ]
+            ]
+          }
         }
       ],
       "pack_skill_guard": {
@@ -636,16 +865,16 @@
     },
     {
       "id": "review_activation_and_reuse",
-      "owner": "AGENTS.md",
+      "owner": "skills/delegation-control/SKILL.md",
       "owner_signature": [
         [
-          "Explicit review-only requests use `@reviewer`"
+          "## Evidence reuse and review cadence"
         ],
         [
-          "final owned-PR Candidate HEAD requires one whole-change reviewer pass"
+          "Explicit review-only work uses reviewer ownership"
         ],
         [
-          "otherwise use independent review when risk/non-obviousness materially benefits"
+          "risk/non-obviousness materially benefits"
         ]
       ],
       "consumers": [
@@ -654,45 +883,19 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "Apply the root section 5\\.1 review activation/cadence contract"
-            ],
-            [
-              "When reusing review evidence under root section 5\\.1"
+              "loaded `delegation-control` review activation/cadence contract"
             ]
-          ],
-          "forbidden_redefinition": {
-            "window_lines": 12,
-            "groups": [
-              [
-                "explicit review-only requests",
-                "explicit review deliverable"
-              ],
-              [
-                "final owned-PR",
-                "Candidate.*whole-change",
-                "whole-PR review"
-              ],
-              [
-                "risk/non-obviousness",
-                "risk-based review"
-              ],
-              [
-                "not after every",
-                "package/test/commit",
-                "intermediate Draft"
-              ]
-            ]
-          }
+          ]
         },
         {
           "path": "skills/pr-readiness/SKILL.md",
           "mode": "specialize",
           "activation_signature": [
             [
-              "run whole-PR `@reviewer` against `Base SHA -> Candidate HEAD`"
+              "whole-PR `@reviewer`"
             ],
             [
-              "An intermediate Draft push does not require a separate `@tester` invocation or final `@reviewer`"
+              "intermediate Draft push does not require"
             ]
           ]
         }
@@ -739,7 +942,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "apply the root section 2\\.2\\.1 decision-binding contract"
+              "apply the root section 2\\.2 decision-binding contract"
             ],
             [
               "owns when/how to obtain that decision and preserve its provenance"
@@ -807,16 +1010,16 @@
     },
     {
       "id": "publication_authorization_gate",
-      "owner": "AGENTS.md",
+      "owner": "skills/workflow-entry/SKILL.md",
       "owner_signature": [
         [
-          "same action, target, scope, and material risk"
+          "same \\*\\*action \\+ target \\+ scope \\+ material risk\\*\\*"
         ],
         [
           "Ambiguity is not approval"
         ],
         [
-          "do not ask again for the same unchanged authorization"
+          "do not re-ask an unchanged satisfied gate"
         ]
       ],
       "consumers": [
@@ -825,10 +1028,7 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "apply the root section 4 authorization gate and section 8 provenance/publication contract"
-            ],
-            [
-              "do not restate or weaken their authorization predicate"
+              "loaded `workflow-entry` authorization/publication contract"
             ]
           ],
           "forbidden_redefinition": {
@@ -853,6 +1053,27 @@
               ]
             ]
           }
+        },
+        {
+          "path": "skills/pr-readiness/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "active workflow-entry/user gate"
+            ]
+          ]
+        },
+        {
+          "path": "skills/code-host-workflow/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "`workflow-entry` owns the user authorization/publication gate"
+            ],
+            [
+              "active `workflow-entry` gate"
+            ]
+          ]
         }
       ],
       "pack_skill_guard": {
@@ -880,15 +1101,21 @@
             "authoriz",
             "gate"
           ]
+        ],
+        "allow_paths": [
+          "skills/delegation-control/SKILL.md"
         ]
       }
     },
     {
       "id": "failed_fix_reset",
-      "owner": "AGENTS.md",
+      "owner": "skills/delegation-control/SKILL.md",
       "owner_signature": [
         [
-          "If a claimed root-cause fix fails materially, reassess the hypothesis before issuing a similar patch"
+          "If a claimed root-cause fix fails materially"
+        ],
+        [
+          "reassess the hypothesis"
         ]
       ],
       "consumers": [
@@ -897,31 +1124,12 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "When the root section 5\\.1 failed-fix reset condition fires"
+              "loaded `delegation-control` failed-fix reset condition"
             ],
             [
               "recheck reproduction, assumptions, ownership/call path, environment, and fix level"
             ]
-          ],
-          "forbidden_redefinition": {
-            "window_lines": 8,
-            "groups": [
-              [
-                "same material failure",
-                "root-cause fix fails",
-                "fix fails materially"
-              ],
-              [
-                "current hypothesis",
-                "reassess the hypothesis"
-              ],
-              [
-                "similar patch",
-                "another patch",
-                "automatically send"
-              ]
-            ]
-          }
+          ]
         }
       ],
       "pack_skill_guard": {
@@ -946,66 +1154,96 @@
       }
     },
     {
-      "id": "issue_pr_workflow_mechanics",
-      "owner": "agents/code-orchestrator.md",
+      "id": "code_host_resource_workflow",
+      "owner": "skills/code-host-workflow/SKILL.md",
       "owner_signature": [
         [
-          "### Existing PR follow-up"
+          "## Activation boundary"
         ],
         [
-          "### Issue / ticket / report"
+          "## Existing PR follow-up"
         ],
         [
-          "Resolve the state the report targets before verification"
+          "## Issue / ticket / report"
+        ],
+        [
+          "## Release / host publication"
+        ],
+        [
+          "canonical PR URL/resource identity"
         ],
         [
           "Search existing issues"
+        ],
+        [
+          "repository-host metadata"
         ]
       ],
       "consumers": [
         {
-          "path": "AGENTS.md",
+          "path": "agents/code-orchestrator.md",
           "mode": "reference",
           "activation_signature": [
             [
-              "Existing PR.*-> PR follow-up workflow"
+              "### Code-host resource workflow"
             ],
             [
-              "Issue/ticket/report outcome -> issue/ticket/report workflow"
+              "load `code-host-workflow`"
+            ],
+            [
+              "owns host-specific resource discovery and mechanics"
             ]
           ],
           "forbidden_redefinition": {
-            "window_lines": 10,
+            "window_lines": 18,
             "groups": [
               [
-                "Issue/ticket/report|Existing PR"
+                "Existing PR follow-up|canonical PR URL|Draft/Ready state"
               ],
               [
-                "refresh.*ref|resolve.*target state|same PR branch"
+                "Issue / ticket / report|Search existing issues"
               ],
               [
-                "search existing issues|current review comments|effective diff"
+                "Release prep|Release / host publication|release metadata/body"
               ],
               [
-                "draft/open|Draft/Ready"
+                "repository-host metadata|current review comments/checks"
               ]
             ]
           }
         }
-      ]
+      ],
+      "pack_skill_guard": {
+        "window_lines": 18,
+        "groups": [
+          [
+            "canonical PR URL|current review comments/checks|effective diff"
+          ],
+          [
+            "Search existing issues|duplicate issue"
+          ],
+          [
+            "release metadata/body|Build release notes/checks"
+          ],
+          [
+            "repository-host metadata|host template"
+          ]
+        ],
+        "min_groups": 2
+      }
     },
     {
       "id": "vendor_skill_containment",
       "owner": "AGENTS.md",
       "owner_signature": [
         [
-          "Bundled third-party/vendor skills are conditional provider/domain guidance"
+          "Bundled third-party/vendor skills are advisory provider/domain guidance"
         ],
         [
-          "descriptions do not override a root/role-owned activation boundary"
+          "pack-owned integration boundary controls"
         ],
         [
-          "bodies do not acquire authority"
+          "conflicting vendor .* remains advisory"
         ]
       ],
       "consumers": [
@@ -1040,7 +1278,7 @@
           "Persistent memory is optional recall context, not task-semantic authority"
         ],
         [
-          "Do not search persistent memory merely because"
+          "Use it only when prior state can materially change"
         ],
         [
           "Store durable conclusions rather than transcripts"
@@ -1052,10 +1290,10 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "Apply the root \\*\\*Memory and continuity\\*\\* contract first"
+              "Apply root source-of-truth/continuity semantics first"
             ],
             [
-              "does not redefine memory authority, activation"
+              "does not redefine memory authority, activation, fresh-judgment isolation"
             ]
           ],
           "forbidden_redefinition": {
@@ -1095,6 +1333,10 @@
             "durable",
             "transient"
           ]
+        ],
+        "allow_paths": [
+          "skills/workflow-entry/SKILL.md",
+          "skills/graymatter-memory/SKILL.md"
         ]
       }
     },
@@ -1117,11 +1359,11 @@
       ],
       "consumers": [
         {
-          "path": "AGENTS.md",
+          "path": "skills/workflow-entry/SKILL.md",
           "mode": "reference",
           "activation_signature": [
             [
-              "load the bundled `graymatter-memory` skill and follow it"
+              "load `graymatter-memory` before relying on recalled state"
             ]
           ],
           "forbidden_redefinition": {
@@ -1146,16 +1388,16 @@
     },
     {
       "id": "persistent_planning_activation_canonical_state",
-      "owner": "AGENTS.md",
+      "owner": "skills/workflow-entry/SKILL.md",
       "owner_signature": [
         [
-          "### 2.3 Persistent Planning Mode"
+          "## Persistent planning activation"
         ],
         [
-          "Maintain one authoritative task state"
+          "one authoritative task state"
         ],
         [
-          "Reuse an existing canonical plan when present"
+          "project.*canonical planning owner"
         ]
       ],
       "consumers": [
@@ -1164,7 +1406,10 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "Root section 2.3 owns activation, canonical task-state semantics"
+              "active workflow owner.*owns activation"
+            ],
+            [
+              "canonical task-state semantics"
             ]
           ],
           "forbidden_redefinition": {
@@ -1172,7 +1417,6 @@
             "groups": [
               [
                 "when.*durable coordination",
-                "whenever.*durable coordination",
                 "enters persistent planning",
                 "activate.*durable coordination"
               ],
@@ -1194,7 +1438,7 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "root section 2.3 owns activation/canonical-state policy"
+              "caller or loaded `workflow-entry` activates durable planning"
             ]
           ],
           "forbidden_redefinition": {
@@ -1255,7 +1499,7 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "load `persistent-planning` for the fallback representation and resume procedure"
+              "load `persistent-planning` for fallback representation/resume mechanics"
             ]
           ],
           "forbidden_redefinition": {
@@ -1295,7 +1539,7 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "root section 2.2.1 \\*\\*contemporaneous provenance receipt\\*\\*"
+              "root section 2\\.2 \\*\\*contemporaneous provenance receipt\\*\\*"
             ]
           ],
           "forbidden_redefinition": {
@@ -1332,7 +1576,7 @@
           "mode": "consume",
           "activation_signature": [
             [
-              "consume the root section 2.2.1 \\*\\*contemporaneous provenance receipt\\*\\*"
+              "consume the root section 2\\.2 \\*\\*contemporaneous provenance receipt\\*\\*"
             ]
           ],
           "forbidden_redefinition": {
@@ -1391,36 +1635,34 @@
       ],
       "consumers": [
         {
-          "path": "AGENTS.md",
-          "mode": "reference",
+          "path": "skills/implementation-contract/SKILL.md",
+          "mode": "specialize",
           "activation_signature": [
             [
-              "load `git-provenance`"
+              "load `git-provenance` and satisfy its mutation baseline"
+            ]
+          ]
+        },
+        {
+          "path": "skills/workflow-entry/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Load `git-provenance` when detailed Git/worktree/base mechanics"
+            ]
+          ]
+        },
+        {
+          "path": "skills/code-host-workflow/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "`git-provenance` owns ref/SHA/worktree identity"
             ],
             [
-              "mutation baseline checkpoint"
+              "use `git-provenance` to refresh and bind the authoritative ref/SHA"
             ]
-          ],
-          "forbidden_redefinition": {
-            "window_lines": 18,
-            "groups": [
-              [
-                "head remote"
-              ],
-              [
-                "base remote"
-              ],
-              [
-                "base branch"
-              ],
-              [
-                "base ref"
-              ],
-              [
-                "git fetch --prune"
-              ]
-            ]
-          }
+          ]
         }
       ]
     },
@@ -1512,13 +1754,13 @@
     },
     {
       "id": "verification_evidence_invariants",
-      "owner": "AGENTS.md",
+      "owner": "skills/implementation-contract/SKILL.md",
       "owner_signature": [
         [
-          "### 7.4 Verification cadence and evidence freshness"
+          "## Verification freshness"
         ],
         [
-          "Verification must support the exact current claim/state"
+          "exact current claim/state"
         ],
         [
           "never weaken tests/validation or hide failures"
@@ -1530,7 +1772,10 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "Apply root sections 2.2.1, 7.3, and 7.4 for universal evidence validity"
+              "`implementation-contract`"
+            ],
+            [
+              "evidence validity, preservation, freshness"
             ]
           ],
           "forbidden_redefinition": {
@@ -1563,10 +1808,10 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "apply root §2.2.1 evidence fidelity"
+              "load `implementation-contract` before planning regression/preservation evidence"
             ],
             [
-              "If a later edit affects a check you ran, your earlier result is stale"
+              "earlier result is stale"
             ]
           ]
         }
@@ -1611,29 +1856,6 @@
       ],
       "consumers": [
         {
-          "path": "AGENTS.md",
-          "mode": "reference",
-          "activation_signature": [
-            [
-              "load the bundled `verification-strategy` skill for detailed cadence"
-            ]
-          ],
-          "forbidden_redefinition": {
-            "window_lines": 16,
-            "groups": [
-              [
-                "Implementation-local evidence"
-              ],
-              [
-                "Independent verification checkpoint"
-              ],
-              [
-                "Remote/host evidence"
-              ]
-            ]
-          }
-        },
-        {
           "path": "agents/tester.md",
           "mode": "specialize",
           "activation_signature": [
@@ -1642,6 +1864,15 @@
             ],
             [
               "one complete affected behavior boundary"
+            ]
+          ]
+        },
+        {
+          "path": "skills/implementation-contract/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "load `verification-strategy`"
             ]
           ]
         }
@@ -1663,30 +1894,28 @@
       ],
       "consumers": [
         {
-          "path": "AGENTS.md",
-          "mode": "reference",
+          "path": "skills/delegation-control/SKILL.md",
+          "mode": "specialize",
           "activation_signature": [
             [
-              "load `resource-lifecycle`; it owns resource identity, cleanup ownership/transfer"
+              "load `resource-lifecycle`"
+            ],
+            [
+              "owns resource identity"
             ]
-          ],
-          "forbidden_redefinition": {
-            "window_lines": 14,
-            "groups": [
-              [
-                "cleaned"
-              ],
-              [
-                "intentionally retained"
-              ],
-              [
-                "cleanup blocked"
-              ],
-              [
-                "ownership transferred"
-              ]
+          ]
+        },
+        {
+          "path": "skills/code-host-workflow/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "`resource-lifecycle` owns workflow-created temporary-resource reconciliation"
+            ],
+            [
+              "Reconcile workflow-created temporary resources through `resource-lifecycle`"
             ]
-          }
+          ]
         }
       ]
     },
@@ -1818,29 +2047,308 @@
       ],
       "consumers": [
         {
-          "path": "AGENTS.md",
-          "mode": "reference",
+          "path": "skills/code-host-workflow/SKILL.md",
+          "mode": "specialize",
           "activation_signature": [
             [
-              "load the bundled `output-formatting` skill"
+              "load `output-formatting` when destination-specific formatting"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "workflow_entry_normalization_startup",
+      "owner": "skills/workflow-entry/SKILL.md",
+      "owner_signature": [
+        [
+          "## Request normalization"
+        ],
+        [
+          "## Startup and updates"
+        ],
+        [
+          "### Startup"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "load `workflow-entry`"
+            ],
+            [
+              "primary invocation"
+            ]
+          ]
+        },
+        {
+          "path": "agents/auditor.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "load `workflow-entry`"
+            ],
+            [
+              "primary audit invocation"
+            ]
+          ]
+        },
+        {
+          "path": "agents/build.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "When this role is primary, load `workflow-entry`"
+            ]
+          ]
+        },
+        {
+          "path": "agents/ui-orchestrator.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "When this role is primary, load `workflow-entry`"
+            ]
+          ]
+        },
+        {
+          "path": "agents/librarian.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "When this role is primary/user-facing, load `workflow-entry`"
+            ]
+          ]
+        },
+        {
+          "path": "agents/project-planner.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "When this role is primary/user-facing, load `workflow-entry`"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "implementation_engineering_contract",
+      "owner": "skills/implementation-contract/SKILL.md",
+      "owner_signature": [
+        [
+          "## Behavioral contract"
+        ],
+        [
+          "## Right-level implementation boundary"
+        ],
+        [
+          "## Regression guard"
+        ],
+        [
+          "## Verification freshness"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/build.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "load `implementation-contract` before the first mutation"
+            ]
+          ]
+        },
+        {
+          "path": "agents/debugger.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Load `implementation-contract` before selecting or applying"
+            ]
+          ]
+        },
+        {
+          "path": "agents/reviewer.md",
+          "mode": "consume",
+          "activation_signature": [
+            [
+              "load `implementation-contract` before substantive engineering judgment"
             ]
           ],
           "forbidden_redefinition": {
-            "window_lines": 16,
+            "window_lines": 18,
             "groups": [
               [
-                "GitHub/GitLab PRs"
+                "right-level implementation boundary",
+                "narrowest existing owner"
               ],
               [
-                "OpenCode CLI"
+                "regression guard",
+                "preserved behavior"
               ],
               [
-                "Plain-text-only channels"
+                "verification freshness",
+                "stale evidence"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "agents/tester.md",
+          "mode": "consume",
+          "activation_signature": [
+            [
+              "load `implementation-contract` before planning regression/preservation evidence"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 18,
+            "groups": [
+              [
+                "right-level implementation boundary",
+                "narrowest existing owner"
+              ],
+              [
+                "regression guard",
+                "preserved behavior"
+              ],
+              [
+                "verification freshness",
+                "stale evidence"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "agents/ui-implementer.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Load `implementation-contract` before the first UI repository mutation"
+            ]
+          ]
+        },
+        {
+          "path": "agents/devops.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Load `implementation-contract` only before a semantic repository/config edit"
+            ]
+          ]
+        },
+        {
+          "path": "agents/project-planner.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "Load `implementation-contract` only when the plan materially defines or judges implementation ownership"
+            ]
+          ]
+        },
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "Load `implementation-contract` only when the workflow enters a code/config/UI implementation"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 18,
+            "groups": [
+              [
+                "behavioral contract"
+              ],
+              [
+                "right-level"
+              ],
+              [
+                "regression guard"
+              ],
+              [
+                "verification freshness"
               ]
             ]
           }
         }
       ]
+    },
+    {
+      "id": "code_to_ui_routing_boundary",
+      "owner": "skills/ui-routing-control/SKILL.md",
+      "owner_signature": [
+        [
+          "## Direction discriminator"
+        ],
+        [
+          "settled user-visible outcome"
+        ],
+        [
+          "unresolved presentation/interaction direction"
+        ],
+        [
+          "## Route to the UI domain"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "load `ui-routing-control`"
+            ],
+            [
+              "Do not restate UI stage-selection policy"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 18,
+            "groups": [
+              [
+                "settled user-visible outcome"
+              ],
+              [
+                "unresolved presentation/interaction direction"
+              ],
+              [
+                "materially different layout|information hierarchy|disclosure|interaction|error-state"
+              ],
+              [
+                "Direct `@ui-implementer`|delegate .*@ui-orchestrator"
+              ]
+            ]
+          }
+        }
+      ],
+      "pack_skill_guard": {
+        "window_lines": 18,
+        "groups": [
+          [
+            "settled user-visible outcome"
+          ],
+          [
+            "unresolved presentation/interaction direction"
+          ],
+          [
+            "materially different layout|information hierarchy|disclosure|interaction|error-state"
+          ],
+          [
+            "@ui-orchestrator"
+          ],
+          [
+            "@ui-implementer"
+          ]
+        ],
+        "min_groups": 4,
+        "allow_paths": [
+          "skills/ui-routing-control/SKILL.md"
+        ]
+      }
     }
   ]
 }

@@ -349,6 +349,31 @@ def discover_routed_roles(agent_names: set[str]) -> dict[str, set[str]]:
         for role in sorted(set(re.findall(r"@([a-zA-Z0-9_-]+)", text))):
             if role in agent_names and role != caller:
                 edges.setdefault(caller, set()).add(role)
+
+    # Conditional pack-owned skills can carry caller-owned role edges without
+    # forcing their procedure into the standing role prompt. Attribute only
+    # contracts explicitly marked for activator ownership.
+    residency = ROOT / "evals/runtime-residency-spec.json"
+    if residency.is_file():
+        try:
+            spec = json.loads(residency.read_text(encoding="utf-8"))
+        except Exception:
+            spec = {}
+        for contract in spec.get("contracts", []):
+            if contract.get("role_edge_attribution") != "activator":
+                continue
+            skill_path = ROOT / str(contract.get("path", ""))
+            if not skill_path.is_file():
+                continue
+            targets = {r for r in re.findall(r"@([a-zA-Z0-9_-]+)", skill_path.read_text(encoding="utf-8")) if r in agent_names}
+            for act in contract.get("activators", []):
+                ap = str(act.get("path", ""))
+                if not (ap.startswith("agents/") and ap.endswith(".md")):
+                    continue
+                caller = Path(ap).stem
+                for role in targets:
+                    if role != caller:
+                        edges.setdefault(caller, set()).add(role)
     return edges
 
 

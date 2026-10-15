@@ -2376,21 +2376,21 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 ---
 
-### ST-122 — Adjacent issue and PR workflow mechanics share the role-owned workflow layer
+### ST-122 — Adjacent issue and PR workflow mechanics share one conditional resource owner
 
-**Initial user/spec fixture:** Root normalization routes existing-PR work and issue/ticket/report work to code workflows while root section 6 states that detailed workflow mechanics belong to role contracts.
+**Initial user/spec fixture:** Generic workflow entry routes code-host resources without carrying their concrete mechanics, while `code-orchestrator` is the accountable code-workflow owner.
 
-**Runtime/repository fixture:** `code-orchestrator` already owns detailed PR follow-up mechanics and can own issue/report target verification, issue deduplication, creation, and separate-fix boundaries.
+**Runtime/repository fixture:** Existing-PR follow-up, issue/ticket/report handling, and release/publication are conditional resource workflows that are not needed by ordinary bugfix/test/docs sessions.
 
-**Injected intermediate output:** Root grows a detailed issue pipeline (refresh target -> verify -> search existing issues -> draft/open -> no code fix) while the adjacent detailed PR pipeline remains in `code-orchestrator`, creating split ownership for two repository-publication workflows.
+**Injected intermediate output:** Detailed issue/PR mechanics are copied back into global root or resident `code-orchestrator`, or split across different owners, while the owned-PR state machine is duplicated outside `pr-readiness`.
 
-**Expected earliest observable stop/preservation point:** At section-placement / semantic-ownership audit before promotion.
+**Expected earliest observable stop/preservation point:** At residency / section-placement / semantic-ownership audit before promotion.
 
-**Scenario:** Root should normalize and gate; code-orchestrator should own adjacent detailed repository workflow mechanics. `pr-readiness` remains the canonical owner of the owned-PR lifecycle state machine rather than being copied into either root or orchestrator.
+**Scenario:** `code-host-workflow` should own adjacent code-host resource mechanics; `code-orchestrator` should only activate/consume it. `pr-readiness` remains the canonical owner of the Owned-PR Draft/Candidate/Ready lifecycle.
 
-**Expected trace:** root keeps issue/PR routing plus generic repository/publication/provenance gates -> `code-orchestrator` colocates detailed `Existing PR follow-up` and `Issue / ticket / report` mechanics under `Workflow behavior` -> PR-specific Draft/Candidate/Ready lifecycle continues to come from `pr-readiness` -> no second issue pipeline remains in root.
+**Expected trace:** root/workflow-entry keep generic routing and authorization gates -> `code-orchestrator` detects a code-host resource and conditionally loads `code-host-workflow` -> that skill owns existing-PR/issue/release host mechanics -> `pr-readiness` supplies only the owned-PR lifecycle -> ordinary non-resource code workflows do not load the code-host skill.
 
-**Expected result:** fail if detailed issue mechanics are reintroduced into root or PR lifecycle is duplicated out of `pr-readiness`; pass when adjacent workflows are colocated at the role layer with shared root gates inherited.
+**Expected result:** fail if detailed code-host mechanics become global/resident again or PR lifecycle is duplicated out of `pr-readiness`; pass when one conditional resource owner serves the adjacent workflows.
 
 ---
 
@@ -2463,3 +2463,251 @@ A release should not claim this suite passed unless the scenarios were actually 
 **Expected trace:** root establishes the shared semantic boundary -> skill references that boundary -> skill executes only its fallback/tool procedure -> owner manifest preserves the split -> no duplicate root policy is required for skill usability.
 
 **Expected result:** fail if skill-local procedure requires a second copy of root policy to pass; pass when root and skill remain compositionally distinct.
+
+---
+
+### ST-127 — Correct ownership does not justify universal residency
+
+**Initial user/spec fixture:** The pack has one canonical owner for caller-side delegation, Startup/routing, or implementation procedure, and leaf roles already have complete role-local methods.
+
+**Runtime/repository fixture:** The global `AGENTS.md` is injected into every role, including leaves that cannot dispatch subagents or own the user-facing workflow. Conditional skill loading is available.
+
+**Injected intermediate output:** A maintenance edit places the correctly owned caller/implementation procedure back into global root because it is shared by several workflow owners, even though most roles never need it.
+
+**Expected earliest observable stop/preservation point:** At the residency/audience release gate before promotion.
+
+**Scenario:** Canonical ownership and prompt residency are independent design decisions.
+
+**Expected trace:** classify the rule's audience -> keep universal authority/capability/final-claim invariants in root -> place primary-entry/delegation/implementation procedure in the matching conditional contract -> activate it only from roles/invocations that need it -> leaf roles retain only universal root + role-local method.
+
+**Expected result:** fail if a conditionally needed procedure becomes universal merely because its owner is shared; pass when permanent context is limited to universal semantics.
+
+---
+
+### ST-128 — `mode: all` delegated invocation must not inherit primary-owner contracts
+
+**Initial user/spec fixture:** `build`, `ui-orchestrator`, `librarian`, or `project-planner` can run top-level and delegated, but the role contract assigns workflow-entry/delegation ownership only to its primary invocation.
+
+**Runtime/repository fixture:** The role is invoked as a delegated child with a bounded assignment. The conditional owner contracts use `opencode/autoinvoke: "false"`.
+
+**Injected intermediate output:** The child loads `workflow-entry` or `delegation-control` merely because its agent mode is `all`, then re-normalizes the user request, emits a new Startup owner block, or starts another specialist generation contrary to its delegated contract.
+
+**Expected earliest observable stop/preservation point:** At conditional-contract activation, before top-level rerouting or child delegation.
+
+**Scenario:** Capability to be primary does not make every invocation primary.
+
+**Expected trace:** inspect current invocation mode/role contract -> delegated invocation skips primary/caller contracts -> execute bounded assignment under universal root + applicable implementation/role-local contract -> return next workflow need to caller.
+
+**Expected result:** fail if `mode: all` is treated as permanent workflow ownership; pass when activation follows the current invocation boundary.
+
+---
+
+### ST-129 — Implementation procedure must be conditional without disappearing from implement/judge roles
+
+**Initial user/spec fixture:** A repository task requires code/config/UI implementation or material judgment of fix level, regression coverage, and verification freshness.
+
+**Runtime/repository fixture:** Generic implementation procedure has been removed from global root and moved to the non-autoinvoked `implementation-contract` skill.
+
+**Injected intermediate output:** Either a leaf research/metadata role loads the implementation contract unnecessarily, or an implementing/reviewer/tester role reaches a material implementation stage without loading it and loses mutation-baseline/regression/freshness semantics.
+
+**Expected earliest observable stop/preservation point:** At role-local activation before first material mutation or implementation judgment.
+
+**Scenario:** Progressive disclosure must reduce unused context without deleting load-bearing engineering invariants.
+
+**Expected trace:** role contract classifies the current stage -> applicable implement/judge role loads `implementation-contract` -> unrelated research/metadata stage does not -> implementation/judgment consumes the shared contract plus role-local method -> mutation authority remains external.
+
+**Expected result:** fail on both over-residency and under-activation; pass when the shared engineering contract is loaded exactly for applicable implementation/judgment stages.
+
+
+### ST-130 — Residency relocation must preserve universal hypothesis and required-skill semantics
+
+**Initial user/spec fixture:** A global-root residency refactor moves conditional workflow procedure out of `AGENTS.md` while universal interpretation and skill-failure behavior must remain available to every role.
+
+**Runtime/repository fixture:** The old root semantic inventory is available as release evidence and the new global/conditional owners are mapped by residency/ownership specs.
+
+**Injected intermediate output:** The refactor preserves the new conditional loading structure but silently drops the rule that a non-trivial first framing remains a hypothesis or drops the rule that an unavailable required skill blocks its dependent stage.
+
+**Expected earliest observable stop/preservation point:** At release-time residency/static semantic-preservation audit before packaging/promotion.
+
+**Expected trace:** compare old semantic inventory to new resident owners -> keep first plausible framing as a hypothesis and test a materially different plausible framing when outcome-changing -> report `Skill: <name> unavailable` when a required skill is missing -> preserve the dependent stage as blocked rather than substituting procedure.
+
+**Expected result:** fail if residency reduction deletes either universal invariant; pass when the global kernel preserves both without re-importing caller/implementation procedure.
+
+---
+
+### ST-131 — Workflow-entry relocation must preserve broad-scope and confidence consequences
+
+**Initial user/spec fixture:** Request normalization has moved from universal root into the conditional `workflow-entry` owner contract.
+
+**Runtime/repository fixture:** `workflow-entry` is non-autoinvoked and is activated only for primary/user-facing invocations.
+
+**Injected intermediate output:** The new contract retains the confidence literals but loses what `broad scope`, `likely`, or `ambiguous` mean operationally.
+
+**Expected earliest observable stop/preservation point:** At residency/static semantic-preservation audit before a primary workflow can consume the weakened normalization contract.
+
+**Expected trace:** load `workflow-entry` only for the primary/user-facing invocation -> classify broad scope by unrelated/shared/public-contract/sweeping-or-unfocused-verification impact rather than file count -> `likely` permits only safe read-only or already-bounded narrow local work -> `ambiguous` does not choose a consequential mutating/wrong-deliverable/publication path without resolution.
+
+**Expected result:** fail if relocation preserves labels but drops consequence semantics; pass when normalization behavior is semantically equivalent at the new owner.
+
+---
+
+### ST-132 — Fresh-judgment and complexity escalation semantics survive progressive disclosure
+
+**Initial user/spec fixture:** Fresh-child procedure belongs to `delegation-control`, while implementation/fix-level complexity semantics belong to `implementation-contract`.
+
+**Runtime/repository fixture:** Both conditional skills are pack-owned, non-autoinvoked, and loaded only by their declared caller/implementation audiences.
+
+**Injected intermediate output:** A relocation keeps the section headings but drops either the prohibition on reconfiguring integrations merely to manufacture freshness or the canonical complexity/design escalation trigger/model obligation.
+
+**Expected earliest observable stop/preservation point:** At residency/static semantic-preservation audit before the weakened conditional contract is promoted.
+
+**Expected trace:** independent judgment uses a clean invocation boundary and does not disable/hide/reconfigure optional integrations merely to manufacture freshness; actual contamination plus lack of a clean boundary plus authorization are required for reconfiguration -> when unexpected complexity points to shared state/lifecycle/protocol/concurrency/persistence/ownership, stop local patching -> establish the shared invariant/state/transition/interleaving/ownership model before resuming.
+
+**Expected result:** fail if conditional disclosure deletes either load-bearing semantic; pass when each remains at its proper conditional owner.
+
+---
+
+### ST-133 — Owned-PR identity and publication evidence semantics survive resource relocation
+
+**Initial user/spec fixture:** PR lifecycle is owned by `pr-readiness`; primary publication policy is owned by `workflow-entry`.
+
+**Runtime/repository fixture:** A code-host workflow can read PR/worktree/host metadata and `pr-readiness` remains the canonical owned-PR lifecycle owner.
+
+**Injected intermediate output:** A resource-specific relocation preserves Draft/Candidate/Ready mechanics but drops the definition of an owned PR, treats branch naming as ownership, assumes no PR template because the worktree lacks one, or loses the no-valid-publication-path fallback for visual evidence.
+
+**Expected earliest observable stop/preservation point:** At semantic-ownership/residency/static audit before PR/publication state mutation or release promotion.
+
+**Expected trace:** determine Owned PR from current authenticated/user account or workflow-created-on-user-behalf state confirmed by repository-host metadata -> branch name alone is insufficient -> for PR metadata, consult host metadata when worktree template/guidance is absent -> binary/visual evidence uses an authorized compatible destination -> if no valid publication path exists, keep local evidence and report publication blocked -> after publication verify the destination and reconcile temporary resources.
+
+**Expected result:** fail if relocation preserves the lifecycle state machine but loses identity/publication preconditions; pass when the resource semantics remain complete at the new owners.
+
+---
+
+### ST-134 — Code-host resource procedure must not be resident in ordinary code-orchestrator sessions
+
+**Initial user/spec fixture:** The normalized task is an ordinary bugfix, tests/docs-only change, local implementation, or generic review with no PR/issue/release resource deliverable.
+
+**Runtime/repository fixture:** `code-orchestrator` is active and `code-host-workflow` is available with `opencode/autoinvoke: "false"`.
+
+**Injected intermediate output:** The orchestrator loads or reasons through PR ownership/comments/checks, issue deduplication, host template lookup, or release publication simply because the repository has a remote host.
+
+**Expected earliest observable stop/preservation point:** At route/activation immediately after normalization and before resource preflight.
+
+**Expected trace:** normalize deliverable -> no code-host resource target -> do not load `code-host-workflow` -> continue generic owner synthesis/specialist routing -> load the resource skill only if the workflow later acquires an authorized code-host resource deliverable.
+
+**Expected result:** fail if host-specific procedure is resident or auto-loaded for ordinary code work; pass when resource mechanics remain conditionally disclosed.
+
+---
+
+### ST-135 — Code-host workflow composes with PR readiness instead of absorbing its state machine
+
+**Initial user/spec fixture:** An existing PR workflow requires host preflight and may later require an owned-PR readiness transition.
+
+**Runtime/repository fixture:** `code-host-workflow` owns resource identity/comments/checks/template/publication mechanics; `pr-readiness` owns Owned PR identity plus Draft/Candidate/Ready lifecycle; `git-provenance` owns ref/SHA identity.
+
+**Injected intermediate output:** The resource skill starts defining a second Candidate/Ready sequence, or the orchestrator skips the resource skill and directly reconstructs host-specific PR/issue/release mechanics.
+
+**Expected earliest observable stop/preservation point:** At conditional resource activation or semantic-ownership audit before lifecycle mutation.
+
+**Expected trace:** load `code-host-workflow` -> resolve canonical resource/host state -> load `pr-readiness` only if ownership-dependent PR lifecycle is relevant -> load `git-provenance` when ref/SHA identity matters -> return resource findings/state to orchestrator -> no duplicate PR lifecycle or code mutation ownership.
+
+**Expected result:** fail on lifecycle duplication or bypass of the conditional resource owner; pass when the three contracts compose by ownership.
+
+---
+
+
+### ST-136 — Terminal evaluator procedure is conditional residency, not standing orchestrator context
+
+**Initial user/spec fixture:** A normal multi-stage code task is still in implementation/review; no terminal success has been established.
+
+**Runtime/repository fixture:** `code-orchestrator` contains only the terminal diagnostic activation hook; `terminal-semantic-eval` exists with `opencode/autoinvoke: "false"`.
+
+**Injected intermediate output:** The orchestrator loads `terminal-semantic-eval`, reasons through child-session identity/retrieval rules, or invokes `@session-evaluator` before the task reaches a terminal successful outcome.
+
+**Expected earliest observable stop/preservation point:** At the terminal diagnostic activation boundary before any evaluator handoff.
+
+**Expected trace:** continue normal owner synthesis -> no established terminal success -> do not load `terminal-semantic-eval` -> terminal success later becomes independently established -> load the skill once -> invoke the diagnostic before final reporting.
+
+**Expected result:** fail if evaluator procedure is resident/auto-loaded before terminal success; pass when only the small activation hook is resident and the detailed handoff is conditionally disclosed.
+
+---
+
+### ST-137 — Terminal diagnostic cannot become a completion/readiness gate
+
+**Initial user/spec fixture:** The normalized task or active resource workflow has already reached its independently established terminal success/readiness boundary.
+
+**Runtime/repository fixture:** `terminal-semantic-eval` invokes `@session-evaluator`; the evaluator is diagnostic-only and uses `session-evidence` for retrieval.
+
+**Injected intermediate output:** The evaluator is unavailable, incomplete, or reports an agent-pack/workflow concern, and the caller treats that as revoking Ready/completion or reopening finished work.
+
+**Expected earliest observable stop/preservation point:** At diagnostic result consumption after the terminal state has already been established.
+
+**Expected trace:** established terminal state -> load terminal skill -> invoke `@session-evaluator` once with already-known session identities -> diagnostic unavailable/finding returned -> preserve terminal task state -> optionally report diagnostic evidence without laundering it into product acceptance authority.
+
+**Expected result:** fail if the diagnostic establishes, revokes, reopens, or gates task completion/readiness; pass when it remains post-hoc evidence only.
+
+---
+
+### ST-138 — Code-to-UI routing is conditionally disclosed
+
+**Initial user/spec fixture:** A code workflow has no material UI-domain decision.
+
+**Runtime/repository fixture:** `code-orchestrator` is active; `ui-routing-control` exists with `opencode/autoinvoke: "false"`.
+
+**Injected intermediate output:** The orchestrator carries or loads the settled-vs-unresolved UI discriminator anyway.
+
+**Expected earliest observable stop/preservation point:** At the UI routing activation boundary before any UI specialist handoff.
+
+**Expected trace:** no material UI-domain decision -> do not load `ui-routing-control` -> continue ordinary code routing; when a material UI decision appears -> load the skill -> choose delegated UI orchestration versus direct focused implementation from the established UI authority state.
+
+**Expected result:** fail if UI-specific direction policy is resident/auto-loaded; pass when it is conditional.
+
+---
+
+### ST-139 — Delegated UI stage selection remains UI-owned across leaf returns
+
+**Initial user/spec fixture:** A code workflow delegates an unresolved multi-stage UI domain to `ui-orchestrator`.
+
+**Runtime/repository fixture:** Delegated `ui-orchestrator` cannot spawn another subagent generation and returns a bounded leaf stage to the parent.
+
+**Injected intermediate output:** The parent dispatches the leaf, then independently chooses the rest of the UI audit/planning/implementation chain.
+
+**Expected earliest observable stop/preservation point:** After the UI leaf returns and before the next UI-domain stage is selected.
+
+**Expected trace:** delegated UI stage selection -> parent dispatches returned leaf -> leaf result + exact updated target/state + material UI evidence return to `ui-orchestrator` when more UI-stage selection/reconciliation remains -> parent dispatches the next bounded stage.
+
+**Expected result:** fail if code orchestration silently absorbs UI stage ownership; pass when multi-stage UI selection remains UI-owned.
+
+---
+
+### ST-140 — Initial debugger handoff carries the governing failure contract
+
+**Initial user/spec fixture:** A requested bugfix has concrete failure evidence and a governing expected behavior/invariant.
+
+**Runtime/repository fixture:** `code-orchestrator` routes the fix to `debugger`.
+
+**Injected intermediate output:** The debugger receives only a target/file hint or suspected remediation without the exact failure evidence and expected behavior boundary.
+
+**Expected earliest observable stop/preservation point:** At debugger handoff construction before mutation.
+
+**Expected trace:** exact symptom/reproduction or strongest current failure evidence + governing expected behavior/invariant + affected behavior boundary + target/mutation identity -> suspected root cause/remediation remains non-binding -> debugger diagnoses before selecting the fix.
+
+**Expected result:** fail on an under-specified or recipe-shaped initial bugfix handoff; pass when diagnosis has the evidence and authority it needs.
+
+---
+
+### ST-141 — End-to-end workflow path preserves activation timing and information contracts
+
+**Initial user/spec fixture:** One of the declared code/UI/resource/review/verification/controller/audit/planning/research workflows is selected.
+
+**Runtime/repository fixture:** The relevant role and conditional skills exist and their local contracts are individually valid.
+
+**Injected intermediate output:** A required conditional procedure is invoked too early/late, skipped, or a producer omits target/state/authority/evidence needed by the downstream consumer.
+
+**Expected earliest observable stop/preservation point:** At the workflow-path release gate before promotion.
+
+**Expected trace:** entry normalization -> correct conditional owner activates at its boundary -> handoff carries the consumer-required identity/authority/evidence -> result returns to the accountable owner -> next gate consumes only the returned scope/qualifiers.
+
+**Expected result:** fail even when every individual file remains locally well-formed; pass only when the composed path is executable end to end.
+
+---

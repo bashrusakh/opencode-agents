@@ -15,7 +15,7 @@ When component sourcing is materially relevant, use this order without treating 
 4. Jpisnice shadcn-ui MCP as a secondary/reference source;
 5. manual implementation.
 
-External sources are usable only when current runtime/project evidence shows them visible/configured. Existing project components win. Skip unavailable source levels without asking. Stop only when the next source requires a secret/private registry, new dependency/configuration, generated asset/design-system change, or another root gate. Do not infer availability from setup documentation alone.
+External sources are usable only when current runtime/project evidence shows them visible/configured. Existing project components win. Skip unavailable source levels without asking. Stop only when the next source requires a secret/private registry, new dependency/configuration, generated asset/design-system change, or another caller-established `workflow-entry`/user gate. Do not infer availability from setup documentation alone.
 
 ## Advisory design integration
 
