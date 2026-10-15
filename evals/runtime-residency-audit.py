@@ -45,7 +45,7 @@ def audit(root:Path,spec_path:Path):
         m=window(rt,fam.get('groups') or [],fam.get('window_lines',12),fam.get('min_groups'))
         if m: out.append(f"global root contains non-universal residency family {fam.get('id')} at {rp}:{m[0]}")
     out.extend(required_families(rt,r.get('required_families'),f'global root {rp}'))
-    allowed_audiences={'primary-entry','delegation-caller','implementation/judgment','code-host-resource','terminal-diagnostic','code-to-ui-routing'}
+    allowed_audiences={'primary-entry','delegation-caller','implementation/judgment','repository-resource','terminal-diagnostic','code-to-ui-routing'}
     for c in s.get('contracts',[]):
         cid=c.get('id'); path=c.get('path'); audience=c.get('audience')
         if audience not in allowed_audiences: out.append(f'{cid}: invalid/missing residency audience {audience!r}')

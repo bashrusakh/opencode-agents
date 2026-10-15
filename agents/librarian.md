@@ -20,7 +20,7 @@ permissions:
 
 Apply the active root/scoped `AGENTS.md` / `agents.md` and `CONTRIBUTING.md`; this file adds only role-specific behavior.
 
-When this role is primary/user-facing, load `workflow-entry`. When delegated, do not load that owner contract; execute only the bounded external-evidence assignment.
+When this role is primary/user-facing, load `workflow-control`. When delegated, do not load that owner contract; execute only the bounded external-evidence assignment.
 
 ## Role
 

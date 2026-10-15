@@ -1,17 +1,17 @@
 ---
-name: code-host-workflow
-description: Conditional code-host resource workflow for existing PR follow-up, issue/ticket/report handling, release/publication mechanics, host metadata/template discovery, and resource-specific reporting. Load only when code-orchestrator has normalized the active workflow to one of these code-host resources.
+name: repository-workflow
+description: Conditional repository workflow for existing PR follow-up, issue/ticket/report handling, release/publication mechanics, host metadata/template discovery, and resource-specific reporting. Load only when code-orchestrator has normalized the active workflow to one of these repository resources.
 metadata:
   opencode/autoinvoke: "false"
 ---
 
-# Code-host Resource Workflow
+# Repository Workflow
 
 ## Activation boundary
 
-Load this skill only when the active `code-orchestrator` workflow targets an **existing PR**, **issue/ticket/report**, **release/tag**, or another public code-host resource as a requested deliverable. Do not load it for an ordinary bugfix, tests/docs-only task, local implementation, or generic review merely because the repository is hosted remotely.
+Load this skill only when the active `code-orchestrator` workflow targets an **existing PR**, **issue/ticket/report**, **release/tag**, or another public repository resource as a requested deliverable. Do not load it for an ordinary bugfix, tests/docs-only task, local implementation, or generic review merely because the repository is hosted remotely.
 
-This skill owns host-resource discovery and lifecycle-adjacent mechanics only. It does not grant repository-edit or publication authority. `workflow-entry` owns the user authorization/publication gate; `git-provenance` owns ref/SHA/worktree identity; `pr-readiness` owns the canonical **Owned PR** definition and Draft/Candidate/Ready lifecycle; `output-formatting` owns destination formatting; `resource-lifecycle` owns workflow-created temporary-resource reconciliation.
+This skill owns host-resource discovery and lifecycle-adjacent mechanics only. It does not grant repository-edit or publication authority. `workflow-control` owns the user authorization/publication gate; `git-provenance` owns ref/SHA/worktree identity; `pr-readiness` owns the canonical **Owned PR** definition and Draft/Candidate/Ready lifecycle; `output-formatting` owns destination formatting; `resource-lifecycle` owns workflow-created temporary-resource reconciliation.
 
 ## Existing PR follow-up
 
@@ -25,11 +25,11 @@ For “review this PR and fix what is wrong,” combine current host findings wi
 
 Resolve the state the report targets before verification. For current upstream/default/base claims, use `git-provenance` to refresh and bind the authoritative ref/SHA when needed. For an explicitly local-workspace claim, use that workspace rather than fetching only for formality. Distinguish confirmed facts from suspected root cause.
 
-Search existing issues when repository access makes that relevant before creating a duplicate. Draft/open an issue only when issue creation is in scope and authorized by the active `workflow-entry` gate. Treat repository implementation as a separate deliverable: request an implementation stage only when changed code/config/UI/tests/docs is separately established as requested scope.
+Search existing issues when repository access makes that relevant before creating a duplicate. Draft/open an issue only when issue creation is in scope and authorized by the active `workflow-control` gate. Treat repository implementation as a separate deliverable: request an implementation stage only when changed code/config/UI/tests/docs is separately established as requested scope.
 
 ## Release / host publication
 
-Build release notes/check inputs from actual repository history, relevant PR/issues, current code state, and current verification evidence. Repository changelog/docs/config edits remain a separate implementation stage. Tag/release/public publication stays under the active `workflow-entry` gate.
+Build release notes/check inputs from actual repository history, relevant PR/issues, current code state, and current verification evidence. Repository changelog/docs/config edits remain a separate implementation stage. Tag/release/public publication stays under the active `workflow-control` gate.
 
 Discover applicable repository publication/template guidance before drafting a public PR/issue/release artifact when the resource requires it. For PR metadata, do not infer that no template/guidance exists merely because it is absent from the current worktree; consult available repository-host metadata when needed. Public claims must remain grounded in current target evidence.
 

@@ -3,7 +3,7 @@ name: graymatter-memory
 description: Use only when root continuity semantics or an active workflow/role contract activates GrayMatter recall. Owns GrayMatter identity, query, checkpoint, durable-write, correction, and tool-call mechanics; root owns memory authority/durable-vs-transient policy and the active judgment contract owns independence/isolation.
 ---
 
-# GrayMatter memory and continuity
+# GrayMatter Memory
 
 Apply root source-of-truth/continuity semantics first and any active role/delegation isolation contract. This skill supplies GrayMatter-specific mechanics only and does not redefine memory authority, activation, fresh-judgment isolation, or what counts as durable versus transient state.
 

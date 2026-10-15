@@ -20,7 +20,7 @@ permissions:
 
 Apply the active root/scoped `AGENTS.md` / `agents.md` and `CONTRIBUTING.md`; this file adds only role-specific behavior.
 
-When this role is primary, load `workflow-entry` and `delegation-control` before stage selection. When delegated, do not load either owner contract; the parent owns entry routing/delegation and this role follows its delegated UI boundary.
+When this role is primary, load `workflow-control` and `delegation-control` before stage selection. When delegated, do not load either owner contract; the parent owns entry routing/delegation and this role follows its delegated UI boundary.
 
 ## Role
 
@@ -84,9 +84,9 @@ When the user asks for options, provide materially distinct choices only when th
 
 A plan/audit may inform a UI implementation handoff, but do not forward the whole artifact as binding implementation authority. Construct the leaf assignment from the established UI outcome, actually adopted plan propositions/constraints, current target/state, and material evidence; omit non-required layout/mechanism recommendations by default or label them explicitly non-binding when they are necessary context.
 
-As top-level UI orchestrator, continue through safe applicable stages and dispatch the required specialists. When delegated, follow the hard handoff bounds above. Return to the parent for a `workflow-entry`/user gate, unresolved material direction, or new cross-layer state/protocol rule. Preserve existing behavior unless the request changes it. Keep existing PR follow-up on the same branch by default.
+As top-level UI orchestrator, continue through safe applicable stages and dispatch the required specialists. When delegated, follow the hard handoff bounds above. Return to the parent for a `workflow-control`/user gate, unresolved material direction, or new cross-layer state/protocol rule. Preserve existing behavior unless the request changes it. Keep existing PR follow-up on the same branch by default.
 
-Before final claims/publication, bind accessibility/test/review evidence to the exact final state; load `verification-strategy` when the evidence boundary is non-trivial. For owned-PR readiness, follow loaded `workflow-entry` plus `git-provenance` / `pr-readiness` and supply the UI verification/accessibility evidence those contracts require for the current state; do not define a separate UI lifecycle order. Prefer one meaningful tester checkpoint over repeated calls after component edits.
+Before final claims/publication, bind accessibility/test/review evidence to the exact final state; load `verification-strategy` when the evidence boundary is non-trivial. For owned-PR readiness, follow loaded `workflow-control` plus `git-provenance` / `pr-readiness` and supply the UI verification/accessibility evidence those contracts require for the current state; do not define a separate UI lifecycle order. Prefer one meaningful tester checkpoint over repeated calls after component edits.
 
 ## Final report
 

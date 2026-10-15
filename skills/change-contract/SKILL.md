@@ -1,17 +1,17 @@
 ---
-name: implementation-contract
-description: "Shared engineering contract for implementation and implementation judgment: behavioral contract, mutation baseline/mechanism, right-level ownership, regression guard, and verification freshness. Load only for an applicable code/config/UI implementation or judgment stage."
+name: change-contract
+description: Shared engineering contract for implementation and implementation judgment: behavioral contract, mutation baseline/mechanism, right-level ownership, regression guard, and verification freshness. Load only for an applicable code/config/UI implementation or judgment stage.
 metadata:
   opencode/autoinvoke: "false"
 ---
 
-# Implementation Contract
+# Change Contract
 
 ## Activation boundary
 
 Load only when the active role is implementing or materially judging code/config/UI behavior and its role contract activates this shared engineering contract. Do not load for unrelated research, metadata-only repository work, public-artifact formatting, or workflow routing.
 
-This skill does not grant mutation authority. Apply root task-semantic authority/evidence semantics to the established outcome and proof claims. Delegated action ceilings and workflow-entry/user gates remain external to it.
+This skill does not grant mutation authority. Apply root task-semantic authority/evidence semantics to the established outcome and proof claims. Delegated action ceilings and workflow-control/user gates remain external to it.
 
 ## Behavioral contract
 

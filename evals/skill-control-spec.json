@@ -84,7 +84,7 @@
       "side_effect_class": "gate-controlled PR publication/readiness transitions"
     },
     {
-      "path": "skills/code-host-workflow/SKILL.md",
+      "path": "skills/repository-workflow/SKILL.md",
       "class": "pack-workflow",
       "entry_sections": [
         "Activation boundary",
@@ -94,7 +94,7 @@
         "Resource result contract"
       ],
       "owned_capabilities": [
-        "code_host_resource_workflow"
+        "repository_resource_workflow"
       ],
       "consumed_capabilities": [
         "publication_authorization_gate",
@@ -173,7 +173,7 @@
       "side_effect_class": "verification planning only; tester/implementation roles execute checks"
     },
     {
-      "path": "skills/workflow-entry/SKILL.md",
+      "path": "skills/workflow-control/SKILL.md",
       "class": "pack-workflow",
       "entry_sections": [
         "Activation boundary",
@@ -185,7 +185,7 @@
         "Final workflow report"
       ],
       "owned_capabilities": [
-        "workflow_entry_normalization_startup",
+        "workflow_control_normalization_startup",
         "publication_authorization_gate",
         "persistent_planning_activation_canonical_state"
       ],
@@ -225,7 +225,7 @@
       "side_effect_class": "caller-side orchestration procedure; no capability grant"
     },
     {
-      "path": "skills/implementation-contract/SKILL.md",
+      "path": "skills/change-contract/SKILL.md",
       "class": "pack-workflow",
       "entry_sections": [
         "Activation boundary",
@@ -237,7 +237,7 @@
         "Judgment consumption"
       ],
       "owned_capabilities": [
-        "implementation_engineering_contract",
+        "change_engineering_contract",
         "verification_evidence_invariants"
       ],
       "consumed_capabilities": [
@@ -249,7 +249,7 @@
       "side_effect_class": "shared engineering procedure; mutation authority remains external"
     },
     {
-      "path": "skills/terminal-semantic-eval/SKILL.md",
+      "path": "skills/session-evaluation-control/SKILL.md",
       "class": "pack-workflow",
       "entry_sections": [
         "Activation boundary",
@@ -257,7 +257,7 @@
         "Diagnostic consumption"
       ],
       "owned_capabilities": [
-        "terminal_session_evaluator_handoff"
+        "session_evaluation_handoff"
       ],
       "consumed_capabilities": [],
       "typed_domains": [],

@@ -5,7 +5,7 @@ metadata:
   opencode/autoinvoke: "false"
 ---
 
-# Delegation Control Contract
+# Delegation Control
 
 ## Activation boundary
 
@@ -69,4 +69,4 @@ Explicit review-only work uses reviewer ownership. Otherwise use independent rev
 
 ## Workflow-created resources
 
-Temporary resources created by the workflow must be reconciled before completion. When such resources exist, load `resource-lifecycle`; it owns resource identity, cleanup ownership/transfer, failure handling, terminal states, and reconciliation. Cleanup authorization remains with the active workflow-entry/user gate or delegated action ceiling.
+Temporary resources created by the workflow must be reconciled before completion. When such resources exist, load `resource-lifecycle`; it owns resource identity, cleanup ownership/transfer, failure handling, terminal states, and reconciliation. Cleanup authorization remains with the active workflow-control/user gate or delegated action ceiling.

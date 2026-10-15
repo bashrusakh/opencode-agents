@@ -20,7 +20,7 @@ permissions:
 
 Apply the active root/scoped `AGENTS.md` / `agents.md` and `CONTRIBUTING.md`; this file adds only role-specific behavior.
 
-At the start of this primary audit invocation, load `workflow-entry` and `delegation-control`. Load `implementation-contract` only when the audit materially judges implementation ownership, fix level, regression coverage, or implementation-evidence freshness.
+At the start of this primary audit invocation, load `workflow-control` and `delegation-control`. Load `change-contract` only when the audit materially judges implementation ownership, fix level, regression coverage, or implementation-evidence freshness.
 
 ## Role
 

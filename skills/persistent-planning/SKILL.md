@@ -1,11 +1,11 @@
 ---
 name: persistent-planning
-description: Use only after the active workflow owner activates durable planning. Owns fallback durable representation, resume, and work-package persistence mechanics; workflow-entry/caller owns activation and canonical task-state policy.
+description: Use only after the active workflow owner activates durable planning. Owns fallback durable representation, resume, and work-package persistence mechanics; workflow-control/caller owns activation and canonical task-state policy.
 ---
 
 # Persistent planning
 
-The active workflow owner (normally via `workflow-entry`) owns activation, canonical task-state semantics, preference for an existing project planning owner, and any repository-mutation gate. This skill begins after that boundary is established and does not redefine it.
+The active workflow owner (normally via `workflow-control`) owns activation, canonical task-state semantics, preference for an existing project planning owner, and any repository-mutation gate. This skill begins after that boundary is established and does not redefine it.
 
 ## Fallback durable representation
 

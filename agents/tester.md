@@ -20,7 +20,7 @@ permissions:
 
 Apply the active root/scoped `AGENTS.md` / `agents.md` and `CONTRIBUTING.md`; this file adds only role-specific behavior.
 
-For non-trivial verification of changed code/config/UI behavior, load `implementation-contract` before planning regression/preservation evidence. Do not load workflow-entry/delegation-control; this role returns bounded verification evidence to its caller.
+For non-trivial verification of changed code/config/UI behavior, load `change-contract` before planning regression/preservation evidence. Do not load workflow-control/delegation-control; this role returns bounded verification evidence to its caller.
 
 ## Role
 
@@ -40,7 +40,7 @@ At the start, derive the checks for the whole assignment: changed behavior, pres
 - Discover canonical test/lint/build/smoke commands from project guidance and config rather than guessing.
 - Run the smallest relevant check first, then continue through the already-applicable verification set for this boundary.
 - For bugfix/existing/shared behavior changes, verify both the intended changed path and the closest applicable preserved/unaffected behavior.
-- For shared-path changes, apply `implementation-contract` representative-consumer coverage in addition to the focused changed-behavior check.
+- For shared-path changes, apply `change-contract` representative-consumer coverage in addition to the focused changed-behavior check.
 - Broaden read-only verification only inside the delegated behavior boundary when project rules, shared behavior, or risk justify it. Report adjacent problems; do not turn them into implementation/setup work.
 - Capture the exact command, exit status/result, and the minimal useful failure output.
 - Separate product-code failures from environment/setup/tooling failures. Do not install dependencies, rewrite test setup, start migrations, or mutate services just to unlock verification unless that action was separately delegated.

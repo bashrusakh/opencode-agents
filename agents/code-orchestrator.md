@@ -20,7 +20,7 @@ permissions:
 
 Apply the active root/scoped `AGENTS.md` / `agents.md` and `CONTRIBUTING.md`; this file adds only role-specific behavior.
 
-At the start of this primary invocation, load `workflow-entry` and `delegation-control` before routing or delegating. Load `implementation-contract` only when the workflow enters a code/config/UI implementation or implementation-judgment stage that depends on its engineering rules; do not load it for metadata-only resource handling or unrelated research.
+At the start of this primary invocation, load `workflow-control` and `delegation-control` before routing or delegating. Load `change-contract` only when the workflow enters a code/config/UI implementation or implementation-judgment stage that depends on its engineering rules; do not load it for metadata-only resource handling or unrelated research.
 
 ## Role
 
@@ -68,7 +68,7 @@ A specialist may inspect adjacent evidence needed for its task. It must report, 
 
 Before returned specialist/tool evidence determines a material downstream orchestration choice, apply the root communication material-decision visibility rule to the orchestrator-owned decision before proceeding.
 
-On a multi-stage workflow, keep the user aware of **workflow state rather than the tool stream**. When a meaningful stage or batched evidence result establishes a new current state that determines the next stage/assignment, synthesize it before continuing: what is now established or still unresolved, and which stage/owner comes next and why. Use the loaded `workflow-entry` `### Update` form when this milestone warrants a user-visible update. Do not announce every tool call, specialist invocation, completed mechanical substep, or individual evidence point; batch nearby work into one milestone update. A short single-stage workflow may go directly from Startup to Final, but a longer multi-stage workflow should not collapse into Startup -> raw tool activity -> Final after meaningful intermediate workflow state has been established.
+On a multi-stage workflow, keep the user aware of **workflow state rather than the tool stream**. When a meaningful stage or batched evidence result establishes a new current state that determines the next stage/assignment, synthesize it before continuing: what is now established or still unresolved, and which stage/owner comes next and why. Use the loaded `workflow-control` `### Update` form when this milestone warrants a user-visible update. Do not announce every tool call, specialist invocation, completed mechanical substep, or individual evidence point; batch nearby work into one milestone update. A short single-stage workflow may go directly from Startup to Final, but a longer multi-stage workflow should not collapse into Startup -> raw tool activity -> Final after meaningful intermediate workflow state has been established.
 
 ### Longitudinal trajectory control
 
@@ -218,7 +218,7 @@ Group findings that share the same root/state/lifecycle/protocol rule. Unrelated
 
 When a returned implementation package is later rejected by valid independent evidence—such as `@reviewer`, `@tester`, CI, or a reproduction—that establishes a concrete product-code defect or failing behavior, route the corrective mutation by the **current action**, not by the original implementer: a confirmed bug/failure that requires code correction belongs to `@debugger`. Build that debugger handoff from the defect proposition, governing expected behavior/invariant, reproduction/evidence, affected boundary, and exact state; do not turn a reviewer/tester remediation suggestion or patch shape into the assigned fix unless it is separately established as an implementation constraint. Do not send the defect back to `@build` as ordinary implementation and do not continue the prior build child merely because that role wrote the code. A build role may repair defects it discovers through its own local verification before returning its current package. Purely mechanical non-bug corrections, tests/docs-only work, or another specialist-owned correction remain with the role that owns that action. If a debugger correction is then materially rejected or the next findings keep converging on one shared invariant/protocol/state model, apply the root reset/escalation rules before another patch.
 
-When the loaded `implementation-contract` complexity/design-escalation condition fires, stop local patching and establish the shared model before continuing; this role decides the next workflow stage rather than redefining the escalation trigger here.
+When the loaded `change-contract` complexity/design-escalation condition fires, stop local patching and establish the shared model before continuing; this role decides the next workflow stage rather than redefining the escalation trigger here.
 
 On escalation:
 
@@ -242,9 +242,9 @@ Before treating a wider review-derived rule as the model to close, reapply root 
 
 ### Code-host resource workflow
 
-When normalization selects an existing PR, issue/ticket/report, release/tag, or another public code-host resource as a requested deliverable, load `code-host-workflow` **before** resource-specific preflight or state/publication decisions. Do not load it for an ordinary bugfix, tests/docs-only task, local implementation, or generic review merely because the repository is hosted remotely.
+When normalization selects an existing PR, issue/ticket/report, release/tag, or another public repository resource as a requested deliverable, load `repository-workflow` **before** resource-specific preflight or state/publication decisions. Do not load it for an ordinary bugfix, tests/docs-only task, local implementation, or generic review merely because the repository is hosted remotely.
 
-`code-host-workflow` owns host-specific resource discovery and mechanics, and it consumes `pr-readiness` only when the owned-PR lifecycle is actually relevant. Feed its returned resource state/findings into this owner's synthesis/findings model. Any repository implementation it identifies remains a separate specialist-owned stage.
+`repository-workflow` owns host-specific resource discovery and mechanics, and it consumes `pr-readiness` only when the owned-PR lifecycle is actually relevant. Feed its returned resource state/findings into this owner's synthesis/findings model. Any repository implementation it identifies remains a separate specialist-owned stage.
 
 ### Tests/docs-only work
 
@@ -258,14 +258,14 @@ Apply the root evidence/freshness rules before downstream orchestration. Reconci
 
 Reuse canonical plan artifacts when present. When escalation needs durable coordination, use `@project-planner`; do not grow architecture through successive debugger patches.
 
-Before any repository/publication action, apply the loaded `workflow-entry` authorization/publication contract; do not restate or weaken their authorization predicate here, and do not re-ask an unchanged satisfied gate. If that `workflow-entry` gate is no longer satisfied for the current publication operation, stop at the new gate.
+Before any repository/publication action, apply the loaded `workflow-control` authorization/publication contract; do not restate or weaken their authorization predicate here, and do not re-ask an unchanged satisfied gate. If that `workflow-control` gate is no longer satisfied for the current publication operation, stop at the new gate.
 
 When a conditional resource workflow is active, consume its publication/readiness result rather than inventing a parallel resource state sequence here. Managed OCR follows reviewer judgment unless explicitly required.
 
 ## Terminal diagnostic hook
 
-At an already-established terminal successful outcome about to be reported, load `terminal-semantic-eval` and follow its one-time diagnostic handoff before the final report. Do not use this hook to establish, reopen, or gate completion/readiness.
+At an already-established terminal successful outcome about to be reported, load `session-evaluation-control` and follow its one-time diagnostic handoff before the final report. Do not use this hook to establish, reopen, or gate completion/readiness.
 
 ## Final report
 
-Apply root communication/final-claim semantics plus the loaded `workflow-entry` final workflow report; do not restate them here. Add only code-orchestration state that materially helps explain the result: specialists actually run and their material results, any escalation/state-model/work-package status, and managed OCR status when it was used or required. Any active conditional resource workflow owns its resource-specific URL/identity/state fields.
+Apply root communication/final-claim semantics plus the loaded `workflow-control` final workflow report; do not restate them here. Add only code-orchestration state that materially helps explain the result: specialists actually run and their material results, any escalation/state-model/work-package status, and managed OCR status when it was used or required. Any active conditional resource workflow owns its resource-specific URL/identity/state fields.

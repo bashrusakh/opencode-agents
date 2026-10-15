@@ -1,11 +1,11 @@
 ---
-name: terminal-semantic-eval
+name: session-evaluation-control
 description: Conditional caller-side harness for the one-time post-hoc session-evaluator diagnostic at an established terminal-success boundary. Load only from code-orchestrator at that boundary.
 metadata:
   opencode/autoinvoke: "false"
 ---
 
-# Terminal Semantic Evaluation Harness
+# Session Evaluation Control
 
 ## Activation boundary
 

@@ -2378,7 +2378,7 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 ### ST-122 — Adjacent issue and PR workflow mechanics share one conditional resource owner
 
-**Initial user/spec fixture:** Generic workflow entry routes code-host resources without carrying their concrete mechanics, while `code-orchestrator` is the accountable code-workflow owner.
+**Initial user/spec fixture:** Generic workflow entry routes repository resources without carrying their concrete mechanics, while `code-orchestrator` is the accountable code-workflow owner.
 
 **Runtime/repository fixture:** Existing-PR follow-up, issue/ticket/report handling, and release/publication are conditional resource workflows that are not needed by ordinary bugfix/test/docs sessions.
 
@@ -2386,11 +2386,11 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 **Expected earliest observable stop/preservation point:** At residency / section-placement / semantic-ownership audit before promotion.
 
-**Scenario:** `code-host-workflow` should own adjacent code-host resource mechanics; `code-orchestrator` should only activate/consume it. `pr-readiness` remains the canonical owner of the Owned-PR Draft/Candidate/Ready lifecycle.
+**Scenario:** `repository-workflow` should own adjacent repository resource mechanics; `code-orchestrator` should only activate/consume it. `pr-readiness` remains the canonical owner of the Owned-PR Draft/Candidate/Ready lifecycle.
 
-**Expected trace:** root/workflow-entry keep generic routing and authorization gates -> `code-orchestrator` detects a code-host resource and conditionally loads `code-host-workflow` -> that skill owns existing-PR/issue/release host mechanics -> `pr-readiness` supplies only the owned-PR lifecycle -> ordinary non-resource code workflows do not load the code-host skill.
+**Expected trace:** root/workflow-control keep generic routing and authorization gates -> `code-orchestrator` detects a repository resource and conditionally loads `repository-workflow` -> that skill owns existing-PR/issue/release host mechanics -> `pr-readiness` supplies only the owned-PR lifecycle -> ordinary non-resource code workflows do not load the repository workflow skill.
 
-**Expected result:** fail if detailed code-host mechanics become global/resident again or PR lifecycle is duplicated out of `pr-readiness`; pass when one conditional resource owner serves the adjacent workflows.
+**Expected result:** fail if detailed repository-resource mechanics become global/resident again or PR lifecycle is duplicated out of `pr-readiness`; pass when one conditional resource owner serves the adjacent workflows.
 
 ---
 
@@ -2486,11 +2486,11 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 ### ST-128 — `mode: all` delegated invocation must not inherit primary-owner contracts
 
-**Initial user/spec fixture:** `build`, `ui-orchestrator`, `librarian`, or `project-planner` can run top-level and delegated, but the role contract assigns workflow-entry/delegation ownership only to its primary invocation.
+**Initial user/spec fixture:** `build`, `ui-orchestrator`, `librarian`, or `project-planner` can run top-level and delegated, but the role contract assigns workflow-control/delegation ownership only to its primary invocation.
 
 **Runtime/repository fixture:** The role is invoked as a delegated child with a bounded assignment. The conditional owner contracts use `opencode/autoinvoke: "false"`.
 
-**Injected intermediate output:** The child loads `workflow-entry` or `delegation-control` merely because its agent mode is `all`, then re-normalizes the user request, emits a new Startup owner block, or starts another specialist generation contrary to its delegated contract.
+**Injected intermediate output:** The child loads `workflow-control` or `delegation-control` merely because its agent mode is `all`, then re-normalizes the user request, emits a new Startup owner block, or starts another specialist generation contrary to its delegated contract.
 
 **Expected earliest observable stop/preservation point:** At conditional-contract activation, before top-level rerouting or child delegation.
 
@@ -2506,7 +2506,7 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 **Initial user/spec fixture:** A repository task requires code/config/UI implementation or material judgment of fix level, regression coverage, and verification freshness.
 
-**Runtime/repository fixture:** Generic implementation procedure has been removed from global root and moved to the non-autoinvoked `implementation-contract` skill.
+**Runtime/repository fixture:** Generic implementation procedure has been removed from global root and moved to the non-autoinvoked `change-contract` skill.
 
 **Injected intermediate output:** Either a leaf research/metadata role loads the implementation contract unnecessarily, or an implementing/reviewer/tester role reaches a material implementation stage without loading it and loses mutation-baseline/regression/freshness semantics.
 
@@ -2514,7 +2514,7 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 **Scenario:** Progressive disclosure must reduce unused context without deleting load-bearing engineering invariants.
 
-**Expected trace:** role contract classifies the current stage -> applicable implement/judge role loads `implementation-contract` -> unrelated research/metadata stage does not -> implementation/judgment consumes the shared contract plus role-local method -> mutation authority remains external.
+**Expected trace:** role contract classifies the current stage -> applicable implement/judge role loads `change-contract` -> unrelated research/metadata stage does not -> implementation/judgment consumes the shared contract plus role-local method -> mutation authority remains external.
 
 **Expected result:** fail on both over-residency and under-activation; pass when the shared engineering contract is loaded exactly for applicable implementation/judgment stages.
 
@@ -2535,17 +2535,17 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 ---
 
-### ST-131 — Workflow-entry relocation must preserve broad-scope and confidence consequences
+### ST-131 — Workflow-control relocation must preserve broad-scope and confidence consequences
 
-**Initial user/spec fixture:** Request normalization has moved from universal root into the conditional `workflow-entry` owner contract.
+**Initial user/spec fixture:** Request normalization has moved from universal root into the conditional `workflow-control` owner contract.
 
-**Runtime/repository fixture:** `workflow-entry` is non-autoinvoked and is activated only for primary/user-facing invocations.
+**Runtime/repository fixture:** `workflow-control` is non-autoinvoked and is activated only for primary/user-facing invocations.
 
 **Injected intermediate output:** The new contract retains the confidence literals but loses what `broad scope`, `likely`, or `ambiguous` mean operationally.
 
 **Expected earliest observable stop/preservation point:** At residency/static semantic-preservation audit before a primary workflow can consume the weakened normalization contract.
 
-**Expected trace:** load `workflow-entry` only for the primary/user-facing invocation -> classify broad scope by unrelated/shared/public-contract/sweeping-or-unfocused-verification impact rather than file count -> `likely` permits only safe read-only or already-bounded narrow local work -> `ambiguous` does not choose a consequential mutating/wrong-deliverable/publication path without resolution.
+**Expected trace:** load `workflow-control` only for the primary/user-facing invocation -> classify broad scope by unrelated/shared/public-contract/sweeping-or-unfocused-verification impact rather than file count -> `likely` permits only safe read-only or already-bounded narrow local work -> `ambiguous` does not choose a consequential mutating/wrong-deliverable/publication path without resolution.
 
 **Expected result:** fail if relocation preserves labels but drops consequence semantics; pass when normalization behavior is semantically equivalent at the new owner.
 
@@ -2553,7 +2553,7 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 ### ST-132 — Fresh-judgment and complexity escalation semantics survive progressive disclosure
 
-**Initial user/spec fixture:** Fresh-child procedure belongs to `delegation-control`, while implementation/fix-level complexity semantics belong to `implementation-contract`.
+**Initial user/spec fixture:** Fresh-child procedure belongs to `delegation-control`, while implementation/fix-level complexity semantics belong to `change-contract`.
 
 **Runtime/repository fixture:** Both conditional skills are pack-owned, non-autoinvoked, and loaded only by their declared caller/implementation audiences.
 
@@ -2569,9 +2569,9 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 ### ST-133 — Owned-PR identity and publication evidence semantics survive resource relocation
 
-**Initial user/spec fixture:** PR lifecycle is owned by `pr-readiness`; primary publication policy is owned by `workflow-entry`.
+**Initial user/spec fixture:** PR lifecycle is owned by `pr-readiness`; primary publication policy is owned by `workflow-control`.
 
-**Runtime/repository fixture:** A code-host workflow can read PR/worktree/host metadata and `pr-readiness` remains the canonical owned-PR lifecycle owner.
+**Runtime/repository fixture:** A repository workflow can read PR/worktree/host metadata and `pr-readiness` remains the canonical owned-PR lifecycle owner.
 
 **Injected intermediate output:** A resource-specific relocation preserves Draft/Candidate/Ready mechanics but drops the definition of an owned PR, treats branch naming as ownership, assumes no PR template because the worktree lacks one, or loses the no-valid-publication-path fallback for visual evidence.
 
@@ -2583,33 +2583,33 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 ---
 
-### ST-134 — Code-host resource procedure must not be resident in ordinary code-orchestrator sessions
+### ST-134 — Repository resource procedure must not be resident in ordinary code-orchestrator sessions
 
 **Initial user/spec fixture:** The normalized task is an ordinary bugfix, tests/docs-only change, local implementation, or generic review with no PR/issue/release resource deliverable.
 
-**Runtime/repository fixture:** `code-orchestrator` is active and `code-host-workflow` is available with `opencode/autoinvoke: "false"`.
+**Runtime/repository fixture:** `code-orchestrator` is active and `repository-workflow` is available with `opencode/autoinvoke: "false"`.
 
 **Injected intermediate output:** The orchestrator loads or reasons through PR ownership/comments/checks, issue deduplication, host template lookup, or release publication simply because the repository has a remote host.
 
 **Expected earliest observable stop/preservation point:** At route/activation immediately after normalization and before resource preflight.
 
-**Expected trace:** normalize deliverable -> no code-host resource target -> do not load `code-host-workflow` -> continue generic owner synthesis/specialist routing -> load the resource skill only if the workflow later acquires an authorized code-host resource deliverable.
+**Expected trace:** normalize deliverable -> no repository resource target -> do not load `repository-workflow` -> continue generic owner synthesis/specialist routing -> load the resource skill only if the workflow later acquires an authorized repository resource deliverable.
 
 **Expected result:** fail if host-specific procedure is resident or auto-loaded for ordinary code work; pass when resource mechanics remain conditionally disclosed.
 
 ---
 
-### ST-135 — Code-host workflow composes with PR readiness instead of absorbing its state machine
+### ST-135 — Repository workflow composes with PR readiness instead of absorbing its state machine
 
 **Initial user/spec fixture:** An existing PR workflow requires host preflight and may later require an owned-PR readiness transition.
 
-**Runtime/repository fixture:** `code-host-workflow` owns resource identity/comments/checks/template/publication mechanics; `pr-readiness` owns Owned PR identity plus Draft/Candidate/Ready lifecycle; `git-provenance` owns ref/SHA identity.
+**Runtime/repository fixture:** `repository-workflow` owns resource identity/comments/checks/template/publication mechanics; `pr-readiness` owns Owned PR identity plus Draft/Candidate/Ready lifecycle; `git-provenance` owns ref/SHA identity.
 
 **Injected intermediate output:** The resource skill starts defining a second Candidate/Ready sequence, or the orchestrator skips the resource skill and directly reconstructs host-specific PR/issue/release mechanics.
 
 **Expected earliest observable stop/preservation point:** At conditional resource activation or semantic-ownership audit before lifecycle mutation.
 
-**Expected trace:** load `code-host-workflow` -> resolve canonical resource/host state -> load `pr-readiness` only if ownership-dependent PR lifecycle is relevant -> load `git-provenance` when ref/SHA identity matters -> return resource findings/state to orchestrator -> no duplicate PR lifecycle or code mutation ownership.
+**Expected trace:** load `repository-workflow` -> resolve canonical resource/host state -> load `pr-readiness` only if ownership-dependent PR lifecycle is relevant -> load `git-provenance` when ref/SHA identity matters -> return resource findings/state to orchestrator -> no duplicate PR lifecycle or code mutation ownership.
 
 **Expected result:** fail on lifecycle duplication or bypass of the conditional resource owner; pass when the three contracts compose by ownership.
 
@@ -2620,13 +2620,13 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 **Initial user/spec fixture:** A normal multi-stage code task is still in implementation/review; no terminal success has been established.
 
-**Runtime/repository fixture:** `code-orchestrator` contains only the terminal diagnostic activation hook; `terminal-semantic-eval` exists with `opencode/autoinvoke: "false"`.
+**Runtime/repository fixture:** `code-orchestrator` contains only the terminal diagnostic activation hook; `session-evaluation-control` exists with `opencode/autoinvoke: "false"`.
 
-**Injected intermediate output:** The orchestrator loads `terminal-semantic-eval`, reasons through child-session identity/retrieval rules, or invokes `@session-evaluator` before the task reaches a terminal successful outcome.
+**Injected intermediate output:** The orchestrator loads `session-evaluation-control`, reasons through child-session identity/retrieval rules, or invokes `@session-evaluator` before the task reaches a terminal successful outcome.
 
 **Expected earliest observable stop/preservation point:** At the terminal diagnostic activation boundary before any evaluator handoff.
 
-**Expected trace:** continue normal owner synthesis -> no established terminal success -> do not load `terminal-semantic-eval` -> terminal success later becomes independently established -> load the skill once -> invoke the diagnostic before final reporting.
+**Expected trace:** continue normal owner synthesis -> no established terminal success -> do not load `session-evaluation-control` -> terminal success later becomes independently established -> load the skill once -> invoke the diagnostic before final reporting.
 
 **Expected result:** fail if evaluator procedure is resident/auto-loaded before terminal success; pass when only the small activation hook is resident and the detailed handoff is conditionally disclosed.
 
@@ -2636,7 +2636,7 @@ A release should not claim this suite passed unless the scenarios were actually 
 
 **Initial user/spec fixture:** The normalized task or active resource workflow has already reached its independently established terminal success/readiness boundary.
 
-**Runtime/repository fixture:** `terminal-semantic-eval` invokes `@session-evaluator`; the evaluator is diagnostic-only and uses `session-evidence` for retrieval.
+**Runtime/repository fixture:** `session-evaluation-control` invokes `@session-evaluator`; the evaluator is diagnostic-only and uses `session-evidence` for retrieval.
 
 **Injected intermediate output:** The evaluator is unavailable, incomplete, or reports an agent-pack/workflow concern, and the caller treats that as revoking Ready/completion or reopening finished work.
 

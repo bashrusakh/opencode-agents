@@ -5,7 +5,7 @@ metadata:
   opencode/autoinvoke: "false"
 ---
 
-# UI Domain Routing Control
+# UI Routing Control
 
 ## Activation boundary
 

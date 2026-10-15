@@ -5,7 +5,7 @@
       "id": "code_bugfix",
       "nodes": [
         {
-          "path": "skills/workflow-entry/SKILL.md",
+          "path": "skills/workflow-control/SKILL.md",
           "groups": [
             [
               "Normalize by requested deliverable"
@@ -52,7 +52,7 @@
               "root cause"
             ],
             [
-              "implementation-contract"
+              "change-contract"
             ],
             [
               "re-run the focused failing case"
@@ -113,7 +113,7 @@
           "path": "agents/build.md",
           "groups": [
             [
-              "load `implementation-contract` before the first mutation"
+              "load `change-contract` before the first mutation"
             ],
             [
               "When delegated"
@@ -326,12 +326,12 @@
           "path": "agents/code-orchestrator.md",
           "groups": [
             [
-              "existing PR.*load `code-host-workflow`.*before.*preflight|load `code-host-workflow` \\*\\*before\\*\\* resource-specific preflight"
+              "existing PR.*load `repository-workflow`.*before.*preflight|load `repository-workflow` \\*\\*before\\*\\* resource-specific preflight"
             ]
           ]
         },
         {
-          "path": "skills/code-host-workflow/SKILL.md",
+          "path": "skills/repository-workflow/SKILL.md",
           "groups": [
             [
               "canonical PR URL/resource identity"
@@ -376,7 +376,7 @@
       ],
       "handoffs": [
         {
-          "producer": "skills/code-host-workflow/SKILL.md",
+          "producer": "skills/repository-workflow/SKILL.md",
           "consumer": "agents/code-orchestrator.md",
           "producer_groups": [
             [
@@ -404,7 +404,7 @@
       "id": "issue_report",
       "nodes": [
         {
-          "path": "skills/code-host-workflow/SKILL.md",
+          "path": "skills/repository-workflow/SKILL.md",
           "groups": [
             [
               "Resolve the state the report targets before verification"
@@ -426,13 +426,13 @@
       "id": "release_publication",
       "nodes": [
         {
-          "path": "skills/code-host-workflow/SKILL.md",
+          "path": "skills/repository-workflow/SKILL.md",
           "groups": [
             [
               "Build release notes/check inputs from actual repository history"
             ],
             [
-              "Tag/release/public publication stays under the active `workflow-entry` gate"
+              "Tag/release/public publication stays under the active `workflow-control` gate"
             ],
             [
               "verify the published resource identity plus material metadata/body"
@@ -657,12 +657,12 @@
           "path": "agents/code-orchestrator.md",
           "groups": [
             [
-              "already-established terminal successful outcome.*load `terminal-semantic-eval`"
+              "already-established terminal successful outcome.*load `session-evaluation-control`"
             ]
           ]
         },
         {
-          "path": "skills/terminal-semantic-eval/SKILL.md",
+          "path": "skills/session-evaluation-control/SKILL.md",
           "groups": [
             [
               "terminal successful outcome"
@@ -707,7 +707,7 @@
           "path": "agents/ui-orchestrator.md",
           "groups": [
             [
-              "When this role is primary, load `workflow-entry` and `delegation-control`"
+              "When this role is primary, load `workflow-control` and `delegation-control`"
             ],
             [
               "Normalize by deliverable and target"
@@ -808,7 +808,7 @@
           "path": "agents/build.md",
           "groups": [
             [
-              "When this role is primary, load `workflow-entry` and `delegation-control`"
+              "When this role is primary, load `workflow-control` and `delegation-control`"
             ],
             [
               "If another role owns a bounded specialist stage"
@@ -817,7 +817,7 @@
               "If another top-level-only workflow owns the request"
             ],
             [
-              "load `implementation-contract` before the first mutation"
+              "load `change-contract` before the first mutation"
             ],
             [
               "As primary, invoke `@tester` / `@reviewer` only when the loaded `delegation-control` cadence calls"
@@ -833,7 +833,7 @@
           "path": "agents/project-planner.md",
           "groups": [
             [
-              "When this role is primary/user-facing, load `workflow-entry`"
+              "When this role is primary/user-facing, load `workflow-control`"
             ],
             [
               "when delegated, do not load it"
@@ -858,7 +858,7 @@
           "path": "agents/librarian.md",
           "groups": [
             [
-              "When this role is primary/user-facing, load `workflow-entry`"
+              "When this role is primary/user-facing, load `workflow-control`"
             ],
             [
               "When delegated, do not load that owner contract"

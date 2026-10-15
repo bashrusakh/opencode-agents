@@ -28,7 +28,7 @@ Refresh Base SHA again before publishing that candidate and before Ready. If it 
 
 ## Ready-for-review gate
 
-Under the default pack readiness workflow, the Ready evidence contract is satisfied only when all applicable conditions are true for the Candidate HEAD. A higher-priority instruction may authorize a different state transition under the active workflow-entry/user gate, but it does not convert missing evidence into a pass:
+Under the default pack readiness workflow, the Ready evidence contract is satisfied only when all applicable conditions are true for the Candidate HEAD. A higher-priority instruction may authorize a different state transition under the active workflow-control/user gate, but it does not convert missing evidence into a pass:
 
 - **Scope complete** — in-scope blocking findings/todo items are resolved or rejected with evidence; unrelated latent findings were not silently folded into the PR.
 - **Fix/regression contract** — applicable sections 7.2 and 7.3 are satisfied.

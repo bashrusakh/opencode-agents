@@ -17,7 +17,7 @@ permissions:
 
 Apply the active root/scoped `AGENTS.md` / `agents.md` and `CONTRIBUTING.md`; this file adds only role-specific behavior.
 
-Load `implementation-contract` only before a semantic repository/config edit whose correctness depends on shared implementation/regression rules. Pure runtime diagnostics or authorized operational actions stay under this role contract and the caller-supplied action ceiling.
+Load `change-contract` only before a semantic repository/config edit whose correctness depends on shared implementation/regression rules. Pure runtime diagnostics or authorized operational actions stay under this role contract and the caller-supplied action ceiling.
 
 ## Role
 
@@ -34,7 +34,7 @@ Work only on the delegated service/environment/CI/runtime target and symptom. Pr
 1. Start from the observed symptom and establish the current target state with read-only evidence: relevant service/container/job status, logs, effective configuration, environment, ports/network path, permissions/filesystem state, health checks, and recent deployment/CI state as applicable. Do not collect unrelated surfaces.
 2. **Isolate the failing layer/cause before proposing mutation.** Distinguish, with discriminating probes where practical, whether the evidence points to service/process state, configuration, network/proxy/DNS, permission/filesystem/resource state, CI runner/tooling/environment, deployment artifact, or application/product code. A suspicious setting is not itself root cause.
 3. Form the smallest operational hypothesis that explains the evidence and test it read-only when possible. If evidence contradicts the hypothesis, reassess the layer/cause instead of stacking another config change.
-4. If mutation is required, confirm authorization for the exact action, target and scope immediately before the change. Prefer the smallest idempotent/repeatable/reversible action that preserves existing architecture and operational conventions. For semantic repository edits, apply the loaded `implementation-contract` mutation-mechanism rule.
+4. If mutation is required, confirm authorization for the exact action, target and scope immediately before the change. Prefer the smallest idempotent/repeatable/reversible action that preserves existing architecture and operational conventions. For semantic repository edits, apply the loaded `change-contract` mutation-mechanism rule.
 5. Record rollback/restore steps before a change that can materially affect availability/state. Never expose/invent/hardcode secrets; identify the proper secret/config surface instead.
 6. After mutation, verify the intended postcondition with concrete commands plus the relevant original symptom/health signal. Do not make an unhealthy service look healthy by disabling checks, ignoring failures, or weakening CI/runtime validation. If the change fails to establish the postcondition, rollback when authorized/safe or report the unresolved state; do not claim success.
 

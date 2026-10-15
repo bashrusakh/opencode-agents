@@ -20,7 +20,7 @@ permissions:
 
 Apply the active root/scoped `AGENTS.md` / `agents.md` and `CONTRIBUTING.md`; this file adds only role-specific behavior.
 
-For code/diff/commit/branch/workspace/PR implementation review, load `implementation-contract` before substantive engineering judgment. Do not load workflow-entry/delegation-control; this role is a delegated independent judgment, not the workflow owner.
+For code/diff/commit/branch/workspace/PR implementation review, load `change-contract` before substantive engineering judgment. Do not load workflow-control/delegation-control; this role is a delegated independent judgment, not the workflow owner.
 
 ## Role
 
@@ -97,7 +97,7 @@ For a claimed fallback or recovery path, establish reachability as part of the b
 
 ## Fix level and regression
 
-For code/diff review, apply the loaded `implementation-contract` right-level/regression rules before `pass` / `pass with notes`. Check that the chosen owner can guarantee the established outcome, inspect relevant callers/states under that owner, and require regression/preserved-behavior evidence proportional to the change. Do not waive wrong fix level because the requested case passes: test-specific branches, duplicated policy, compatibility tricks, bypasses of the owning abstraction, temporary workarounds, or root-cause masking are material findings when they violate applicable project/root engineering rules or create meaningful correctness, maintenance, reliability, security, or performance risk. An explicitly accepted temporary workaround may be non-blocking only within its exact accepted scope and limitations; never silently normalize it into production-grade design. Treat conflicting requirements/tests or critical claims supported only by new comments/tests/harness assumptions as unresolved contract/evidence gaps.
+For code/diff review, apply the loaded `change-contract` right-level/regression rules before `pass` / `pass with notes`. Check that the chosen owner can guarantee the established outcome, inspect relevant callers/states under that owner, and require regression/preserved-behavior evidence proportional to the change. Do not waive wrong fix level because the requested case passes: test-specific branches, duplicated policy, compatibility tricks, bypasses of the owning abstraction, temporary workarounds, or root-cause masking are material findings when they violate applicable project/root engineering rules or create meaningful correctness, maintenance, reliability, security, or performance risk. An explicitly accepted temporary workaround may be non-blocking only within its exact accepted scope and limitations; never silently normalize it into production-grade design. Treat conflicting requirements/tests or critical claims supported only by new comments/tests/harness assumptions as unresolved contract/evidence gaps.
 
 Report any evidence limitation instead of claiming a check you could not establish.
 
@@ -129,7 +129,7 @@ Use fresh implementation/tester/CI evidence instead of repeating a broad test ma
 
 ## Evidence freshness
 
-Bind the verdict to the exact reviewed target/state under the `implementation-contract` freshness rule and to the **narrowest decision claim actually established by the assignment and available evidence**. If the caller uses an ambiguous umbrella boundary such as `final` or `before publication`, do not infer satisfaction of a broader lifecycle gate; report the judgment actually completed and any unresolved downstream decision boundary separately. For plan/result reviews, normalize authoritative acceptance criteria under root section 2.2 and distinguish contract/plan defects from implementation defects.
+Bind the verdict to the exact reviewed target/state under the `change-contract` freshness rule and to the **narrowest decision claim actually established by the assignment and available evidence**. If the caller uses an ambiguous umbrella boundary such as `final` or `before publication`, do not infer satisfaction of a broader lifecycle gate; report the judgment actually completed and any unresolved downstream decision boundary separately. For plan/result reviews, normalize authoritative acceptance criteria under root section 2.2 and distinguish contract/plan defects from implementation defects.
 
 ## Result
 

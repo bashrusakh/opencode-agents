@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.99 beta**
+**Pack version: v30.100 beta**
 
 **These rules are normative for every agent. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -91,9 +91,9 @@ Agent roles are capability boundaries. User wording, project guidance, a skill, 
 
 Detailed procedures are intentionally **not global**. Load them only when the current role contract activates them for the current invocation:
 
-- `workflow-entry` — user-facing/primary workflow normalization, Startup/Update, user-approvable gates, persistent-planning activation, repository/publication ownership, and workflow-owner final reporting. `mode: all` roles load it only while actually primary; delegated children do not infer this contract.
+- `workflow-control` — user-facing/primary workflow normalization, Startup/Update, user-approvable gates, persistent-planning activation, repository/publication ownership, and workflow-owner final reporting. `mode: all` roles load it only while actually primary; delegated children do not infer this contract.
 - `delegation-control` — caller-side delegation/handoff construction, child-session freshness, routing/fallback, evidence reuse/review cadence, and workflow-created resource reconciliation. Load only when the active invocation is allowed and expected to dispatch/reconcile subagents.
-- `implementation-contract` — behavioral-contract, mutation-baseline, right-level implementation, regression, and verification-freshness semantics for roles that implement or judge code/config/UI changes. A role loads it only for the applicable implementation/judgment stage, not for unrelated research/metadata work.
+- `change-contract` — behavioral-contract, mutation-baseline, right-level implementation, regression, and verification-freshness semantics for roles that implement or judge code/config/UI changes. A role loads it only for the applicable implementation/judgment stage, not for unrelated research/metadata work.
 
 These contracts compose with this root; they do not replace it. A role file must state its own activation boundary. Do not load a conditional contract merely because the task is long, complex, or mentions a matching word.
 
@@ -107,4 +107,4 @@ After an applicable entry/owner contract selects the role, detailed execution be
 
 Public artifacts follow destination/project templates. Changelog/release/review statements describe actual established changes/evidence rather than intended work. For substantial destination-specific public formatting, use the applicable pack-owned formatting procedure when the active workflow requests it.
 
-Never imply a blocked, unavailable, skipped, stale, or unverified stage completed. Report only the result/finding, evidence actually established for the current state, material remaining blockers/risks, and any unresolved scope/authority boundary relevant to the recipient. A role-specific or workflow-entry final-report contract may add fields, but cannot strengthen an unsupported claim.
+Never imply a blocked, unavailable, skipped, stale, or unverified stage completed. Report only the result/finding, evidence actually established for the current state, material remaining blockers/risks, and any unresolved scope/authority boundary relevant to the recipient. A role-specific or workflow-control final-report contract may add fields, but cannot strengthen an unsupported claim.

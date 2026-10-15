@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v30.99 beta
+# OpenCode Agent Pack v30.100 beta
 
 ### Model-agnostic routing · explicit workflow owners · bounded specialist delegation · evidence-grounded verification
 
@@ -19,7 +19,7 @@ This repository is an OpenCode agent pack with:
 
 - a compact universal semantic kernel plus conditionally loaded shared workflow contracts;
 - 19 role contracts in [`agents/`](agents/);
-- 28 conditional skills in [`skills/`](skills/), including pack-owned entry/delegation/implementation, code-host resource, and terminal diagnostic contracts;
+- 28 conditional skills in [`skills/`](skills/), including pack-owned workflow/delegation/change controls, repository workflow, and terminal diagnostic control;
 - semantic/contract release gates in [`evals/`](evals/);
 - design methodology and release evidence in [`docs/`](docs/).
 
@@ -102,7 +102,7 @@ The exact invocation contract for each role is in its file under [`agents/`](age
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Universal semantic kernel: precedence, authority/evidence, continuity, capability/skill boundaries, communication and evidence-bound final claims |
 | [`agents/`](agents/) | Role-local execution methods, decision loops, evidence/self-checks, stop/escalation, result semantics |
-| [`skills/`](skills/) | Conditional shared/runtime procedure: workflow entry, delegation, implementation, code-host resources, terminal diagnostics and other specialized integrations |
+| [`skills/`](skills/) | Conditional shared/runtime procedure: workflow control, delegation control, change contract, repository workflow, terminal diagnostics and other specialized integrations |
 | [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) | Method for designing, auditing, and releasing semantic prompt/role changes |
 | [`evals/`](evals/) | Structural, role-contract, handoff-protocol, and semantic-transition regression machinery |
 | [`docs/releases/`](docs/releases/) | Release-specific explanation and retained historical evidence |
@@ -192,9 +192,9 @@ The pack contains 19 agents:
 
 ### Skills
 
-The pack contains 28 bundled skills:
+The pack contains 25 bundled skills:
 
-`api-designer`, `code-host-workflow`, `cpp-pro`, `delegation-control`, `git-provenance`, `golang-pro`, `graymatter-memory`, `implementation-contract`, `open-code-review`, `open-code-review-delegate`, `output-formatting`, `persistent-planning`, `playwright-expert`, `pr-readiness`, `python-pro`, `react-expert`, `resource-lifecycle`, `rust-engineer`, `secure-code-guardian`, `session-evidence`, `terminal-semantic-eval`, `typescript-pro`, `ui-component-sources`, `ui-routing-control`, `ui-ux-pro-max`, `verification-strategy`, `vue-expert`, `workflow-entry`.
+`api-designer`, `repository-workflow`, `cpp-pro`, `delegation-control`, `git-provenance`, `golang-pro`, `graymatter-memory`, `change-contract`, `open-code-review`, `open-code-review-delegate`, `output-formatting`, `persistent-planning`, `playwright-expert`, `pr-readiness`, `python-pro`, `react-expert`, `resource-lifecycle`, `rust-engineer`, `secure-code-guardian`, `session-evidence`, `typescript-pro`, `ui-component-sources`, `ui-ux-pro-max`, `verification-strategy`, `vue-expert`, `workflow-control`.
 
 Pack-owned shared control skills are loaded explicitly by role/invocation boundary and do not autoinvoke. Specialist/advisory skills are discovered through the runtime/project-visible skill surface and loaded by the role that owns their integration.
 
@@ -248,9 +248,9 @@ Project-local collisions are backed up under `.opencode/.agent-pack/backups/`, a
 
 | If you need… | Read… |
 |---|---|
-| Release notes | [`docs/releases/v30.99-beta.md`](docs/releases/v30.99-beta.md) |
+| Release notes | [`docs/releases/v30.100-beta.md`](docs/releases/v30.100-beta.md) |
 | Release history | [`CHANGELOG.md`](CHANGELOG.md) |
-| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.99.md`](docs/contract-protocol-audit-v30.99.md) |
+| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v30.100.md`](docs/contract-protocol-audit-v30.100.md) |
 | Skill control / provenance manifest | [`evals/skill-control-spec.json`](evals/skill-control-spec.json) |
 | Shared semantic owner→consumer manifest | [`evals/semantic-ownership-spec.json`](evals/semantic-ownership-spec.json) |
 | Typed semantic-domain manifest | [`evals/semantic-domain-spec.json`](evals/semantic-domain-spec.json) |
@@ -265,7 +265,7 @@ Release validation is defined in **§21 of [`docs/semantic-design-manual.md`](do
 
 <div align="center">
 
-**OpenCode Agent Pack v30.99 beta**  
+**OpenCode Agent Pack v30.100 beta**  
 Workflow-owner first · bounded specialist delegation · evidence-grounded verification
 
 </div>

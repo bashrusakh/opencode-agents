@@ -1,11 +1,11 @@
 ---
-name: workflow-entry
+name: workflow-control
 description: Primary/user-facing workflow-owner contract for normalization, Startup/Update, approval gates, durable-planning activation, repository/publication ownership, and final workflow reporting. Load only when the active role contract says this invocation is primary/user-facing.
 metadata:
   opencode/autoinvoke: "false"
 ---
 
-# Workflow Entry Contract
+# Workflow Control
 
 ## Activation boundary
 
@@ -26,7 +26,7 @@ Normalize by requested deliverable and safest action that satisfies it, not trig
 
 Identify the final deliverable, target, highest action level, and whether the next step exceeds the active role or a gate below. Assign confidence by consequence: `clear` means one workflow/deliverable is established; `likely` means one is most probable, so proceed only with safe read-only work or narrow local work already allowed by the current role/scope; `ambiguous` means several materially different workflows/deliverables remain plausible and choosing one could cause unwanted mutation, the wrong deliverable, broad scope, publication, or a role violation, so do not choose that consequential path without resolving the ambiguity; `unclassified` means outcome, target, or action level cannot yet be determined. If unclassified, do not mutate/publish/install/change config; ask one concise clarification. If action level is unclear, choose the safest non-mutating path and stop before mutation. If discovery could expand scope, establish that boundary first.
 
-Routing selects a role/workflow but never expands role capability. Resource-specific workflow mechanics belong to the selected role/skill; do not embed their detailed pipelines here. For code-host resources such as PRs/issues/releases, route to the selected code workflow and keep the concrete resource pipeline out of this generic entry contract.
+Routing selects a role/workflow but never expands role capability. Resource-specific workflow mechanics belong to the selected role/skill; do not embed their detailed pipelines here. For repository resources such as PRs/issues/releases, route to the selected code workflow and keep the concrete resource pipeline out of this generic entry contract.
 
 ## User-approvable gates
 

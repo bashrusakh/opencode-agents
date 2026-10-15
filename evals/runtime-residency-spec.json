@@ -115,15 +115,15 @@
   },
   "contracts": [
     {
-      "id": "workflow-entry",
-      "path": "skills/workflow-entry/SKILL.md",
+      "id": "workflow-control",
+      "path": "skills/workflow-control/SKILL.md",
       "autoinvoke_false": true,
       "activators": [
         {
           "path": "agents/code-orchestrator.md",
           "mode": "always-primary",
           "signature": [
-            "load `workflow-entry`",
+            "load `workflow-control`",
             "primary invocation"
           ]
         },
@@ -131,7 +131,7 @@
           "path": "agents/auditor.md",
           "mode": "always-primary",
           "signature": [
-            "load `workflow-entry`",
+            "load `workflow-control`",
             "primary audit invocation"
           ]
         },
@@ -139,28 +139,28 @@
           "path": "agents/build.md",
           "mode": "primary-only",
           "signature": [
-            "When this role is primary, load `workflow-entry`"
+            "When this role is primary, load `workflow-control`"
           ]
         },
         {
           "path": "agents/ui-orchestrator.md",
           "mode": "primary-only",
           "signature": [
-            "When this role is primary, load `workflow-entry`"
+            "When this role is primary, load `workflow-control`"
           ]
         },
         {
           "path": "agents/librarian.md",
           "mode": "primary-only",
           "signature": [
-            "When this role is primary/user-facing, load `workflow-entry`"
+            "When this role is primary/user-facing, load `workflow-control`"
           ]
         },
         {
           "path": "agents/project-planner.md",
           "mode": "primary-only",
           "signature": [
-            "When this role is primary/user-facing, load `workflow-entry`"
+            "When this role is primary/user-facing, load `workflow-control`"
           ]
         }
       ],
@@ -243,28 +243,28 @@
           "path": "agents/code-orchestrator.md",
           "mode": "always-primary",
           "signature": [
-            "load `workflow-entry` and `delegation-control`"
+            "load `workflow-control` and `delegation-control`"
           ]
         },
         {
           "path": "agents/auditor.md",
           "mode": "always-primary",
           "signature": [
-            "load `workflow-entry` and `delegation-control`"
+            "load `workflow-control` and `delegation-control`"
           ]
         },
         {
           "path": "agents/build.md",
           "mode": "primary-only",
           "signature": [
-            "When this role is primary, load `workflow-entry` and `delegation-control`"
+            "When this role is primary, load `workflow-control` and `delegation-control`"
           ]
         },
         {
           "path": "agents/ui-orchestrator.md",
           "mode": "primary-only",
           "signature": [
-            "When this role is primary, load `workflow-entry` and `delegation-control`"
+            "When this role is primary, load `workflow-control` and `delegation-control`"
           ]
         }
       ],
@@ -308,16 +308,16 @@
       ]
     },
     {
-      "id": "code-host-workflow",
-      "path": "skills/code-host-workflow/SKILL.md",
+      "id": "repository-workflow",
+      "path": "skills/repository-workflow/SKILL.md",
       "autoinvoke_false": true,
-      "audience": "code-host-resource",
+      "audience": "repository-resource",
       "activators": [
         {
           "path": "agents/code-orchestrator.md",
           "mode": "always-primary",
           "signature": [
-            "When normalization selects an existing PR, issue/ticket/report, release/tag, or another public code-host resource as a requested deliverable, load `code-host-workflow`"
+            "When normalization selects an existing PR, issue/ticket/report, release/tag, or another public repository resource as a requested deliverable, load `repository-workflow`"
           ]
         }
       ],
@@ -506,71 +506,71 @@
       ]
     },
     {
-      "id": "implementation-contract",
-      "path": "skills/implementation-contract/SKILL.md",
+      "id": "change-contract",
+      "path": "skills/change-contract/SKILL.md",
       "autoinvoke_false": true,
       "activators": [
         {
           "path": "agents/code-orchestrator.md",
           "mode": "conditional",
           "signature": [
-            "Load `implementation-contract` only when the workflow enters a code/config/UI implementation"
+            "Load `change-contract` only when the workflow enters a code/config/UI implementation"
           ]
         },
         {
           "path": "agents/auditor.md",
           "mode": "conditional",
           "signature": [
-            "Load `implementation-contract` only when the audit materially judges implementation ownership"
+            "Load `change-contract` only when the audit materially judges implementation ownership"
           ]
         },
         {
           "path": "agents/build.md",
           "mode": "conditional",
           "signature": [
-            "load `implementation-contract` before the first mutation"
+            "load `change-contract` before the first mutation"
           ]
         },
         {
           "path": "agents/debugger.md",
           "mode": "conditional",
           "signature": [
-            "Load `implementation-contract` before selecting or applying"
+            "Load `change-contract` before selecting or applying"
           ]
         },
         {
           "path": "agents/devops.md",
           "mode": "conditional",
           "signature": [
-            "Load `implementation-contract` only before a semantic repository/config edit"
+            "Load `change-contract` only before a semantic repository/config edit"
           ]
         },
         {
           "path": "agents/project-planner.md",
           "mode": "conditional",
           "signature": [
-            "Load `implementation-contract` only when the plan materially defines or judges implementation ownership"
+            "Load `change-contract` only when the plan materially defines or judges implementation ownership"
           ]
         },
         {
           "path": "agents/reviewer.md",
           "mode": "conditional",
           "signature": [
-            "load `implementation-contract` before substantive engineering judgment"
+            "load `change-contract` before substantive engineering judgment"
           ]
         },
         {
           "path": "agents/tester.md",
           "mode": "conditional",
           "signature": [
-            "load `implementation-contract` before planning regression/preservation evidence"
+            "load `change-contract` before planning regression/preservation evidence"
           ]
         },
         {
           "path": "agents/ui-implementer.md",
           "mode": "conditional",
           "signature": [
-            "Load `implementation-contract` before the first UI repository mutation"
+            "Load `change-contract` before the first UI repository mutation"
           ]
         }
       ],
@@ -608,8 +608,8 @@
       ]
     },
     {
-      "id": "terminal-semantic-eval",
-      "path": "skills/terminal-semantic-eval/SKILL.md",
+      "id": "session-evaluation-control",
+      "path": "skills/session-evaluation-control/SKILL.md",
       "autoinvoke_false": true,
       "audience": "terminal-diagnostic",
       "activators": [
@@ -617,7 +617,7 @@
           "path": "agents/code-orchestrator.md",
           "mode": "always-primary",
           "signature": [
-            "At an already-established terminal successful outcome about to be reported, load `terminal-semantic-eval`"
+            "At an already-established terminal successful outcome about to be reported, load `session-evaluation-control`"
           ]
         }
       ],

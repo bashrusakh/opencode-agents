@@ -40,11 +40,11 @@ checkpoint_sem = text("agents/semantic-checkpoint.md")
 evaluator_sem = text("agents/session-evaluator.md")
 code_orchestrator_sem = text("agents/code-orchestrator.md")
 trajectory_sem = text("agents/trajectory-auditor.md")
-workflow_entry_sem = text("skills/workflow-entry/SKILL.md")
-code_host_sem = text("skills/code-host-workflow/SKILL.md")
-terminal_eval_sem = text("skills/terminal-semantic-eval/SKILL.md")
+workflow_entry_sem = text("skills/workflow-control/SKILL.md")
+code_host_sem = text("skills/repository-workflow/SKILL.md")
+terminal_eval_sem = text("skills/session-evaluation-control/SKILL.md")
 delegation_sem = text("skills/delegation-control/SKILL.md")
-implementation_sem = text("skills/implementation-contract/SKILL.md")
+implementation_sem = text("skills/change-contract/SKILL.md")
 pr_readiness_sem = text("skills/pr-readiness/SKILL.md")
 semantic_runtime = "\n".join([root_sem, checkpoint_sem, evaluator_sem, workflow_entry_sem, delegation_sem, implementation_sem])
 
@@ -168,14 +168,14 @@ check(
     and "`likely` means one is most probable" in workflow_entry_sem
     and "safe read-only work or narrow local work" in workflow_entry_sem
     and "`ambiguous` means several materially different workflows/deliverables remain plausible" in workflow_entry_sem,
-    "workflow-entry: broad-scope/confidence consequence semantics lost",
+    "workflow-control: broad-scope/confidence consequence semantics lost",
 )
 check(
     "absent from the current worktree" in code_host_sem
     and "repository-host metadata" in code_host_sem
     and "If no valid publication path exists, keep the local evidence and report publication blocked" in workflow_entry_sem
     and "verify the destination" in workflow_entry_sem,
-    "code-host-workflow/workflow-entry: PR-template host lookup / visual-evidence publication fallback lost",
+    "repository-workflow/workflow-control: PR-template host lookup / visual-evidence publication fallback lost",
 )
 check(
     "Do not disable, hide, or reconfigure an optional integration merely to manufacture freshness or independence" in delegation_sem
@@ -187,15 +187,15 @@ check(
     "**Complexity/design escalation** means" in implementation_sem
     and "shared state, lifecycle, protocol, concurrency, persistence, or ownership rule" in implementation_sem
     and "invariant/state/transition/interleaving/ownership model" in implementation_sem,
-    "implementation-contract: complexity/design escalation definition lost",
+    "change-contract: complexity/design escalation definition lost",
 )
 check(
     "**Owned PR** means" in pr_readiness_sem
     and "current authenticated/user account" in pr_readiness_sem
     and "branch name alone does not establish ownership" in pr_readiness_sem
     and "canonical **Owned PR** definition" in code_host_sem
-    and "load `code-host-workflow`" in code_orchestrator_sem,
-    "pr-readiness/code-host-workflow/code-orchestrator: canonical Owned PR identity chain missing",
+    and "load `repository-workflow`" in code_orchestrator_sem,
+    "pr-readiness/repository-workflow/code-orchestrator: canonical Owned PR identity chain missing",
 )
 
 for bad in [
@@ -347,7 +347,7 @@ check(
     "`pr-readiness` owns the canonical **Owned PR** definition and Draft/Candidate/Ready lifecycle" in code_host_sem
     and "Draft/Candidate/Ready" not in root_sem
     and "Draft/Candidate/Ready" not in workflow_entry_sem,
-    "code-host-workflow/workflow-entry/root: PR lifecycle single-owner declaration missing",
+    "repository-workflow/workflow-control/root: PR lifecycle single-owner declaration missing",
 )
 check("do not define a separate UI lifecycle order" in text("agents/ui-orchestrator.md"), "UI role still owns lifecycle order")
 
@@ -617,7 +617,7 @@ check(
 )
 
 check(
-    "load `terminal-semantic-eval`" in orch
+    "load `session-evaluation-control`" in orch
     and "Invoke `@session-evaluator` once" in terminal_eval_sem
     and "material participating child-session IDs" in terminal_eval_sem
     and "Do not perform new session-history discovery" in terminal_eval_sem
@@ -659,11 +659,11 @@ if semantic_owner_spec_path.is_file():
         "generic_specialist_handoff_contract", "decision_space_preservation",
         "generic_mutation_parallelism", "proposition_evidence_algebra",
         "generic_routing_defaults", "common_final_report_contract",
-        "owned_pr_lifecycle", "terminal_session_evaluator_handoff",
+        "owned_pr_lifecycle", "session_evaluation_handoff",
         "independent_judgment_decision_boundary",
         "fresh_independent_judgment_isolation", "review_activation_and_reuse",
         "user_decision_binding", "publication_authorization_gate",
-        "failed_fix_reset", "code_host_resource_workflow",
+        "failed_fix_reset", "repository_resource_workflow",
         "vendor_skill_containment", "memory_authority_and_activation",
         "graymatter_tool_mechanics", "persistent_planning_activation_canonical_state",
         "persistent_planning_fallback_representation", "provenance_receipt_interface",
@@ -697,16 +697,16 @@ check(
 )
 check(
     "resource-specific workflow mechanics belong to the selected role/skill" in workflow_entry_sem.lower()
-    and "code-host resources such as PRs/issues/releases" in workflow_entry_sem
+    and "repository resources such as PRs/issues/releases" in workflow_entry_sem
     and "Issue/ticket/report outcome" not in root_sem
     and "search existing issues" not in root_sem.lower()
     and "### Code-host resource workflow" in code_orchestrator_sem
-    and "load `code-host-workflow`" in code_orchestrator_sem
+    and "load `repository-workflow`" in code_orchestrator_sem
     and "## Existing PR follow-up" in code_host_sem
     and "## Issue / ticket / report" in code_host_sem
     and "Search existing issues" in code_host_sem
     and "## Release / host publication" in code_host_sem,
-    "root/workflow-entry/code-orchestrator/code-host-workflow: resource workflow mechanics are not correctly layered",
+    "root/workflow-control/code-orchestrator/repository-workflow: resource workflow mechanics are not correctly layered",
 )
 traces_owner_sem = text("evals/semantic-transition-traces.md")
 check(
@@ -973,12 +973,12 @@ check(
 
 # Project planning representation belongs to persistent-planning; an unwritable project canonical owner must not fork.
 check(
-    "When the caller or loaded `workflow-entry` activates durable planning" in planner_sem
+    "When the caller or loaded `workflow-control` activates durable planning" in planner_sem
     and "load `persistent-planning` for fallback representation/resume mechanics" in planner_sem
     and "Read that artifact as authoritative state" in planner_sem
     and "instead of creating a parallel plan solely because the canonical owner is not writable here" in planner_sem
     and "Persistent planning activation" in workflow_entry_sem,
-    "project-planner/workflow-entry: persistent-planning ownership or unwritable canonical-owner composition missing",
+    "project-planner/workflow-control: persistent-planning ownership or unwritable canonical-owner composition missing",
 )
 
 # Explore must defend against false absence/flow claims rather than passing on size/keywords alone.
@@ -1027,7 +1027,7 @@ check(
     "package runner does not bypass a new-tooling/install gate" in workflow_entry_sem.lower()
     and "new dependencies/tooling/design systems/large generated assets" in workflow_entry_sem
     and "third-party/vendor skills are advisory provider/domain guidance" in root_sem.lower(),
-    "workflow-entry/root containment: package-runner or vendor skill can bypass new-tooling authorization",
+    "workflow-control/root containment: package-runner or vendor skill can bypass new-tooling authorization",
 )
 
 # Temporary transition-eval structure guards. These prove only that the replay
@@ -1597,7 +1597,7 @@ check(
 )
 check(
     "st-122 — adjacent issue and pr workflow mechanics share one conditional resource owner" in traces.lower()
-    and "`code-host-workflow`" in traces.lower()
+    and "`repository-workflow`" in traces.lower()
     and "`pr-readiness` remains the canonical owner" in traces.lower(),
     "ST-122 issue/PR workflow-placement regression missing",
 )
@@ -1643,11 +1643,11 @@ check(
     "ST-130 relocation preservation regression missing",
 )
 check(
-    "st-131 — workflow-entry relocation must preserve broad-scope and confidence consequences" in traces.lower()
+    "st-131 — workflow-control relocation must preserve broad-scope and confidence consequences" in traces.lower()
     and "broad scope" in traces.lower()
     and "likely" in traces.lower()
     and "ambiguous" in traces.lower(),
-    "ST-131 workflow-entry preservation regression missing",
+    "ST-131 workflow-control preservation regression missing",
 )
 check(
     "st-132 — fresh-judgment and complexity escalation semantics survive progressive disclosure" in traces.lower()
@@ -1663,15 +1663,15 @@ check(
     "ST-133 owned-PR/publication preservation regression missing",
 )
 check(
-    "st-134 — code-host resource procedure must not be resident in ordinary code-orchestrator sessions" in traces.lower()
-    and "do not load `code-host-workflow`" in traces.lower(),
-    "ST-134 code-host residency regression missing",
+    "st-134 — repository resource procedure must not be resident in ordinary code-orchestrator sessions" in traces.lower()
+    and "do not load `repository-workflow`" in traces.lower(),
+    "ST-134 repository-resource residency regression missing",
 )
 check(
-    "st-135 — code-host workflow composes with pr readiness instead of absorbing its state machine" in traces.lower()
+    "st-135 — repository workflow composes with pr readiness instead of absorbing its state machine" in traces.lower()
     and "`pr-readiness` owns owned pr identity plus draft/candidate/ready lifecycle" in traces.lower()
     and "no duplicate pr lifecycle" in traces.lower(),
-    "ST-135 code-host/pr-readiness composition regression missing",
+    "ST-135 repository-workflow/pr-readiness composition regression missing",
 )
 check(
     "proposition relation: `preserved | refined | strengthened | weakened | substituted | indeterminate`" in traces,
@@ -1692,7 +1692,7 @@ check(
 )
 
 check(
-    "ST-136" in traces and "terminal-semantic-eval" in traces and "standing orchestrator context" in traces,
+    "ST-136" in traces and "session-evaluation-control" in traces and "standing orchestrator context" in traces,
     "ST-136 terminal semantic-eval residency regression missing",
 )
 check(

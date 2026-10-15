@@ -6,11 +6,11 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 
 STALE_PATTERNS={
-    r'root\s+`###\s+(?:Startup|Update)`':'Startup/Update moved to workflow-entry',
+    r'root\s+`###\s+(?:Startup|Update)`':'Startup/Update moved to workflow-control',
     r'root\s+map\b':'routing map moved to delegation-control',
     r'root\s+fallback\s+contract':'fallback contract moved to delegation-control',
     r'root\s+review\s+cadence':'review cadence moved to delegation-control',
-    r'root\s+gate\b':'user-approvable gate procedure moved to workflow-entry/caller boundary',
+    r'root\s+gate\b':'user-approvable gate procedure moved to workflow-control/caller boundary',
     r'root/project\s+routing':'routing/fallback moved to delegation-control/project policy',
     r'freshness\s+under\s+the\s+root\s+rule':'current-upstream/default/base freshness moved to git-provenance',
     r'judgment-context\s+isolation\s+under\s+the\s+root\s+contract':'independent-judgment isolation moved to delegation-control',

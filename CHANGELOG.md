@@ -1,5 +1,19 @@
 # Changelog
 
+## v30.100 beta
+
+Terminology-only cleanup of pack-controlled conditional skills; runtime semantics and residency boundaries are unchanged.
+
+- Renamed `workflow-entry` -> `workflow-control`.
+- Renamed `implementation-contract` -> `change-contract`.
+- Renamed `terminal-semantic-eval` -> `session-evaluation-control`.
+- Renamed `code-host-workflow` -> `repository-workflow`.
+- Normalized active capability IDs and pack-owned skill H1 headings to the same domain -> capability naming scheme.
+- Historical release documents retain the names used by those releases.
+- Permissions/frontmatter and vendor skill content are unchanged.
+
+See [`docs/releases/v30.100-beta.md`](docs/releases/v30.100-beta.md) and [`docs/contract-protocol-audit-v30.100.md`](docs/contract-protocol-audit-v30.100.md).
+
 ## v30.99 beta
 
 - Corrected role/pack-skill references after the root residency split: Startup/Update, routing/fallback, review cadence, user gates, and current-target freshness now point to their actual conditional owners.

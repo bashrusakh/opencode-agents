@@ -125,7 +125,7 @@
         ],
         "min_groups": 4,
         "allow_paths": [
-          "skills/workflow-entry/SKILL.md"
+          "skills/workflow-control/SKILL.md"
         ]
       }
     },
@@ -360,7 +360,7 @@
           }
         },
         {
-          "path": "skills/workflow-entry/SKILL.md",
+          "path": "skills/workflow-control/SKILL.md",
           "mode": "specialize",
           "activation_signature": [
             [
@@ -378,7 +378,7 @@
           ]
         },
         {
-          "path": "skills/implementation-contract/SKILL.md",
+          "path": "skills/change-contract/SKILL.md",
           "mode": "specialize",
           "activation_signature": [
             [
@@ -487,7 +487,7 @@
       ],
       "consumers": [
         {
-          "path": "skills/workflow-entry/SKILL.md",
+          "path": "skills/workflow-control/SKILL.md",
           "mode": "specialize",
           "activation_signature": [
             [
@@ -503,7 +503,7 @@
               "root communication/final-claim semantics"
             ],
             [
-              "loaded `workflow-entry` final workflow report"
+              "loaded `workflow-control` final workflow report"
             ]
           ],
           "forbidden_redefinition": {
@@ -533,7 +533,7 @@
           }
         },
         {
-          "path": "skills/code-host-workflow/SKILL.md",
+          "path": "skills/repository-workflow/SKILL.md",
           "mode": "specialize",
           "activation_signature": [
             [
@@ -571,7 +571,7 @@
       ],
       "consumers": [
         {
-          "path": "skills/code-host-workflow/SKILL.md",
+          "path": "skills/repository-workflow/SKILL.md",
           "mode": "reference",
           "activation_signature": [
             [
@@ -608,11 +608,11 @@
       ]
     },
     {
-      "id": "terminal_session_evaluator_handoff",
-      "owner": "skills/terminal-semantic-eval/SKILL.md",
+      "id": "session_evaluation_handoff",
+      "owner": "skills/session-evaluation-control/SKILL.md",
       "owner_signature": [
         [
-          "# Terminal Semantic Evaluation Harness"
+          "# Session Evaluation Control"
         ],
         [
           "terminal successful outcome"
@@ -636,7 +636,7 @@
               "## Terminal diagnostic hook"
             ],
             [
-              "load `terminal-semantic-eval`"
+              "load `session-evaluation-control`"
             ],
             [
               "Do not use this hook to establish, reopen, or gate completion/readiness"
@@ -1010,7 +1010,7 @@
     },
     {
       "id": "publication_authorization_gate",
-      "owner": "skills/workflow-entry/SKILL.md",
+      "owner": "skills/workflow-control/SKILL.md",
       "owner_signature": [
         [
           "same \\*\\*action \\+ target \\+ scope \\+ material risk\\*\\*"
@@ -1028,7 +1028,7 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "loaded `workflow-entry` authorization/publication contract"
+              "loaded `workflow-control` authorization/publication contract"
             ]
           ],
           "forbidden_redefinition": {
@@ -1059,19 +1059,19 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "active workflow-entry/user gate"
+              "active workflow-control/user gate"
             ]
           ]
         },
         {
-          "path": "skills/code-host-workflow/SKILL.md",
+          "path": "skills/repository-workflow/SKILL.md",
           "mode": "specialize",
           "activation_signature": [
             [
-              "`workflow-entry` owns the user authorization/publication gate"
+              "`workflow-control` owns the user authorization/publication gate"
             ],
             [
-              "active `workflow-entry` gate"
+              "active `workflow-control` gate"
             ]
           ]
         }
@@ -1154,8 +1154,8 @@
       }
     },
     {
-      "id": "code_host_resource_workflow",
-      "owner": "skills/code-host-workflow/SKILL.md",
+      "id": "repository_resource_workflow",
+      "owner": "skills/repository-workflow/SKILL.md",
       "owner_signature": [
         [
           "## Activation boundary"
@@ -1188,7 +1188,7 @@
               "### Code-host resource workflow"
             ],
             [
-              "load `code-host-workflow`"
+              "load `repository-workflow`"
             ],
             [
               "owns host-specific resource discovery and mechanics"
@@ -1335,7 +1335,7 @@
           ]
         ],
         "allow_paths": [
-          "skills/workflow-entry/SKILL.md",
+          "skills/workflow-control/SKILL.md",
           "skills/graymatter-memory/SKILL.md"
         ]
       }
@@ -1359,7 +1359,7 @@
       ],
       "consumers": [
         {
-          "path": "skills/workflow-entry/SKILL.md",
+          "path": "skills/workflow-control/SKILL.md",
           "mode": "reference",
           "activation_signature": [
             [
@@ -1388,7 +1388,7 @@
     },
     {
       "id": "persistent_planning_activation_canonical_state",
-      "owner": "skills/workflow-entry/SKILL.md",
+      "owner": "skills/workflow-control/SKILL.md",
       "owner_signature": [
         [
           "## Persistent planning activation"
@@ -1438,7 +1438,7 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "caller or loaded `workflow-entry` activates durable planning"
+              "caller or loaded `workflow-control` activates durable planning"
             ]
           ],
           "forbidden_redefinition": {
@@ -1635,7 +1635,7 @@
       ],
       "consumers": [
         {
-          "path": "skills/implementation-contract/SKILL.md",
+          "path": "skills/change-contract/SKILL.md",
           "mode": "specialize",
           "activation_signature": [
             [
@@ -1644,7 +1644,7 @@
           ]
         },
         {
-          "path": "skills/workflow-entry/SKILL.md",
+          "path": "skills/workflow-control/SKILL.md",
           "mode": "specialize",
           "activation_signature": [
             [
@@ -1653,7 +1653,7 @@
           ]
         },
         {
-          "path": "skills/code-host-workflow/SKILL.md",
+          "path": "skills/repository-workflow/SKILL.md",
           "mode": "specialize",
           "activation_signature": [
             [
@@ -1754,7 +1754,7 @@
     },
     {
       "id": "verification_evidence_invariants",
-      "owner": "skills/implementation-contract/SKILL.md",
+      "owner": "skills/change-contract/SKILL.md",
       "owner_signature": [
         [
           "## Verification freshness"
@@ -1772,7 +1772,7 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "`implementation-contract`"
+              "`change-contract`"
             ],
             [
               "evidence validity, preservation, freshness"
@@ -1808,7 +1808,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "load `implementation-contract` before planning regression/preservation evidence"
+              "load `change-contract` before planning regression/preservation evidence"
             ],
             [
               "earlier result is stale"
@@ -1868,7 +1868,7 @@
           ]
         },
         {
-          "path": "skills/implementation-contract/SKILL.md",
+          "path": "skills/change-contract/SKILL.md",
           "mode": "specialize",
           "activation_signature": [
             [
@@ -1906,7 +1906,7 @@
           ]
         },
         {
-          "path": "skills/code-host-workflow/SKILL.md",
+          "path": "skills/repository-workflow/SKILL.md",
           "mode": "specialize",
           "activation_signature": [
             [
@@ -2047,7 +2047,7 @@
       ],
       "consumers": [
         {
-          "path": "skills/code-host-workflow/SKILL.md",
+          "path": "skills/repository-workflow/SKILL.md",
           "mode": "specialize",
           "activation_signature": [
             [
@@ -2058,8 +2058,8 @@
       ]
     },
     {
-      "id": "workflow_entry_normalization_startup",
-      "owner": "skills/workflow-entry/SKILL.md",
+      "id": "workflow_control_normalization_startup",
+      "owner": "skills/workflow-control/SKILL.md",
       "owner_signature": [
         [
           "## Request normalization"
@@ -2077,7 +2077,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "load `workflow-entry`"
+              "load `workflow-control`"
             ],
             [
               "primary invocation"
@@ -2089,7 +2089,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "load `workflow-entry`"
+              "load `workflow-control`"
             ],
             [
               "primary audit invocation"
@@ -2101,7 +2101,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "When this role is primary, load `workflow-entry`"
+              "When this role is primary, load `workflow-control`"
             ]
           ]
         },
@@ -2110,7 +2110,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "When this role is primary, load `workflow-entry`"
+              "When this role is primary, load `workflow-control`"
             ]
           ]
         },
@@ -2119,7 +2119,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "When this role is primary/user-facing, load `workflow-entry`"
+              "When this role is primary/user-facing, load `workflow-control`"
             ]
           ]
         },
@@ -2128,15 +2128,15 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "When this role is primary/user-facing, load `workflow-entry`"
+              "When this role is primary/user-facing, load `workflow-control`"
             ]
           ]
         }
       ]
     },
     {
-      "id": "implementation_engineering_contract",
-      "owner": "skills/implementation-contract/SKILL.md",
+      "id": "change_engineering_contract",
+      "owner": "skills/change-contract/SKILL.md",
       "owner_signature": [
         [
           "## Behavioral contract"
@@ -2157,7 +2157,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "load `implementation-contract` before the first mutation"
+              "load `change-contract` before the first mutation"
             ]
           ]
         },
@@ -2166,7 +2166,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "Load `implementation-contract` before selecting or applying"
+              "Load `change-contract` before selecting or applying"
             ]
           ]
         },
@@ -2175,7 +2175,7 @@
           "mode": "consume",
           "activation_signature": [
             [
-              "load `implementation-contract` before substantive engineering judgment"
+              "load `change-contract` before substantive engineering judgment"
             ]
           ],
           "forbidden_redefinition": {
@@ -2201,7 +2201,7 @@
           "mode": "consume",
           "activation_signature": [
             [
-              "load `implementation-contract` before planning regression/preservation evidence"
+              "load `change-contract` before planning regression/preservation evidence"
             ]
           ],
           "forbidden_redefinition": {
@@ -2227,7 +2227,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "Load `implementation-contract` before the first UI repository mutation"
+              "Load `change-contract` before the first UI repository mutation"
             ]
           ]
         },
@@ -2236,7 +2236,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "Load `implementation-contract` only before a semantic repository/config edit"
+              "Load `change-contract` only before a semantic repository/config edit"
             ]
           ]
         },
@@ -2245,7 +2245,7 @@
           "mode": "specialize",
           "activation_signature": [
             [
-              "Load `implementation-contract` only when the plan materially defines or judges implementation ownership"
+              "Load `change-contract` only when the plan materially defines or judges implementation ownership"
             ]
           ]
         },
@@ -2254,7 +2254,7 @@
           "mode": "reference",
           "activation_signature": [
             [
-              "Load `implementation-contract` only when the workflow enters a code/config/UI implementation"
+              "Load `change-contract` only when the workflow enters a code/config/UI implementation"
             ]
           ],
           "forbidden_redefinition": {

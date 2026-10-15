@@ -102,7 +102,7 @@
       {
         "heading": "### Before implementation",
         "placement": "specialization",
-        "purpose": "apply root authority algebra and conditionally implementation-contract to implementation handoffs"
+        "purpose": "apply root authority algebra and conditionally change-contract to implementation handoffs"
       },
       {
         "heading": "### Pre-mutation semantic checkpoint",
@@ -142,7 +142,7 @@
       {
         "heading": "### Code-host resource workflow",
         "placement": "reference_consumer",
-        "purpose": "conditionally load/consume code-host-workflow; host-specific PR/issue/release mechanics are not resident here"
+        "purpose": "conditionally load/consume repository-workflow; host-specific PR/issue/release mechanics are not resident here"
       },
       {
         "heading": "### Tests/docs-only work",
@@ -157,17 +157,17 @@
       {
         "heading": "## Planning and publication",
         "placement": "reference_consumer",
-        "purpose": "consume workflow-entry plus active conditional resource contracts without restating gates"
+        "purpose": "consume workflow-control plus active conditional resource contracts without restating gates"
       },
       {
         "heading": "## Terminal diagnostic hook",
         "placement": "reference_consumer",
-        "purpose": "conditionally load terminal-semantic-eval at the already-established terminal-success boundary; detailed evaluator handoff is not resident here"
+        "purpose": "conditionally load session-evaluation-control at the already-established terminal-success boundary; detailed evaluator handoff is not resident here"
       },
       {
         "heading": "## Final report",
         "placement": "reference_consumer",
-        "purpose": "consume root plus workflow-entry final-report contracts and add code-orchestration state"
+        "purpose": "consume root plus workflow-control final-report contracts and add code-orchestration state"
       }
     ]
   }

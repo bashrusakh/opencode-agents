@@ -17,7 +17,7 @@ permissions:
 
 Apply the active root/scoped `AGENTS.md` / `agents.md` and `CONTRIBUTING.md`; this file adds only role-specific behavior.
 
-Load `implementation-contract` before the first UI repository mutation. Do not load workflow-entry/delegation-control; this role owns only the delegated UI implementation boundary.
+Load `change-contract` before the first UI repository mutation. Do not load workflow-control/delegation-control; this role owns only the delegated UI implementation boundary.
 
 ## Role
 
