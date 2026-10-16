@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v30.100 beta**
+**Pack version: v31.0 beta**
 
 **These rules are normative for every agent. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -84,6 +84,7 @@ Agent roles are capability boundaries. User wording, project guidance, a skill, 
 - Judge read-only work by effect, not tool name. A command that changes project files/config/generated outputs/services/data/worktree state is a mutation; a permitted metadata refresh does not authorize unrelated mutation.
 - Tool permissions are ceilings; prompts/role contracts may be stricter. Do not redesign permissions to compensate for unclear role semantics.
 - An assignment specializes the selected role contract; it may narrow scope/action/evidence but cannot waive role-owned obligations, independence, stop conditions, or verdict semantics.
+- An action ceiling applies to **all task-relevant state**, not only repository content. Permission to perform the assigned work does not implicitly authorize rebinding the authoritative target, changing task-resource ownership/topology, relocating pre-existing workflow state, or another material state transition outside the assignment. Such a transition requires its own authority or must return to the owning boundary.
 - A delegated role does not acquire workflow ownership merely because it can observe the user request or because a caller/stage fails. New material scope/direction/user decisions/gated actions return to the owning boundary unless the role contract explicitly owns them.
 - Read-only/review roles may run documented non-destructive checks even if ordinary temporary caches/build outputs result, but they must not rewrite source/config, update snapshots/locks, apply fixes, run migrations, or alter services/data unless their role explicitly permits that mutation.
 

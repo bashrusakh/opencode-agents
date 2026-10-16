@@ -23,6 +23,12 @@ Resolve workflow-level ambiguity needed to set those bounds; leave execution-loc
 
 New material scope/direction/user decision/role/gated action returns to the caller. Apply root authority/evidence semantics to specialist output: returned evidence does not itself authorize new scope, acceptance, or a gated action.
 
+## Delegated state boundary
+
+The assignment's action ceiling applies to task-relevant state as well as content. A child may create incidental disposable execution artifacts only when they are intrinsic to the already-authorized action and do not rebind the authoritative target, change task-resource ownership/topology, or relocate/transfer pre-existing workflow state. A material state transition outside those bounds is a separate mutation, not an implementation convenience.
+
+If the child discovers that completing the assignment requires such a transition, stop and return the required state/scope expansion to the caller before performing it. Correct output does not retroactively authorize an out-of-bound state transition. Resources validly created inside the delegated boundary still follow `resource-lifecycle`; that lifecycle contract reconciles resources but does not create mutation authority.
+
 ## Decision-space preservation
 
 For exploratory/planning/architectural/diagnostic delegation, pass the established outcome, constraints, evidence, exclusions, and unresolved questions. Do not turn parent-generated candidate solutions/examples/preferences into an exhaustive choice set unless authority actually constrains the task that way. If useful, label candidate approaches as non-exhaustive hypotheses. Independent recommendation should receive the problem and authoritative constraints rather than a preselected architecture.

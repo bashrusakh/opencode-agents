@@ -68,6 +68,7 @@
       "class": "pack-workflow",
       "entry_sections": [
         "Draft publication safety",
+        "Correction / stabilization",
         "Candidate HEAD",
         "Ready-for-review gate"
       ],
@@ -118,7 +119,9 @@
       "owned_capabilities": [
         "resource_lifecycle_mechanics"
       ],
-      "consumed_capabilities": [],
+      "consumed_capabilities": [
+        "delegated_task_state_authority_boundary"
+      ],
       "typed_domains": [
         "resource_lifecycle_terminal_state"
       ],
@@ -202,6 +205,7 @@
       "entry_sections": [
         "Activation boundary",
         "Handoff contract",
+        "Delegated state boundary",
         "Decision-space preservation",
         "Child-session freshness and independent judgment",
         "Routing, topology, and fallback",
@@ -219,7 +223,8 @@
       ],
       "consumed_capabilities": [
         "proposition_evidence_algebra",
-        "resource_lifecycle_mechanics"
+        "resource_lifecycle_mechanics",
+        "delegated_task_state_authority_boundary"
       ],
       "typed_domains": [],
       "side_effect_class": "caller-side orchestration procedure; no capability grant"

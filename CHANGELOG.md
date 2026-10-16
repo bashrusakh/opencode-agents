@@ -1,5 +1,20 @@
 # Changelog
 
+## v31.0 beta
+
+Behavioral orchestration hardening from a clean v30.100 owned-PR session:
+
+- adds an explicit **Correction / stabilization** owned-PR state: locally green/committed/targeted-reviewed correction packages are not Candidate HEADs by themselves; final whole-PR review is the exit gate from the combined stabilization state rather than a discovery loop after every fix;
+- requires owner reassessment before another Candidate promotion when the next whole review exposes a materially related blocker in the same owner/invariant family;
+- prevents Ready sequencing from implicitly waiving missing review/evidence prerequisites: an action order such as push -> CI -> Ready is not itself a prerequisite waiver;
+- generalizes delegated mutation authority across all task-relevant state: a child cannot rebind target identity, resource topology/ownership, or relocate pre-existing workflow state outside its action boundary merely as execution convenience; lifecycle reconciliation does not create mutation authority;
+- adds workflow-path/static/mutation regressions and ST-142..ST-144 for Ready-without-whole-review, correction-package promotion churn, and delegated task-state drift;
+- keeps agent permissions/frontmatter and vendor skill content unchanged.
+
+Fresh isolated behavioral replay of ST-142..ST-144 is not claimed unless separately executed.
+
+See [`docs/releases/v31.0-beta.md`](docs/releases/v31.0-beta.md) and [`docs/contract-protocol-audit-v31.0.md`](docs/contract-protocol-audit-v31.0.md).
+
 ## v30.100 beta
 
 Terminology-only cleanup of pack-controlled conditional skills; runtime semantics and residency boundaries are unchanged.

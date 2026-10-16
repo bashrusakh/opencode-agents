@@ -11,13 +11,13 @@ metadata:
 
 Load this skill only when the active `code-orchestrator` workflow targets an **existing PR**, **issue/ticket/report**, **release/tag**, or another public repository resource as a requested deliverable. Do not load it for an ordinary bugfix, tests/docs-only task, local implementation, or generic review merely because the repository is hosted remotely.
 
-This skill owns host-resource discovery and lifecycle-adjacent mechanics only. It does not grant repository-edit or publication authority. `workflow-control` owns the user authorization/publication gate; `git-provenance` owns ref/SHA/worktree identity; `pr-readiness` owns the canonical **Owned PR** definition and Draft/Candidate/Ready lifecycle; `output-formatting` owns destination formatting; `resource-lifecycle` owns workflow-created temporary-resource reconciliation.
+This skill owns host-resource discovery and lifecycle-adjacent mechanics only. It does not grant repository-edit or publication authority. `workflow-control` owns the user authorization/publication gate; `git-provenance` owns ref/SHA/worktree identity; `pr-readiness` owns the canonical **Owned PR** definition and Draft/Correction/Candidate/Ready lifecycle; `output-formatting` owns destination formatting; `resource-lifecycle` owns workflow-created temporary-resource reconciliation.
 
 ## Existing PR follow-up
 
 Stay on the existing PR branch by default. At entry, resolve the canonical PR URL/resource identity, ownership, Draft/Ready state, head/base, effective diff, current review comments/checks, and known todo. Load `pr-readiness` for its canonical **Owned PR** definition before any ownership-dependent PR-state decision, and load `git-provenance` when detailed target/base/ref identity matters.
 
-For a confirmed **Owned PR**, consume the `pr-readiness` lifecycle/state-transition contract; do not restate its Draft/Candidate/publication/Ready sequence here. Read-only review/planning does not itself mutate PR state, and an unowned or ambiguously owned PR is never auto-transitioned.
+For a confirmed **Owned PR**, consume the `pr-readiness` lifecycle/state-transition contract; do not restate its Draft/Correction/Candidate/publication/Ready sequence here. Read-only review/planning does not itself mutate PR state, and an unowned or ambiguously owned PR is never auto-transitioned.
 
 For “review this PR and fix what is wrong,” combine current host findings with any needed independent review, then return confirmed findings to the workflow owner in bounded groups rather than one-comment/one-patch cycles. A shared design/invariant gap is an escalation signal, not another host-specific patch ritual.
 

@@ -130,6 +130,50 @@
       }
     },
     {
+      "id": "delegated_task_state_authority_boundary",
+      "owner": "AGENTS.md",
+      "owner_signature": [
+        [
+          "action ceiling applies to .*all task-relevant state"
+        ],
+        [
+          "does not implicitly authorize rebinding the authoritative target"
+        ],
+        [
+          "requires its own authority or must return to the owning boundary"
+        ]
+      ],
+      "consumers": [
+        {
+          "path": "skills/delegation-control/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "## Delegated state boundary"
+            ],
+            [
+              "separate mutation, not an implementation convenience"
+            ],
+            [
+              "stop and return the required state/scope expansion"
+            ]
+          ]
+        },
+        {
+          "path": "skills/resource-lifecycle/SKILL.md",
+          "mode": "specialize",
+          "activation_signature": [
+            [
+              "does not authorize creating, rebinding, relocating, or transferring task-relevant resources"
+            ],
+            [
+              "must already permit that state transition"
+            ]
+          ]
+        }
+      ]
+    },
+    {
       "id": "decision_space_preservation",
       "owner": "AGENTS.md",
       "owner_signature": [
@@ -563,6 +607,9 @@
           "Draft"
         ],
         [
+          "Correction / stabilization"
+        ],
+        [
           "Candidate HEAD"
         ],
         [
@@ -601,6 +648,35 @@
               ],
               [
                 "Reviewed Base|base SHA"
+              ]
+            ]
+          }
+        },
+        {
+          "path": "agents/code-orchestrator.md",
+          "mode": "reference",
+          "activation_signature": [
+            [
+              "consume `pr-readiness` .*Correction / stabilization"
+            ],
+            [
+              "stable Candidate boundary defined by that skill"
+            ]
+          ],
+          "forbidden_redefinition": {
+            "window_lines": 18,
+            "groups": [
+              [
+                "Correction / stabilization"
+              ],
+              [
+                "Candidate HEAD"
+              ],
+              [
+                "whole-PR review"
+              ],
+              [
+                "Ready"
               ]
             ]
           }

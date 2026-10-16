@@ -5,6 +5,8 @@ description: Use when the workflow deliberately creates temporary worktrees, bra
 
 # Resource lifecycle
 
+This skill governs lifecycle/reconciliation **after resource mutation is authorized**; it does not authorize creating, rebinding, relocating, or transferring task-relevant resources. The applicable role/assignment/workflow gate must already permit that state transition.
+
 ## What enters the lifecycle
 
 Track resources deliberately created or repurposed by the current workflow for temporary execution, isolation, verification, or evidence: temporary worktrees/checkouts, local branches, temp files/directories, local servers/processes, generated evidence files, and temporary hosted/publication resources. Ordinary project/tool-managed caches and incidental build outputs are not automatically workflow-owned.

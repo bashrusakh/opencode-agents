@@ -75,7 +75,7 @@
             "Search existing issues|review comments|issue dedup"
           ],
           [
-            "Draft/Candidate/Ready|Candidate HEAD|PR readiness"
+            "Draft/(?:Correction/)?Candidate/Ready|Correction / stabilization|Candidate HEAD|PR readiness"
           ]
         ]
       }

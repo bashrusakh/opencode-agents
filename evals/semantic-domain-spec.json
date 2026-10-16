@@ -98,6 +98,9 @@
           "Draft publication and Ready-for-review are different boundaries"
         ],
         [
+          "Correction / stabilization"
+        ],
+        [
           "Candidate HEAD"
         ],
         [
@@ -106,6 +109,7 @@
       ],
       "tokens": [
         "Draft",
+        "Correction / stabilization",
         "Candidate HEAD",
         "Ready"
       ]

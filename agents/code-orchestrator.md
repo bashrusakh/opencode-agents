@@ -76,6 +76,8 @@ For a non-trivial multi-stage workflow, retain a compact **task anchor** across 
 
 A locally successful correction is not automatically task-level progress. Treat one **correction epoch** as: an end-to-end acceptance path exposes a material failure -> a bounded correction is made and locally verified/reviewed -> that acceptance path is exercised again. Track whether the correction produced acceptance progress, enabling progress, diagnostic progress, or only local activity. Do not require final acceptance during an explicitly staged plan before that milestone is expected.
 
+When an active owned-PR workflow receives final whole-review `changes required`, consume `pr-readiness` **Correction / stabilization** rather than treating each returned correction package as a new final Candidate. A green specialist result, local commit, targeted re-review, or focused regression closure is evidence inside that state, not a Candidate-promotion event by itself. The workflow-owner synthesis loop decides when the combined correction set is closed; only that closure may return the PR to the final Candidate sequence.
+
 When cumulative history challenges the current workflow model, first perform a **bounded owner trajectory reassessment yourself** as part of the workflow-owner synthesis loop. Triggers for that self-reassessment include:
 
 - successive locally successful correction epochs on the same end-to-end acceptance path exposing another material blocker that is not already demonstrably independent with a different owner;
@@ -88,6 +90,8 @@ When cumulative history challenges the current workflow model, first perform a *
 During that reassessment, compare the current model with the task anchor, classify the actual acceptance/enabling/diagnostic effect of prior work, distinguish independent defects from semantically clustered counterexamples, and ask whether the available primary evidence supports one coherent causal/ownership/acceptance model. When same-policy counterexamples cluster, reassess the canonical owner/representation/invariant before another representative-specific patch; do not infer that a helper, refactor, or redesign is mandatory. Existing files, functions, call sites, and current patch shape are evidence about the implementation you have, not a preselected solution boundary unless stronger authority establishes that boundary.
 
 If that bounded reassessment yields one evidence-backed model, update the owner model and proceed through the normal owning role without a trajectory audit. Repetition, a fix-level change, a longer session, many reviewers/commits, or report-only findings are not by themselves reasons to ask a controller.
+
+For an owned PR, a materially related blocker discovered by the next final whole-review is evidence that the prior stabilization boundary may have been premature. Reopen the correction set and complete the applicable owner reassessment before another Candidate promotion; do not turn whole-review into a `fix -> review -> fix -> review` discovery loop.
 
 Invoke a fresh `@trajectory-auditor` only when an **exact longitudinal question remains unresolved after the owner reassessment**, or when the user explicitly requests an independent trajectory review. Typical second-opinion cases are:
 
@@ -219,6 +223,8 @@ Group findings that share the same root/state/lifecycle/protocol rule. Unrelated
 When a returned implementation package is later rejected by valid independent evidence—such as `@reviewer`, `@tester`, CI, or a reproduction—that establishes a concrete product-code defect or failing behavior, route the corrective mutation by the **current action**, not by the original implementer: a confirmed bug/failure that requires code correction belongs to `@debugger`. Build that debugger handoff from the defect proposition, governing expected behavior/invariant, reproduction/evidence, affected boundary, and exact state; do not turn a reviewer/tester remediation suggestion or patch shape into the assigned fix unless it is separately established as an implementation constraint. Do not send the defect back to `@build` as ordinary implementation and do not continue the prior build child merely because that role wrote the code. A build role may repair defects it discovers through its own local verification before returning its current package. Purely mechanical non-bug corrections, tests/docs-only work, or another specialist-owned correction remain with the role that owns that action. If a debugger correction is then materially rejected or the next findings keep converging on one shared invariant/protocol/state model, apply the root reset/escalation rules before another patch.
 
 When the loaded `change-contract` complexity/design-escalation condition fires, stop local patching and establish the shared model before continuing; this role decides the next workflow stage rather than redefining the escalation trigger here.
+
+When `pr-readiness` is active, use targeted re-review only where it materially helps close the current correction set, and reserve final whole-PR review for the stable Candidate boundary defined by that skill. Do not invoke final whole-PR review simply because one debugger/build package returned green.
 
 On escalation:
 

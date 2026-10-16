@@ -283,6 +283,8 @@ Do not simulate a handoff merely because a specialist has useful expertise.
 
 A delegation prompt supplies instance-specific scope and context to the selected role; it does not replace that role's standing contract. Legitimate specialization can narrow the target, question, action ceiling, or requested evidence while preserving the role-owned obligations and result semantics that still apply. A deliberately partial diagnostic is valid when its boundary stays explicit, but its result cannot satisfy a broader stage.
 
+**State authority is part of the action ceiling.** Delegated permission to change content does not silently grant permission to rebind the authoritative target, change task-resource ownership/topology, or relocate pre-existing workflow state. Lifecycle/reconciliation mechanics consume already-authorized resource mutations; they do not create that authority.
+
 Check both directions: could the assignment suppress or redefine a material role obligation, and could the caller later over-claim completion from a result that was intentionally partial?
 
 ### Role executability test
@@ -310,6 +312,8 @@ Standardize substantive role contracts by **semantic function**, not by mandator
 
 1. **Ownership** — what capability/stage the role owns, what it does not own, and which adjacent-role boundary matters.
 2. **Invocation** — what a valid assignment means for this role: target/state/mode/action ceiling plus which incoming items are authority, constraints, evidence, or hypotheses when material.
+
+For lifecycle gates, distinguish **intermediate correction state** from a terminal/final candidate state. A locally successful package is evidence inside the lifecycle; it is not automatically a promotion event. Final whole-scope judgment should sit at the stabilized exit boundary, while targeted/incremental judgment may operate inside the correction state without impersonating final acceptance.
 3. **Method** — the characteristic role-owned action/decision loop, including the profile-specific false-success/adversarial defense needed to avoid the first plausible but wrong completion.
 4. **Boundaries** — stop/blocker/escalation/reroute behavior, unavailable-evidence handling, and conditions under which the role must not absorb another stage.
 5. **Result** — what the returned output proves, its target/evidence/coverage limits, what remains partial/unknown, and what the caller may safely infer.

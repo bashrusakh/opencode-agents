@@ -875,6 +875,140 @@
           ]
         }
       ]
+    },
+    {
+      "id": "owned_pr_ready_requires_whole_review",
+      "nodes": [
+        {
+          "path": "skills/pr-readiness/SKILL.md",
+          "groups": [
+            [
+              "Ready evidence contract"
+            ],
+            [
+              "@reviewer.*complete Base-SHA-to-Candidate-HEAD comparison before push"
+            ],
+            [
+              "Do not infer a prerequisite waiver from an action sequence"
+            ],
+            [
+              "push/publish, wait for CI, then mark Ready"
+            ],
+            [
+              "explicitly authorize proceeding without it"
+            ]
+          ]
+        },
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "review pass may be evidence for a later downstream transition"
+            ],
+            [
+              "workflow owner separately satisfies the applicable gate"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "owned_pr_correction_stabilization",
+      "nodes": [
+        {
+          "path": "skills/pr-readiness/SKILL.md",
+          "groups": [
+            [
+              "## Correction / stabilization"
+            ],
+            [
+              "not Candidate HEADs merely because they are committed, locally green, independently spot-checked, or targeted-re-reviewed"
+            ],
+            [
+              "Targeted re-review is allowed inside this state"
+            ],
+            [
+              "Do not invoke final whole-PR review merely because an individual correction batch ended"
+            ],
+            [
+              "exit gate from stabilization"
+            ]
+          ]
+        },
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "consume `pr-readiness` \\*\\*Correction / stabilization\\*\\*"
+            ],
+            [
+              "not a Candidate-promotion event by itself"
+            ],
+            [
+              "reopen the correction set"
+            ],
+            [
+              "fix -> review -> fix -> review"
+            ],
+            [
+              "stable Candidate boundary defined by that skill"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "delegated_task_state_boundary",
+      "nodes": [
+        {
+          "path": "AGENTS.md",
+          "groups": [
+            [
+              "action ceiling applies to \\*\\*all task-relevant state\\*\\*"
+            ],
+            [
+              "does not implicitly authorize rebinding the authoritative target"
+            ],
+            [
+              "requires its own authority or must return to the owning boundary"
+            ]
+          ]
+        },
+        {
+          "path": "skills/delegation-control/SKILL.md",
+          "groups": [
+            [
+              "## Delegated state boundary"
+            ],
+            [
+              "incidental disposable execution artifacts"
+            ],
+            [
+              "do not rebind the authoritative target"
+            ],
+            [
+              "separate mutation, not an implementation convenience"
+            ],
+            [
+              "stop and return the required state/scope expansion"
+            ],
+            [
+              "Correct output does not retroactively authorize"
+            ]
+          ]
+        },
+        {
+          "path": "skills/resource-lifecycle/SKILL.md",
+          "groups": [
+            [
+              "does not authorize creating, rebinding, relocating, or transferring task-relevant resources"
+            ],
+            [
+              "must already permit that state transition"
+            ]
+          ]
+        }
+      ]
     }
   ]
 }

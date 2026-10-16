@@ -1,6 +1,6 @@
 ---
 name: pr-readiness
-description: Use for owned-PR Draft/candidate/publication/readiness workflows. Owns the reusable PR lifecycle; root AGENTS.md supplies authorization/gates and git-provenance supplies ref/base/head identity.
+description: Use for owned-PR Draft/correction/candidate/publication/readiness workflows. Owns the reusable PR lifecycle; root AGENTS.md supplies authorization/gates and git-provenance supplies ref/base/head identity.
 ---
 
 # PR readiness
@@ -20,15 +20,25 @@ During active work on an owned PR, intermediate Draft publication is allowed onl
 
 An intermediate Draft push does not require a separate `@tester` invocation or final `@reviewer` merely because a batch ended. Once the current repository state may be the final content candidate, do not publish it as another intermediate batch: freeze/commit it locally and enter the Candidate HEAD sequence.
 
+## Correction / stabilization
+
+A final whole-PR `changes required` verdict reopens the owned PR into **correction/stabilization**. The rejected Candidate remains the identity of that rejected judgment; subsequent local correction packages are **not Candidate HEADs merely because they are committed, locally green, independently spot-checked, or targeted-re-reviewed**.
+
+Maintain one current correction set from the blocking findings and any materially related counterexamples discovered while resolving them. Resolve or adjudicate that set in bounded batches and reuse fresh evidence. Targeted re-review is allowed inside this state when it materially helps close known findings or their adjacent boundary, but its verdict remains partial and does not substitute for the next final whole-PR review. Do not invoke final whole-PR review merely because an individual correction batch ended.
+
+Close correction/stabilization only when the workflow owner has established that the known blocking set is resolved or evidentially rejected, related findings sharing an owner/invariant have been synthesized rather than queued as isolated patches, no open material authority/model question makes the next correction speculative, affected verification is current enough for the combined state, and the current repository state is actually intended as the final content candidate. Only then freeze the exact state and enter the Candidate HEAD sequence.
+
+If the next final whole-PR review finds a materially related blocker in the same owner/invariant family, reopen correction/stabilization and perform the required owner reassessment before promoting another Candidate HEAD. A demonstrably independent defect may be corrected without manufacturing a trajectory problem, but it still remains inside correction/stabilization until the combined state is closed. Final whole-PR review is the **exit gate from stabilization**, not an iterative discovery step after every local fix.
+
 ## Candidate HEAD
 
-When implementation is complete, establish the final intended local state as **Candidate HEAD**. Refresh and record **Base SHA**, satisfy final applicable local validation, and run whole-PR `@reviewer` against `Base SHA -> Candidate HEAD` **before push**.
+When initial implementation is complete, or correction/stabilization is explicitly closed, establish the final intended local state as **Candidate HEAD**. Refresh and record **Base SHA**, satisfy final applicable local validation, and run whole-PR `@reviewer` against `Base SHA -> Candidate HEAD` **before push**.
 
 Refresh Base SHA again before publishing that candidate and before Ready. If it moved, recompute the effective diff/integration context and refresh only the evidence affected by that change. Push only the exact reviewed Candidate HEAD while the owned PR is Draft, verify that the remote PR head matches it, then consume the remote CI/status evidence that is legitimately available in the current lifecycle state. Pushing an unchanged reviewed SHA does not itself stale review evidence when the reviewed base context and effective diff remain valid.
 
 ## Ready-for-review gate
 
-Under the default pack readiness workflow, the Ready evidence contract is satisfied only when all applicable conditions are true for the Candidate HEAD. A higher-priority instruction may authorize a different state transition under the active workflow-control/user gate, but it does not convert missing evidence into a pass:
+Under the default pack readiness workflow, the Ready evidence contract is satisfied only when all applicable conditions are true for the Candidate HEAD. A higher-priority instruction may authorize a different state transition under the active workflow-control/user gate, but it does not convert missing evidence into a pass. **Do not infer a prerequisite waiver from an action sequence** such as push/publish, wait for CI, then mark Ready: ordering authorizes the requested actions, not omission of a separate evidence prerequisite. A waiver/override must identify the missing prerequisite or otherwise explicitly authorize proceeding without it; preserve the missing evidence as missing rather than laundering it into success:
 
 - **Scope complete** — in-scope blocking findings/todo items are resolved or rejected with evidence; unrelated latent findings were not silently folded into the PR.
 - **Fix/regression contract** — applicable sections 7.2 and 7.3 are satisfied.
@@ -45,6 +55,6 @@ While a required repository prerequisite remains unresolved, keep the owned PR D
 
 Apply Ready conditions by their actual dependency, not by the order in which this skill lists them. A condition is not a pre-Ready blocker merely because its evidence is absent before the transition: if that evidence can exist only after crossing the Ready boundary, establish from authoritative project policy and current host/repository behavior whether another valid pre-Ready path exists, whether the evidence belongs to the post-transition state, or whether project policy is genuinely contradictory. Do not convert lifecycle-dependent unavailability into failure, fabricate a pass, or let a pack default create a circular gate.
 
-Under the default pack readiness workflow, a `changes required` reviewer verdict keeps the PR Draft. Resolve findings in bounded batches, refresh affected verification, establish a new Candidate HEAD, and repeat the final whole-PR review before pushing that replacement candidate. A higher-priority authorized state transition does not erase or satisfy those findings.
+Under the default pack readiness workflow, a `changes required` reviewer verdict keeps the PR Draft and enters **Correction / stabilization** above. Resolve the current correction set there; do not promote each successful correction package into a new Candidate HEAD. After stabilization closes, establish one new Candidate HEAD and repeat final whole-PR review before pushing that replacement candidate. A higher-priority authorized state transition does not erase or satisfy those findings.
 
 Any repository-content/history change after final candidate verification/review invalidates the evidence it can affect and creates a new candidate. An unchanged reviewed commit may be pushed without re-review solely because publication occurred; verify identity instead. If remote CI requires a content fix, create a new local candidate and repeat the applicable final validation/review sequence. If repository-content work resumes after an owned PR was Ready, return it to Draft before continuing the next update cycle.

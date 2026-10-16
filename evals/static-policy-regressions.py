@@ -337,19 +337,63 @@ for bad in [
     check(bad not in planner_ui, f"evidence/product-authority shortcut returned: {bad}")
 check(planner_ui.count("does not by itself") >= 2, "product/design evidence boundary missing")
 
-# pr-readiness is the reusable Draft/Candidate/Ready state-machine owner.
+# pr-readiness is the reusable Draft/Correction/Candidate/Ready state-machine owner.
 pr = text("skills/pr-readiness/SKILL.md")
 check("During active work on an owned PR, intermediate Draft publication" in pr, "pr-readiness Draft owner missing")
-check("When implementation is complete, establish the final intended local state as **Candidate HEAD**" in pr, "pr-readiness Candidate owner missing")
+check("When initial implementation is complete, or correction/stabilization is explicitly closed, establish the final intended local state as **Candidate HEAD**" in pr, "pr-readiness Candidate owner missing")
 check("Ready evidence contract" in pr, "pr-readiness Ready owner missing")
 check("Owned PRs are created as Draft by default." not in text("skills/git-provenance/SKILL.md"), "git-provenance still owns Draft creation")
 check(
-    "`pr-readiness` owns the canonical **Owned PR** definition and Draft/Candidate/Ready lifecycle" in code_host_sem
-    and "Draft/Candidate/Ready" not in root_sem
-    and "Draft/Candidate/Ready" not in workflow_entry_sem,
+    "`pr-readiness` owns the canonical **Owned PR** definition and Draft/Correction/Candidate/Ready lifecycle" in code_host_sem
+    and "Draft/Correction/Candidate/Ready" not in root_sem
+    and "Draft/Correction/Candidate/Ready" not in workflow_entry_sem,
     "repository-workflow/workflow-control/root: PR lifecycle single-owner declaration missing",
 )
 check("do not define a separate UI lifecycle order" in text("agents/ui-orchestrator.md"), "UI role still owns lifecycle order")
+
+
+# v31.0: owned-PR stabilization must prevent both skipped and ritual whole-review transitions.
+check(
+    "## Correction / stabilization" in pr_readiness_sem
+    and "not Candidate HEADs merely because they are committed, locally green, independently spot-checked, or targeted-re-reviewed" in pr_readiness_sem
+    and "Do not invoke final whole-PR review merely because an individual correction batch ended" in pr_readiness_sem
+    and "exit gate from stabilization" in pr_readiness_sem,
+    "pr-readiness: correction/stabilization boundary missing",
+)
+check(
+    "Do not infer a prerequisite waiver from an action sequence" in pr_readiness_sem
+    and "push/publish, wait for CI, then mark Ready" in pr_readiness_sem
+    and "explicitly authorize proceeding without it" in pr_readiness_sem,
+    "pr-readiness: Ready prerequisite waiver must not be inferred from sequencing",
+)
+check(
+    "consume `pr-readiness` **Correction / stabilization**" in code_orchestrator_sem
+    and "not a Candidate-promotion event by itself" in code_orchestrator_sem
+    and "do not turn whole-review into a `fix -> review -> fix -> review` discovery loop" in code_orchestrator_sem
+    and "Do not invoke final whole-PR review simply because one debugger/build package returned green" in code_orchestrator_sem,
+    "code-orchestrator: correction-state / whole-review cadence guard missing",
+)
+
+# v31.0: delegated action ceilings cover task-relevant state, not only content.
+resource_lifecycle_sem = text("skills/resource-lifecycle/SKILL.md")
+check(
+    "action ceiling applies to **all task-relevant state**" in root_sem
+    and "does not implicitly authorize rebinding the authoritative target" in root_sem
+    and "requires its own authority or must return to the owning boundary" in root_sem,
+    "AGENTS.md: universal delegated task-state authority boundary missing",
+)
+check(
+    "## Delegated state boundary" in delegation_sem
+    and "separate mutation, not an implementation convenience" in delegation_sem
+    and "stop and return the required state/scope expansion" in delegation_sem
+    and "Correct output does not retroactively authorize" in delegation_sem,
+    "delegation-control: delegated task-state boundary missing",
+)
+check(
+    "does not authorize creating, rebinding, relocating, or transferring task-relevant resources" in resource_lifecycle_sem
+    and "must already permit that state transition" in resource_lifecycle_sem,
+    "resource-lifecycle: reconciliation incorrectly implies resource-mutation authority",
+)
 
 # resource-lifecycle owns resource state machine; root owns trigger/gate only.
 root_text = text("AGENTS.md")
@@ -1033,14 +1077,14 @@ check(
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 141, "semantic-transition suite must contain 141 cases")
+check(traces.count("### ST-") == 144, "semantic-transition suite must contain 144 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 141, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 144, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -1669,7 +1713,7 @@ check(
 )
 check(
     "st-135 — repository workflow composes with pr readiness instead of absorbing its state machine" in traces.lower()
-    and "`pr-readiness` owns owned pr identity plus draft/candidate/ready lifecycle" in traces.lower()
+    and "`pr-readiness` owns owned pr identity plus draft/correction/candidate/ready lifecycle" in traces.lower()
     and "no duplicate pr lifecycle" in traces.lower(),
     "ST-135 repository-workflow/pr-readiness composition regression missing",
 )
@@ -1714,6 +1758,27 @@ check(
 check(
     "ST-141" in traces and "workflow-path release gate" in traces and "producer omits target/state/authority/evidence" in traces,
     "ST-141 end-to-end workflow composition regression missing",
+)
+
+check(
+    "ST-142" in traces
+    and "Ready sequencing cannot waive missing whole-PR acceptance evidence" in traces
+    and "action authorization and acceptance evidence remain distinct" in traces,
+    "ST-142 Ready-without-whole-review regression missing",
+)
+check(
+    "ST-143" in traces
+    and "Correction package completion is not Candidate promotion" in traces
+    and "exit gate from a stabilized correction state" in traces
+    and "fix -> final whole review -> related fix -> final whole review" in traces,
+    "ST-143 correction-package promotion churn regression missing",
+)
+check(
+    "ST-144" in traces
+    and "Delegated content authority does not imply unrelated task-state mutation authority" in traces
+    and "resource/provider agnostic" in traces
+    and "correct content output cannot cure the authority deviation" in traces,
+    "ST-144 delegated task-state authority regression missing",
 )
 
 if failures:

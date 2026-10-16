@@ -25,7 +25,10 @@ cases=[
  ('agents/code-orchestrator.md','complete affected boundary','some tests','tester boundary omission not rejected'),
  ('agents/code-orchestrator.md','For a debugger handoff, pass the exact symptom/reproduction or strongest current failure evidence, governing expected behavior/invariant, affected behavior boundary, and target/mutation identity','For a debugger handoff, pass only the current failure evidence and target identity','debugger governing-invariant handoff omission not rejected'),
  ('skills/ui-routing-control/SKILL.md','pass the leaf result plus exact updated target/state and material UI evidence back to `@ui-orchestrator`','let code-orchestrator choose the next UI stage','delegated UI reconciliation loop omission not rejected'),
- ('skills/session-evaluation-control/SKILL.md','does not gate final reporting','may gate final reporting','terminal non-gating drift not rejected')
+ ('skills/session-evaluation-control/SKILL.md','does not gate final reporting','may gate final reporting','terminal non-gating drift not rejected'),
+ ('skills/pr-readiness/SKILL.md','Do not invoke final whole-PR review merely because an individual correction batch ended','Run final whole-PR review whenever any correction batch ends','correction batch -> whole review churn not rejected'),
+ ('skills/pr-readiness/SKILL.md','Do not infer a prerequisite waiver from an action sequence','Infer prerequisite waiver from the requested action sequence','Ready-without-review sequencing shortcut not rejected'),
+ ('skills/delegation-control/SKILL.md','A material state transition outside those bounds is a separate mutation, not an implementation convenience.','A child may freely change task-relevant state when that is convenient for execution.','delegated task-state drift not rejected')
 ]
 for rel,old,new,msg in cases:
  ok,err=mutate(rel,old,new);ck(ok and not err,msg if not err else msg+': '+err)
