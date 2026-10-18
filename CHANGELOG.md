@@ -1,5 +1,22 @@
 # Changelog
 
+## v31.10 beta
+
+- Reviewer performance proof: when a material effect is claimed, verify comparable evidence establishes that precise outcome, rather than inferring end-to-end gains from a local reduction in work. Scope unsupported performance conclusions explicitly; acceptance-critical gaps cannot be passed. Representative scale and no-benchmark-by-ritual remain intact.
+- Reviewer method boundary: apply affected-behavior derivation to diff and plan/result targets without inventing Base/Candidate for diff-less plans. Remove two redundant reviewer reminders without weakening evidence/critical-lock checks.
+- Separate reviewer semantic/method audit covers scope and contract composition, authority/ownership, duplicates, counterexamples, proof and verdict boundaries. No new ST scenarios, workflow stages, role topology or skills.
+
+See `docs/releases/v31.10-beta.md`.
+
+## v31.9 beta
+
+Adds a non-normative README model-selection guide with approximate Terminal-Bench 4.0 / AA-Briefcase screening levels and example high-effort configurations; preserves model-agnostic runtime routing.
+
+- Strengthens the reviewer’s existing **full affected rule** (without a new stage): independently derive the affected behavioral contract from Base-to-Candidate changes, trace material dependencies through unchanged consumers to observable outcomes, and report incomplete behavioral/evidentiary coverage rather than relying on changed-file accounting or local green tests. Scope remains risk-proportionate.
+- No new ST scenarios; no other agent role bodies, skills, frontmatter, or workflow owner boundaries changed.
+
+See `docs/releases/v31.9-beta.md`.
+
 ## v31.8 beta
 
 Unifies the pre-implementation solution search with **evidence-triggered correct-fix reassessment**. The subject is whether the selected fix meets end-to-end acceptance, not merely whether its implementation follows a technical specification. If material contrary evidence arises during investigation, implementation, verification or review, the workflow owner revisits only the unsupported premises—including the issue/spec interpretation, user/product outcome, root cause, fix level, scope or architecture—before further dependent implementation. One discriminating prospective counterexample suffices; repeated patch failure is not a prerequisite.
