@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v31.0 beta
+# OpenCode Agent Pack v31.8 beta
 
 ### Model-agnostic routing · explicit workflow owners · bounded specialist delegation · evidence-grounded verification
 
@@ -105,7 +105,7 @@ The exact invocation contract for each role is in its file under [`agents/`](age
 | [`skills/`](skills/) | Conditional shared/runtime procedure: workflow control, delegation control, change contract, repository workflow, terminal diagnostics and other specialized integrations |
 | [`docs/semantic-design-manual.md`](docs/semantic-design-manual.md) | Method for designing, auditing, and releasing semantic prompt/role changes |
 | [`evals/`](evals/) | Structural, role-contract, handoff-protocol, and semantic-transition regression machinery |
-| [`docs/releases/`](docs/releases/) | Release-specific explanation and retained historical evidence |
+| [`docs/releases/`](docs/releases/) | Current release explanation (historical notes are retained separately in the release bundle) |
 
 ---
 
@@ -248,9 +248,9 @@ Project-local collisions are backed up under `.opencode/.agent-pack/backups/`, a
 
 | If you need… | Read… |
 |---|---|
-| Release notes | [`docs/releases/v31.0-beta.md`](docs/releases/v31.0-beta.md) |
+| Release notes | [`docs/releases/v31.8-beta.md`](docs/releases/v31.8-beta.md) |
 | Release history | [`CHANGELOG.md`](CHANGELOG.md) |
-| Current role/protocol audit evidence | [`docs/contract-protocol-audit-v31.0.md`](docs/contract-protocol-audit-v31.0.md) |
+| Current role/protocol audit evidence | Separately delivered with the v31.8 release bundle (not installed or shipped in the base pack) |
 | Skill control / provenance manifest | [`evals/skill-control-spec.json`](evals/skill-control-spec.json) |
 | Shared semantic owner→consumer manifest | [`evals/semantic-ownership-spec.json`](evals/semantic-ownership-spec.json) |
 | Typed semantic-domain manifest | [`evals/semantic-domain-spec.json`](evals/semantic-domain-spec.json) |
@@ -265,7 +265,7 @@ Release validation is defined in **§21 of [`docs/semantic-design-manual.md`](do
 
 <div align="center">
 
-**OpenCode Agent Pack v31.0 beta**  
+**OpenCode Agent Pack v31.8 beta**  
 Workflow-owner first · bounded specialist delegation · evidence-grounded verification
 
 </div>

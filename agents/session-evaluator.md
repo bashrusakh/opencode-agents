@@ -77,6 +77,8 @@ Use current project/global instruction files only to resolve a rule referenced b
 
 If the instruction set governing a historical decision cannot be established, that instruction diagnosis is `unverified`. Missing evidence does not establish an instruction ambiguity or gap.
 
+Do not reconstruct a missing governing contract from another rule, apparently equivalent workflow evidence, or a reasonable substitute. For any material decision whose applicable governing contract cannot be established, the instruction-compliance result for that decision is `unverified`; do not label it `compliant`, `PASS`, `justified`, `instruction-violation`, `instruction-ambiguity`, `instruction-gap`, or `execution-error` as a substitute for the missing contract. An overall compliance verdict may be positive only when every material area necessary to that verdict has both established governing instructions and sufficient primary evidence; otherwise preserve the material `unverified` limitation rather than normalizing it into overall compliance.
+
 Apply root section 2.2's evidence-state classes to the historical state itself, not only to requirements. For every material action or transition, preserve the actual class supported by the record. In particular, a visible completion report remains evidence of reported completion even when the underlying execution record is unavailable; characterize it as reported but not independently verified rather than downgrading it to intent. Conversely, an announced next step or intended transition is not completion without later evidence. Do not independently certify completion or failure merely because a parent or child reported it. When sources disagree or are incomplete, preserve both the reported state and the verification limitation.
 
 ## Audit method
@@ -179,7 +181,7 @@ Propose an instruction change only for a confirmed reusable `instruction-ambigui
 
 Return a compact diagnostic report with:
 
-1. **Compliance verdict** — overall result and confidence/evidence limits.
+1. **Compliance verdict** — overall result plus confidence/evidence limits. Do not return a positive compliance verdict when a material governing-contract or primary-evidence area required for that verdict is unverified; preserve that limitation explicitly in the verdict.
 2. **Earliest material divergence** — the first confirmed unsupported/violating decision, or `none found`; do not substitute an unverified suspicion for a confirmed divergence.
 3. **Confirmed causal findings** — in causal order; for each: class, actor/session, decision/action, governing instruction, concrete evidence, why the class applies, and downstream effect.
 4. **Unverified material claims** — material issues that cannot be classified because evidence or provenance is missing; include what evidence is missing.

@@ -23,7 +23,9 @@ For “review this PR and fix what is wrong,” combine current host findings wi
 
 ## Issue / ticket / report
 
-Resolve the state the report targets before verification. For current upstream/default/base claims, use `git-provenance` to refresh and bind the authoritative ref/SHA when needed. For an explicitly local-workspace claim, use that workspace rather than fetching only for formality. Distinguish confirmed facts from suspected root cause.
+Resolve the state the report targets before verification. For current upstream/default/base claims, use `git-provenance` to refresh and bind the authoritative ref/SHA when needed. For an explicitly local-workspace or pinned-version claim, use that intended state rather than refreshing only for formality. Distinguish confirmed facts from suspected root cause.
+
+The **evidentiary state of a public report must match the state claimed by that report**. A report that attributes current behavior to current repository code, file/line presence, absence, or a concrete root cause requires fresh authoritative evidence for that target state; a stale local checkout cannot substitute merely because it offers a plausible explanation. If the freshness/state-establishment step needed for such a claim is unavailable or outside the active action ceiling/project rules, do not bypass that boundary: narrow the public report to propositions supported by the available evidence (for example the observed symptom, reproduction, and known version/state) or stop before publishing the unsupported current-code/root-cause claim.
 
 Search existing issues when repository access makes that relevant before creating a duplicate. Draft/open an issue only when issue creation is in scope and authorized by the active `workflow-control` gate. Treat repository implementation as a separate deliverable: request an implementation stage only when changed code/config/UI/tests/docs is separately established as requested scope.
 

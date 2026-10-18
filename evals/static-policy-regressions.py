@@ -75,6 +75,23 @@ if version_match:
         "docs/releases: current release-notes file missing",
     )
 
+# Main distribution is current-state only; historical source evidence belongs in the
+# separate release archive. Do not silently reintroduce per-version documents.
+if version_match:
+    notes = sorted((ROOT / "docs/releases").glob("*.md"))
+    check(
+        [p.name for p in notes] == [f"{release_slug}.md"],
+        "docs/releases: main package must retain only the current release note",
+    )
+check(
+    not list((ROOT / "docs").glob("contract-protocol-audit-v*.md")),
+    "docs: historical per-version protocol audits belong in the release archive",
+)
+check(
+    not (ROOT / "docs/role-contract-adjudication-rubric.md").exists(),
+    "docs: redundant role-contract rubric should remain consolidated in the semantic manual",
+)
+
 # README delegated-specialist inventory must reflect the actual closed-world topology,
 # not just agent mode. Any role that is the target of a direct or conditional delegation
 # edge belongs in the inventory, including mode: all roles that can also be top-level.
@@ -372,6 +389,67 @@ check(
     and "do not turn whole-review into a `fix -> review -> fix -> review` discovery loop" in code_orchestrator_sem
     and "Do not invoke final whole-PR review simply because one debugger/build package returned green" in code_orchestrator_sem,
     "code-orchestrator: correction-state / whole-review cadence guard missing",
+)
+
+# v31.1: producer completion cannot widen consumer/owner closure beyond returned evidence.
+manual = text("docs/semantic-design-manual.md")
+check(
+    "closure/completeness conclusion as a proposition-scoped claim, not workflow state" in code_orchestrator_sem
+    and "closure surface claimed" in code_orchestrator_sem
+    and "evidentiary surface actually returned" in code_orchestrator_sem
+    and "Producer completion and parent acceptance are separate" in code_orchestrator_sem
+    and "preserve the broader claim as unresolved" in code_orchestrator_sem,
+    "code-orchestrator: returned closure claim/evidence breadth adjudication missing",
+)
+check(
+    "Producer completion and consumer acceptance are separate contracts" in manual
+    and "parent acceptance/closure is no broader than the returned evidence surface" in manual,
+    "semantic design manual: producer completion / consumer acceptance principle missing",
+)
+
+# v31.2: producer confidence does not waive evidence breadth, and public report claims stay bound to target-state evidence.
+repository_workflow_sem = text("skills/repository-workflow/SKILL.md")
+check(
+    "Representative examples, local green checks" in code_orchestrator_sem
+    and "cannot establish broader domain/owner/invariant closure unless that evidence discriminates the broader proposition" in code_orchestrator_sem,
+    "code-orchestrator: unqualified producer certainty can still launder representative evidence into broad closure",
+)
+check(
+    "evidentiary state of a public report must match the state claimed by that report" in repository_workflow_sem
+    and "fresh authoritative evidence for that target state" in repository_workflow_sem
+    and "a stale local checkout cannot substitute" in repository_workflow_sem
+    and "outside the active action ceiling/project rules" in repository_workflow_sem
+    and "narrow the public report to propositions supported by the available evidence" in repository_workflow_sem,
+    "repository-workflow: public report claim/target-state evidence alignment missing",
+)
+check(
+    "Public claim scope includes target-state identity" in manual
+    and "inability or lack of authority to establish the required freshness does not license substituting stale evidence" in manual
+    and "Do not force freshness when the intended target is explicitly local, historical, or pinned" in manual,
+    "semantic design manual: public claim target-state/freshness principle missing",
+)
+
+# v31.3: compliance is fail-closed when governing contracts are unavailable; required review methods do not transfer role ownership.
+check(
+    "Do not reconstruct a missing governing contract" in evaluator_sem
+    and "instruction-compliance result for that decision is `unverified`" in evaluator_sem
+    and "apparently equivalent workflow evidence" in evaluator_sem
+    and "overall compliance verdict may be positive only when every material area necessary to that verdict has both established governing instructions and sufficient primary evidence" in evaluator_sem
+    and "Do not return a positive compliance verdict when a material governing-contract or primary-evidence area required for that verdict is unverified" in evaluator_sem,
+    "session-evaluator: unavailable governing contract can still be normalized into compliance",
+)
+check(
+    "explicit requirement to use managed OCR changes the review **method/evidence source**, not the role that owns the review" in code_orchestrator_sem
+    and "pass the OCR requirement into that reviewer assignment" in code_orchestrator_sem
+    and "must not substitute a direct OCR call for the reviewer stage" in code_orchestrator_sem
+    and "only that managed method is unavailable/waived" in code_orchestrator_sem
+    and "Managed OCR does not create or transfer review ownership" in code_orchestrator_sem,
+    "code-orchestrator: explicit OCR requirement can still replace reviewer-owned final review",
+)
+check(
+    "apparently equivalent workflow evidence cannot substitute for the governing contract itself" in manual
+    and "A required **method** does not silently transfer **role ownership**" in manual,
+    "semantic design manual: missing-contract fail-closed / method-vs-owner principles missing",
 )
 
 # v31.0: delegated action ceilings cover task-relevant state, not only content.
@@ -1077,14 +1155,14 @@ check(
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 144, "semantic-transition suite must contain 144 cases")
+check(traces.count("### ST-") == 151, "semantic-transition suite must contain 151 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 144, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 151, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",
@@ -1779,6 +1857,53 @@ check(
     and "resource/provider agnostic" in traces
     and "correct content output cannot cure the authority deviation" in traces,
     "ST-144 delegated task-state authority regression missing",
+)
+
+check(
+    "ST-145" in traces
+    and "Producer completion cannot widen parent closure beyond returned evidence" in traces
+    and "closure surface actually claimed" in traces
+    and "evidentiary surface actually returned" in traces
+    and "Do not redo the specialist's work" in traces,
+    "ST-145 producer-completion / consumer-closure regression missing",
+)
+check(
+    "ST-146" in traces
+    and "Producer certainty cannot launder representative evidence into domain closure" in traces
+    and "without any self-reported residual-risk qualifier" in traces
+    and "representative/narrow evidence" in traces,
+    "ST-146 unqualified producer-certainty / representative-evidence laundering regression missing",
+)
+check(
+    "ST-147" in traces
+    and "Public report diagnosis must remain bound to the state it claims" in traces
+    and "stale local checkout" in traces
+    and "outside the action ceiling" in traces
+    and "historical/local/pinned target" in traces,
+    "ST-147 public-report target-state freshness regression missing",
+)
+
+check(
+    "ST-148" in traces
+    and "Missing governing contract cannot be normalized into compliance" in traces
+    and "apparently equivalent layers" in traces
+    and "cannot be laundered into `compliant`/`PASS`" in traces,
+    "ST-148 missing-governing-contract fail-closed regression missing",
+)
+check(
+    "ST-149" in traces
+    and "Required review method does not transfer review ownership" in traces
+    and "skips the required whole-change `@reviewer` stage" in traces
+    and "waive only that method" in traces,
+    "ST-149 review-method / review-owner separation regression missing",
+)
+
+# Protective restriction review must remain two-sided and must preserve accepted choices.
+check(
+    all(k in traces for k in ["ST-150", "Tests", "normal-path interruption", "ST-151", "accepted tradeoff"])
+    and "before the first edit-capable handoff" in code_orchestrator_sem and "hypothetical end-to-end behavior before implementation" in code_orchestrator_sem and "compare materially different plausible solutions without treating the proposed candidates, any particular pair, or the smallest patch as an exhaustive choice set" in code_orchestrator_sem
+    and "Reassess fix adequacy when material contrary evidence emerges at any stage" in code_orchestrator_sem and "verify the **protection premise against the combined candidate**" in text("agents/reviewer.md"),
+    "ST-150/151 protective premise, ordinary-path cost, and accepted-tradeoff regressions missing",
 )
 
 if failures:

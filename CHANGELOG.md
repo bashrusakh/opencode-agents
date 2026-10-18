@@ -1,5 +1,106 @@
 # Changelog
 
+## v31.8 beta
+
+Unifies the pre-implementation solution search with **evidence-triggered correct-fix reassessment**. The subject is whether the selected fix meets end-to-end acceptance, not merely whether its implementation follows a technical specification. If material contrary evidence arises during investigation, implementation, verification or review, the workflow owner revisits only the unsupported premises—including the issue/spec interpretation, user/product outcome, root cause, fix level, scope or architecture—before further dependent implementation. One discriminating prospective counterexample suffices; repeated patch failure is not a prerequisite.
+
+- Scope may widen technically as necessary for the same authorized result; explicit user-owned exclusions, chosen mechanisms and product outcomes remain binding until an authorized decision revises them.
+- No ritual re-evaluation of adequate fixes, no new mandatory planning step, no new ST traces, no role/permission/skill changes. Existing release-gate anchors updated to match the installed wording.
+
+See `docs/releases/v31.8-beta.md`.
+
+## v31.7 beta
+
+Corrects the closed two-option comparison accidentally introduced in v31.6. **Before design/scope commitment or the first edit-capable handoff**, `code-orchestrator` must consider materially different plausible ways of achieving the established outcome, not just causal repair with/without a guard. If neither or none is adequate, revisit the root-cause model and right-level technical/architectural owner instead of force-fitting a local patch. A two-state safeguard comparison remains one illustrative diagnostic, not a mandatory exhaustive candidate set.
+
+- Explicit constraints and product authority are unchanged: technical widening inside the accepted outcome follows the existing right-level rule; a required change to user-owned acceptance or exclusions goes back for a decision.
+- No new role, stage, permission, ST trace or workflow-path scenario. Only existing gate anchors were updated to check the corrected runtime wording.
+- All non-orchestrator agent bodies and all skills remain unchanged.
+
+See `docs/releases/v31.7-beta.md`.
+
+## v31.6 beta
+
+Clarifies the **pre-implementation** combined-design assessment from v31.5 without changing its decision authority or adding a new workflow stage.
+
+- `code-orchestrator` compares two *hypothetical* end states **before selecting implementation scope or delegating edits**: causal repair without a proposed additional restriction versus the same repair with it. This is not a post-implementation check.
+- The resulting questions distinguish whether the safeguard still addresses a hazard from whether it burdens ordinary permitted behavior. Existing user authority and escalation rules remain unchanged; no new product policy or approval gate is introduced.
+- The v31.5 global source-to-spec guidance and independent reviewer contract remain canonical for their own audiences; no semantic duplicate is added. Existing regression assertions now track the clarified wording. No new ST trace.
+
+See `docs/releases/v31.6-beta.md`.
+
+## v31.5 beta
+
+Initial-specification acceptance and pre-handoff scope reconciliation over v31.4.
+
+- Runtime `AGENTS.md` now makes source-to-spec drafting preserve the distinction between outcome, authoritative constraints, and alternative suggested remedies, rather than promoting all remedies into simultaneous requirements.
+- `code-orchestrator` now checks interacting mechanisms **before** freezing the fix design/scope or delegating mutation: does the primary repair make a required safeguard redundant, and does the safeguard impair an ordinary permitted path?
+- Explicit user/product constraints remain binding. When evidence shows an unresolved material product tradeoff, report it and obtain the owner's decision before implementing the disputed full mechanism set; do not silently discard a requirement or invent a new mandatory review stage. Already-accepted tradeoffs are not reopened ritualistically.
+- Existing reviewer independence, right-level scope expansion, permissions, role boundaries and installed skill content unchanged. No new ST-* scenarios were added; existing release gates are regression safety checks, not a substitute for runtime instructions or model replay.
+
+See `docs/releases/v31.5-beta.md`.
+
+## v31.4 beta
+
+Historical release notes and per-version audits live in the release bundle archive, not the runtime/source pack. Old paths below are archival references, not in-package links.
+
+
+
+Semantic product-impact review and slim distribution over v31.3.
+
+- Requires the workflow owner and independent reviewer to check whether a new protective restriction still addresses a real risk after the **combined** change, and whether it interrupts ordinary permitted use; do not derive real-world prevalence from a single fixture.
+- User-authorized constraints remain binding: when a protection requirement conflicts with the broader acceptance outcome, surface the decision instead of silently overriding it or treating its matching tests as proof that the tradeoff is good. The tester remains a verification owner, not product-policy arbiter.
+- Adds ST-150 and ST-151 plus workflow-path and destructive mutation coverage for guard-premise errors and legitimate explicitly accepted tradeoffs.
+- Distribution now retains only the current release note; historical notes and protocol audit snapshots are delivered as a separate archive in the release bundle. CHANGELOG retains the canonical history. Consolidates the orphaned role-contract rubric into the semantic manual.
+- No changes to agent frontmatter/permissions, vendor skills, runtime role topology, or PR lifecycle ownership.
+
+Fresh independent model replay of ST-150..ST-151 is not claimed by this beta.
+
+Detailed current release: `docs/releases/v31.4-beta.md`. Archived docs are separately available in the release bundle.
+
+## v31.3 beta
+
+Weak-model robustness hardening over v31.2 for terminal compliance diagnosis and explicit managed-review methods.
+
+- Makes `session-evaluator` fail closed for material instruction-compliance areas whose governing historical contract cannot be established. Equivalent-looking tests/reviews/workflow layers cannot substitute for the missing contract, and a material `unverified` area cannot be normalized into `Compliant overall`.
+- Clarifies that an explicit managed-OCR requirement constrains the **review method/evidence source**, not the **review owner**. When final whole-change review belongs to `@reviewer`, OCR is passed into that reviewer stage; direct OCR cannot replace it, and OCR failure/waiver waives only the method unless governing authority separately changes the stage.
+- Adds generalized semantic-design guidance for compliance under missing contracts and method-vs-owner separation.
+- Adds ST-148 and ST-149 plus destructive workflow-path mutations for inferred-compliance laundering and OCR-method ownership transfer.
+- Keeps agent permissions/frontmatter, role topology, vendor skill content, PR lifecycle ownership, and existing review/OCR provider mechanics unchanged.
+
+Fresh isolated behavioral replay of ST-148..ST-149 is not claimed unless separately executed.
+
+See `docs/releases/v31.3-beta.md` (archived) and `docs/contract-protocol-audit-v31.3.md` (archived).
+
+## v31.2 beta
+
+Semantic evidence-consumption and public-report provenance hardening over v31.1.
+
+- Extends the v31.1 closure-adjudication regression so an unqualified specialist `complete`/`no blocker` cannot launder representative/narrow evidence into broader domain/owner/invariant closure merely because the producer reports confidence. Runtime ownership remains in `code-orchestrator`; no new producer checklist is added.
+- Strengthens `repository-workflow` so the evidentiary state of a public issue/ticket/report must match the state claimed by that report. Current-code/root-cause/file/line claims require authoritative evidence for that current target state; stale local code is not a substitute.
+- Preserves precedence/action ceilings: when the freshness step required for a stronger public claim is unavailable or forbidden by project/user authority, the workflow narrows the report to supported symptom/reproduction/version propositions or stops the unsupported claim instead of bypassing the boundary. Explicitly historical/local/pinned reports remain bound to their intended state and do not force current-upstream refresh.
+- Adds ST-146 and ST-147 plus destructive workflow-path mutations for representative-evidence laundering and stale-report-diagnosis laundering.
+- Keeps agent permissions/frontmatter, vendor skill content, role topology, PR lifecycle ownership, and git-provenance mechanics unchanged.
+
+Fresh isolated behavioral replay of ST-146..ST-147 is not claimed unless separately executed.
+
+See `docs/releases/v31.2-beta.md` (archived) and `docs/contract-protocol-audit-v31.2.md` (archived).
+
+## v31.1 beta
+
+Consumer-side closure adjudication hardening over v31.0:
+
+- treats specialist completion/closure conclusions as proposition-scoped claims rather than workflow state;
+- requires `code-orchestrator` to compare claimed closure breadth with the assignment and evidence actually returned before closing a broader parent proposition;
+- keeps material residual risks, unsupported classes, coverage limits, and unresolved owner/model questions live even when a specialist labels its bounded package complete;
+- documents the reusable design principle **producer completion != consumer acceptance** without requiring the parent to redo specialist work;
+- adds workflow-path mutation coverage and ST-145 for narrow-evidence -> broad-closure laundering;
+- keeps permissions/frontmatter, vendor skill content, role topology, and PR lifecycle ownership unchanged.
+
+Fresh isolated behavioral replay of ST-145 is not claimed unless separately executed.
+
+See `docs/releases/v31.1-beta.md` (archived) and `docs/contract-protocol-audit-v31.1.md` (archived).
+
 ## v31.0 beta
 
 Behavioral orchestration hardening from a clean v30.100 owned-PR session:
@@ -13,7 +114,7 @@ Behavioral orchestration hardening from a clean v30.100 owned-PR session:
 
 Fresh isolated behavioral replay of ST-142..ST-144 is not claimed unless separately executed.
 
-See [`docs/releases/v31.0-beta.md`](docs/releases/v31.0-beta.md) and [`docs/contract-protocol-audit-v31.0.md`](docs/contract-protocol-audit-v31.0.md).
+See `docs/releases/v31.0-beta.md` (archived) and `docs/contract-protocol-audit-v31.0.md` (archived).
 
 ## v30.100 beta
 
@@ -27,7 +128,7 @@ Terminology-only cleanup of pack-controlled conditional skills; runtime semantic
 - Historical release documents retain the names used by those releases.
 - Permissions/frontmatter and vendor skill content are unchanged.
 
-See [`docs/releases/v30.100-beta.md`](docs/releases/v30.100-beta.md) and [`docs/contract-protocol-audit-v30.100.md`](docs/contract-protocol-audit-v30.100.md).
+See `docs/releases/v30.100-beta.md` (archived) and `docs/contract-protocol-audit-v30.100.md` (archived).
 
 ## v30.99 beta
 
@@ -36,7 +137,7 @@ See [`docs/releases/v30.100-beta.md`](docs/releases/v30.100-beta.md) and [`docs/
 - Added `reference-integrity-audit.py` + selftest and release-gate integration across all roles and pack-controlled skills; vendor-advisory content remains untouched.
 - Permissions/frontmatter, vendor skills, role topology, and workflow semantics are unchanged.
 
-See [`docs/releases/v30.99-beta.md`](docs/releases/v30.99-beta.md) and [`docs/contract-protocol-audit-v30.99.md`](docs/contract-protocol-audit-v30.99.md).
+See `docs/releases/v30.99-beta.md` (archived) and `docs/contract-protocol-audit-v30.99.md` (archived).
 
 ## v30.98 beta
 
@@ -52,7 +153,7 @@ Conditional code-to-UI routing residency plus end-to-end workflow-path validatio
 
 Fresh isolated behavioral replay of ST-138..ST-141 is not claimed unless separately executed.
 
-See [`docs/releases/v30.98-beta.md`](docs/releases/v30.98-beta.md) and [`docs/contract-protocol-audit-v30.98.md`](docs/contract-protocol-audit-v30.98.md).
+See `docs/releases/v30.98-beta.md` (archived) and `docs/contract-protocol-audit-v30.98.md` (archived).
 
 ## v30.97 beta
 
@@ -67,7 +168,7 @@ Conditional terminal diagnostic residency for `code-orchestrator`:
 
 Fresh isolated behavioral replay of ST-136..ST-137 is not claimed unless separately executed.
 
-See [`docs/releases/v30.97-beta.md`](docs/releases/v30.97-beta.md) and [`docs/contract-protocol-audit-v30.97.md`](docs/contract-protocol-audit-v30.97.md).
+See `docs/releases/v30.97-beta.md` (archived) and `docs/contract-protocol-audit-v30.97.md` (archived).
 
 ## v30.96 beta
 
@@ -83,7 +184,7 @@ Conditional code-host resource residency for `code-orchestrator`:
 
 Fresh isolated behavioral replay of ST-134..ST-135 is not claimed unless separately executed.
 
-See [`docs/releases/v30.96-beta.md`](docs/releases/v30.96-beta.md) and [`docs/contract-protocol-audit-v30.96.md`](docs/contract-protocol-audit-v30.96.md).
+See `docs/releases/v30.96-beta.md` (archived) and `docs/contract-protocol-audit-v30.96.md` (archived).
 
 ## v30.95 beta
 
@@ -101,7 +202,7 @@ Semantic-preservation hardening after the v30.94 residency split:
 
 Fresh isolated behavioral replay of ST-130..ST-133 is not claimed unless separately executed.
 
-See [`docs/releases/v30.95-beta.md`](docs/releases/v30.95-beta.md) and [`docs/contract-protocol-audit-v30.95.md`](docs/contract-protocol-audit-v30.95.md).
+See `docs/releases/v30.95-beta.md` (archived) and `docs/contract-protocol-audit-v30.95.md` (archived).
 
 ## v30.94 beta
 
@@ -118,7 +219,7 @@ Runtime-residency split of the always-loaded root without changing permissions o
 
 Fresh isolated behavioral replay of ST-127..ST-129 is not claimed unless separately executed.
 
-See [`docs/releases/v30.94-beta.md`](docs/releases/v30.94-beta.md) and [`docs/contract-protocol-audit-v30.94.md`](docs/contract-protocol-audit-v30.94.md).
+See `docs/releases/v30.94-beta.md` (archived) and `docs/contract-protocol-audit-v30.94.md` (archived).
 
 ## v30.93 beta
 
@@ -138,7 +239,7 @@ Agent permission/frontmatter policy is intentionally unchanged.
 
 Fresh isolated behavioral replay of ST-123..ST-126 is not claimed unless separately executed.
 
-See [`docs/releases/v30.93-beta.md`](docs/releases/v30.93-beta.md) and [`docs/contract-protocol-audit-v30.93.md`](docs/contract-protocol-audit-v30.93.md).
+See `docs/releases/v30.93-beta.md` (archived) and `docs/contract-protocol-audit-v30.93.md` (archived).
 
 ## v30.92 beta
 
@@ -157,7 +258,7 @@ Permission/frontmatter policy is intentionally unchanged in this release.
 
 Fresh isolated behavioral replay of ST-121/ST-122 is not claimed unless separately executed.
 
-See [`docs/releases/v30.92-beta.md`](docs/releases/v30.92-beta.md) and [`docs/contract-protocol-audit-v30.92.md`](docs/contract-protocol-audit-v30.92.md).
+See `docs/releases/v30.92-beta.md` (archived) and `docs/contract-protocol-audit-v30.92.md` (archived).
 
 ## v30.91 beta
 
@@ -172,7 +273,7 @@ Generic cross-layer semantic-ownership control plane:
 
 Fresh isolated behavioral replay of ST-120 is not claimed unless separately executed.
 
-See [`docs/releases/v30.91-beta.md`](docs/releases/v30.91-beta.md) and [`docs/contract-protocol-audit-v30.91.md`](docs/contract-protocol-audit-v30.91.md).
+See `docs/releases/v30.91-beta.md` (archived) and `docs/contract-protocol-audit-v30.91.md` (archived).
 
 ## v30.90 beta
 
@@ -188,7 +289,7 @@ Decision-boundary hardening plus root/orchestrator semantic-owner deduplication:
 
 No fresh isolated behavioral replay is claimed unless separately executed.
 
-See [`docs/releases/v30.90-beta.md`](docs/releases/v30.90-beta.md) and [`docs/contract-protocol-audit-v30.90.md`](docs/contract-protocol-audit-v30.90.md).
+See `docs/releases/v30.90-beta.md` (archived) and `docs/contract-protocol-audit-v30.90.md` (archived).
 
 ## v30.89 beta
 
@@ -204,7 +305,7 @@ Whole-scope review, handoff-quality, owner-hypothesis, and fresh-memory-continui
 
 No fresh isolated behavioral model replay is claimed by this release unless separately executed.
 
-See [`docs/releases/v30.89-beta.md`](docs/releases/v30.89-beta.md) and [`docs/contract-protocol-audit-v30.89.md`](docs/contract-protocol-audit-v30.89.md).
+See `docs/releases/v30.89-beta.md` (archived) and `docs/contract-protocol-audit-v30.89.md` (archived).
 
 ## v30.88 beta
 
@@ -218,7 +319,7 @@ Fresh-review capability-versus-context clarification:
 
 No change is made to GrayMatter availability, memory-tool permissions, reviewer read-only permissions, targeted partial re-review, publication lifecycle, or the v30.87 investigative-context isolation rule. Fresh isolated behavioral replay remains separate evidence and is not claimed unless actually run.
 
-See [`docs/releases/v30.88-beta.md`](docs/releases/v30.88-beta.md) and [`docs/contract-protocol-audit-v30.88.md`](docs/contract-protocol-audit-v30.88.md).
+See `docs/releases/v30.88-beta.md` (archived) and `docs/contract-protocol-audit-v30.88.md` (archived).
 
 ## v30.87 beta
 
@@ -233,7 +334,7 @@ Fresh whole-change review investigative-context isolation hardening:
 
 No runtime semantic change is made to implementation/debug/test/UI roles, controller activation, publication lifecycle, or the v30.85 accountable-owner model. Fresh isolated behavioral replay remains separate evidence and is not claimed unless actually run.
 
-See [`docs/releases/v30.87-beta.md`](docs/releases/v30.87-beta.md) and [`docs/contract-protocol-audit-v30.87.md`](docs/contract-protocol-audit-v30.87.md).
+See `docs/releases/v30.87-beta.md` (archived) and `docs/contract-protocol-audit-v30.87.md` (archived).
 
 ## v30.86 beta
 
@@ -249,7 +350,7 @@ Fresh whole-change review independence hardening:
 
 No runtime semantic change is made to implementation/debug/test/UI roles, skills, publication policy, or the v30.85 owner/control-plane model. Fresh isolated behavioral replay remains a separate evidence class and is not claimed unless actually run.
 
-See [`docs/releases/v30.86-beta.md`](docs/releases/v30.86-beta.md) and [`docs/contract-protocol-audit-v30.86.md`](docs/contract-protocol-audit-v30.86.md).
+See `docs/releases/v30.86-beta.md` (archived) and `docs/contract-protocol-audit-v30.86.md` (archived).
 
 ## v30.85 beta
 
@@ -267,7 +368,7 @@ No runtime semantic change is made to implementation/debug/review/test/UI roles,
 
 Fresh isolated behavioral replay remains a separate evidence class and is not claimed unless actually run.
 
-See [`docs/releases/v30.85-beta.md`](docs/releases/v30.85-beta.md) and [`docs/contract-protocol-audit-v30.85.md`](docs/contract-protocol-audit-v30.85.md).
+See `docs/releases/v30.85-beta.md` (archived) and `docs/contract-protocol-audit-v30.85.md` (archived).
 
 ## v30.84 beta
 
@@ -283,7 +384,7 @@ No runtime semantic change is made to `debugger`, `reviewer`, `build`, `tester`,
 
 Fresh isolated behavioral replay remains a separate evidence class and is not claimed unless actually run.
 
-See [`docs/releases/v30.84-beta.md`](docs/releases/v30.84-beta.md) and [`docs/contract-protocol-audit-v30.84.md`](docs/contract-protocol-audit-v30.84.md).
+See `docs/releases/v30.84-beta.md` (archived) and `docs/contract-protocol-audit-v30.84.md` (archived).
 
 ## v30.83 beta
 
@@ -299,7 +400,7 @@ No runtime semantic change is made to `build`, `debugger`, `reviewer`, `tester`,
 
 Fresh isolated behavioral replay remains a separate evidence class; this release records it only if actually run.
 
-See [`docs/releases/v30.83-beta.md`](docs/releases/v30.83-beta.md) and [`docs/contract-protocol-audit-v30.83.md`](docs/contract-protocol-audit-v30.83.md).
+See `docs/releases/v30.83-beta.md` (archived) and `docs/contract-protocol-audit-v30.83.md` (archived).
 
 ## v30.82 beta
 
@@ -315,7 +416,7 @@ No runtime semantic change is made to `build`, `reviewer`, `code-orchestrator`, 
 
 Fresh isolated behavioral replay of ST-01…ST-84 remains separate evidence and is not claimed by static/contract/package validation.
 
-See [`docs/releases/v30.82-beta.md`](docs/releases/v30.82-beta.md) and [`docs/contract-protocol-audit-v30.82.md`](docs/contract-protocol-audit-v30.82.md).
+See `docs/releases/v30.82-beta.md` (archived) and `docs/contract-protocol-audit-v30.82.md` (archived).
 
 ## v30.81 beta
 
@@ -329,7 +430,7 @@ UI routing discriminator hardening:
 
 Fresh isolated behavioral replay of ST-01…ST-79 remains separate evidence and is not claimed by static/contract/package validation.
 
-See [`docs/releases/v30.81-beta.md`](docs/releases/v30.81-beta.md) and [`docs/contract-protocol-audit-v30.81.md`](docs/contract-protocol-audit-v30.81.md).
+See `docs/releases/v30.81-beta.md` (archived) and `docs/contract-protocol-audit-v30.81.md` (archived).
 
 ## v30.80
 
@@ -338,7 +439,7 @@ See [`docs/releases/v30.81-beta.md`](docs/releases/v30.81-beta.md) and [`docs/co
 - Updates the pack version marker, installer receipt identity, and current-release documentation links to stable `v30.80` / `docs/releases/v30.80.md`.
 - Fresh isolated behavioral replay of ST-01…ST-78 remains separate evidence and is still not claimed by this promotion.
 
-See [`docs/releases/v30.80.md`](docs/releases/v30.80.md) and [`docs/contract-protocol-audit-v30.80.md`](docs/contract-protocol-audit-v30.80.md).
+See `docs/releases/v30.80.md` (archived) and `docs/contract-protocol-audit-v30.80.md` (archived).
 
 ## v30.80 beta
 
@@ -355,7 +456,7 @@ Semantic ownership, discovery, installer-safety, and licensing hardening:
 
 Fresh isolated behavioral replay of ST-01…ST-78 remains separate evidence and is not claimed by static/contract/package validation.
 
-See [`docs/releases/v30.80-beta.md`](docs/releases/v30.80-beta.md) and [`docs/contract-protocol-audit-v30.80.md`](docs/contract-protocol-audit-v30.80.md).
+See `docs/releases/v30.80-beta.md` (archived) and `docs/contract-protocol-audit-v30.80.md` (archived).
 
 ## v30.79 beta
 
@@ -370,7 +471,7 @@ Reviewer / managed-OCR independence hardening:
 
 Fresh isolated behavioral replay of ST-01…ST-75 remains separate evidence and is not claimed by static/contract/package validation.
 
-See [`docs/releases/v30.79-beta.md`](docs/releases/v30.79-beta.md) and [`docs/contract-protocol-audit-v30.79.md`](docs/contract-protocol-audit-v30.79.md).
+See `docs/releases/v30.79-beta.md` (archived) and `docs/contract-protocol-audit-v30.79.md` (archived).
 
 ## v30.78 beta
 
@@ -384,7 +485,7 @@ Orchestrator communication and decision-context hardening:
 
 Fresh isolated behavioral replay of ST-01…ST-74 remains separate evidence and is not claimed by static/contract/package validation.
 
-See [`docs/releases/v30.78-beta.md`](docs/releases/v30.78-beta.md) and [`docs/contract-protocol-audit-v30.78.md`](docs/contract-protocol-audit-v30.78.md).
+See `docs/releases/v30.78-beta.md` (archived) and `docs/contract-protocol-audit-v30.78.md` (archived).
 
 ## v30.77 beta
 
@@ -397,7 +498,7 @@ Delegated-specialist README/topology consistency:
 
 Fresh isolated behavioral replay of ST-01…ST-70 remains separate evidence and is not claimed by this documentation/eval consistency release.
 
-See [`docs/releases/v30.77-beta.md`](docs/releases/v30.77-beta.md) and [`docs/contract-protocol-audit-v30.77.md`](docs/contract-protocol-audit-v30.77.md).
+See `docs/releases/v30.77-beta.md` (archived) and `docs/contract-protocol-audit-v30.77.md` (archived).
 
 ## v30.76 beta
 
@@ -412,7 +513,7 @@ External technical evidence specialist:
 
 Fresh isolated behavioral replay of ST-01…ST-70 remains separate evidence and is not claimed by static/contract/package validation.
 
-See [`docs/releases/v30.76-beta.md`](docs/releases/v30.76-beta.md) and [`docs/contract-protocol-audit-v30.76.md`](docs/contract-protocol-audit-v30.76.md).
+See `docs/releases/v30.76-beta.md` (archived) and `docs/contract-protocol-audit-v30.76.md` (archived).
 
 ## v30.75 beta
 
@@ -425,7 +526,7 @@ README navigation deduplication:
 - preserves `AGENTS.md` mentions that are operational rather than architectural duplication: install paths and the title of an external reference;
 - runtime agent/skill contracts and workflow semantics remain unchanged from v30.74.
 
-See [`docs/releases/v30.75-beta.md`](docs/releases/v30.75-beta.md) and [`docs/contract-protocol-audit-v30.75.md`](docs/contract-protocol-audit-v30.75.md).
+See `docs/releases/v30.75-beta.md` (archived) and `docs/contract-protocol-audit-v30.75.md` (archived).
 
 ## v30.74 beta
 
@@ -437,7 +538,7 @@ Role-contract semantic-shape standardization:
 - records a deferred `librarian` / external-technical-evidence capability TODO for future design, without adding a runtime role in this release;
 - runtime agent and skill contracts remain unchanged from v30.73.
 
-See [`docs/releases/v30.74-beta.md`](docs/releases/v30.74-beta.md) and [`docs/contract-protocol-audit-v30.74.md`](docs/contract-protocol-audit-v30.74.md).
+See `docs/releases/v30.74-beta.md` (archived) and `docs/contract-protocol-audit-v30.74.md` (archived).
 
 ## v30.73 beta
 
@@ -449,7 +550,7 @@ README provenance restoration:
 - intentionally does not restore the former `Runtime references` section;
 - runtime agents, skills, and workflow semantics remain those of v30.72.
 
-See [`docs/releases/v30.73-beta.md`](docs/releases/v30.73-beta.md).
+See `docs/releases/v30.73-beta.md` (archived).
 
 ## v30.72 beta
 
@@ -460,7 +561,7 @@ README current-state cleanup:
 - keeps release history and release-specific validation in `CHANGELOG.md` and `docs/releases/`;
 - runtime agents, skills, and workflow semantics remain those of v30.71.
 
-See [`docs/releases/v30.72-beta.md`](docs/releases/v30.72-beta.md).
+See `docs/releases/v30.72-beta.md` (archived).
 
 ## v30.71 beta
 
@@ -470,7 +571,7 @@ See [`docs/releases/v30.72-beta.md`](docs/releases/v30.72-beta.md).
 - Runtime agents/skills are unchanged from v30.70; root semantic policy is unchanged apart from the version marker.
 - Makes the README current-release static guard layout-agnostic so it verifies the active release-note link rather than one historical table rendering.
 
-See [`docs/releases/v30.71-beta.md`](docs/releases/v30.71-beta.md).
+See `docs/releases/v30.71-beta.md` (archived).
 
 ## v30.70 beta
 
@@ -480,7 +581,7 @@ See [`docs/releases/v30.71-beta.md`](docs/releases/v30.71-beta.md).
 - Extends role/edge synthetic selftests and static guards for new roles without profiles, unknown/stale edges, lifecycle/manual retention, and inventory anti-gaming.
 - Adds ST-61…ST-63; runtime agent contracts are unchanged from v30.69.
 
-See [`docs/releases/v30.70-beta.md`](docs/releases/v30.70-beta.md) and [`docs/contract-protocol-audit-v30.70.md`](docs/contract-protocol-audit-v30.70.md).
+See `docs/releases/v30.70-beta.md` (archived) and `docs/contract-protocol-audit-v30.70.md` (archived).
 
 ## v30.69 beta
 
@@ -491,7 +592,7 @@ See [`docs/releases/v30.70-beta.md`](docs/releases/v30.70-beta.md) and [`docs/co
 - Adds ST-53…ST-60 and manual-checklist coverage for the repaired capabilities and handoff edges.
 - Frozen role audit result is **17 PASS / 0 REVIEW / 0 FAIL**; edge audit is **11/11 PASS**. Fresh isolated behavioral replay remains pending.
 
-See [`docs/releases/v30.69-beta.md`](docs/releases/v30.69-beta.md) and [`docs/contract-protocol-audit-v30.69.md`](docs/contract-protocol-audit-v30.69.md).
+See `docs/releases/v30.69-beta.md` (archived) and `docs/contract-protocol-audit-v30.69.md` (archived).
 
 ## v30.68 beta
 
@@ -501,7 +602,7 @@ See [`docs/releases/v30.69-beta.md`](docs/releases/v30.69-beta.md) and [`docs/co
 - Synthetic self-tests now require a compact executable discovery role to PASS and an otherwise executable audit orchestrator with missing conflict reconciliation to REVIEW.
 - Frozen pre-repair audit result is **6 FAIL / 1 REVIEW / 10 PASS**, exactly matching manual adjudication; runtime agents remain unchanged.
 
-See [`docs/releases/v30.68-beta.md`](docs/releases/v30.68-beta.md) and [`docs/contract-protocol-audit-v30.68.md`](docs/contract-protocol-audit-v30.68.md).
+See `docs/releases/v30.68-beta.md` (archived) and `docs/contract-protocol-audit-v30.68.md` (archived).
 
 ## v30.67 beta
 
@@ -512,7 +613,7 @@ See [`docs/releases/v30.68-beta.md`](docs/releases/v30.68-beta.md) and [`docs/co
 - Adds ST-49…ST-51 and updates the semantic-design manual with the stricter role-executability gate.
 - Current audit result is **7 FAIL / 2 REVIEW / 8 PASS**; runtime agent contracts are intentionally unchanged so the detector is evaluated against the same object.
 
-See [`docs/releases/v30.67-beta.md`](docs/releases/v30.67-beta.md) and [`docs/contract-protocol-audit-v30.67.md`](docs/contract-protocol-audit-v30.67.md).
+See `docs/releases/v30.67-beta.md` (archived) and `docs/contract-protocol-audit-v30.67.md` (archived).
 
 ## v30.65 beta
 
@@ -531,7 +632,7 @@ See [`docs/releases/v30.67-beta.md`](docs/releases/v30.67-beta.md) and [`docs/co
 - Keeps the case map proportional to risk: no arbitrary cross-product expansion and no invented semantic classes.
 - Adds six trace-derived, domain-neutral builder regression scenarios ST-38…ST-43.
 
-See [`docs/releases/v30.64-beta.md`](docs/releases/v30.64-beta.md).
+See `docs/releases/v30.64-beta.md` (archived).
 
 ## v30.63 beta
 
@@ -540,7 +641,7 @@ See [`docs/releases/v30.64-beta.md`](docs/releases/v30.64-beta.md).
 - Adds mandatory pre-return implementation self-review of the exact final diff/state plus changed-and-preserved verification; a green focused case no longer suffices when the implementation proof includes uncovered preserved behavior or shared consumers.
 - Adds ST-36/ST-37 and static guards for blind handoff-mechanism execution and returning a locally green but implementation-locally detectable regression.
 
-See [`docs/releases/v30.63-beta.md`](docs/releases/v30.63-beta.md).
+See `docs/releases/v30.63-beta.md` (archived).
 
 ## v30.62 beta
 
@@ -549,7 +650,7 @@ See [`docs/releases/v30.63-beta.md`](docs/releases/v30.63-beta.md).
 - Adds a build-side reroute boundary so an incorrectly assigned post-return confirmed defect is rejected instead of being absorbed as another ordinary build iteration.
 - Adds ST-35 and static guards for build→review FAIL→same-build looping and preserves existing reset/escalation behavior when a debugger fix is rejected or findings converge on one invariant.
 
-See [`docs/releases/v30.62-beta.md`](docs/releases/v30.62-beta.md).
+See `docs/releases/v30.62-beta.md` (archived).
 
 ## v30.61 beta
 
@@ -558,7 +659,7 @@ See [`docs/releases/v30.62-beta.md`](docs/releases/v30.62-beta.md).
 - Makes reviewer independence explicit for requested mechanisms and accepted tradeoffs, strengthens wrong-fix-level/workaround reporting, and adds general material performance/resource regression review beyond only contended-lock paths.
 - Adds ST-33/ST-34 and owner-specific static guards for mechanism-as-correctness laundering and functionally-green performance/resource regressions.
 
-See [`docs/releases/v30.61-beta.md`](docs/releases/v30.61-beta.md).
+See `docs/releases/v30.61-beta.md` (archived).
 
 ## v30.60 beta
 
@@ -568,7 +669,7 @@ See [`docs/releases/v30.61-beta.md`](docs/releases/v30.61-beta.md).
 - Extends `session-evaluator`, the semantic-design manual, ST-32, and static policy guards for independent-judgment context contamination.
 - Adds a generic release-identity consistency guard and fixes a stale README footer version inherited from earlier betas.
 
-See [`docs/releases/v30.60-beta.md`](docs/releases/v30.60-beta.md).
+See `docs/releases/v30.60-beta.md` (archived).
 
 ## v30.59 beta
 
@@ -577,7 +678,7 @@ See [`docs/releases/v30.60-beta.md`](docs/releases/v30.60-beta.md).
 - Keeps managed `open-code-review` / `ocr review` as a separate independent-model escalation.
 - Adds ST-31 and an owner-specific static guard for the mandatory delegate-preflight contract.
 
-See [`docs/releases/v30.59-beta.md`](docs/releases/v30.59-beta.md).
+See `docs/releases/v30.59-beta.md` (archived).
 
 ## v30.58 beta
 
@@ -586,7 +687,7 @@ See [`docs/releases/v30.59-beta.md`](docs/releases/v30.59-beta.md).
 - Leaves root authority, qualifier, fallback, exact-candidate, and read-back policy unchanged; this is a reviewer-salience/runtime-operationalization refinement, not a new platform-specific policy.
 - Keeps the 30-case semantic transition suite unchanged and strengthens the static reviewer guard for the generalized runtime wording.
 
-See [`docs/releases/v30.58-beta.md`](docs/releases/v30.58-beta.md).
+See `docs/releases/v30.58-beta.md` (archived).
 
 ## v30.57 beta
 
@@ -595,7 +696,7 @@ See [`docs/releases/v30.58-beta.md`](docs/releases/v30.58-beta.md).
 - Adds ST-29 for exact Base/Candidate-bound review evidence freshness and ST-30 for mutation receipt versus authoritative post-mutation read-back.
 - Updates semantic-design eval guidance; runtime agent/skill semantics remain unchanged from v30.56 apart from the root version marker.
 
-See [`docs/releases/v30.57-beta.md`](docs/releases/v30.57-beta.md).
+See `docs/releases/v30.57-beta.md` (archived).
 
 ## v30.56 beta
 
@@ -604,7 +705,7 @@ See [`docs/releases/v30.57-beta.md`](docs/releases/v30.57-beta.md).
 - Extends `session-evaluator` to audit assignment/role-contract composition.
 - Expands semantic transition regressions from 27 to 28 cases with ST-28.
 
-See [`docs/releases/v30.56-beta.md`](docs/releases/v30.56-beta.md).
+See `docs/releases/v30.56-beta.md` (archived).
 
 ## v30.55 beta
 
@@ -613,7 +714,7 @@ See [`docs/releases/v30.56-beta.md`](docs/releases/v30.56-beta.md).
 - Extends fallback/recovery review to validate the semantic success postcondition of earlier stages whose reported success suppresses fallback.
 - Expands semantic transition regressions from 25 to 27 cases with dedicated projection-composition and false-semantic-success fallback scenarios.
 
-See [`docs/releases/v30.55-beta.md`](docs/releases/v30.55-beta.md).
+See `docs/releases/v30.55-beta.md` (archived).
 
 ## v30.54 beta
 
@@ -622,7 +723,7 @@ See [`docs/releases/v30.55-beta.md`](docs/releases/v30.55-beta.md).
 - Expands semantic transition regressions from 21 to 25 cases; authoritative-domain oracle and counterexample-convergence scenarios remain eval-only probes of existing general rules.
 - Adds trace reproducibility metadata requirements for a future executable replay runner without changing the user-visible Startup contract.
 
-See [`docs/releases/v30.54-beta.md`](docs/releases/v30.54-beta.md).
+See `docs/releases/v30.54-beta.md` (archived).
 
 ## v30.53 beta
 
@@ -631,7 +732,7 @@ See [`docs/releases/v30.54-beta.md`](docs/releases/v30.54-beta.md).
 - Adds conditional call-chain cost tracing for changed work under contended critical resources.
 - Expands semantic transition regressions from 18 to 21 cases and adds static/mutation guards for the new reviewer obligations.
 
-See [`docs/releases/v30.53-beta.md`](docs/releases/v30.53-beta.md).
+See `docs/releases/v30.53-beta.md` (archived).
 
 ## v30.52 beta
 
@@ -641,7 +742,7 @@ See [`docs/releases/v30.53-beta.md`](docs/releases/v30.53-beta.md).
 - Makes the temporary semantic-transition eval contract explicit about injected intermediate faults and separates proposition relation from evidence-state transitions.
 - Extends the Semantic Design Manual release checklist with runtime-dependency reachability and owner-specific static-oracle checks.
 
-See [`docs/releases/v30.52-beta.md`](docs/releases/v30.52-beta.md).
+See `docs/releases/v30.52-beta.md` (archived).
 
 ## v30.51 beta
 
@@ -651,7 +752,7 @@ See [`docs/releases/v30.52-beta.md`](docs/releases/v30.52-beta.md).
 - Adds `ui-component-sources` as a pack-owned conditional integration skill without changing the established source order.
 - Expands end-to-end semantic transition traces from 16 to 18 cases and adds executable static schema/ownership regression guards.
 
-See [`docs/releases/v30.51-beta.md`](docs/releases/v30.51-beta.md).
+See `docs/releases/v30.51-beta.md` (archived).
 
 ## v30.50 beta
 
@@ -660,7 +761,7 @@ See [`docs/releases/v30.51-beta.md`](docs/releases/v30.51-beta.md).
 - Adds 16 synthetic adversarial/preservation scenarios, including two incident-independent regressions derived from observed source-authority/report-state and verification-qualifier failures.
 - Extends the Semantic Design Manual and release checklist so per-file/cross-layer static audits do not substitute for fresh semantic-path replay.
 
-See [`docs/releases/v30.50-beta.md`](docs/releases/v30.50-beta.md).
+See `docs/releases/v30.50-beta.md` (archived).
 
 ## v30.49 beta
 
@@ -671,7 +772,7 @@ See [`docs/releases/v30.50-beta.md`](docs/releases/v30.50-beta.md).
 - Makes `pr-readiness` the single owner of the reusable owned-PR lifecycle/readiness sequence.
 - Extends semantic release checks to cross-layer ownership, gating consistency, provider/API/CLI mechanism leakage from semantic roles, and finding ownership/provenance triage.
 
-See [`docs/releases/v30.49-beta.md`](docs/releases/v30.49-beta.md).
+See `docs/releases/v30.49-beta.md` (archived).
 
 ## v30.48 beta
 
@@ -679,7 +780,7 @@ See [`docs/releases/v30.49-beta.md`](docs/releases/v30.49-beta.md).
 - Generalizes semantic terminology validation to any origin-specific literal semantic state/value, not only presentation/color examples.
 - Adds a rename-counterfactual release check for incidental local status/value names.
 
-See [`docs/releases/v30.48-beta.md`](docs/releases/v30.48-beta.md).
+See `docs/releases/v30.48-beta.md` (archived).
 
 ## v30.47 beta
 
@@ -688,7 +789,7 @@ See [`docs/releases/v30.48-beta.md`](docs/releases/v30.48-beta.md).
 - Adds presentation-neutral terminology validation alongside the existing semantic ownership/duplication checks.
 - Corrects the stale root pack-version marker that still identified v30.45.
 
-See [`docs/releases/v30.47-beta.md`](docs/releases/v30.47-beta.md).
+See `docs/releases/v30.47-beta.md` (archived).
 
 ## v30.46 beta
 
@@ -697,7 +798,7 @@ See [`docs/releases/v30.47-beta.md`](docs/releases/v30.47-beta.md).
 - Makes reported success/failure from verification artifacts support product claims only after evidence-validity/causality checks, with proportional negative controls when they materially improve discrimination.
 - Adds role-specific proof-obligation preservation and evidence-laundering detection without introducing another verification stage.
 
-See [`docs/releases/v30.46-beta.md`](docs/releases/v30.46-beta.md).
+See `docs/releases/v30.46-beta.md` (archived).
 
 ## v30.45 beta
 
@@ -706,7 +807,7 @@ See [`docs/releases/v30.46-beta.md`](docs/releases/v30.46-beta.md).
 - Makes semantic-checkpoint require separate authority or an established blocker before a candidate substitutes an established material proposition.
 - Extends session-evaluator delegation and semantic-delta audits to detect parent-narrowed choice sets and unsupported substitutions.
 
-See [`docs/releases/v30.45-beta.md`](docs/releases/v30.45-beta.md).
+See `docs/releases/v30.45-beta.md` (archived).
 
 ## v30.44 beta
 
@@ -715,7 +816,7 @@ See [`docs/releases/v30.45-beta.md`](docs/releases/v30.45-beta.md).
 - Preserves intended, reported, and independently verified action/outcome state across handoffs and retrospective evaluation.
 - Makes session-evaluator report completion as reported-but-unverified when execution evidence is missing, rather than rewriting it as intent.
 
-See [`docs/releases/v30.44-beta.md`](docs/releases/v30.44-beta.md).
+See `docs/releases/v30.44-beta.md` (archived).
 
 ## v30.43 beta
 
@@ -723,7 +824,7 @@ See [`docs/releases/v30.44-beta.md`](docs/releases/v30.44-beta.md).
 - Reduces `code-orchestrator` material-decision visibility text to a role-specific application of the root contract.
 - Deduplicates repeated authority/evidence wording in gates, delegation, and regression guidance without removing their local behavioral consequences.
 
-See [`docs/releases/v30.43-beta.md`](docs/releases/v30.43-beta.md).
+See `docs/releases/v30.43-beta.md` (archived).
 
 ## v30.42 beta
 
@@ -731,7 +832,7 @@ See [`docs/releases/v30.43-beta.md`](docs/releases/v30.43-beta.md).
 - Requires concise, readable Markdown for free-form agent communication, including specialist assignments and handoffs, unless the destination requires another format.
 - Extends session-evaluator diagnostics to detect silent material decision adoption from tool/specialist evidence.
 
-See [`docs/releases/v30.42-beta.md`](docs/releases/v30.42-beta.md).
+See `docs/releases/v30.42-beta.md` (archived).
 
 ## v30.41 beta
 
@@ -739,14 +840,14 @@ See [`docs/releases/v30.42-beta.md`](docs/releases/v30.42-beta.md).
 - Makes `semantic-checkpoint` and `session-evaluator` consume supplied IDs directly and use `session.list` only to resolve missing session identity or parent/child relationships.
 - Removes unconditional full-session-list discovery from those active evidence contracts.
 
-See [`docs/releases/v30.41-beta.md`](docs/releases/v30.41-beta.md).
+See `docs/releases/v30.41-beta.md` (archived).
 
 ## v30.40
 
 - Promotes the validated v30.40 beta candidate to stable.
 - Updates the pack version marker and current-release documentation links to the stable `v30.40` / `docs/releases/v30.40.md` identity.
 
-See [`docs/releases/v30.40.md`](docs/releases/v30.40.md).
+See `docs/releases/v30.40.md` (archived).
 
 ## v30.40 beta
 
@@ -758,7 +859,7 @@ See [`docs/releases/v30.40.md`](docs/releases/v30.40.md).
 - Condenses mutation-mechanism guidance to target-bounded, understood transformations plus diff/state inspection.
 - Bundled skill inventory is now 20 skills: 13 specialist/advisory and 7 workflow/policy skills.
 
-See [`docs/releases/v30.40-beta.md`](docs/releases/v30.40-beta.md).
+See `docs/releases/v30.40-beta.md` (archived).
 
 ## v30.39 beta
 
@@ -767,7 +868,7 @@ See [`docs/releases/v30.40-beta.md`](docs/releases/v30.40-beta.md).
 - Withdraws the v30.37 predecessor/ancestor provenance expansion after the observed missing-history failure was traced to OpenChamber `session.messages(all:true)` pagination rather than missing ancestor authority.
 - Adds a semantic-design manual plus source-preservation audit for the developer references used to shape the pack.
 
-See [`docs/releases/v30.39-beta.md`](docs/releases/v30.39-beta.md).
+See `docs/releases/v30.39-beta.md` (archived).
 
 ## v30.38 beta
 
@@ -776,7 +877,7 @@ See [`docs/releases/v30.39-beta.md`](docs/releases/v30.39-beta.md).
 - Preserves conditional/fallback qualifications across agent boundaries and requires a blocker or separate authority before weakening an established viable outcome.
 - Adds role-specific semantic-delta checks to `code-orchestrator`, `semantic-checkpoint`, and `session-evaluator`.
 
-See [`docs/releases/v30.38-beta.md`](docs/releases/v30.38-beta.md).
+See `docs/releases/v30.38-beta.md` (archived).
 
 ## v30.37 beta
 
@@ -785,7 +886,7 @@ See [`docs/releases/v30.38-beta.md`](docs/releases/v30.38-beta.md).
 - Requires `session-evaluator` to audit material predecessor provenance as well as the current parent and participating descendants, without ritual reads of unrelated prior sessions.
 - Keeps continuation wording and parent/child restatements as pointers to recover primary authority, never as substitutes for it.
 
-See [`docs/releases/v30.37-beta.md`](docs/releases/v30.37-beta.md).
+See `docs/releases/v30.37-beta.md` (archived).
 
 ## v30.36 beta
 
@@ -794,7 +895,7 @@ See [`docs/releases/v30.37-beta.md`](docs/releases/v30.37-beta.md).
 - Adds explicit recovery from `all + limit/last` usage errors instead of allowing a truncated fallback to drive `unverified`.
 - Uses explicit large session discovery plus `parentID` relationships while avoiding ritual reads of unrelated sessions.
 
-See [`docs/releases/v30.36-beta.md`](docs/releases/v30.36-beta.md).
+See `docs/releases/v30.36-beta.md` (archived).
 
 ## v30.35 beta
 
@@ -803,7 +904,7 @@ See [`docs/releases/v30.36-beta.md`](docs/releases/v30.36-beta.md).
 - Requires every `semantic-checkpoint` verdict to run in a fresh child session so a later candidate is not anchored by an earlier checkpoint conversation.
 - Keeps continuity available for genuine same-workstream investigation/implementation instead of imposing a blanket fresh-session rule on every repeated role call.
 
-See [`docs/releases/v30.35-beta.md`](docs/releases/v30.35-beta.md).
+See `docs/releases/v30.35-beta.md` (archived).
 
 ## v30.34 beta
 
@@ -813,7 +914,7 @@ See [`docs/releases/v30.35-beta.md`](docs/releases/v30.35-beta.md).
 - Forbids re-running an unchanged blocked candidate merely to seek a different verdict.
 - Keeps post-mutation verification/review independent from pre-mutation semantic authorization.
 
-See [`docs/releases/v30.34-beta.md`](docs/releases/v30.34-beta.md).
+See `docs/releases/v30.34-beta.md` (archived).
 
 ## v30.33 beta
 
@@ -823,7 +924,7 @@ See [`docs/releases/v30.34-beta.md`](docs/releases/v30.34-beta.md).
 - Prevents checkpoint over-verification by allowing concrete child-session factual findings as evidence and by not requiring post-mutation success evidence before implementation.
 - Keeps checkpoint verdicts available to the post-hoc evaluator only as gate-control evidence while preventing checkpoint/evaluator reasoning from becoming task authority.
 
-See [`docs/releases/v30.33-beta.md`](docs/releases/v30.33-beta.md).
+See `docs/releases/v30.33-beta.md` (archived).
 
 ## v30.32 beta
 
@@ -831,7 +932,7 @@ See [`docs/releases/v30.33-beta.md`](docs/releases/v30.33-beta.md).
 - Treats adopted outcomes, acceptance criteria, and explicit constraints as established user intent while continuing to verify diagnoses and proposed mechanisms.
 - Reframes release semantic checks around general invariants rather than incident-specific fixtures.
 
-See [`docs/releases/v30.32-beta.md`](docs/releases/v30.32-beta.md).
+See `docs/releases/v30.32-beta.md` (archived).
 
 ## v30.31 beta
 
@@ -841,7 +942,7 @@ See [`docs/releases/v30.32-beta.md`](docs/releases/v30.32-beta.md).
 - Reads each participating session with `session.messages` using `all: true` without incompatible `limit`/`last` selectors.
 - Marks only still-missing branches `unverified` instead of substituting orchestrator summaries for unavailable child histories.
 
-See [`docs/releases/v30.31-beta.md`](docs/releases/v30.31-beta.md).
+See `docs/releases/v30.31-beta.md` (archived).
 
 ## v30.30 beta
 
@@ -850,7 +951,7 @@ See [`docs/releases/v30.31-beta.md`](docs/releases/v30.31-beta.md).
 - Removes `tools/session_trace.js` from the package and adds installer cleanup for that obsolete package-owned tool on upgrade.
 - Updates README runtime/install/validation documentation for the OpenChamber-native evaluation path.
 
-See [`docs/releases/v30.30-beta.md`](docs/releases/v30.30-beta.md).
+See `docs/releases/v30.30-beta.md` (archived).
 
 ## v30.29 beta
 
@@ -863,7 +964,7 @@ See [`docs/releases/v30.30-beta.md`](docs/releases/v30.30-beta.md).
 - Consolidates the owned-PR final-candidate lifecycle in `code-orchestrator` so the detailed sequence has one canonical home.
 - Cleans README/changelog release prose and places the changelog overview directly under the document title.
 
-See [`docs/releases/v30.29-beta.md`](docs/releases/v30.29-beta.md).
+See `docs/releases/v30.29-beta.md` (archived).
 
 ## v30.28 beta
 
@@ -872,7 +973,7 @@ See [`docs/releases/v30.29-beta.md`](docs/releases/v30.29-beta.md).
 - Removes duplicated README upstream links, trims release/documentation listings that duplicated `CHANGELOG.md`, and keeps the changelog overview text in one canonical location.
 - Rechecks README claims about install surfaces, persistent planning, PR/review flow, skills, and `session-evaluator` against the actual archive.
 
-See [`docs/releases/v30.28-beta.md`](docs/releases/v30.28-beta.md).
+See `docs/releases/v30.28-beta.md` (archived).
 
 ## v30.27 beta
 
@@ -883,14 +984,14 @@ See [`docs/releases/v30.28-beta.md`](docs/releases/v30.28-beta.md).
 - Uses time-local instruction provenance for the audit: current instruction text is not applied retroactively when the historical governing rule cannot be established.
 - Excludes `session-evaluator` diagnostic sessions from the audited workflow tree so retries do not contaminate the trace.
 
-See [`docs/releases/v30.27-beta.md`](docs/releases/v30.27-beta.md).
+See `docs/releases/v30.27-beta.md` (archived).
 
 ## v30.26 beta
 
 - Treats material decisions about framing, required behavior, scope, ownership, invariants, and fix level as claims subject to the existing root authority/evidence checks.
 - Reuses the existing counterexample and hypothesis rules for those decisions instead of adding a second self-review loop.
 
-See [`docs/releases/v30.26-beta.md`](docs/releases/v30.26-beta.md).
+See `docs/releases/v30.26-beta.md` (archived).
 
 ## v30.25 beta
 
@@ -898,14 +999,14 @@ See [`docs/releases/v30.26-beta.md`](docs/releases/v30.26-beta.md).
 - Updates current routing/handoff references to `@project-planner` while keeping repository planning writes limited to the existing authorized plan-artifact paths.
 - Adds installer migration cleanup that backs up and removes the obsolete package-owned `agents/plan.md` on upgrade before installing `project-planner.md`.
 
-See [`docs/releases/v30.25-beta.md`](docs/releases/v30.25-beta.md).
+See `docs/releases/v30.25-beta.md` (archived).
 
 ## v30.24 beta
 
 - Makes the root necessity test explicit: judge a technical consequence against the established outcome, not against a broader rule inferred during planning, implementation, testing, or review.
 - Strengthens `code-orchestrator` handoff salience by naming material claims that are still only evidence or hypotheses and forbidding their promotion to acceptance during delegation.
 
-See [`docs/releases/v30.24-beta.md`](docs/releases/v30.24-beta.md).
+See `docs/releases/v30.24-beta.md` (archived).
 
 ## v30.23 beta
 
@@ -914,7 +1015,7 @@ See [`docs/releases/v30.24-beta.md`](docs/releases/v30.24-beta.md).
 - Compacts `code-orchestrator`, `reviewer`, tester, implementation, audit, and UI role wording so role files focus on role-specific decisions instead of restating root policy.
 - Splits dense PR/readiness and delegation instructions into shorter decision steps and removes redundant prompt scaffolding.
 
-See [`docs/releases/v30.23-beta.md`](docs/releases/v30.23-beta.md).
+See `docs/releases/v30.23-beta.md` (archived).
 
 ## v30.22 beta
 
@@ -923,7 +1024,7 @@ See [`docs/releases/v30.23-beta.md`](docs/releases/v30.23-beta.md).
 - Prevents implementation/review invariant expansion from becoming its own authority for wider downstream fixes.
 - Binds right-level boundary expansion to the established outcome under root §2.2.1.
 
-See [`docs/releases/v30.22-beta.md`](docs/releases/v30.22-beta.md).
+See `docs/releases/v30.22-beta.md` (archived).
 
 ## v30.21 beta
 
@@ -934,14 +1035,14 @@ See [`docs/releases/v30.22-beta.md`](docs/releases/v30.22-beta.md).
 - Cleans historical changelog entries that only described unchanged behavior.
 - Corrects the README installer-validation path label from `command/doc/skill` to `command/doc/snippet`.
 
-See [`docs/releases/v30.21-beta.md`](docs/releases/v30.21-beta.md).
+See `docs/releases/v30.21-beta.md` (archived).
 
 ## v30.20 beta
 
 - Compacts the `code-orchestrator` implementation-prohibition block to the role-specific invariant plus canonical root §2.5 instead of repeating the full alternate-editor/fallback policy.
 - Compacts the reviewer finding-classification list without removing any category or changing verdict semantics.
 
-See [`docs/releases/v30.20-beta.md`](docs/releases/v30.20-beta.md).
+See `docs/releases/v30.20-beta.md` (archived).
 
 ## v30.19 beta
 
@@ -949,7 +1050,7 @@ See [`docs/releases/v30.20-beta.md`](docs/releases/v30.20-beta.md).
 - Removes the repeated delegated `Leaf boundary` boilerplate from role files; all roles still load the root contract and root §5 remains canonical.
 - Replaces four role-local mutation-mechanism restatements with concise references to canonical root §7.1.1.
 
-See [`docs/releases/v30.19-beta.md`](docs/releases/v30.19-beta.md).
+See `docs/releases/v30.19-beta.md` (archived).
 
 ## v30.18 beta
 
@@ -960,7 +1061,7 @@ See [`docs/releases/v30.19-beta.md`](docs/releases/v30.19-beta.md).
 - Adds reviewer coverage for technically coherent but unauthorized semantic scope creep.
 - README current-version/footer links are corrected and the OpenAI current-model prompting guide used during this policy review is documented as an external design reference.
 
-See [`docs/releases/v30.18-beta.md`](docs/releases/v30.18-beta.md).
+See `docs/releases/v30.18-beta.md` (archived).
 
 ## v30.17 beta
 
@@ -968,13 +1069,13 @@ See [`docs/releases/v30.18-beta.md`](docs/releases/v30.18-beta.md).
 - Adds semantic non-circular gate handling for evidence whose availability depends on crossing the same lifecycle boundary.
 - Replaces the code-orchestrator fixed `remote CI/status -> Ready` sequence with dependency-driven readiness and updates `pr-readiness` to classify host status/evidence by actual availability and authority.
 
-See [`docs/releases/v30.17-beta.md`](docs/releases/v30.17-beta.md).
+See `docs/releases/v30.17-beta.md` (archived).
 
 ## v30.16 beta
 
 - Removes the retired-skill migration special case from both installers; installers no longer carry knowledge of previously removed skill directories.
 
-See [`docs/releases/v30.16-beta.md`](docs/releases/v30.16-beta.md).
+See `docs/releases/v30.16-beta.md` (archived).
 
 ## v30.15 beta
 
@@ -982,7 +1083,7 @@ See [`docs/releases/v30.16-beta.md`](docs/releases/v30.16-beta.md).
 - Removes its bundled skill, setup/reference document, root activation/trigger semantics, and historical beta release note rather than retaining dead optional policy.
 - Adds exact legacy-skill migration cleanup so global/project installs over older betas back up and remove the retired package-owned skill directory without touching unrelated skills.
 
-See [`docs/releases/v30.15-beta.md`](docs/releases/v30.15-beta.md).
+See `docs/releases/v30.15-beta.md` (archived).
 
 ## v30.14 beta
 
@@ -991,7 +1092,7 @@ See [`docs/releases/v30.15-beta.md`](docs/releases/v30.15-beta.md).
 - Explicitly rejects convenience rationales such as shorter syntax, line-number targeting, avoiding exact-match friction, or a small number of textual replacements.
 - Reinforces the rule in the mutation-capable `build`, `debugger`, `ui-implementer`, and `devops` roles while keeping orchestration handoffs semantic rather than tool-prescriptive.
 
-See [`docs/releases/v30.14-beta.md`](docs/releases/v30.14-beta.md).
+See `docs/releases/v30.14-beta.md` (archived).
 
 ## v30.13 beta
 
@@ -999,7 +1100,7 @@ See [`docs/releases/v30.14-beta.md`](docs/releases/v30.14-beta.md).
 - Treats the unresolved required decision/approval as the blocker rather than the open/closed/linked state of a discussion, issue, RFC, forum, mailing list, or similar external artifact.
 - Grounds prerequisite applicability/resolution in authoritative repository policy, maintainer decisions, and current repository/review/status signals; PR metadata may not claim agreement absent authoritative support.
 
-See [`docs/releases/v30.13-beta.md`](docs/releases/v30.13-beta.md).
+See `docs/releases/v30.13-beta.md` (archived).
 
 ## v30.11 beta
 
@@ -1007,7 +1108,7 @@ See [`docs/releases/v30.13-beta.md`](docs/releases/v30.13-beta.md).
 - Narrows `@explore` routing so unknown implementation details do not create an intermediate discovery stage when a bounded implementation/debugging leaf already owns the next action.
 - Moves fix-boundary proof from pre-handoff orchestration into the assigned implementation/debugging role under root §7.2; orchestrator keeps acceptance and preserved-behavior ownership.
 
-See [`docs/releases/v30.11-beta.md`](docs/releases/v30.11-beta.md).
+See `docs/releases/v30.11-beta.md` (archived).
 
 ## v30.10 beta
 
@@ -1015,13 +1116,13 @@ See [`docs/releases/v30.11-beta.md`](docs/releases/v30.11-beta.md).
 - Clarifies that focused implementation can be delegated from a bounded semantic outcome without the orchestrator first discovering exact files/symbols/local mechanics.
 - Removes several routing-sensitive undefined qualifiers (`already-understood`, `scope/design is clear`, `obvious`) while retaining semantic judgment for materiality, risk, stage economy, and escalation.
 
-See [`docs/releases/v30.10-beta.md`](docs/releases/v30.10-beta.md).
+See `docs/releases/v30.10-beta.md` (archived).
 
 ## v30.9 beta
 
 - Makes the project-local README install example version-agnostic instead of embedding a beta directory name that becomes stale on release rename.
 
-See [`docs/releases/v30.9-beta.md`](docs/releases/v30.9-beta.md).
+See `docs/releases/v30.9-beta.md` (archived).
 
 ## v30.8 beta
 
@@ -1029,7 +1130,7 @@ See [`docs/releases/v30.9-beta.md`](docs/releases/v30.9-beta.md).
 - Replaces the approximate `~45 KB` validation note with a stable `<50 KiB` compact-root target.
 - Normalizes `git-provenance` and `pr-readiness` extracted subsection headings from H4 to H2.
 
-See [`docs/releases/v30.8-beta.md`](docs/releases/v30.8-beta.md).
+See `docs/releases/v30.8-beta.md` (archived).
 
 ## v30.7 beta
 
@@ -1037,7 +1138,7 @@ See [`docs/releases/v30.8-beta.md`](docs/releases/v30.8-beta.md).
 - Renumbers the remaining visual-evidence subsection from `§8.3` to `§8.1` after earlier subsection compaction.
 - Moves the changelog summary directly under the changelog title and removes the stray extra blank line around the v30.4/v30.2 boundary.
 
-See [`docs/releases/v30.7-beta.md`](docs/releases/v30.7-beta.md).
+See `docs/releases/v30.7-beta.md` (archived).
 
 ## v30.6 beta
 
@@ -1046,7 +1147,7 @@ See [`docs/releases/v30.7-beta.md`](docs/releases/v30.7-beta.md).
 - Bundled skill inventory is now 18 skills: 13 specialist/advisory and 5 workflow/policy skills.
 - Visual-evidence publication uses only an already-available authorized mechanism; otherwise it preserves local evidence and reports publication blocked.
 
-See [`docs/releases/v30.6-beta.md`](docs/releases/v30.6-beta.md).
+See `docs/releases/v30.6-beta.md` (archived).
 
 ## v30.5 beta
 
@@ -1056,14 +1157,14 @@ See [`docs/releases/v30.6-beta.md`](docs/releases/v30.6-beta.md).
 - Makes current-upstream provenance and owned-PR provenance/readiness skill dependencies explicit.
 - Repairs stale v30.4 role references to removed root subsections in `build` and `ui-orchestrator`.
 
-See [`docs/releases/v30.5-beta.md`](docs/releases/v30.5-beta.md).
+See `docs/releases/v30.5-beta.md` (archived).
 
 ## v30.4 beta
 
 - Compacts root `AGENTS.md` from 75,493 bytes to ~45 KB.
 - Moves detailed Git provenance, PR readiness, verification cadence, resource lifecycle, and output formatting mechanics into bundled conditional policy skills.
 
-See [`docs/releases/v30.4-beta.md`](docs/releases/v30.4-beta.md).
+See `docs/releases/v30.4-beta.md` (archived).
 
 ## v30.2 beta
 
@@ -1075,7 +1176,7 @@ Beta resource-lifecycle and visual-evidence release built on v30.1 beta.
 - Separates visual-evidence publication from repository-hosting state; gist/temporary branch/ref hosting is not an implicit fallback.
 - Requires post-publication attachment verification and resource reconciliation for local screenshots, temporary execution workspaces/processes, and any fallback hosting resources.
 
-See [`docs/releases/v30.2-beta.md`](docs/releases/v30.2-beta.md).
+See `docs/releases/v30.2-beta.md` (archived).
 
 ## v30.1 beta
 
@@ -1088,7 +1189,7 @@ Beta semantic-policy alignment release built on v30.00.
 - Clarifies primary-role reroute behavior in `build`, fallback failure behavior in `code-orchestrator` / `ui-orchestrator`, and delegated UI orchestration leaf-dispatch with the workflow-owning parent.
 - Narrows `plan` write permissions to portable canonical planning paths; removes the developer-specific absolute plan path and broad `docs/**` write scope.
 
-See [`docs/releases/v30.1-beta.md`](docs/releases/v30.1-beta.md).
+See `docs/releases/v30.1-beta.md` (archived).
 
 ## v30.00
 
@@ -1101,7 +1202,7 @@ Stable successor to v28.42 focused on a smaller, deterministic runtime surface.
 - Restores `agents/code-orchestrator.md` exactly from v28.42 after behavioral testing showed that further deduplication inside that role weakened routing behavior.
 - Installers migrate cleanly by backing up/pruning only known package-owned legacy commands, snippets, and obsolete docs while preserving unrelated user/project files.
 
-See [`docs/releases/v30.00.md`](docs/releases/v30.00.md).
+See `docs/releases/v30.00.md` (archived).
 
 ## v28.42
 
@@ -1111,7 +1212,7 @@ See [`docs/releases/v30.00.md`](docs/releases/v30.00.md).
 - Tool choice cannot widen authorized scope or correctness obligations.
 - README current-version/install-path/footer references are normalized to v28.42.
 
-See [`docs/releases/v28.42.md`](docs/releases/v28.42.md).
+See `docs/releases/v28.42.md` (archived).
 
 ## v28.41
 
@@ -1121,7 +1222,7 @@ See [`docs/releases/v28.42.md`](docs/releases/v28.42.md).
 - `--max-tools` now documents the current template default of `100`, the `1`-`49` clamp to `50`, and that the resolved override only takes effect above the template default.
 - The normal OCR skill metadata now identifies Alibaba plus the package-maintained integration rather than implying the extended skill text is verbatim upstream.
 
-See [`docs/releases/v28.41.md`](docs/releases/v28.41.md).
+See `docs/releases/v28.41.md` (archived).
 
 ## v28.40
 
@@ -1139,7 +1240,7 @@ v28.39 cleans README release-history duplication.
 - `CHANGELOG.md` is the single README entry point for release history.
 - The README documentation map lists only the current release note plus durable policy/reference docs.
 
-See [`docs/releases/v28.39.md`](docs/releases/v28.39.md).
+See `docs/releases/v28.39.md` (archived).
 
 ## v28.38
 
@@ -1152,7 +1253,7 @@ v28.38 fixes contract-authority inheritance from referenced artifacts.
 - Issue/report-derived bugfixes treat unestablished claims as evidence/hypotheses instead of silently adopting proposed mechanisms or derived acceptance wording.
 - Reviewer normalizes claim authority before applying semantic correspondence, preventing a self-confirming loop where an artifact's own proposed mechanism becomes both requirement and proof.
 
-See [`docs/releases/v28.38.md`](docs/releases/v28.38.md).
+See `docs/releases/v28.38.md` (archived).
 
 ## v28.37
 
@@ -1164,7 +1265,7 @@ v28.37 generalizes the v28.36 premise-validation rule around semantic correspond
 - Reviewer, planner, and orchestrator treat implementation details as hypotheses until that correspondence is established.
 - Tester/verification policy now asks whether the observed test result actually justifies the production conclusion being claimed, instead of maintaining a taxonomy of special cases.
 
-See [`docs/releases/v28.37.md`](docs/releases/v28.37.md).
+See `docs/releases/v28.37.md` (archived).
 
 ## v28.36
 
@@ -1178,7 +1279,7 @@ v28.36 hardens review and verification against self-confirming implementation as
 - Tester verifies harness/fixture/mock fidelity for lifecycle/identity/order/ownership/timing-sensitive claims before promoting focused results to production evidence.
 - Orchestrator and planner distinguish authoritative outcomes/invariants from implementation hypotheses when handing work between stages.
 
-See [`docs/releases/v28.36.md`](docs/releases/v28.36.md).
+See `docs/releases/v28.36.md` (archived).
 
 ## v28.35
 
@@ -1191,7 +1292,7 @@ v28.35 makes OCR delegation the deterministic preflight for code-like reviewer r
 - Managed OCR runs only when explicitly required or materially useful; quota/rate/provider failure preserves a complete host verdict unless managed OCR was mandatory.
 - Bundled `open-code-review` is replaced by the supplied current CLI skill and `open-code-review-delegate` is added.
 
-See [`docs/releases/v28.35.md`](docs/releases/v28.35.md). The historical `docs/ocr_review_policy.md` companion was removed from the current bundle in v30.00 after its runtime contract became resident.
+See `docs/releases/v28.35.md` (archived). The historical `docs/ocr_review_policy.md` companion was removed from the current bundle in v30.00 after its runtime contract became resident.
 
 ## v28.34
 
@@ -1203,7 +1304,7 @@ v28.34 strengthens right-level fix selection.
 - If the proposed boundary cannot guarantee the required outcome, the workflow moves the fix level outward or escalates before coding instead of accumulating local patches.
 - Planner, orchestrator, debugger, build, and reviewer role guidance now applies the same canonical fix-boundary principle.
 
-See [`docs/releases/v28.34.md`](docs/releases/v28.34.md) for the detailed before/after explanation.
+See `docs/releases/v28.34.md` (archived) for the detailed before/after explanation.
 
 ## v28.33
 
@@ -1214,7 +1315,7 @@ v28.33 adds base-drift handling to PR state identity.
 - A moved base makes affected evidence stale by default; reuse requires proof that effective diff/integration context is unchanged.
 - Reviewer/provenance output records the reviewed Base SHA.
 
-See [`docs/releases/v28.33.md`](docs/releases/v28.33.md). The historical `docs/pr_readiness.md` companion was removed from the current bundle in v30.00 after its runtime contract became resident.
+See `docs/releases/v28.33.md` (archived). The historical `docs/pr_readiness.md` companion was removed from the current bundle in v30.00 after its runtime contract became resident.
 
 ## v28.32
 
@@ -1228,7 +1329,7 @@ v28.32 extends current-upstream freshness into end-to-end repository state ident
 - Debugger/build/UI implementation refuse to edit a stale or unrelated worktree when the assignment is bound to a current authoritative target.
 - `/ui-options` now follows the existing materially-distinct-options policy instead of forcing 2–3 alternatives.
 
-See [`docs/releases/v28.32.md`](docs/releases/v28.32.md). The historical `docs/git_branch_provenance_policy.md` companion was removed from the current bundle in v30.00 after its runtime contract became resident.
+See `docs/releases/v28.32.md` (archived). The historical `docs/git_branch_provenance_policy.md` companion was removed from the current bundle in v30.00 after its runtime contract became resident.
 
 ## v28.31
 
@@ -1240,7 +1341,7 @@ v28.31 fixes stale-code analysis when a workflow must decide whether an issue/be
 - Read-only `git fetch` is explicitly separated from `pull`/rebase/reset/checkout, so freshness checks do not mutate the working tree.
 - `/bug-issue` and issue-originated bugfix diagnosis now resolve the report target first and verify current-upstream applicability against the fetched authoritative ref; explicitly local-workspace reports remain local.
 
-See [`docs/releases/v28.31.md`](docs/releases/v28.31.md). The historical `docs/git_branch_provenance_policy.md` companion was removed from the current bundle in v30.00 after its runtime contract became resident.
+See `docs/releases/v28.31.md` (archived). The historical `docs/git_branch_provenance_policy.md` companion was removed from the current bundle in v30.00 after its runtime contract became resident.
 
 ## v28.30
 
@@ -1252,7 +1353,7 @@ v28.30 adds four targeted workflow-hygiene rules.
 - Numbered steps are reserved for ordered human procedures rather than findings, options, status, or internal workflow diagrams.
 - README Candidate/verification diagrams now explicitly show the optional/required Candidate-level `@tester` checkpoint before the final reviewer.
 
-See [`docs/releases/v28.30.md`](docs/releases/v28.30.md) for the detailed before/after explanation.
+See `docs/releases/v28.30.md` (archived) for the detailed before/after explanation.
 
 ## v28.29
 
@@ -1271,7 +1372,7 @@ v28.29 corrects verification cadence across implementation, testing, review, UI,
 - UI options/plan/audit modes are no longer collapsed into a forced “2–3 options” output; each mode now returns its actual deliverable and options are created only when materially distinct choices exist.
 - UI orchestration now states the final reviewer handoff explicitly when root review cadence applies; owned-PR UI Candidates cannot skip the whole-change pre-push review.
 
-See [`docs/releases/v28.29.md`](docs/releases/v28.29.md). The historical `docs/verification_strategy.md` companion was removed from the current bundle in v30.00 after its runtime contract became resident.
+See `docs/releases/v28.29.md` (archived). The historical `docs/verification_strategy.md` companion was removed from the current bundle in v30.00 after its runtime contract became resident.
 
 ## v28.28
 
@@ -1286,7 +1387,7 @@ v28.28 makes long-running multi-agent and PR workflows more deterministic.
 - PR reports include the canonical PR URL; owned-PR readiness reports also include state and Candidate HEAD.
 - OCR remains reviewer-selected unless user/project policy explicitly requires it.
 
-See [`docs/releases/v28.28.md`](docs/releases/v28.28.md) for the detailed before/after explanation.
+See `docs/releases/v28.28.md` (archived) for the detailed before/after explanation.
 
 ## v28.27
 

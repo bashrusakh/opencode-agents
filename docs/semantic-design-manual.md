@@ -54,6 +54,10 @@ Evidence can support a requirement or implementation claim. It does not create p
 
 Evidence also has a state and provenance. Preserve the distinction between intended/planned action, reported completion, independently verified completion, reported failure/uncertainty, and independently verified failure/uncertainty. A completion report proves that completion was reported; without independent execution evidence it may remain unverified, but it is not equivalent to mere intent. Conversely, announcing a next step does not prove that it happened. When records disagree, preserve the disagreement instead of collapsing it into one stronger or weaker state.
 
+When the question is **instruction compliance**, apparently equivalent workflow evidence cannot substitute for the governing contract itself. If the applicable governing contract cannot be established, that compliance claim remains `unverified`; do not infer compliance merely because another process appears to provide comparable safety or evidence.
+
+**Public claim scope includes target-state identity.** When a public artifact attributes behavior, implementation, presence/absence, or root cause to a particular current/versioned state, the evidence must be authoritative for that same state. An inability or lack of authority to establish the required freshness does not license substituting stale evidence; narrow the public claim to the state/propositions actually supported, or keep the stronger claim unpublished/unresolved. Do not force freshness when the intended target is explicitly local, historical, or pinned.
+
 ### 1.3 Mechanism
 
 Mechanism answers: **how will an established outcome be achieved?**
@@ -283,9 +287,13 @@ Do not simulate a handoff merely because a specialist has useful expertise.
 
 A delegation prompt supplies instance-specific scope and context to the selected role; it does not replace that role's standing contract. Legitimate specialization can narrow the target, question, action ceiling, or requested evidence while preserving the role-owned obligations and result semantics that still apply. A deliberately partial diagnostic is valid when its boundary stays explicit, but its result cannot satisfy a broader stage.
 
+A required **method** does not silently transfer **role ownership**. If authority requires a review, verification, or analysis method, apply that method inside the stage owned by the applicable role unless the same authority separately changes the owner or waives that stage.
+
 **State authority is part of the action ceiling.** Delegated permission to change content does not silently grant permission to rebind the authoritative target, change task-resource ownership/topology, or relocate pre-existing workflow state. Lifecycle/reconciliation mechanics consume already-authorized resource mutations; they do not create that authority.
 
 Check both directions: could the assignment suppress or redefine a material role obligation, and could the caller later over-claim completion from a result that was intentionally partial?
+
+A protective behavior is not justified only because a test proves that the guard fires. For changed guards/confirmations/refusals, examine whether the risk still exists in the **combined solution** and whether normal permitted work is newly interrupted, including the practical reach of triggering conditions. Treat an unmeasured prevalence estimate as uncertainty, not a fact. If an explicit task constraint conflicts with the preserved user outcome, flag the decision for the owner of task-semantic authority; do not silently waive the constraint, and do not turn an already accepted tradeoff into an automatic failure. The workflow owner reconciles the contract; the independent reviewer tests that reconciliation; the tester reports evidence for established behavior rather than deciding product policy.
 
 ### Role executability test
 
@@ -305,6 +313,8 @@ The audit question is not “is this prompt long enough?” It is:
 > If the root/orchestrator routes a valid assignment here, can the role derive the required sequence, evidence threshold, stop conditions, and output semantics from its own standing contract plus shared policy?
 
 If not, treat that as a role-contract gap even when another role later catches the mistake.
+
+For manual adjudication when an automated role-contract audit yields `REVIEW`, use one realistic bounded assignment and cite role-local clauses for: start/target identity, first real action, characteristic loop and branches, false-success defense, evidence closure, stop/escalation, result meaning, and handoff compatibility. Include an overreach/preservation case showing that a simple valid assignment remains simple. A missing executable step calls for strengthening its owner contract, not a checker exception; an adequately short contract may remain short.
 
 ### Role contract semantic shape
 
@@ -721,6 +731,8 @@ Preserve distinctions such as:
 - non-exhaustive hypothesis vs exhaustive choice set;
 - preserved/refined proposition vs semantic substitution.
 
+**Producer completion and consumer acceptance are separate contracts.** A producer's `complete`, `closed`, `no blocker`, or equivalent result is still a claim whose scope must be compared with the scope of the evidence actually returned. A bounded producer can finish its assignment without establishing closure of a broader parent proposition. Representative slices, local green checks, or several checks sharing one implementation assumption do not prove a wider domain/owner/invariant unless they discriminate that wider proposition. Material residual risks, unsupported classes, coverage limits, or unresolved owner/model questions remain live qualifiers for the consumer even when the producer calls its package complete.
+
 Use stable terminology and direct verbs. Split stacked instructions when ambiguity can change behavior. A shorter sentence is not better if it destroys a condition or exception.
 
 ---
@@ -971,6 +983,7 @@ Before shipping a prompt/harness semantic change, verify:
 - [ ] Any role-topology/ownership change (new caller, `mode`/delegability expansion, responsibility/proof transfer, advisory→mutation/verdict transition) re-runs role qualification; an earlier PASS is not inherited merely because the role file itself was unchanged.
 - [ ] Any deduplication/compaction or canonical-owner move that removes procedural wording passes the method-preservation test: the receiving role still has an executable role-local algorithm, false-success defense, evidence threshold, stop/escalation, and result semantics after the deletion.
 - [ ] Every material producer → parent/transformation → consumer handoff is audited as one interface; individually valid files do not count as composition proof.
+- [ ] Producer-reported completion is consumed proposition-by-proposition: parent acceptance/closure is no broader than the returned evidence surface, and material residual risks/coverage limits remain live until separately resolved.
 - [ ] The discovered pack-owned `@role` relation set exactly matches the classified handoff inventory, including caller-owned edges disclosed only through explicitly activated pack-owned conditional skills. New/unclassified and stale classified edges both block promotion; topology classification alone does not waive material edge protocol checks.
 - [ ] New routed roles/edges are discovered automatically or explicitly classified before promotion; an unclassified role/edge is a release finding rather than an implicit default.
 - [ ] Release gates are adversarial to the candidate: unresolved generic contract/protocol findings keep promotion red unless the audit criterion is independently shown wrong by a preservation/overreach case. Do not add candidate-specific exceptions merely to recover PASS.

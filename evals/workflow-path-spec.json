@@ -1009,6 +1009,278 @@
           ]
         }
       ]
+    },
+    {
+      "id": "specialist_closure_adjudication",
+      "nodes": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "closure/completeness conclusion as a proposition-scoped claim, not workflow state"
+            ],
+            [
+              "closure surface claimed"
+            ],
+            [
+              "evidentiary surface actually returned"
+            ],
+            [
+              "Producer completion and parent acceptance are separate"
+            ],
+            [
+              "preserve the broader claim as unresolved"
+            ],
+            [
+              "Representative examples, local green checks"
+            ],
+            [
+              "cannot establish broader domain/owner/invariant closure unless that evidence discriminates the broader proposition"
+            ]
+          ]
+        },
+        {
+          "path": "skills/pr-readiness/SKILL.md",
+          "groups": [
+            [
+              "Correction / stabilization"
+            ],
+            [
+              "current correction set"
+            ],
+            [
+              "final whole-PR review"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "issue_report_claim_state_alignment",
+      "nodes": [
+        {
+          "path": "skills/repository-workflow/SKILL.md",
+          "groups": [
+            [
+              "evidentiary state of a public report must match the state claimed by that report"
+            ],
+            [
+              "fresh authoritative evidence for that target state"
+            ],
+            [
+              "stale local checkout cannot substitute"
+            ],
+            [
+              "outside the active action ceiling/project rules"
+            ],
+            [
+              "narrow the public report to propositions supported by the available evidence|stop before publishing the unsupported"
+            ]
+          ]
+        },
+        {
+          "path": "skills/git-provenance/SKILL.md",
+          "groups": [
+            [
+              "read-only claims about \\*\\*current upstream/default/base code\\*\\*"
+            ],
+            [
+              "refreshing refs with `git fetch` is a freshness operation"
+            ],
+            [
+              "Do not `pull`, rebase, reset, checkout, or switch merely to answer a read-only current-state question"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "terminal_evaluator_missing_contract_fail_closed",
+      "nodes": [
+        {
+          "path": "agents/session-evaluator.md",
+          "groups": [
+            [
+              "Do not reconstruct a missing governing contract"
+            ],
+            [
+              "instruction-compliance result for that decision is `unverified`"
+            ],
+            [
+              "apparently equivalent workflow evidence"
+            ],
+            [
+              "overall compliance verdict may be positive only when every material area necessary to that verdict has both established governing instructions and sufficient primary evidence"
+            ],
+            [
+              "Do not return a positive compliance verdict when a material governing-contract or primary-evidence area required for that verdict is unverified"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "required_review_method_keeps_reviewer_owner",
+      "nodes": [
+        {
+          "path": "skills/pr-readiness/SKILL.md",
+          "groups": [
+            [
+              "run whole-PR `@reviewer` against `Base SHA -> Candidate HEAD` \\*\\*before push\\*\\*"
+            ],
+            [
+              "`@reviewer` reviewed the complete Base-SHA-to-Candidate-HEAD comparison before push"
+            ]
+          ]
+        },
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "explicit requirement to use managed OCR changes the review \\*\\*method/evidence source\\*\\*, not the role that owns the review"
+            ],
+            [
+              "pass the OCR requirement into that reviewer assignment"
+            ],
+            [
+              "must not substitute a direct OCR call for the reviewer stage"
+            ],
+            [
+              "only that managed method is unavailable/waived"
+            ],
+            [
+              "Managed OCR does not create or transfer review ownership"
+            ]
+          ]
+        },
+        {
+          "path": "agents/reviewer.md",
+          "groups": [
+            [
+              "Managed `open-code-review` / `ocr review` is separate from mandatory delegation"
+            ],
+            [
+              "Managed OCR is independent evidence, not a substitute for host-review coverage or reasoning"
+            ],
+            [
+              "reviewer must complete its own applicable coverage and judgment before issuing a complete verdict"
+            ]
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "producer": "agents/code-orchestrator.md",
+          "consumer": "agents/reviewer.md",
+          "producer_groups": [
+            [
+              "review method or emphasis explicitly required by the user or an adopted project policy"
+            ],
+            [
+              "pass the OCR requirement into that reviewer assignment"
+            ]
+          ],
+          "consumer_groups": [
+            [
+              "user/project policy requires it"
+            ],
+            [
+              "Managed OCR is independent evidence, not a substitute for host-review coverage or reasoning"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "protective_restriction_premise_and_normal_path",
+      "nodes": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "before the first edit-capable handoff"
+            ],
+            [
+              "hypothetical end-to-end behavior before implementation"
+            ],
+            [
+              "whether the causal repair already removes its premise"
+            ],
+            [
+              "does not add unjustified ordinary-path restrictions"
+            ],
+            [
+              "present the evidence, viable alternatives, consequences, and exact decision"
+            ]
+          ]
+        },
+        {
+          "path": "agents/reviewer.md",
+          "groups": [
+            [
+              "verify the \\*\\*protection premise against the combined candidate\\*\\*"
+            ],
+            [
+              "ordinary allowed actions are now delayed, blocked, or interrupted"
+            ],
+            [
+              "Tests that merely encode the requested restriction establish implementation fidelity"
+            ],
+            [
+              "report a material conflict with other established outcomes as a design/contract decision"
+            ]
+          ]
+        },
+        {
+          "path": "agents/tester.md",
+          "groups": [
+            [
+              "independent verification checkpoint"
+            ],
+            [
+              "If the artifact is not valid evidence for the governing proposition"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "accepted_guard_tradeoff_does_not_trigger_ritual_veto",
+      "nodes": [
+        {
+          "path": "agents/code-orchestrator.md",
+          "groups": [
+            [
+              "reopen knowingly accepted tradeoffs"
+            ],
+            [
+              "create a planning/gate stage for ordinary adequately scoped fixes"
+            ],
+            [
+              "Keep explicit requirements binding until revised by their owner"
+            ]
+          ]
+        },
+        {
+          "path": "agents/reviewer.md",
+          "groups": [
+            [
+              "not as permission to rewrite the specification or treat an expressly accepted tradeoff as a code defect"
+            ],
+            [
+              "do not infer population-wide frequency from one fixture"
+            ]
+          ]
+        },
+        {
+          "path": "agents/tester.md",
+          "groups": [
+            [
+              "do not turn verification into general code review"
+            ]
+          ]
+        }
+      ]
     }
   ]
 }
