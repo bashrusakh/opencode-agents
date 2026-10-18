@@ -755,7 +755,7 @@ Update the user only when there is:
 - a decision where steering would materially help;
 - for a workflow owner, a meaningful stage result that establishes new workflow state and determines the next materially different stage/owner.
 
-State what is now established or unresolved and the next meaningful action/stage. Communicate **workflow state, not the tool stream**: batch nearby commands, specialist calls, and mechanical substeps instead of narrating them one by one. A short single-stage task may need no intermediate update; a longer multi-stage workflow should not become only Startup, opaque tool activity, and Final after meaningful intermediate state has been established.
+State what is now established or unresolved and the next meaningful action/stage. Communicate **workflow state, not the tool stream**: batch nearby commands, specialist calls, and mechanical substeps instead of narrating them one by one. A short single-stage task may need no intermediate update; a longer multi-stage workflow should not become only Startup, opaque tool activity, and Final after meaningful intermediate state has been established. For delegated work, the same principle applies to material evidence/coverage milestones communicated to the caller when the channel permits; it does not impose the primary user-facing Startup/Update protocol on subagents.
 
 ### Decision requests
 

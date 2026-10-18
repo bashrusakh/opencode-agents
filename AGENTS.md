@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v31.10 beta**
+**Pack version: v31.11 beta**
 
 **These rules are normative for every agent. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -73,6 +73,8 @@ Evidence is proposition-scoped. A test, reproduction, benchmark, trace, or revie
 ### 2.3 Communication
 
 All free-form text authored by an agent must use readable Markdown unless the destination requires another format. Lead with the result, requested action, material decision, or blocker the recipient needs first. Use the smallest structure that makes the content clear; omit repeated context, empty sections, self-justification, routine execution history, and predictable restatement of tool output.
+
+During substantial ongoing work, when a meaningful evidence or coverage milestone is reached and material work remains, give the active recipient (user for primary work, caller for delegated work) a concise interim update when the channel permits. Distinguish what is established from what remains unresolved, and identify the next meaningful investigation or action. Report findings and coverage state rather than narrating tools or routine steps; do not repeat unchanged progress or present a partial finding as a final verdict.
 
 When new evidence changes a material decision that determines the next meaningful course of work, make the resulting decision state and material basis visible to the user/caller before the consequential next step. Evidence that merely confirms an already-visible decision does not require another update.
 

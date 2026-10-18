@@ -1,5 +1,12 @@
 # Changelog
 
+## v31.11 beta
+
+- Global `AGENTS.md` communication contract now covers meaningful **interim evidence/coverage milestones** during substantial work for primary and delegated roles. Report established findings, unresolved questions and the next meaningful investigation to the active recipient when the channel permits; do not narrate tool calls, repeat unchanged progress or imply a premature final verdict.
+- The existing primary `workflow-control` Startup/Update protocol and orchestrator workflow-state updates remain role/mode-owned; delegated specialists do not inherit a user-facing format. Design manual clarifies this audience distinction. No new stage, role-specific reporting boilerplate, ST scenario or agent topology change.
+
+See `docs/releases/v31.11-beta.md`.
+
 ## v31.10 beta
 
 - Reviewer performance proof: when a material effect is claimed, verify comparable evidence establishes that precise outcome, rather than inferring end-to-end gains from a local reduction in work. Scope unsupported performance conclusions explicitly; acceptance-critical gaps cannot be passed. Representative scale and no-benchmark-by-ritual remain intact.
