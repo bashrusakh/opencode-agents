@@ -1,5 +1,37 @@
 # Changelog
 
+## v31.15 beta
+
+- Fixes `session-evaluator` read permissions for installed pack-owned governing skill instructions (`~/.config/opencode/skills/*/SKILL.md`). The evaluator previously could inspect `AGENTS.md` and agents but could not read `delegation-control` / `pr-readiness` and other normative skills that it must audit.
+- Preserves read-only diagnosis: the configuration-root deny, restricted skill-file allowance, and prohibition on file mutation/shell/delegation remain intact. Adds a narrow permission-boundary guard to existing `evals/static-policy-regressions.py`, not a new workflow stage.
+- Reviewed intermediate child-session communication by model using supplied Oct 2026 logs. Analysis is in the separate release evidence, without changes to the v31.12 communication contract or role bodies beyond the evaluator permission allowlist.
+
+See `docs/releases/v31.15-beta.md`.
+
+## v31.14 beta
+
+- Clarifies **user-owned material architectural direction** in the existing `change-contract`: when distinct viable designs have consequential differences in system ownership, long-term extensibility, migration/implementation cost, or maintenance risk, the agent presents grounded alternatives and a recommendation **before** committing to a direction. Delegated specialists return that decision to the workflow owner; existing user architectural choices remain binding until revised by the user.
+- Keeps ordinary reversible implementation choices autonomous, allows necessary technical scope expansion for the same approved outcome, and does not add a mandatory ceremony, extra agent, or arbitrary two-option menu.
+- All 19 role files, permissions, runtime tool policy, and other skills remain unchanged. Cross-release preservation review is required by the existing v31.13 release gate.
+
+See `docs/releases/v31.14-beta.md`.
+
+## v31.13 beta
+
+- Adds a **pre-release predecessor-preservation gate**: the final distributable candidate is compared with the previous distributed version, checking material cross-version losses, softened obligations, moved-but-unreachable owners, and unintended new constraints or regressions. The comparison is a semantic review of the actual installed surfaces, not a grep for removed keywords.
+- The new `evals/prior-release-preservation.py` produces an evidence-bound, per-changed-hunk ledger. Promotion requires reviewer adjudication of each material delta, with evidence of retention/relocation or authorized behavioral changes; stale records and unreviewed diffs fail. Existing candidate-only gates are now explicitly insufficient as release-promotion evidence; use `run-release-gates.py --release --previous ... --preservation-review ...`.
+- Adds a negative selftest demonstrating detection of the native-edit-priority loss, invalid retention evidence and stale comparison. No new `ST-*` scenarios, role/skill runtime contract changes or agent permission changes. Historic earlier baselines should be compared when refactors may have lost older obligations.
+
+See `docs/releases/v31.13-beta.md`.
+
+## v31.12 beta
+
+- Restores **runtime-native patch/edit priority** in `change-contract` for bounded semantic code/test/config/document edits. Shell text processors and ad-hoc Python scripts are no longer equivalent editors for convenience; mechanical bulk transformations, unavailable/unsafe native editors, and inspected narrow diff remain valid exceptions.
+- Strengthens `AGENTS.md` §2.3 across **primary and delegated agents**: a substantial child assignment begins with a short assistant-text orientation before extended tool use, then emits evidence/coverage/blocker updates while work remains. Neither tool activity nor final-only reports count as interim text. The existing primary Startup can satisfy the initial note, without duplicate messages. Child-session UI/transport visibility is explicitly distinct from agent behavior.
+- Updates the communication design manual and adds preservation checks to existing static release regressions. No new roles, mandatory workflow stages, agent frontmatter changes, or ST cases. Host-visible streaming and model compliance still require real runtime verification.
+
+See `docs/releases/v31.12-beta.md`.
+
 ## v31.11 beta
 
 - Global `AGENTS.md` communication contract now covers meaningful **interim evidence/coverage milestones** during substantial work for primary and delegated roles. Report established findings, unresolved questions and the next meaningful investigation to the active recipient when the channel permits; do not narrate tool calls, repeat unchanged progress or imply a premature final verdict.

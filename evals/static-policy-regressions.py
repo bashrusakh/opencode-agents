@@ -48,6 +48,26 @@ implementation_sem = text("skills/change-contract/SKILL.md")
 pr_readiness_sem = text("skills/pr-readiness/SKILL.md")
 semantic_runtime = "\n".join([root_sem, checkpoint_sem, evaluator_sem, workflow_entry_sem, delegation_sem, implementation_sem])
 
+# Preserve the distinct runtime contracts that prevent silent delegated tool-only
+# stretches and convenience shell/script editing. These are structural guards,
+# not evidence that the host streams child text or a real model obeyed them.
+check(
+    "before that sequence" in root_sem
+    and "delegated specialists" in root_sem
+    and "assistant-text updates" in root_sem
+    and "Tool calls, task lists, private reasoning, and final-only reports are not substitutes" in root_sem
+    and "Host forwarding of child-session text" in root_sem,
+    "AGENTS.md: delegated assistant-text progress boundary lost",
+)
+check(
+    "prefer the runtime's **native patch/edit tools**" in implementation_sem
+    and "otherwise the native `edit` tool" in implementation_sem
+    and "not alternative editors merely for convenience" in implementation_sem
+    and "Programmatic mutation is appropriate for genuinely mechanical/bulk transformations" in implementation_sem
+    and "inspect the resulting diff/state" in implementation_sem,
+    "change-contract: native editing priority and bounded exceptions lost",
+)
+
 # Release identity must stay consistent across canonical/root and overview surfaces.
 version_match = re.search(r"\*\*Pack version: ([^*]+)\*\*", root_sem)
 check(version_match is not None, "AGENTS.md: pack version marker missing")
@@ -428,6 +448,29 @@ check(
     and "Do not force freshness when the intended target is explicitly local, historical, or pinned" in manual,
     "semantic design manual: public claim target-state/freshness principle missing",
 )
+
+# v31.15: a post-hoc auditor needs read-only access to governing installed skills.
+# Keep the existing config-root deny and permit only canonical skill instructions,
+# never all files in a skill directory or arbitrary user configuration.
+fm_src = evaluator_sem.split("\n---\n", 1)[0].removeprefix("---\n")
+# Parse the pack's flat V2 rule triplets without adding a test-time YAML dependency.
+evaluator_permissions = []
+for block in re.split(r"(?m)^  - action: ", fm_src)[1:]:
+    raw_action = block.splitlines()[0].strip().strip(chr(34))
+    m_resource = re.search(r"(?m)^    resource: (.*)$", block)
+    m_effect = re.search(r"(?m)^    effect: (.*)$", block)
+    if m_resource and m_effect:
+        evaluator_permissions.append({"action": raw_action, "resource": m_resource.group(1).strip('"\''), "effect": m_effect.group(1).strip()})
+readonly_rules = [p for p in evaluator_permissions if p.get("action") == "read"]
+restrict = next((i for i,p in enumerate(readonly_rules) if p.get("resource") == "~/.config/opencode/*" and p.get("effect") == "deny"), -1)
+skill_read = [i for i,p in enumerate(readonly_rules) if p.get("resource") == "~/.config/opencode/skills/*/SKILL.md" and p.get("effect") == "allow"]
+check(restrict >= 0 and len(skill_read) == 1 and skill_read[0] > restrict,
+      "session-evaluator: installed skill instructions inaccessible or configuration deny weakened")
+check(not any(p.get("effect") == "allow" and p.get("resource") in ("~/.config/opencode/**", "~/.config/opencode/skills/*", "~/.config/opencode/skills/**") for p in readonly_rules),
+      "session-evaluator: config directory or arbitrary skill files broadly exposed")
+check(any(p.get("action") == "*" and p.get("resource") == "*" and p.get("effect") == "deny" for p in evaluator_permissions)
+      and not any(p.get("action") in ("edit", "shell", "bash", "apply_patch", "write") and p.get("effect") == "allow" for p in evaluator_permissions),
+      "session-evaluator: read-only/no-shell role capability boundary changed")
 
 # v31.3: compliance is fail-closed when governing contracts are unavailable; required review methods do not transfer role ownership.
 check(

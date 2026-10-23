@@ -21,7 +21,7 @@ Before implementing a user-facing UI/config/API/workflow change, establish the b
 
 Before the first repository mutation, load `git-provenance` and satisfy its mutation baseline for the actual worktree when repository-state provenance matters. Then inspect the relevant implementation, nearest callers/tests, project conventions, and existing owners. Do not introduce dependencies/generated files/broad rewrites/unrelated cleanup without separate authorization.
 
-Choose the narrowest reliable mutation mechanism. Constrain targets before bulk/programmatic transformation; use transforms only for understood mechanical changes, not as a substitute for semantic understanding. Inspect the resulting diff/state after mutation. Tool choice never widens scope or correctness obligations.
+For bounded semantic edits to source, tests, config, or documentation, prefer the runtime's **native patch/edit tools** when they are available and safe (use `apply_patch`/`patch` if supported, otherwise the native `edit` tool). Shell text processors, `sed`, `python3`, redirection, and ad-hoc scripts are not alternative editors merely for convenience, shorter commands, line-number targeting, or avoiding exact-match editing. Programmatic mutation is appropriate for genuinely mechanical/bulk transformations, when native editing cannot safely express the change, or when native editing is unavailable. Choose the narrowest reliable mechanism for that case; constrain targets and inspect the resulting diff/state after mutation. Tool choice never widens scope or correctness obligations.
 
 ## Right-level implementation boundary
 
@@ -30,6 +30,12 @@ Choose the narrowest reliable mutation mechanism. Constrain targets before bulk/
 For non-trivial implementation/fix work, choose the narrowest existing owner that can guarantee the established outcome across affected paths/states/callers/boundaries/lifecycle transitions. Trace the root operation and existing owners first. If a local owner cannot guarantee the outcome, move outward or escalate rather than stacking local guards. Moving outward does not strengthen the required product outcome.
 
 Production-grade means correct/maintainable at that boundary. Reuse existing semantics/primitives, keep responsibilities clear, and account for relevant failure/security/concurrency/recovery behavior in proportion to the actual contract/risk. Avoid test-specific branches, duplicate policy, compatibility tricks, speculative abstractions, or temporary workarounds as substitutes for the correct owner. An explicitly accepted temporary workaround remains bounded to its accepted scope.
+
+### Material architectural choice
+
+When repository evidence leaves **materially different viable architectural directions** with consequential differences in long-term ownership/boundaries, extensibility, implementation or migration cost, operational burden, or maintenance risk, that direction is a **user-owned choice** unless already authorized. Before committing work or handing off edits that select one direction, evaluate the distinct viable approaches without imposing a fixed number of options; explain the material tradeoffs, likely cost/risk, limits of the available evidence, and a reasoned recommendation. The user may have relevant project plans or earlier offline decisions absent from the agent's context. Neither apparent short-term complexity nor attractive long-term architecture alone authorizes silently discarding a viable alternative or choosing it on the user's behalf.
+
+A delegated specialist returns that unresolved choice and its evidence to the workflow owner; the workflow owner presents the decision to the user and obtains its authorization before selecting the direction. Respect a direction already chosen by the user unless material contrary evidence warrants proposing a revision; never silently replace it. Keep routine, reversible technical mechanics and a necessary right-level owner/scope change that does not create an independently choosable architectural direction within ordinary implementation authority. Do not manufacture options or user gates when no material architectural choice remains.
 
 ## Regression guard
 

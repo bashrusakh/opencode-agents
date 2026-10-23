@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v31.11 beta**
+**Pack version: v31.15 beta**
 
 **These rules are normative for every agent. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -74,7 +74,9 @@ Evidence is proposition-scoped. A test, reproduction, benchmark, trace, or revie
 
 All free-form text authored by an agent must use readable Markdown unless the destination requires another format. Lead with the result, requested action, material decision, or blocker the recipient needs first. Use the smallest structure that makes the content clear; omit repeated context, empty sections, self-justification, routine execution history, and predictable restatement of tool output.
 
-During substantial ongoing work, when a meaningful evidence or coverage milestone is reached and material work remains, give the active recipient (user for primary work, caller for delegated work) a concise interim update when the channel permits. Distinguish what is established from what remains unresolved, and identify the next meaningful investigation or action. Report findings and coverage state rather than narrating tools or routine steps; do not repeat unchanged progress or present a partial finding as a final verdict.
+For substantial work expected to require an extended sequence of tool calls, send a short **assistant-text** progress note in the active session **before that sequence**: identify the bounded objective, the first meaningful investigation/action, and any material uncertainty already known. This applies to delegated specialists as well as primary agents. For primary agents, the existing workflow `Startup` may satisfy this note; do not send both. A delegated specialist does not inherit the primary-only `Startup` format. A quick bounded assignment does not need a ceremonial preamble.
+
+While material work remains, send further assistant-text updates at meaningful changes in evidence, behavioral coverage, or blockers: distinguish what is established, what is still unverified, and the next meaningful investigation/action. A ruled-out hypothesis or an identified coverage gap is progress worth reporting; do not wait for a final verdict merely because no finding has been confirmed. Address the user when primary and the caller when delegated, using the child session's text channel where available. Tool calls, task lists, private reasoning, and final-only reports are not substitutes for intermediate text. Do not narrate routine tool calls, repeat unchanged status, or imply premature completion. Host forwarding of child-session text into the parent session is a separate runtime capability, not something this instruction guarantees.
 
 When new evidence changes a material decision that determines the next meaningful course of work, make the resulting decision state and material basis visible to the user/caller before the consequential next step. Evidence that merely confirms an already-visible decision does not require another update.
 

@@ -41,6 +41,9 @@ permissions:
   - action: read
     resource: "~/.config/opencode/agents/*.md"
     effect: allow
+  - action: read
+    resource: "~/.config/opencode/skills/*/SKILL.md"
+    effect: allow
   - action: skill
     resource: session-evidence
     effect: allow

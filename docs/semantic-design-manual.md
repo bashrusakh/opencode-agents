@@ -618,6 +618,16 @@ For important behavior, combine the grader that best fits the property:
 
 Do not use one grader type for everything.
 
+### Preserve predecessor contracts before promotion
+
+**Candidate-only gates cannot establish no regression relative to the previous package.** Before publishing any new pack version, compare the **actual previous distributed artifact** with the **actual candidate artifact**, not just the proposed patch, changelog, or current tests. Derive the comparison from effective instructions, skill activation/ownership, agent frontmatter and permissions, handoff contracts, installers, and gate behavior. For each changed material proposition, account for the prior action, triggering conditions, exceptions, user/tool authority, evidence threshold, consumer reachability, stop/fallback behavior, and result meaning. Include relevant unchanged consumers, since the same words under a new owner or activation path may no longer be executable.
+
+Treat removals, narrowed obligations, softened modalities (`must` to `may`, unconditional to qualified), lost triggers/exceptions, new hidden preconditions, and unactivated relocations as **suspected regressions** until explained. Compare both directions: what prior valid workflow might no longer work, and what new behavior could now be incorrectly allowed or forced? Do not infer preservation from green tests, matching headings, static strings, unchanged permissions, or a statement that a rule exists somewhere in the package. A relocation counts as preserved only when the intended recipient loads the receiving contract and can still derive its material behavior. Intentional changes require traceable task/policy authority; omitted requirements without such authority block release.
+
+Use `evals/prior-release-preservation.py --previous PREVIOUS.zip --candidate CANDIDATE.zip --prepare-review REVIEW.json --report DELTA.md` to inventory the exact material diffs. Review **every material hunk**, including apparently additive or mechanical changes with side effects, and record `preserved`/`relocated` (with target and candidate evidence), `authorized_change` (with authority and before/after impact), or `non_semantic` (with reason). The tool validates completeness, unchanged input fingerprints, and referenced candidate evidence, **not semantic equivalence or the authenticity of authority**; those require source-grounded semantic judgment; independent review is proportional to risk, not mandatory human sign-off. Inspect the full contextual diff when a hunk excerpt is insufficient. If a prior owner was introduced or migrated earlier than the immediate predecessor, compare the relevant historical baseline as well; predecessor-only comparison cannot uncover older, already-lost obligations.
+
+Only call the result a release-gate **PASS for promotion** after candidate gates and this predecessor-preservation review pass against the **final packaged candidate**: `python evals/run-release-gates.py --release --previous PREVIOUS.zip --preservation-review REVIEW.json`. If the comparison lacks the previous release, unresolved evidence or a valid review record for the exact candidate, **do not publish an unqualified PASS**. Keep the review record and delta with the release evidence, outside installed runtime prompts. A standalone `run-release-gates.py` PASS is candidate-only evidence. Model/runtime behavioral replay remains separately required for any claimed behavioral improvement.
+
 ### Keep release gates adversarial to the candidate
 
 A release check exists to falsify the candidate, not to confirm that expected wording is present. Separate at least four evidence classes:
@@ -743,7 +753,7 @@ User-facing narration should be informative without becoming another execution l
 
 ### Before tools
 
-Use one compact startup statement/block that says what the agent is about to do and the relevant boundary. Do not add a second prose plan around it.
+Use one compact startup statement/block that says what the agent is about to do and the relevant boundary. Do not add a second prose plan around it. For substantial delegated assignments, a short assistant-text note before extended tool execution gives the child session an observable starting boundary without imposing the primary-only `Startup` format.
 
 ### During work
 
@@ -755,7 +765,7 @@ Update the user only when there is:
 - a decision where steering would materially help;
 - for a workflow owner, a meaningful stage result that establishes new workflow state and determines the next materially different stage/owner.
 
-State what is now established or unresolved and the next meaningful action/stage. Communicate **workflow state, not the tool stream**: batch nearby commands, specialist calls, and mechanical substeps instead of narrating them one by one. A short single-stage task may need no intermediate update; a longer multi-stage workflow should not become only Startup, opaque tool activity, and Final after meaningful intermediate state has been established. For delegated work, the same principle applies to material evidence/coverage milestones communicated to the caller when the channel permits; it does not impose the primary user-facing Startup/Update protocol on subagents.
+State what is now established or unresolved and the next meaningful action/stage. Communicate **workflow state, not the tool stream**: batch nearby commands, specialist calls, and mechanical substeps instead of narrating them one by one. A short single-stage task may need no intermediate update; a longer multi-stage workflow should not become only Startup, opaque tool activity, and Final. In delegated work, progress belongs in the **child session's assistant-text stream**: initial orientation before extended tools, then evidence/coverage/blocker changes while work remains, even if no final finding is yet confirmed. The host may not forward those child messages into the parent in real time; do not infer child silence solely from an opaque parent task tool or add caller-level duplicate status narration to compensate.
 
 ### Decision requests
 
@@ -962,6 +972,8 @@ Better:
 ## 21. Release checklist for semantic changes
 
 Before shipping a prompt/harness semantic change, verify:
+
+- [ ] **Predecessor preservation:** compare the prior *distributed* package with the final candidate; review every material changed contract and unchanged consumer/activation path for lost or weakened obligations, reachable relocations and authorized behavioral changes. Save a provenance-bound review record; standalone candidate gates are not sufficient for release promotion. Historical baseline comparisons are added where earlier migrations might have lost a rule.
 
 - [ ] The motivating failure is established, not inferred from a summary alone.
 - [ ] The failure is not better classified as execution, evidence, test-fixture, or runtime/tool error.
