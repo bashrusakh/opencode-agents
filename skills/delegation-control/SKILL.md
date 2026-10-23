@@ -73,6 +73,10 @@ A multi-agent workflow is not a fixed pipeline. Reuse fresh evidence. Re-invoke 
 
 Explicit review-only work uses reviewer ownership. Otherwise use independent review when risk/non-obviousness materially benefits from it, not ritualistically after every package/test/commit. Resource-specific lifecycle rules (for example owned-PR final-candidate review) belong to their dedicated skill.
 
+For **final whole-change review**, by default complete applicable implementation-local and independent verification that could invalidate or change the candidate **before** invoking the reviewer. Reconcile findings, perform needed corrections and affected re-verification, and establish the intended stable candidate first. Do not run a costly final whole-change review concurrently with unfinished candidate-invalidating verification merely to shorten elapsed time; honor the user's cost/latency priorities. Independent verification activities may run concurrently when their execution and evidence do not interfere.
+
+Do not wait for checks unavailable at the current lifecycle stage (such as remote checks that require publication); identify them as pending, unavailable, or deferred, **never passed**. Early **targeted** review is appropriate for a bounded material question when it can avoid wasted implementation or verification effort; it remains partial and cannot replace final whole-change review. The workflow owner may choose a different ordering when there is a concrete, evidence-backed reason, making the tradeoff visible rather than silently consuming costly review on a mutable candidate.
+
 ## Workflow-created resources
 
 Temporary resources created by the workflow must be reconciled before completion. When such resources exist, load `resource-lifecycle`; it owns resource identity, cleanup ownership/transfer, failure handling, terminal states, and reconciliation. Cleanup authorization remains with the active workflow-control/user gate or delegated action ceiling.

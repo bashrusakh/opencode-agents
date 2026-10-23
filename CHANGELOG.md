@@ -1,5 +1,13 @@
 # Changelog
 
+## v31.16 beta
+
+- Establishes evidence-first **final whole-change review ordering** in the existing `delegation-control` skill: finish candidate-invalidating local and independent verification, reconcile corrections, and stabilize the intended candidate before spending on final independent review.
+- Independent verification may run concurrently when safe; post-publication-only checks remain explicitly pending/deferred rather than falsely passed. A bounded early targeted review can still resolve an uncertainty before costly implementation, but cannot substitute for final whole-change review. An evidence-backed alternate order is possible with its cost/latency tradeoff visible.
+- Retains the `pr-readiness` Candidate HEAD and Draft/Ready gates and the orchestrator's workflow ownership; adds no role-specific duplication, mandatory review stage, or new ST tests.
+
+See `docs/releases/v31.16-beta.md`.
+
 ## v31.15 beta
 
 - Fixes `session-evaluator` read permissions for installed pack-owned governing skill instructions (`~/.config/opencode/skills/*/SKILL.md`). The evaluator previously could inspect `AGENTS.md` and agents but could not read `delegation-control` / `pr-readiness` and other normative skills that it must audit.
