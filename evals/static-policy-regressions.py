@@ -68,6 +68,20 @@ check(
     "change-contract: native editing priority and bounded exceptions lost",
 )
 
+# Keep proportional evidence budgets distinct from behavioral test coverage and
+# preserve the authorization escape hatch; static tokens are NOT code-quality proof.
+check(
+    "### Implementation evidence budget" in implementation_sem
+    and "max(250, ceil(1.5 * P))" in implementation_sem
+    and "C / (C + A) <= 15%" in implementation_sem
+    and "over 20%" in implementation_sem
+    and "test-code volume" in implementation_sem
+    and "test-only work" in implementation_sem
+    and "user authorization" in implementation_sem
+    and "without weakening necessary correctness/security/regression proof" in implementation_sem,
+    "change-contract: proportional test/comment budget or necessary-coverage authorization guard lost",
+)
+
 # Release identity must stay consistent across canonical/root and overview surfaces.
 version_match = re.search(r"\*\*Pack version: ([^*]+)\*\*", root_sem)
 check(version_match is not None, "AGENTS.md: pack version marker missing")

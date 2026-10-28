@@ -1,5 +1,13 @@
 # Changelog
 
+## v31.17 beta
+
+- Adds one **implementation evidence budget** to the existing `change-contract` skill: normally `T <= max(250, ceil(1.5 × P))` for newly authored test NCLOC relative to changed production NCLOC; production comment density targets at most 15%, with review/authorization above 20%.
+- Thresholds trigger consolidation and **explicit user authorization of necessary excess**, never automatic deletion of regression/security/concurrency coverage or padding to satisfy a metric. Test coverage and test-code volume remain distinct measurements; test-only, documentation-only, generated, and deletion-led changes do not get a fake denominator.
+- Preserves all existing roles, permissions, implementation ownership, architecture-choice/user-gate rules, and validation freshness. Adds a narrow static guard but no new workflow stage, test-count gate, or `ST-*` protocol.
+
+See `docs/releases/v31.17-beta.md`.
+
 ## v31.16 beta
 
 - Establishes evidence-first **final whole-change review ordering** in the existing `delegation-control` skill: finish candidate-invalidating local and independent verification, reconcile corrections, and stabilize the intended candidate before spending on final independent review.
