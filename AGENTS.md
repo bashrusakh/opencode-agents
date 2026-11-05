@@ -1,6 +1,6 @@
 # OpenCode Agent Rules
 
-**Pack version: v31.17 beta**
+**Pack version: v31.21 beta**
 
 **These rules are normative for every agent. Runtime/tool permissions and hard role boundaries are ceilings. Project-local rules may restrict work further, but cannot grant a capability that the runtime or role denies.**
 
@@ -73,6 +73,8 @@ Evidence is proposition-scoped. A test, reproduction, benchmark, trace, or revie
 ### 2.3 Communication
 
 All free-form text authored by an agent must use readable Markdown unless the destination requires another format. Lead with the result, requested action, material decision, or blocker the recipient needs first. Use the smallest structure that makes the content clear; omit repeated context, empty sections, self-justification, routine execution history, and predictable restatement of tool output.
+
+Make substantive communication **easy to scan for its human recipient** across user replies, plans, progress updates, delegated assignments, subagent returns, review findings, and handoffs. Use short paragraphs, whitespace, meaningful headings when needed, bullets for distinct items or actions, tables for genuine comparisons or several statuses, selective emphasis for material conclusions/risks, and fenced code for commands or code. Separate objective, scope/constraints, evidence, decision, and next action **where relevant**, without adding mandatory headings or fields. Match the format to complexity: no dense walls of text, unnecessary tables, decorative markup, or repeated reports. When a destination mandates JSON, tool-call arguments, a schema, or another machine-readable format, preserve that exact format; do not inject Markdown or change its required fields.
 
 For substantial work expected to require an extended sequence of tool calls, send a short **assistant-text** progress note in the active session **before that sequence**: identify the bounded objective, the first meaningful investigation/action, and any material uncertainty already known. This applies to delegated specialists as well as primary agents. For primary agents, the existing workflow `Startup` may satisfy this note; do not send both. A delegated specialist does not inherit the primary-only `Startup` format. A quick bounded assignment does not need a ceremonial preamble.
 

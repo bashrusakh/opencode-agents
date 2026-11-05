@@ -1,5 +1,38 @@
 # Changelog
 
+## v31.21 beta
+
+- Tightens `workflow-control` durable-planning checkpoints: persist material phase/work-package and decision, blocker, review-disposition, or verification transitions while the work is ongoing; group routine minor changes and checkpoint before a known provider-limit interruption rather than relying solely on session-end. No timers, new planning artifacts, workflow stages, or forced per-tool saves.
+- Separates GrayMatter **durable-memory** identity from **task-scoped checkpoint** identity in `graymatter-memory`. `checkpoint_resume` only returns the latest state for an `agent_id`, so distinct tasks in one repository need separate checkpoint namespaces and task/actual-Git-state validation before resume. Missing or stale checkpoint data cannot override canonical task state.
+- Maintains existing role isolation, canonical-state ownership, user approval of repository artifacts, and optional memory activation. No agent/skill additions or new tests.
+
+See `docs/releases/v31.21-beta.md`.
+
+
+## v31.20 beta
+
+- Clarifies the existing universal `AGENTS.md` §2.3 communication contract: human-readable, scannable Markdown across primary and delegated replies, assignments, findings, and handoffs. Structure scales with the content; strict machine-readable payloads remain untouched.
+- Extends the existing `workflow-control` final-report rule: briefly reconcile the user-authorized goal against what was delivered, disclose material omissions/changes with reasons and authorization state, and show material adjudicated review findings (fixed, evidence-rejected, accepted risk, deferred) without long logs or mandatory templates.
+- No added role, skill, test, workflow stage, permission, or standalone reporting artifact.
+
+See `docs/releases/v31.20-beta.md`.
+
+## v31.19 beta
+
+- Closes the post-critique architecture gap in `change-contract`: when accepted findings materially change the combined ownership/state/protocol design or accumulate layered mitigations, the workflow owner obtains a **bounded independent targeted architecture recheck** of the revised solution before entrenching it or freezing the final candidate. Ordinary fixes do not trigger another reviewer, and targeted judgment does not replace whole-change review or verification.
+- Preserves evidence-based disposition of already adjudicated findings across later review rounds in `pr-readiness`: a repeated finding without new discriminating evidence is not automatically reopened. Fresh whole-change reviewers remain isolated from prior verdicts; settlements are reconciled by the workflow owner afterward.
+- Requires reconciling material divergence from an **existing approved design artifact** in `change-contract`, without creating new design documents for ordinary work. No new roles, permissions, skill, tests, or mandatory full-review cycle.
+
+See `docs/releases/v31.19-beta.md`.
+
+## v31.18 beta
+
+- Adds the maintainer's **personally tested orchestrator-model exclusions** to the existing advisory `README.md` model guidance: DeepSeek V4.1 Flash, GLM-5.3 Flash, and MiniMax M3.1 Flash are not suitable for the pack's `code-orchestrator` role.
+- Explicitly distinguishes this role-specific operational finding from general model coding capability, specialist suitability and other family variants (notably GLM-5.3 Max). Keeps the pack model-agnostic and adds no runtime restrictions.
+- Documentation-only guidance; preserves all existing role, permission, skill, evidence, review, and release-gate contracts.
+
+See `docs/releases/v31.18-beta.md`.
+
 ## v31.17 beta
 
 - Adds one **implementation evidence budget** to the existing `change-contract` skill: normally `T <= max(250, ceil(1.5 × P))` for newly authored test NCLOC relative to changed production NCLOC; production comment density targets at most 15%, with review/authorization above 20%.

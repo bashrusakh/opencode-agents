@@ -1,6 +1,6 @@
 <div align="center">
 
-# OpenCode Agent Pack v31.17 beta
+# OpenCode Agent Pack v31.21 beta
 
 ### Model-agnostic routing · explicit workflow owners · bounded specialist delegation · evidence-grounded verification
 
@@ -79,6 +79,8 @@ The pack remains model-agnostic: these are **selection heuristics**, not runtime
 | `debugger`, `build`, `tester` (bounded technical stages) | Efficient capable coding/agentic model | Terminal-Bench 4.0 roughly **25–30%+** as an optional rough filter; verify per task |
 
 **Examples meeting both orchestrator indicators at a tested high-effort configuration:** Claude Sonnet 5.5 Max, Claude Opus 5.5 Max, GPT-6 Astra High/Xhigh, GPT-6.1 Sol **Max**, Claude Fable 5.1 High/Max. **Conditional candidates:** Gemini 4 Argon High (strong terminal result; Briefcase just below the suggested floor), GLM-5.3 Max (strong Briefcase; terminal result below it). Lower-effort variants of the same model may **not** meet both floors; in particular, GPT-6.1 Sol High does not meet the stated Briefcase cutoff on the published comparison.
+
+**Maintainer-tested orchestrator exclusions (October 2026):** **DeepSeek V4.1 Flash, GLM-5.3 Flash, and MiniMax M3.1 Flash are not suitable for the `code-orchestrator` role in this pack.** This is the pack maintainer's direct hands-on assessment of their reliability at orchestration (workflow ownership, handoffs, scope judgment, and mandatory checkpoints), **not** a claim about their general coding ability or a benchmark result. The observation does not exclude these models from bounded specialist roles when independently validated, and must not be generalized to different variants such as **GLM-5.3 Max**. Do not use aggregate coding benchmarks to override role-specific observed failures.
 
 These benchmarks measure broad technical autonomy and knowledge-work performance, **not direct compliance with this pack's handoff/authority/reassessment rules**. A strong implementation score cannot substitute for demonstrated scope judgment or independent review. Recheck current results before configuring a model: [Terminal-Bench 4.0](https://artificialanalysis.ai/evaluations/terminalbench-4-0), [AA-Briefcase](https://artificialanalysis.ai/evaluations/aa-briefcase), [model comparison](https://artificialanalysis.ai/models/comparisons).
 
@@ -264,7 +266,7 @@ Project-local collisions are backed up under `.opencode/.agent-pack/backups/`, a
 
 | If you need… | Read… |
 |---|---|
-| Release notes | [`docs/releases/v31.17-beta.md`](docs/releases/v31.17-beta.md) |
+| Release notes | [`docs/releases/v31.21-beta.md`](docs/releases/v31.21-beta.md) |
 | Release history | [`CHANGELOG.md`](CHANGELOG.md) |
 | Current role/protocol audit evidence | Separately delivered with the v31.16 release bundle (not installed or shipped in the base pack) |
 | Skill control / provenance manifest | [`evals/skill-control-spec.json`](evals/skill-control-spec.json) |
@@ -281,7 +283,7 @@ Release validation is defined in **§21 of [`docs/semantic-design-manual.md`](do
 
 <div align="center">
 
-**OpenCode Agent Pack v31.17 beta**  
+**OpenCode Agent Pack v31.21 beta**  
 Workflow-owner first · bounded specialist delegation · evidence-grounded verification
 
 </div>
