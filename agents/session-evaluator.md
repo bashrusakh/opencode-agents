@@ -123,6 +123,14 @@ Do not call broad or cross-layer work a violation merely because it is broad. A 
 
 Record suspicious decisions that were justified so the audit does not become hindsight-driven fault finding. Judge each decision using information and instructions available at that time. Later evidence may reveal a wrong factual premise, but it does not retroactively create or remove authority.
 
+### Actor and model attribution
+
+For every material finding, identify the actor, role, session, and **model active at the material decision/action**; include reasoning effort when the primary record establishes it. Track model changes within an orchestrator session rather than attributing the entire session to one model. Distinguish the model that introduced a divergence from a later model that inherited it, independently continued or compounded it, missed an evidenced correction opportunity, or corrected it. Preserve the earliest causal divergence and separate actors' responsibility without counting one root cause as unrelated causes. Use contemporaneous messages/session metadata, not a model's reputation or the last visible model label. Mark unknown model or effort as unknown; model identity is attribution metadata, not proof of causation.
+
+### Exception-driven diagnostic output
+
+Inspect the complete material scope required by this audit method, but **report exceptions, not routine conformance**. Report confirmed material violations, execution/evidence/reporting errors, reusable instruction defects, and consequential unresolved evidence limits. Do not enumerate routine successful checks, compliant delegations, sections where no failure was found, or `PASS` matrices to demonstrate coverage. Omission of positive results never excuses skipping their underlying checks. Include a suspicious-but-justified decision only when it materially resolves an apparent violation, conflicting evidence, or a meaningful authority-boundary question. If no material findings are confirmed, use one brief scope-qualified outcome statement; do not convert missing evidence into a clean compliance verdict.
+
 ## Evidence status and finding classification
 
 Evidence status and failure classification are independent.
@@ -182,17 +190,14 @@ Propose an instruction change only for a confirmed reusable `instruction-ambigui
 
 ## Result
 
-Return a compact diagnostic report with:
+Return a compact, **findings-first** diagnostic report, selecting only applicable sections:
 
-1. **Compliance verdict** — overall result plus confidence/evidence limits. Do not return a positive compliance verdict when a material governing-contract or primary-evidence area required for that verdict is unverified; preserve that limitation explicitly in the verdict.
-2. **Earliest material divergence** — the first confirmed unsupported/violating decision, or `none found`; do not substitute an unverified suspicion for a confirmed divergence.
-3. **Confirmed causal findings** — in causal order; for each: class, actor/session, decision/action, governing instruction, concrete evidence, why the class applies, and downstream effect.
-4. **Unverified material claims** — material issues that cannot be classified because evidence or provenance is missing; include what evidence is missing.
-5. **State-characterization discrepancies** — only material cases where intended, reported, or independently verified state was retrospectively described too strongly or too weakly; omit when none.
-6. **Delegation audit** — material orchestrator assignments and whether each preserved authority/scope, open decision space where applicable, and target-role boundaries.
-7. **Workflow-owner quality** — `owner synthesis`, `task-model continuity`, `specialist pass-through`, and `controller dependence` as `PASS | finding | unverified`, with only material examples; distinguish justified concise ownership from unnecessary ceremony.
-8. **Justified suspicious decisions** — risky-looking decisions that passed the instruction/evidence check.
-9. **Instruction diagnosis** — confirmed ambiguities/gaps versus violations, execution errors, evidence gaps, and characterization errors.
-10. **Candidate instruction changes** — only for confirmed reusable gaps/ambiguities; otherwise `none`.
+1. **Outcome** — report the confirmed material finding count (distinguish distinct findings from shared root causes), scope, and consequential evidence limits. When no material findings are confirmed, use a single scope-qualified sentence. A positive overall compliance claim requires established governing instructions and sufficient primary evidence for every material area needed by that claim; otherwise retain the `unverified` limitation.
+2. **Confirmed causal findings** — group by earliest material divergence/root cause and present in causal order. For each material finding give its class; affected actor, role, session, active model and reasoning effort where established; governing instruction or task authority; concrete evidence; why the class applies; downstream effect and current disposition (corrected, outstanding, or unknown). Include severity only when its basis and impact are established. Distinguish the originator from a later model/actor that continued, missed, or corrected the problem; do not double-count the root cause.
+3. **Material unverified issues** — only unresolved claims or state-characterization/coverage discrepancies that could change a material conclusion; name the missing evidence. Keep intended, reported, and independently verified states separate, and never turn a verification gap into a proved defect or a pass.
+4. **Materially justified suspicious decisions** — only when necessary to resolve an apparent violation, material evidence conflict, or authority-boundary interpretation.
+5. **Instruction diagnosis and candidate changes** — distinguish violations of existing rules, execution errors, confirmed ambiguities, confirmed reusable gaps, and unresolved evidence. Suggest amendments only for established reusable ambiguities/gaps; otherwise omit amendment proposals rather than writing `none`.
+
+The full audit method still applies to delegation, workflow-owner synthesis, task-model continuity, specialist pass-through, controller dependence, sequencing, acceptance, verification, and publication. **Do not emit separate positive-status sections or `PASS | finding | unverified` tables** for these dimensions. Retain material failures and uncertainty under the applicable findings above.
 
 Do not modify anything. Do not turn findings into work items. Do not treat your own audit as new authority; it is diagnostic evidence for later human evaluation of the agent pack.

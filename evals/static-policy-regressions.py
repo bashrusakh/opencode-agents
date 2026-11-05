@@ -492,7 +492,7 @@ check(
     and "instruction-compliance result for that decision is `unverified`" in evaluator_sem
     and "apparently equivalent workflow evidence" in evaluator_sem
     and "overall compliance verdict may be positive only when every material area necessary to that verdict has both established governing instructions and sufficient primary evidence" in evaluator_sem
-    and "Do not return a positive compliance verdict when a material governing-contract or primary-evidence area required for that verdict is unverified" in evaluator_sem,
+    and "A positive overall compliance claim requires established governing instructions and sufficient primary evidence" in evaluator_sem,
     "session-evaluator: unavailable governing contract can still be normalized into compliance",
 )
 check(
@@ -805,6 +805,32 @@ check(
     "terminal semantic-eval: activation/handoff residency split missing or duplicated",
 )
 
+# Post-hoc audit is a diagnostic, not a PASS checklist or a silent child-only report.
+check(
+    "model active at the material decision/action" in evaluator_sem
+    and "Track model changes" in evaluator_sem
+    and "do not double-count the root cause" in evaluator_sem
+    and "Do not enumerate routine successful checks" in evaluator_sem
+    and "When no material findings are confirmed" in evaluator_sem
+    and "Retain material failures and uncertainty" in evaluator_sem,
+    "session-evaluator: cross-model causal attribution/exception-first report contract missing",
+)
+check(
+    "Consume and reconcile the returned diagnostic" in terminal_eval_sem
+    and "Do not leave material findings isolated in the child session" in terminal_eval_sem
+    and "A later clean task-level audit does not erase earlier confirmed failures" in terminal_eval_sem
+    and "does not create a new acceptance/readiness gate" in terminal_eval_sem
+    and "at most one brief scope-qualified audit-status statement" in terminal_eval_sem,
+    "session-evaluation-control: diagnostic reporting or cumulative findings lost",
+)
+
+check(
+    all(f"ST-{n}" in text("evals/semantic-transition-traces.md") for n in [152, 153, 154])
+    and "model switch does not collapse causal attribution" in text("evals/semantic-transition-traces.md")
+    and "Terminal evaluator findings reach the user" in text("evals/semantic-transition-traces.md"),
+    "ST-152/153/154 exception-reporting/model-attribution/terminal-consumption scenarios missing",
+)
+
 # Semantic ownership is a first-class release gate, not only a historical-fragment blacklist.
 skill_control_spec_path = ROOT / "evals/skill-control-spec.json"
 skill_control_audit_path = ROOT / "evals/skill-control-audit.py"
@@ -961,8 +987,11 @@ check(
     and "specialist pass-through" in evaluator_sem
     and "controller dependence" in evaluator_sem
     and "independently determined the next required question/action" in evaluator_sem
-    and "Workflow-owner quality" in evaluator_sem,
-    "session-evaluator: accountable-owner/controller-use audit missing",
+    and "### Actor and model attribution" in evaluator_sem
+    and "### Exception-driven diagnostic output" in evaluator_sem
+    and "findings-first" in evaluator_sem
+    and "Do not emit separate positive-status sections" in evaluator_sem,
+    "session-evaluator: accountable-owner/model-attribution/exception-reporting audit missing",
 )
 
 # Cross-role mutation handoffs must preserve role ownership instead of laundering
@@ -1212,14 +1241,14 @@ check(
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 151, "semantic-transition suite must contain 151 cases")
+check(traces.count("### ST-") == 154, "semantic-transition suite must contain 154 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 151, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 154, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",

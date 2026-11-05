@@ -1,5 +1,14 @@
 # Changelog
 
+## v31.22 beta
+
+- Session diagnostics now attribute material findings to the responsible role/session and the model active at each decision, separating introduction from continuation or correction across model switches.
+- `session-evaluator` reports material exceptions and evidence limitations instead of routine PASS matrices or positive section checklists, without reducing required internal analysis.
+- `session-evaluation-control` requires the orchestrator to synthesize audit findings in the final user-facing report, retaining earlier task-scoped findings for a session-wide summary; the diagnostic stays post-hoc and non-gating.
+- Adds static and scenario regression coverage; no new roles, automatic audit loops or persistent report artifacts.
+
+See `docs/releases/v31.22-beta.md`.
+
 ## v31.21 beta
 
 - Tightens `workflow-control` durable-planning checkpoints: persist material phase/work-package and decision, blocker, review-disposition, or verification transitions while the work is ongoing; group routine minor changes and checkpoint before a known provider-limit interruption rather than relying solely on session-end. No timers, new planning artifacts, workflow stages, or forced per-tool saves.

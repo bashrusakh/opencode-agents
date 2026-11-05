@@ -681,6 +681,15 @@
             ],
             [
               "does not gate final reporting"
+            ],
+            [
+              "Consume and reconcile the returned diagnostic"
+            ],
+            [
+              "A later clean task-level audit does not erase earlier confirmed failures"
+            ],
+            [
+              "does not create a new acceptance/readiness gate"
             ]
           ]
         },
@@ -695,6 +704,15 @@
             ],
             [
               "exact parent and participating child-session IDs"
+            ],
+            [
+              "model active at the material decision/action"
+            ],
+            [
+              "Track model changes within an orchestrator session"
+            ],
+            [
+              "Do not enumerate routine successful checks"
             ]
           ]
         }
@@ -1113,7 +1131,7 @@
               "overall compliance verdict may be positive only when every material area necessary to that verdict has both established governing instructions and sufficient primary evidence"
             ],
             [
-              "Do not return a positive compliance verdict when a material governing-contract or primary-evidence area required for that verdict is unverified"
+              "A positive overall compliance claim requires established governing instructions and sufficient primary evidence"
             ]
           ]
         }
