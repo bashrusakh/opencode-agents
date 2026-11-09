@@ -36,7 +36,7 @@ sha256_file() {
 is_pack_root() {
   local file="$1"
   [ -f "$file" ] || return 1
-  grep -q '^# OpenCode Agent Rules$' "$file" && grep -q '^\*\*Pack version: v30\.' "$file"
+  grep -q '^# OpenCode Agent Rules$' "$file" && grep -Eq '^\*\*Pack version: v[0-9]+\.' "$file"
 }
 
 backup_rel() {
@@ -137,7 +137,7 @@ else
 fi
 
 cp "$NEW_MANIFEST" "$RECEIPT"
-printf 'pack_version=v30.87 beta\ninstalled_at=%s\n' "$STAMP" > "$STATE/install-info"
+printf 'pack_version=v31.22\ninstalled_at=%s\n' "$STAMP" > "$STATE/install-info"
 
 echo "Installed project-local OpenCode agents/skills into $BASE/.opencode"
 if [ -d "$BACKUP" ]; then echo "Backed up replaced/stale managed files under $BACKUP"; fi

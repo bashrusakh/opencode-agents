@@ -11,7 +11,7 @@ metadata:
 
 Load this skill only from `code-orchestrator` after the workflow owner has already established a **terminal successful outcome about to be reported**: the normalized goal is satisfied, or an active conditional resource workflow has returned its terminal success/readiness boundary. Do not load or invoke it for intermediate work, routine iterations, pauses, blocked/failed work, or an unsatisfied goal.
 
-This is temporary beta instrumentation, not part of the task acceptance/readiness gate. The terminal state must already be established before this harness runs.
+This is a post-hoc diagnostic harness, not part of the task acceptance/readiness gate. The terminal state must already be established before this harness runs.
 
 ## Evaluator handoff
 

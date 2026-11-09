@@ -91,8 +91,8 @@ if version_match:
     changelog_sem = text("CHANGELOG.md")
     check(
         f"# OpenCode Agent Pack {pack_version}" in readme_sem
-        and f"**OpenCode Agent Pack {pack_version}**" in readme_sem,
-        "README.md: header/footer version drift from AGENTS.md",
+        and "docs/technical-overview.md" in readme_sem,
+        "README.md: version or technical-overview link drift from AGENTS.md",
     )
     check(
         changelog_sem.startswith(f"# Changelog\n\n## {pack_version}"),
@@ -126,9 +126,9 @@ check(
     "docs: redundant role-contract rubric should remain consolidated in the semantic manual",
 )
 
-# README delegated-specialist inventory must reflect the actual closed-world topology,
-# not just agent mode. Any role that is the target of a direct or conditional delegation
-# edge belongs in the inventory, including mode: all roles that can also be top-level.
+# Keep the concise README separate from the exhaustive specialist inventory.
+# The inventory lives in the linked technical overview; it must still reflect
+# the complete classified delegation topology.
 edge_inventory_sem = text("evals/role-handoff-audit.py")
 delegated_targets = {
     target
@@ -137,18 +137,22 @@ delegated_targets = {
         edge_inventory_sem,
     )
 }
+technical_sem = text("docs/technical-overview.md")
 delegated_section = re.search(
     r"(?ms)^## Delegated specialists\s*(.*?)(?=^---\s*$|^## )",
-    readme_sem,
+    technical_sem,
 )
-check(delegated_section is not None, "README.md: Delegated specialists section missing")
+check(delegated_section is not None, "Technical overview: Delegated specialists section missing")
 if delegated_section:
     documented_targets = set(re.findall(r"(?m)^\|\s*`([^`]+)`\s*\|", delegated_section.group(1)))
     check(
         documented_targets == delegated_targets,
-        "README.md: delegated-specialist inventory drift from classified delegation topology "
+        "Technical overview: delegated-specialist inventory drift from classified delegation topology "
         f"(missing={sorted(delegated_targets - documented_targets)}, stale={sorted(documented_targets - delegated_targets)})",
     )
+check(len(readme_sem.split()) <= 650, "README.md: entry page exceeds the 650-word limit")
+check("semantic" in readme_sem and "before" in readme_sem and "Contributing" in readme_sem, "README.md: semantic-task-first positioning or contributing path missing")
+
 # The workflow owner must expose semantic progress without becoming a tool logger,
 # and must translate hidden specialist context into a decision-complete user question.
 check(

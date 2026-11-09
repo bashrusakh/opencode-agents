@@ -1,13 +1,17 @@
 # Changelog
 
-## v31.22 beta
+## v31.22
+
+- Promoted v31.22 from beta by maintainer decision; executable agent contracts remain unchanged except removal of the beta-only diagnostic label.
+- Keeps README as a short semantic/task-first introduction, installation, contributing and links; moves detailed architecture, role/skill inventories, integrations, design references and model notes to `docs/technical-overview.md`.
+- Corrects both installers' version receipts to v31.22 (previously hardcoded to v30.87 beta) and makes them recognize previous v31 pack roots on upgrade.
 
 - Session diagnostics now attribute material findings to the responsible role/session and the model active at each decision, separating introduction from continuation or correction across model switches.
 - `session-evaluator` reports material exceptions and evidence limitations instead of routine PASS matrices or positive section checklists, without reducing required internal analysis.
 - `session-evaluation-control` requires the orchestrator to synthesize audit findings in the final user-facing report, retaining earlier task-scoped findings for a session-wide summary; the diagnostic stays post-hoc and non-gating.
 - Adds static and scenario regression coverage; no new roles, automatic audit loops or persistent report artifacts.
 
-See `docs/releases/v31.22-beta.md`.
+See `docs/releases/v31.22.md`.
 
 ## v31.21 beta
 
