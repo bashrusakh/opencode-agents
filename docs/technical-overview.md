@@ -14,7 +14,7 @@
 
 ## What is a semantic agent pack?
 
-**The defining purpose is to turn a user's request into an actionable, evidence-grounded task before agents start implementing it.** The user should not have to write a detailed technical specification (ТЗ) just to get a useful result. They can describe a problem, an objective, or an observed failure in ordinary language; the pack directs the workflow owner to **determine what needs to be achieved**, using the request, repository, existing behavior, documentation, and other applicable evidence.
+**The defining purpose is to turn a user's request into an actionable, evidence-grounded task before agents start implementing it.** The user should not have to write a detailed technical specification (requirements brief) just to get a useful result. They can describe a problem, an objective, or an observed failure in ordinary language; the pack directs the workflow owner to **determine what needs to be achieved**, using the request, repository, existing behavior, documentation, and other applicable evidence.
 
 Here, *semantic* refers to **understanding and establishing the task's meaning**, not semantic search, embeddings, or automatic model selection. Preserving that meaning later is essential, but it is **a consequence of having established the task**, not the definition of semantic orchestration.
 
@@ -49,7 +49,7 @@ These are architectural differences from a *simple* prompt collection, not a cla
 
 ## What you gain — and the limits
 
-The intended practical gain is that you can **delegate an engineering objective without drafting a full ТЗ first**. Agents are instructed to establish what success means from the available evidence, choose an appropriate workflow, and expose material decisions or uncertainties rather than silently assuming them.
+The intended practical gain is that you can **delegate an engineering objective without drafting a full requirements brief first**. Agents are instructed to establish what success means from the available evidence, choose an appropriate workflow, and expose material decisions or uncertainties rather than silently assuming them.
 
 For larger tasks, the same contracts aim to reduce wrong-scope fixes, unauthorized operations, unsupported completion claims and information loss between specialists. For a small, already-defined edit, a single bounded agent can be more efficient than a multi-agent workflow.
 
@@ -58,7 +58,7 @@ For larger tasks, the same contracts aim to reduce wrong-scope fixes, unauthoriz
 ## From request to result
 
 ```text
-User describes a goal, problem, or request — a detailed ТЗ is not required
+User describes a goal, problem, or request — a detailed requirements brief is not required
     ↓
 Workflow owner interprets request + relevant project evidence
     ↓
