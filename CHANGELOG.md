@@ -10,6 +10,10 @@
 - `session-evaluator` reports material exceptions and evidence limitations instead of routine PASS matrices or positive section checklists, without reducing required internal analysis.
 - `session-evaluation-control` requires the orchestrator to synthesize audit findings in the final user-facing report, retaining earlier task-scoped findings for a session-wide summary; the diagnostic stays post-hoc and non-gating.
 - Adds static and scenario regression coverage; no new roles, automatic audit loops or persistent report artifacts.
+- Restores `CONTRIBUTING.md` as a standalone file from an external contribution, backing the README's short Contributing section with the full contribution guide.
+- `agents/reviewer.md` allows a narrow non-destructive exploratory probe before a finding exists when it distinguishes a concrete behavioral hypothesis derived independently from the authoritative task and actual change; probes stay risk-proportional, must not mutate project state, and must not recreate `@tester`.
+- Tightens `skills/delegation-control` child-session continuity: continuation stays bounded to the same assignment and acceptance objective; a new independently scoped objective or independent judgment requires a fresh child session even when the role, PR, branch, or affected files are unchanged.
+- Aligns two `docs/semantic-design-manual.md` session-continuity passages with the tightened rule; adds ST-155 trace coverage plus matching static and workflow-path guards.
 
 See `docs/releases/v31.22.md`.
 
