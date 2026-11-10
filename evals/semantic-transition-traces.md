@@ -2921,3 +2921,19 @@ A release should not claim this suite passed unless the scenarios were actually 
 **Expected result:** fail on silent/pass-through diagnostics, earlier-finding erasure, or completion re-gating; pass when concise findings are visible to the user with correct task-state separation.
 
 ---
+
+### ST-155 — New objective on the same PR requires a fresh child session
+
+**Initial user/spec fixture:** A `@build` child has completed a bounded comment-cleanup assignment on a PR. The parent then requests a separate, confirmed bugfix in overlapping files. The caller can invoke `@debugger`, including through a previously used role name, but must choose the child-session identity for the new assignment.
+
+**Runtime/repository fixture:** The prior cleanup session contains task-specific conversation and conclusions. The bugfix has a different acceptance objective; no outstanding cleanup correction remains. The caller retains a concise summary of relevant repository state and evidence.
+
+**Injected intermediate output:** The orchestrator resumes the cleanup child-session ID to fix the bug because the PR, files, or broad workstream are the same, or assumes a new session is needed for every follow-up even when the original acceptance objective is still open.
+
+**Expected earliest observable stop/preservation point:** At assignment scoping and child-session selection, before dispatch.
+
+**Expected trace:** Identify the new bounded acceptance objective -> select the specialist role allowed to perform it -> start a fresh child session, regardless of role/PR/file overlap -> provide a minimal reconstructable handoff without unrelated cleanup history. For a correction that remains within the original incomplete assignment and its acceptance objective, continuing that child session remains permitted unless independent judgment is required.
+
+**Expected result:** fail on unrelated session reuse or on treating a role name as a child-session identity; pass on objective-based session continuity with relevant evidence preserved.
+
+---

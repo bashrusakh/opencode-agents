@@ -976,6 +976,35 @@
       ]
     },
     {
+      "id": "child_session_assignment_freshness",
+      "nodes": [
+        {
+          "path": "skills/delegation-control/SKILL.md",
+          "anchor": [
+            "## Child-session freshness and independent judgment"
+          ],
+          "window_lines": 7,
+          "groups": [
+            [
+              "Session continuity follows assignment continuity, not agent identity"
+            ],
+            [
+              "same bounded assignment and acceptance objective"
+            ],
+            [
+              "fresh child session for a new independently scoped specialist objective"
+            ],
+            [
+              "even when the role, parent workflow, PR, branch, or affected files are unchanged"
+            ],
+            [
+              "concise reconstructable handoff instead of resuming unrelated conversation history"
+            ]
+          ]
+        }
+      ]
+    },
+    {
       "id": "delegated_task_state_boundary",
       "nodes": [
         {

@@ -35,7 +35,7 @@ For exploratory/planning/architectural/diagnostic delegation, pass the establish
 
 ## Child-session freshness and independent judgment
 
-Session continuity follows assignment continuity, not agent identity. Start a fresh child for a new specialist assignment or independent judgment; continue a child only when deliberately continuing the same specialist-owned workstream.
+Session continuity follows assignment continuity, not agent identity. Continue an existing child session only to complete, refine, or correct the **same bounded assignment and acceptance objective**. Start a fresh child session for a new independently scoped specialist objective or independent judgment, even when the role, parent workflow, PR, branch, or affected files are unchanged. Pass relevant prior results through a concise reconstructable handoff instead of resuming unrelated conversation history.
 
 For independent judgment, pass target/state, authoritative task propositions with provenance/qualifiers, material implementation constraints, and inspectable evidence. Do not seed prior verdicts, expected answers, parent conclusions, claimed-clean areas, or fix-history framing. The fresh child does not resume parent task memory/checkpoints merely because the parent workflow is long-running. Do not disable, hide, or reconfigure an optional integration merely to manufacture freshness or independence; consider isolation reconfiguration only when actual task-specific contaminating content is observed, no clean invocation boundary is otherwise available, and the configuration change is authorized.
 

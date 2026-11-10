@@ -151,7 +151,19 @@ if delegated_section:
         f"(missing={sorted(delegated_targets - documented_targets)}, stale={sorted(documented_targets - delegated_targets)})",
     )
 check(len(readme_sem.split()) <= 650, "README.md: entry page exceeds the 650-word limit")
-check("semantic" in readme_sem and "before" in readme_sem and "Contributing" in readme_sem, "README.md: semantic-task-first positioning or contributing path missing")
+# Check the introductory claim, not an arbitrary Markdown emphasis/casing choice.
+# Keep the task-first meaning and contributing entrypoint without forcing `**semantic**`.
+readme_intro_match = re.search(
+    r"(?ms)^##[^\n]*\bWhat is it\?\s*\n(.*?)(?=^## |\Z)",
+    readme_sem,
+)
+readme_intro = readme_intro_match.group(1) if readme_intro_match else ""
+check(
+    bool(re.search(r"\bsemantic\b", readme_intro, re.I))
+    and bool(re.search(r"\bbefore\b", readme_intro, re.I))
+    and bool(re.search(r"(?mi)^##[^\n]*\bContributing\b", readme_sem)),
+    "README.md: semantic-task-first positioning or contributing path missing",
+)
 
 # The workflow owner must expose semantic progress without becoming a tool logger,
 # and must translate hidden specialist context into a decision-complete user question.
@@ -834,6 +846,13 @@ check(
     and "Terminal evaluator findings reach the user" in text("evals/semantic-transition-traces.md"),
     "ST-152/153/154 exception-reporting/model-attribution/terminal-consumption scenarios missing",
 )
+check(
+    "ST-155" in text("evals/semantic-transition-traces.md")
+    and "comment-cleanup assignment" in text("evals/semantic-transition-traces.md")
+    and "separate, confirmed bugfix" in text("evals/semantic-transition-traces.md")
+    and "same PR requires a fresh child session" in text("evals/semantic-transition-traces.md"),
+    "ST-155 child-session assignment-identity regression scenario missing",
+)
 
 # Semantic ownership is a first-class release gate, not only a historical-fragment blacklist.
 skill_control_spec_path = ROOT / "evals/skill-control-spec.json"
@@ -1245,14 +1264,14 @@ check(
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 154, "semantic-transition suite must contain 154 cases")
+check(traces.count("### ST-") == 155, "semantic-transition suite must contain 155 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 154, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 155, f"semantic-transition suite missing per-case field: {field}")
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",

@@ -126,7 +126,7 @@ For code-like whole-PR review, use configured review integrations only through t
 
 ## Use existing verification evidence
 
-Use fresh implementation/tester/CI evidence instead of repeating a broad test matrix. The reviewer provides independent judgment, not another full verification stage. Run a narrow non-destructive spot-check only when needed to confirm or reject a specific finding. If broader executable verification is missing, report a `verification gap` instead of recreating `@tester`.
+Use fresh implementation/tester/CI evidence instead of repeating a broad test matrix. The reviewer provides independent judgment, not another full verification stage. A narrow, non-destructive exploratory probe may be used **before a finding exists** when it can distinguish a concrete behavioral hypothesis derived independently from the authoritative task and actual change; a probe may also confirm or reject a suspected finding. Choose discriminating cases proportional to risk, including relevant boundaries, cancellation, rollback, or interleavings. Do not require a preexisting finding, mutate project/product state, or recreate `@tester`'s broad verification matrix. If broader executable verification is missing, report a `verification gap` instead of recreating `@tester`.
 
 ## Evidence freshness
 
