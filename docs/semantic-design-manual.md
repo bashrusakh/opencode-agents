@@ -411,7 +411,7 @@ Work directly when the task is:
 Continuity follows the assignment, not the role name.
 
 - New independent assignment or judgment -> fresh child context.
-- Deliberate continuation of the same specialist-owned workstream -> continuation may preserve useful state.
+- Continuation of the same bounded assignment and acceptance objective -> continuation may preserve useful state; a new independently scoped objective needs a fresh child context.
 - Same agent type invoked again -> does **not** by itself justify reuse.
 
 This keeps independent judgments independent without destroying useful stateful work.
@@ -714,7 +714,7 @@ Weak:
 
 Derivable rule:
 
-> Start a new specialist assignment or independent judgment in fresh child context. Continue an existing child only when deliberately continuing the same specialist-owned workstream; role identity alone does not justify reuse.
+> Start a new specialist assignment or independent judgment in fresh child context. Continue an existing child only to complete, refine, or correct the same bounded assignment and acceptance objective; role identity, PR, branch, or affected files alone do not justify reuse, and a new independently scoped objective needs a fresh session.
 
 For an independent judgment, fresh session identity is necessary but not sufficient. Keep prior verdicts, expected outcomes, parent conclusions, claimed-clean areas, and fix-history framing out of the initial judgment context; reconcile them after the independent result. Judge isolation by **task-specific content actually present in model-visible context**, not by the mere availability of a memory integration, connector, tool, permission, or possible recall path. Capability availability does not itself contaminate a fresh judgment, and uncertainty that prior content might be retrievable is not evidence that it was exposed. Conversely, actual prior-task investigative steering contaminates the initial judgment whether it arrived in the assignment, through automatic context injection, or by intentional retrieval. Do not disable or reconfigure integrations merely to manufacture freshness; prefer a clean invocation boundary when actual contamination is observed and separately authorize any configuration change. A targeted re-review is different: known findings may be supplied, but the result must remain partial/incremental rather than masquerading as a fresh whole-scope judgment.
 
