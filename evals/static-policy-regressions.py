@@ -138,6 +138,11 @@ delegated_targets = {
     )
 }
 technical_sem = text("docs/technical-overview.md")
+if version_match:
+    check(
+        re.search(r"(?m)^# OpenCode Agent Pack " + re.escape(pack_version) + r" — Technical overview$", technical_sem) is not None,
+        "docs/technical-overview.md: heading version drift from AGENTS.md",
+    )
 delegated_section = re.search(
     r"(?ms)^## Delegated specialists\s*(.*?)(?=^---\s*$|^## )",
     technical_sem,
@@ -177,9 +182,18 @@ check(
 check(
     "factual/technical uncertainty" in code_orchestrator_sem
     and "self-contained for someone who has not seen child sessions or tool output" in code_orchestrator_sem
-    and "viable alternatives and their material consequences/tradeoffs" in code_orchestrator_sem
-    and "recommendation when the evidence supports one" in code_orchestrator_sem,
-    "code-orchestrator: decision-context completeness guard missing",
+    and "Reconstruct the relevant product and project state yourself" in code_orchestrator_sem
+    and "Never expect the user to remember or reconcile prior sessions" in code_orchestrator_sem
+    and "what the capability or workflow does" in code_orchestrator_sem
+    and "whose problem or need it serves" in code_orchestrator_sem
+    and "why it is on the table and what purpose it serves" in code_orchestrator_sem
+    and "material benefits, limitations, costs, and risks" in code_orchestrator_sem
+    and "Compare the alternatives against the established goal" in code_orchestrator_sem
+    and "state which outcome is better and why" in code_orchestrator_sem
+    and "already-integrated changes and pending work" in code_orchestrator_sem
+    and "compact but decision-complete" in code_orchestrator_sem
+    and "bare `A or B?`" in code_orchestrator_sem,
+    "code-orchestrator: product decision-context, comparison, recommendation, or concise-question guard missing",
 )
 check(
     "### Workflow-owner synthesis loop" in code_orchestrator_sem
@@ -1264,14 +1278,21 @@ check(
 # Temporary transition-eval structure guards. These prove only that the replay
 # contract is explicit enough to run consistently; they do not prove behavior.
 traces = text("evals/semantic-transition-traces.md")
-check(traces.count("### ST-") == 155, "semantic-transition suite must contain 155 cases")
+check(traces.count("### ST-") == 158, "semantic-transition suite must contain 158 cases")
 for field in [
     "**Initial user/spec fixture:**",
     "**Runtime/repository fixture:**",
     "**Injected intermediate output:**",
     "**Expected earliest observable stop/preservation point:**",
 ]:
-    check(traces.count(field) == 155, f"semantic-transition suite missing per-case field: {field}")
+    check(traces.count(field) == 158, f"semantic-transition suite missing per-case field: {field}")
+check(
+    all(f"ST-{n}" in traces for n in [156, 157, 158])
+    and "Product decision explains the capability, alternatives, and recommendation" in traces
+    and "Distributed project history is reconstructed by the orchestrator, not the user" in traces
+    and "Decision request is concise without omitting decision-critical meaning" in traces,
+    "ST-156/157/158 product-decision question regressions missing",
+)
 for case in [
     "ST-19 — A changed guard must preserve both material classification sides",
     "ST-20 — Critical-section review must propagate cost through the reachable call chain",

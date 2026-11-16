@@ -1,5 +1,12 @@
 # Changelog
 
+## v31.23
+
+- Strengthens `code-orchestrator` material-decision requests: reconstruct current product/project context instead of relying on user memory of sessions; explain the capability's purpose, why each viable alternative exists, concrete user-visible outcomes, tradeoffs, and an evidence-based recommendation before asking. Consequential effects on integrated behavior and pending work are included, while the request stays compact and jargon is translated.
+- Aligns the semantic design manual and adds three end-to-end regressions for product-purpose/alternative explanation, distributed-history reconstruction, and concise-but-decision-complete questions. Existing evidence-first classification and user-authority boundaries remain unchanged; no new role, skill, permission, workflow stage, or approval gate.
+
+See `docs/releases/v31.23.md`.
+
 ## v31.22
 
 - Promoted v31.22 from beta by maintainer decision; executable agent contracts remain unchanged except removal of the beta-only diagnostic label.
@@ -10,10 +17,6 @@
 - `session-evaluator` reports material exceptions and evidence limitations instead of routine PASS matrices or positive section checklists, without reducing required internal analysis.
 - `session-evaluation-control` requires the orchestrator to synthesize audit findings in the final user-facing report, retaining earlier task-scoped findings for a session-wide summary; the diagnostic stays post-hoc and non-gating.
 - Adds static and scenario regression coverage; no new roles, automatic audit loops or persistent report artifacts.
-- Restores `CONTRIBUTING.md` as a standalone file from an external contribution, backing the README's short Contributing section with the full contribution guide.
-- `agents/reviewer.md` allows a narrow non-destructive exploratory probe before a finding exists when it distinguishes a concrete behavioral hypothesis derived independently from the authoritative task and actual change; probes stay risk-proportional, must not mutate project state, and must not recreate `@tester`.
-- Tightens `skills/delegation-control` child-session continuity: continuation stays bounded to the same assignment and acceptance objective; a new independently scoped objective or independent judgment requires a fresh child session even when the role, PR, branch, or affected files are unchanged.
-- Aligns two `docs/semantic-design-manual.md` session-continuity passages with the tightened rule; adds ST-155 trace coverage plus matching static and workflow-path guards.
 
 See `docs/releases/v31.22.md`.
 

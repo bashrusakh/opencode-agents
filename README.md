@@ -1,12 +1,12 @@
 <div align="center">
 
-# OpenCode Agent Pack v31.22
+# OpenCode Agent Pack v31.23
 
 ### Semantic instruction pack for [OpenCode](https://opencode.ai/)
 
 **Understand the task first. Then organize the work.**
 
-[![Release](https://img.shields.io/badge/Release-v31.22_stable-16a34a?style=for-the-badge)](docs/releases/v31.22.md)
+[![Release](https://img.shields.io/badge/Release-v31.23_candidate-64748b?style=for-the-badge)](docs/releases/v31.23.md)
 [![OpenCode](https://img.shields.io/badge/OpenCode-Agent_Pack-111827?style=for-the-badge)](https://opencode.ai/)
 [![Semantic](https://img.shields.io/badge/Semantic-Task_Normalization-7c3aed?style=for-the-badge)](docs/technical-overview.md)
 [![Models](https://img.shields.io/badge/Models-Agnostic-2563eb?style=for-the-badge)](docs/technical-overview.md)
@@ -76,4 +76,4 @@ The pack draws on published research, documentation, and open-source projects. T
 | [Jeffallan Claude Skills](https://github.com/Jeffallan/claude-skills) | Upstream specialist skills |
 | [UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Upstream UI/UX skill assets |
 
-**Explore the implementation:** [Technical overview](docs/technical-overview.md) · [Core rules](AGENTS.md) · [Roles](agents/) · [Skills](skills/) · [Evaluations](evals/) · [Release notes](docs/releases/v31.22.md) · [Changelog](CHANGELOG.md) · [Licenses](THIRD_PARTY_NOTICES.md)
+**Explore the implementation:** [Technical overview](docs/technical-overview.md) · [Core rules](AGENTS.md) · [Roles](agents/) · [Skills](skills/) · [Evaluations](evals/) · [Release notes](docs/releases/v31.23.md) · [Changelog](CHANGELOG.md) · [Licenses](THIRD_PARTY_NOTICES.md)

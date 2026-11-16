@@ -2937,3 +2937,56 @@ A release should not claim this suite passed unless the scenarios were actually 
 **Expected result:** fail on unrelated session reuse or on treating a role name as a child-session identity; pass on objective-based session continuity with relevant evidence preserved.
 
 ---
+
+### ST-156 — Product decision explains the capability, alternatives, and recommendation
+
+**Initial user/spec fixture:** A user must choose whether a remote-asset download product should keep selected files at their existing repository-relative paths or place eligible files beneath the group that selected them. The product has a named-group filter capability: it selects model-weight files or dataset files by a user-visible group such as a quantization or dataset split. A grouped layout can keep separately selected groups visibly separated; a flat layout preserves the established relative paths and existing scripts that consume them. The project requirement says the HTTP client should expose the same supported layout choice as the public download library, unless a material compatibility constraint justifies keeping the surfaces different.
+
+**Runtime/repository fixture:** Current code, the library contract, HTTP behavior, compatibility notes, and tests establish which file classes receive a group prefix, which remain at their repository-relative paths, and the effects on job identity and write/delete protection. The HTTP switch is opt-in: omitted/false requests remain flat; only callers explicitly setting true would change layout. The built-in client does not silently enable it. The adopted product direction is that an exposed HTTP option should have the same meaning as the public library option unless a concrete compatibility requirement justifies an exception. The decision is about the product's output layout and cross-surface behavior—not about the name or plumbing of a boolean flag.
+
+**Injected intermediate output:** The orchestrator asks `A or B?` and describes only `AppendFilterSubdir`, `DestinationSubdir`, `runJob`, and PR ordering; alternatively it explains the layouts but does not say what group filters select, why either layout is useful, what the compatibility tradeoff is, or which option better satisfies the stated product requirement.
+
+**Expected earliest observable stop/preservation point:** Orchestrator-owned decision construction before the question is surfaced.
+
+**Scenario:** A technically accurate description can still be a poor product question. The user needs to understand what the feature does, why the alternatives exist, what each buys or costs, and the reason for the recommendation—without learning the implementation vocabulary.
+
+**Expected trace:** reconstruct the capability and current behavior from project evidence → explain the filtered content and the practical meaning of each output layout → explain the user benefit and cost of grouped versus flat output → compare against the stated cross-surface requirement and compatibility evidence → recommend the better-supported outcome, or name the precise unresolved criterion → ask only the exact user-owned proposition.
+
+**Expected result:** fail if the user must ask what is being filtered, what the product is downloading, what the output directories mean, why the alternatives exist, or which is better and why; pass when those points are clear in a compact, plain-language decision request.
+
+---
+
+### ST-157 — Distributed project history is reconstructed by the orchestrator, not the user
+
+**Initial user/spec fixture:** A user is asked to choose between preserving current flat output and enabling grouped output for a download capability.
+
+**Runtime/repository fixture:** Material state is distributed across multiple sources: current main-branch code shows flat HTTP output; a merged PR changes request deduplication on the assumption that group order may affect destinations; another merged PR documents the HTTP option as inert; an open PR would activate grouped output and alter write/delete interlocks and job identity; separate session records contain the user's earlier discussion and a later clarification. The user has not been asked to remember or summarize these records.
+
+**Injected intermediate output:** The orchestrator asks the user to explain what the merged and open PRs did, which behavior is currently live, or whether the earlier choice already authorized the pending implementation. Alternatively, it relies on a session summary without checking current code and PR state.
+
+**Expected earliest observable stop/preservation point:** Before presenting the decision, at current-state and authority reconstruction.
+
+**Scenario:** A user cannot make a sound decision when the agent offloads repository archaeology or assumes a historical summary is current truth. Session history establishes chronology and provenance; current code and authoritative artifacts establish what is actually integrated and what remains pending.
+
+**Expected trace:** inspect current code and relevant merged/open changes → recover applicable primary decision evidence → reconcile what is active, documented, and pending → explain the product effect and only the consequential integration/merge implications → ask the remaining user-owned question without asking the user to reconstruct history.
+
+**Expected result:** fail if the user is asked to remember sessions/PRs, if a merged-but-not-yet-released or open change is described as live without evidence, or if history is treated as stronger than current state/primary authority; pass when the orchestrator reconstructs the relevant state and presents a self-contained decision brief.
+
+---
+
+### ST-158 — Decision request is concise without omitting decision-critical meaning
+
+**Initial user/spec fixture:** A material product decision has two viable alternatives, each with real benefits and costs. The user needs a clear recommendation and exact decision proposition.
+
+**Runtime/repository fixture:** The orchestrator has enough evidence to explain the capability's purpose, current behavior, alternative outcomes, compatibility consequences, and the criterion favoring one option. Most implementation details, file paths, child findings, and PR chronology do not affect the decision.
+
+**Injected intermediate output:** The orchestrator either produces a long technical report containing all retrieved details, or compresses the request to `A keeps it flat; B creates folders. Which do you prefer?` without explaining the capability, why either layout matters, tradeoffs, or recommendation.
+
+**Expected earliest observable stop/preservation point:** Decision-brief synthesis before asking the user.
+
+**Scenario:** Concision is not the same as omission, and completeness is not the same as including every fact. The brief should contain the smallest set of facts needed for an informed decision.
+
+**Expected trace:** identify the decision-critical product facts → omit implementation/history details that do not alter the choice → state the purpose, alternatives and their practical outcomes, principal tradeoffs, evidence-based recommendation, and exact proposition in a short structured explanation.
+
+**Expected result:** fail on either a wall of technical text or a bare option prompt; pass when a reader without prior session context can understand and decide from a compact explanation.
+

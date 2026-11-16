@@ -2,7 +2,7 @@
 
 <div align="center">
 
-# OpenCode Agent Pack v31.22 — Technical overview
+# OpenCode Agent Pack v31.23 — Technical overview
 
 ### A semantic agent instruction pack for OpenCode
 
@@ -323,9 +323,9 @@ Bundled third-party material keeps its upstream license. See [`THIRD_PARTY_NOTIC
 
 | If you need… | Read… |
 |---|---|
-| Release notes | [`docs/releases/v31.22.md`](../docs/releases/v31.22.md) |
+| Release notes | [`docs/releases/v31.23.md`](../docs/releases/v31.23.md) |
 | Release history | [`CHANGELOG.md`](../CHANGELOG.md) |
-| Historical role/protocol audit evidence | Separately delivered with the v31.16 bundle (not installed in the base pack); v31.22 validation accompanies its release bundle |
+| Historical role/protocol audit evidence | Separately delivered with the v31.16 bundle (not installed in the base pack); v31.23 validation accompanies its candidate bundle |
 | Skill control / provenance manifest | [`evals/skill-control-spec.json`](../evals/skill-control-spec.json) |
 | Shared semantic owner→consumer manifest | [`evals/semantic-ownership-spec.json`](../evals/semantic-ownership-spec.json) |
 | Typed semantic-domain manifest | [`evals/semantic-domain-spec.json`](../evals/semantic-domain-spec.json) |
@@ -335,12 +335,3 @@ Bundled third-party material keeps its upstream license. See [`THIRD_PARTY_NOTIC
 | Source-to-generalized-rule preservation method | [`docs/semantic-design-source-audit.md`](../docs/semantic-design-source-audit.md) |
 
 Release validation is defined in **§21 of [`docs/semantic-design-manual.md`](../docs/semantic-design-manual.md)**. A distributable release must pass the **previous-release preservation review** using the prior published ZIP and final candidate, in addition to standalone gates.
-
----
-
-<div align="center">
-
-**OpenCode Agent Pack v31.22**  
-Semantic contracts · bounded delegation · evidence-grounded outcomes
-
-</div>

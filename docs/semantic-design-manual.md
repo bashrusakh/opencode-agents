@@ -408,13 +408,13 @@ Work directly when the task is:
 
 ### Session continuity
 
-Continuity follows the assignment, not the role name.
+The canonical rule lives in [`delegation-control`](../skills/delegation-control/SKILL.md). Child-session identity follows the **bounded assignment and its acceptance objective**, not the agent role or broad workstream.
 
-- New independent assignment or judgment -> fresh child context.
-- Continuation of the same bounded assignment and acceptance objective -> continuation may preserve useful state; a new independently scoped objective needs a fresh child context.
-- Same agent type invoked again -> does **not** by itself justify reuse.
+- Complete, refine, or correct the **same bounded assignment and acceptance objective** -> the existing child session may continue.
+- New independently scoped specialist objective or independent judgment -> start a fresh child session, even when the role, parent workflow, PR, branch, or files are unchanged.
+- Pass relevant prior results in a concise reconstructable handoff; do not reuse unrelated conversation history merely to preserve context.
 
-This keeps independent judgments independent without destroying useful stateful work.
+This preserves context for genuine continuation without contaminating unrelated assignments or independent judgments.
 
 ---
 
@@ -714,7 +714,7 @@ Weak:
 
 Derivable rule:
 
-> Start a new specialist assignment or independent judgment in fresh child context. Continue an existing child only to complete, refine, or correct the same bounded assignment and acceptance objective; role identity, PR, branch, or affected files alone do not justify reuse, and a new independently scoped objective needs a fresh session.
+> A child finishes comment cleanup on a PR. A separate bugfix on the same PR needs a **fresh child session** with the appropriate specialist and a concise handoff, not the cleanup session's conversation history. Resume the cleanup child only to complete, refine, or correct that **same bounded assignment and acceptance objective** (per `delegation-control`).
 
 For an independent judgment, fresh session identity is necessary but not sufficient. Keep prior verdicts, expected outcomes, parent conclusions, claimed-clean areas, and fix-history framing out of the initial judgment context; reconcile them after the independent result. Judge isolation by **task-specific content actually present in model-visible context**, not by the mere availability of a memory integration, connector, tool, permission, or possible recall path. Capability availability does not itself contaminate a fresh judgment, and uncertainty that prior content might be retrievable is not evidence that it was exposed. Conversely, actual prior-task investigative steering contaminates the initial judgment whether it arrived in the assignment, through automatic context injection, or by intentional retrieval. Do not disable or reconfigure integrations merely to manufacture freshness; prefer a clean invocation boundary when actual contamination is observed and separately authorize any configuration change. A targeted re-review is different: known findings may be supplied, but the result must remain partial/incremental rather than masquerading as a fresh whole-scope judgment.
 
@@ -769,7 +769,7 @@ State what is now established or unresolved and the next meaningful action/stage
 
 ### Decision requests
 
-Before asking the user to resolve a material choice, first resolve factual or technical uncertainty that safe read-only evidence can establish, and leave role-owned implementation discretion with the role that owns it. If an independently choosable user/product decision remains, make the request self-contained for a user who did not see hidden tool or child-agent context: explain the affected behavior/surface and why the decision matters, the material established facts, real alternatives and consequences/tradeoffs, and a recommendation when evidence supports one; then ask the exact proposition. Do not turn a specialist's unresolved technical question directly into `which option?` or make the user reconstruct hidden context.
+Before asking the user to resolve a material choice, first resolve factual or technical uncertainty that safe read-only evidence can establish, and leave role-owned implementation discretion with the role that owns it. If an independently choosable user/product decision remains, reconstruct the current product/project context from authoritative sources; do not expect the user to remember prior sessions or connect PR history. Make the request self-contained for someone who did not see hidden tool or child-agent context: explain in plain language what the capability does, whose problem it serves, and what behavior is being decided; for each viable alternative, explain why it exists, its concrete user-visible outcome, and its material benefits and tradeoffs; compare them and recommend the better fit when evidence supports one. Include only consequential effects on existing behavior, compatibility, data, integrations, and pending work. Keep the request compact but decision-complete; translate technical mechanisms instead of repeating their names, and do not replace explanation with a bare choice or a wall of implementation detail.
 
 ### Final response
 
