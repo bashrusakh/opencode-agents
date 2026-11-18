@@ -1,18 +1,21 @@
 ---
 name: open-code-review
 description: >
-  Performs AI-powered code review on Git changes using the `ocr` CLI from
-  alibaba/open-code-review. Use when the user asks to review code, review
-  a pull request, review staged/unstaged changes, review a commit, or
-  compare branches for code quality issues. Produces line-level review
-  comments and can automatically apply fixes when requested. With appropriate
-  review rules, can detect various types of issues including bugs, security
-  vulnerabilities, performance problems, and code quality concerns.
+  Provides Alibaba Open Code Review's native `ocr review` workflow using an
+  independently configured LLM provider. Use when user/project policy requires
+  managed OCR or when the reviewer determines it materially improves confidence
+  for the current risk. Produces line-level review comments; fixes only when
+  requested and permitted by the active workflow.
 license: Apache-2.0
 compatibility: >
-  Requires the `ocr` CLI installed (via `npm install -g
-  @alibaba-group/open-code-review` or GitHub release binary). Review mode
-  requires a configured supported LLM provider before first run.
+  Requires the `ocr` CLI (installable via `npm install -g
+  @alibaba-group/open-code-review` or a GitHub release binary) and a configured
+  supported LLM provider before the first native review. Supported provider
+  protocol families include Anthropic, OpenAI Chat Completions, OpenAI
+  Responses, and AWS Bedrock. A host-agent subscription/login is not an OCR
+  provider credential. CLI installation or upgrade is subject to the active
+  workflow's user-approval gate for new tooling; do not install or upgrade
+  automatically.
 metadata:
   author: alibaba / package integration
   homepage: https://github.com/alibaba/open-code-review
@@ -33,7 +36,7 @@ Analyze the review target (commits, branch, or changes) to extract concise busin
 
 ### Step 2: Run Code Review
 
-**Do not pre-check OCR availability on the managed-review common path.** Skip probes such as `command -v ocr`, `which ocr`, or `ocr --version`; run the requested `ocr review` directly. Enter the installation path only if that invocation fails because `ocr` is not found; installation remains a root section 4 new-tooling gate and must not happen automatically.
+**Do not pre-check OCR availability on the managed-review common path.** Skip probes such as `command -v ocr`, `which ocr`, or `ocr --version`; run the requested `ocr review` directly. Enter the installation path only if that invocation fails because `ocr` is not found; installation remains subject to the active workflow's user-approval gate for new tooling and must not happen automatically.
 
 Run the OCR command with appropriate flags. **Always pass business context when available:**
 
@@ -53,12 +56,12 @@ ocr review --audience agent --background-file /path/to/context.md [user-args]
 
 - **Default** (no target arguments): reviews staged, unstaged, and untracked changes (workspace mode)
 - **Specific commit**: `--commit <ref>` or `-c <ref>` reviews one commit against its parent
-- **Branch/range comparison**: `--from <ref> --to <ref>` reviews the diff between two refs
+- **Branch/range comparison**: `--from <ref> [--to <ref>]` reviews committed changes from the merge-base to the target ref; when `--to` is omitted, the target defaults to `HEAD`.
 - **Repository root**: `--repo <path>` runs against another repository root instead of the current directory
 - **Exclude paths**: `--exclude <patterns>` adds comma-separated gitignore-style exclusions and merges them with rule-file exclusions
 - **Custom rule file**: `--rule <path>` selects an explicit review-rule JSON file
 
-Only one diff mode may be used: either `--from/--to` or `--commit`. `--from` and `--to` must be supplied together.
+Only one diff mode may be used: either range mode (`--from` with optional `--to`) or `--commit`; these modes are mutually exclusive.
 
 ### Agent Output
 
@@ -141,6 +144,7 @@ Do not use `--resume` with `--preview`.
 |-----------|---------------|
 | "review my changes" / "review the working copy" | `ocr review --audience agent -b "context"` |
 | "review this PR" / "review feature branch" | `ocr review --audience agent -b "context" --from main --to <branch>` |
+| "review the current branch against main" | `ocr review --audience agent -b "context" --from main` |
 | "review commit abc123" | `ocr review --audience agent -b "context" --commit abc123` |
 | "review with a specific model" | `ocr review --audience agent --provider <provider> --model <model> -b "context"` |
 | "resume that branch review" | `ocr review --audience agent --from <from> --to <to> --resume <session-id>` |
@@ -270,7 +274,7 @@ Do not describe the review default as `MAX_TOKENS = 58888`; that value belongs t
 
 ## Gotchas
 
-- **A supported LLM provider must be configured for `ocr review`** — OCR supports multiple provider/protocol families rather than only Anthropic or generic OpenAI-compatible endpoints. Use the provider commands below instead of assuming one protocol.
+- **A supported LLM provider must be configured for `ocr review`** — OCR supports Anthropic, OpenAI Chat Completions, OpenAI Responses, and AWS Bedrock protocol families, in addition to supported custom providers. Use the provider commands below instead of assuming one protocol.
 - **Working directory matters** — `ocr review` operates on the Git repository at the current directory. Use `--repo /path/to/repo` to run elsewhere.
 - **Untracked files are reviewed in workspace mode** — bare `ocr review` includes staged, unstaged, and untracked changes.
 - **Workspace resume is unsupported** — `--resume` requires `--from/--to` or `--commit` and a compatible saved session.
@@ -295,7 +299,7 @@ Do not infer a complete successful review merely from partial output.
 
 ### `ocr: command not found`
 
-Installing the CLI is a root section 4 new-tooling action. Do not install it automatically. Ask for authorization first; when authorized, the upstream install command is:
+Installing the CLI is subject to the active workflow's user-approval gate for new tooling. Do not install it automatically. Ask for authorization first; when authorized, the upstream install command is:
 
 ```bash
 npm install -g @alibaba-group/open-code-review

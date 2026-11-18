@@ -319,7 +319,7 @@
     {
       "path": "skills/open-code-review/SKILL.md",
       "class": "vendor-advisory",
-      "directory_sha256": "39aed91519641920eb248ed498491633fc5c0ef3fcefa6f0d5b42b907fbc3c16",
+      "directory_sha256": "24cb631f2161ece76f257d2b8dc7ff83afcf80cacfc28bf8b8f4d1f7d78f67ec",
       "owned_capabilities": [],
       "consumed_capabilities": [],
       "typed_domains": [],
@@ -337,7 +337,7 @@
     {
       "path": "skills/open-code-review-delegate/SKILL.md",
       "class": "vendor-advisory",
-      "directory_sha256": "f69228e5344cba9f323ec9314fe15997eb9489d38e08fb2ae26286afd65bebc0",
+      "directory_sha256": "766b11d19768a90393d20046c750c55004b67320909f3d6703d408a3238b9c56",
       "owned_capabilities": [],
       "consumed_capabilities": [],
       "typed_domains": [],
