@@ -1,5 +1,11 @@
 # Changelog
 
+## v31.24 candidate
+
+- Updates `graymatter-memory` for GrayMatter v0.21.0+ using the MCP `core` profile: documents the required server flag, combined project/shared recall, batch facts, citations, subject-based current values, explicit correction, and task-scoped checkpoint recovery. Preserves root-owned memory authority and fresh-judgment isolation.
+
+See `docs/releases/v31.24.md`.
+
 ## v31.23
 
 - Strengthens `code-orchestrator` material-decision requests: reconstruct current product/project context instead of relying on user memory of sessions; explain the capability's purpose, why each viable alternative exists, concrete user-visible outcomes, tradeoffs, and an evidence-based recommendation before asking. Consequential effects on integrated behavior and pending work are included, while the request stays compact and jargon is translated.

@@ -20,10 +20,12 @@
       "path": "skills/graymatter-memory/SKILL.md",
       "class": "pack-integration",
       "entry_sections": [
+        "Required MCP profile",
         "Identity",
         "Recall and checkpoint procedure",
-        "Durable-write and correction mechanics",
-        "Tool contract"
+        "Durable writes and evidence",
+        "Corrections and fact curation",
+        "Tool contract quick reference"
       ],
       "owned_capabilities": [
         "graymatter_tool_mechanics"

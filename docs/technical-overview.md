@@ -2,7 +2,7 @@
 
 <div align="center">
 
-# OpenCode Agent Pack v31.23 — Technical overview
+# OpenCode Agent Pack v31.24 — Technical overview
 
 ### A semantic agent instruction pack for OpenCode
 
@@ -323,7 +323,7 @@ Bundled third-party material keeps its upstream license. See [`THIRD_PARTY_NOTIC
 
 | If you need… | Read… |
 |---|---|
-| Release notes | [`docs/releases/v31.23.md`](../docs/releases/v31.23.md) |
+| Release notes | [`docs/releases/v31.24.md`](../docs/releases/v31.24.md) |
 | Release history | [`CHANGELOG.md`](../CHANGELOG.md) |
 | Historical role/protocol audit evidence | Separately delivered with the v31.16 bundle (not installed in the base pack); v31.23 validation accompanies its candidate bundle |
 | Skill control / provenance manifest | [`evals/skill-control-spec.json`](../evals/skill-control-spec.json) |
