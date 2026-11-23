@@ -1,5 +1,14 @@
 # Changelog
 
+## v31.25 candidate
+
+- Refreshes the bundled Alibaba Open Code Review skills against upstream: native commit/range reviews run behavior/impact Analysis by default with separate Review/Analysis reporting, coverage-aware completion claims, and file-level handling of mispositioned comments.
+- Extends delegate host-review procedure to assess concrete before/after effects on existing callers and user workflows, consult deleted-file old sides when relevant without counting them as reviewed, and report material intentional behavior changes separately from severity findings and file coverage.
+- Keeps reviewer activation ownership, deterministic delegate preflight, native managed OCR escalation, mutation authority, and publication gates unchanged.
+- No agent role, permission, runtime activation policy, semantic owner, workflow stage, or model-routing rule is added.
+
+See `docs/releases/v31.25.md`.
+
 ## v31.24 candidate
 
 - Updates `graymatter-memory` for GrayMatter v0.21.0+ using the MCP `core` profile: documents the required server flag, combined project/shared recall, batch facts, citations, subject-based current values, explicit correction, and task-scoped checkpoint recovery. Preserves root-owned memory authority and fresh-judgment isolation.

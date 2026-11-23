@@ -63,6 +63,19 @@ ocr review --audience agent --background-file /path/to/context.md [user-args]
 
 Only one diff mode may be used: either range mode (`--from` with optional `--to`) or `--commit`; these modes are mutually exclusive.
 
+### Behavior and Impact Analysis
+
+For a fresh commit or range review (`--commit` or `--from`), run Review and
+Analysis together with `--analysis` by default. Use `--format json` unless the
+caller requests another supported format. Preserve the caller's repository,
+revision selection, background context, and output path; adding Analysis must
+not change the requested review target.
+
+Omit `--analysis` for workspace reviews, `--preview`, `--resume`, and
+`--format sarif`, or when the user explicitly asks to skip Analysis. If the
+user explicitly requests Analysis in an unsupported mode, explain the conflict
+instead of silently changing the target or output format.
+
 ### Agent Output
 
 Always use `--audience agent` when another agent will consume the result. It suppresses human progress UI and emits the final review summary.
@@ -103,6 +116,8 @@ Use these when the task or environment needs them:
 - `--max-git-procs <n>` — max concurrent Git subprocesses; default `16`
 - `--max-tokens <n>` — per-group prompt token ceiling; `0` uses configured or template default
 - `--max-tokens-budget <n>` — total input+output token budget for the review; `0` means unlimited
+- `--analysis` — run behavior/impact Analysis alongside Review for supported fresh commit/range targets; see the mode restrictions above
+- `--analysis-max-tokens-budget <n>` — separate soft token limit for Analysis only; `0` means unlimited, and usage is reported in `analysis_meta.usage`
 - `--tools <path>` — override the embedded tools configuration with a JSON tools config
 - `--preview` / `-p` — show what would be reviewed without running the LLM
 
@@ -143,9 +158,9 @@ Do not use `--resume` with `--preview`.
 | User says | Command to run |
 |-----------|---------------|
 | "review my changes" / "review the working copy" | `ocr review --audience agent -b "context"` |
-| "review this PR" / "review feature branch" | `ocr review --audience agent -b "context" --from main --to <branch>` |
-| "review the current branch against main" | `ocr review --audience agent -b "context" --from main` |
-| "review commit abc123" | `ocr review --audience agent -b "context" --commit abc123` |
+| "review this PR" / "review feature branch" | `ocr review --audience agent -b "context" --from main --to <branch> --analysis --format json` |
+| "review the current branch against main" | `ocr review --audience agent -b "context" --from main --analysis --format json` |
+| "review commit abc123" | `ocr review --audience agent -b "context" --commit abc123 --analysis --format json` |
 | "review with a specific model" | `ocr review --audience agent --provider <provider> --model <model> -b "context"` |
 | "resume that branch review" | `ocr review --audience agent --from <from> --to <to> --resume <session-id>` |
 | "what would be reviewed?" | `ocr review --preview` |
@@ -155,6 +170,24 @@ Do not use `--resume` with `--preview`.
 ### Step 3: Report
 
 OCR output includes structured `severity` (`critical` / `high` / `medium` / `low`) and `category` (`bug` / `security` / `performance` / `maintainability` / `test` / `style` / `documentation` / `other`) on each comment. Present results grouped by severity, discarding `low` severity items that are likely false positives or nitpicks.
+
+For combined Review and Analysis runs, report the two outcomes separately. In
+`ocr.review-with-analysis/v2` JSON:
+
+- **Review:** report findings from `comments` and coverage from `review_status`
+  and `manifest.coverage` when available. A zero exit code or empty `comments`
+  does not by itself prove that every selected file was reviewed.
+- **Analysis:** summarize before/after behavior, affected workflows, and
+  decisions supported by `analysis`. Distinguish
+  `analysis_meta.execution_status` from `analysis_meta.declared_completion`
+  (the model's assessment). For example, `execution_status: completed` with
+  `declared_completion: partial` means the investigation ran but left
+  questions open. If Analysis was skipped or failed, say why when known and
+  retain the Review findings; do not infer that behavior is unchanged.
+
+If the combined schema or Analysis metadata is missing, report Analysis as
+unverified. If the caller requested text, use the Review summary and appended
+Analysis Report instead of expecting the JSON schema.
 
 ### Step 4: Fix
 
@@ -207,7 +240,10 @@ Present results grouped by severity using this template:
   > Recommendation: How to fix (if applicable)
 ```
 
-If no critical, high, or medium severity issues remain after filtering, state: "Review complete — no critical, high, or medium issues found in N files."
+Only state "Review complete — no critical, high, or medium issues found in N
+files" when Review coverage supports that conclusion. Otherwise report the
+known coverage and gaps instead of implying a complete review. For combined
+runs, also report the Analysis outcome separately.
 
 ### Handling Mispositioned Comments
 
@@ -216,7 +252,11 @@ When `start_line` and `end_line` are both `0`, the comment failed to locate the 
 1. Read the comment content to understand the issue
 2. Examine the target file mentioned in the comment
 3. Identify the relevant code section from the comment context
-4. Apply a fix only if mutation is in scope and authorized
+4. Verify the relevant code section and report the finding. If the exact
+   position remains uncertain, report it at file level rather than inventing
+   a line location.
+5. Apply a fix or suggestion only when the user has authorized edits under
+   Step 4
 
 ## Review Rules
 

@@ -156,6 +156,19 @@ For every reviewable ledger entry:
 
 For large changes, process bounded batches while preserving one complete ledger. Do not stop after the first severe finding.
 
+While reading each diff, ask which existing caller or user workflow, if any,
+behaves differently. Reuse evidence already collected; follow a caller,
+contract, or test only when it helps establish a concrete before/after
+scenario. Compare the exact sides selected in Step 4 (the new side in
+workspace mode is the live working tree), and assess behavior changes as part
+of the review. This is host-driven analysis: do not run `ocr review --analysis`
+or pass `--analysis` to `ocr delegate`.
+
+A removed interface can matter even when there are no new lines to review. If
+preview excludes a file solely because its status is `deleted`, use its old
+side as context when needed, without counting it as reviewed. Respect all
+other exclusions when following evidence.
+
 This delegation preflight does **not** call an OCR-side LLM. A later managed `ocr review` is a separate optional/required independent-review step governed by the active reviewer policy.
 
 ## Step 6 — Coverage and report
@@ -172,6 +185,14 @@ Before a complete verdict, reconcile the ledger against the authoritative target
 A full-coverage verdict requires every authoritative changed entry to be accounted for, not merely every item that OCR chose as reviewable.
 
 Findings should prioritize material correctness/security/data-loss/regression issues. Report medium findings when useful; suppress low-value style/nit findings and likely false positives.
+
+Also report a **material behavior change** when the change is intentional but
+still materially affects an existing caller or user workflow, even when no
+defect is found. State the affected workflow, what happened before, what
+happens now, and the supporting location. Keep this impact separate from
+severity-rated findings and file coverage; when it explains an existing
+finding, describe it there only once. Qualify material uncertainties. Omit
+the behavior-impact section when there is no concrete change to report.
 
 ## Current command boundary
 
